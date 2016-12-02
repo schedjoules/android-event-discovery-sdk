@@ -1,0 +1,58 @@
+<resources>
+
+    <style name="SchedJoules_AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/schedjoules_colorPrimary</item>
+        <item name="colorPrimaryDark">@color/schedjoules_colorPrimaryDark</item>
+        <item name="colorAccent">@color/schedjoules_colorAccent</item>
+    </style>
+
+    <style name="SchedJoules_AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="SchedJoules_AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
+
+    <style name="SchedJoules_AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
+
+    <style name="SchedJoules_ExpandedTitle" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:textSize">26sp</item>
+    </style>
+
+    <style name="SchedJoules_TextContent">
+        <item name="android:textColor">@color/schedjoules_text_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+    </style>
+
+    <style name="SchedJoules_TextContent.Title">
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="SchedJoules_TextContent.SubTitle">
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="SchedJoules_EventDetailsItem">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_marginLeft">18dp</item>
+        <item name="android:layout_marginRight">18dp</item>
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:layout_marginBottom">8dp</item>
+    </style>
+
+    <style name="SchedJoules_EventDetailItemIcon">
+        <item name="android:layout_width">@dimen/schedjoules_event_detail_item_icon</item>
+        <item name="android:layout_height">@dimen/schedjoules_event_detail_item_icon</item>
+        <item name="android:tint">@color/schedjoules_content_icon</item>
+        <item name="android:layout_marginRight">18dp</item>
+    </style>
+
+    <!-- Needed to override toolbar style fix bug of small title in landscape (theme resource sets it 14sp in land)
+    See: http://stackoverflow.com/a/28056935/4247460 -->
+    <style name="SchedJoules_ToolbarTitle" parent="@style/TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:textSize">20sp</item>
+    </style>
+
+</resources>

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <bool name="schedjoules_hasTwoPanes">false</bool>
+    <integer name="schedjoules_maxNumberOfHorizontalActions">3</integer>
+    <bool name="schedjoules_enableBackArrowOnEventListScreen">true</bool>
+</resources>

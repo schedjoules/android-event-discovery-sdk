@@ -1,0 +1,27 @@
+<resources>
+
+    <!--
+
+    These resources below are explicitly marked as public here,
+    so they can be overridden in the client of the SDK for customization.
+    (See https://developer.android.com/studio/projects/android-library.html#PrivateResources)
+
+    The plan is to keep them stable (no name or usage change) over the releases,
+    so clients can depend on them.
+
+    All other resources could be overridden as well, but only at your own risk,
+    we can't guarantee that they are not changed later.
+    (They will also generate a Lint warning about using private resource.)
+
+    -->
+
+    <!-- The standard Material design color trio used by the SDK: -->
+    <public name="schedjoules_colorPrimary" type="color"/>
+    <public name="schedjoules_colorPrimaryDark" type="color"/>
+    <public name="schedjoules_colorAccent" type="color"/>
+
+    <!-- Enables/disables showing the UP navigation button (back arrow) on the Event List screen.
+    The button simply finishes the Activity. The default value is true. -->
+    <public name="schedjoules_enableBackArrowOnEventListScreen" type="bool"/>
+
+</resources>

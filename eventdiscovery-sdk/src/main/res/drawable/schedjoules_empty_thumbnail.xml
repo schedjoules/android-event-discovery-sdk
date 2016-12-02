@@ -1,0 +1,12 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:drawable="@color/schedjoules_empty_thumbnail_background"/>
+
+    <item
+            android:bottom="7dp"
+            android:right="7dp"
+            android:top="7dp"
+            android:left="7dp"
+            android:drawable="@drawable/schedjoules_picture_glyph"/>
+
+</layer-list>

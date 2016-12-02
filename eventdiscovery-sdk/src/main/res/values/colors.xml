@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="schedjoules_colorPrimary">#69c9ca</color>
+    <color name="schedjoules_colorPrimaryDark">#50999a</color>
+    <color name="schedjoules_colorAccent">#f16667</color>
+
+    <color name="schedjoules_text_content">#101010</color>
+    <color name="schedjoules_content_icon">#707070</color>
+
+    <color name="schedjoules_empty_thumbnail_background">#dbdbdb</color>
+    <color name="schedjoules_empty_thumbnail_draw">#bababa</color>
+
+    <color name="schedjoules_divider">#40000000</color>
+</resources>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Can be used to enable/disable the back arrow on the list screen
+    (that simply finishes the Activity). See more in the public.xml of the SDK. -->
+    <bool name="schedjoules_enableBackArrowOnEventListScreen">true</bool>
+
+</resources>

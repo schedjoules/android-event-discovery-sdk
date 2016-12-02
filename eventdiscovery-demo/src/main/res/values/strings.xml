@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">SchedJoules Event Discovery Demo</string>
+    <string name="event_discover_now">Event Discovery\nfor today</string>
+    <string name="event_discover_later">Event Discovery\nin 10 days from now</string>
+</resources>

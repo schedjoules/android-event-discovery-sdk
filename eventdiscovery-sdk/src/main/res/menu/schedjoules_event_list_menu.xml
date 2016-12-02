@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+            android:id="@+id/schedjoules_event_list_menu_location"
+            android:title="@string/schedjoules_location_search_hint"
+            android:icon="@drawable/schedjoules_ic_menu_location_selection"
+            app:showAsAction="always"/>
+</menu>

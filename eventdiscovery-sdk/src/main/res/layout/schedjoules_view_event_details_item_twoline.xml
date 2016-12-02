@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.schedjoules.eventdiscovery.eventdetails.EventDetailsTwoLineItemView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        style="@style/SchedJoules_EventDetailsItem">
+
+    <ImageView
+            android:id="@+id/schedjoules_event_details_item_icon"
+            style="@style/SchedJoules_EventDetailItemIcon"
+            android:tint="@color/schedjoules_colorPrimary"
+            tools:src="@android:drawable/btn_star"/>
+
+    <TextView
+            android:id="@+id/schedjoules_event_details_item_title_center"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/schedjoules_event_detail_item_icon"
+            style="@style/SchedJoules_TextContent.Title"
+            android:gravity="center_vertical"
+            android:visibility="invisible"
+            android:text=""/>
+
+    <TextView
+            android:id="@+id/schedjoules_event_details_item_title"
+            android:layout_toRightOf="@+id/schedjoules_event_details_item_icon"
+            style="@style/SchedJoules_TextContent.Title"
+            android:layout_alignBaseline="@+id/schedjoules_event_details_item_title_center"
+            tools:text="Sunday, April, 23th 2016"/>
+
+    <TextView
+            android:id="@+id/schedjoules_event_details_item_subtitle"
+            style="@style/SchedJoules_TextContent.SubTitle"
+            android:layout_toRightOf="@+id/schedjoules_event_details_item_icon"
+            android:layout_below="@id/schedjoules_event_details_item_title"
+            tools:text="7.30 p.m. - 10:00 p.m. (2.5 hours)"/>
+
+
+</com.schedjoules.eventdiscovery.eventdetails.EventDetailsTwoLineItemView>

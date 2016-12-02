@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.schedjoules.eventdiscovery.eventlist.items.EventItemView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/schedjoules_list_item_vertical_margin"
+        android:background="?attr/selectableItemBackground"
+        android:paddingBottom="@dimen/schedjoules_list_item_vertical_margin"
+        android:paddingRight="@dimen/schedjoules_list_item_horizontal_margin"
+        android:paddingLeft="@dimen/schedjoules_list_item_horizontal_margin">
+
+    <!-- TODO Review, fine tune the layout. Consider using different layouts (ConstraintLayout, LinerLayout). Extract dimens, styles, etc. -->
+
+
+    <ImageView
+            android:id="@+id/schedjoules_event_item_thumbnail"
+            android:layout_width="@dimen/schedjoules_list_item_image_width"
+            android:layout_height="@dimen/schedjoules_list_item_image_height"
+            android:scaleType="centerCrop"
+            android:layout_alignParentRight="true"
+            android:layout_marginLeft="16dp"/>
+
+    <TextView
+            android:id="@+id/schedjoules_event_item_title"
+            android:layout_alignParentLeft="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:maxLines="3"
+            android:ellipsize="end"
+            android:layout_alignParentTop="true"
+            android:layout_marginBottom="4dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.SearchResult.Title"
+            android:layout_toLeftOf="@id/schedjoules_event_item_thumbnail"
+            tools:text="Event title"/>
+
+    <TextView
+            android:id="@+id/schedjoules_event_item_times"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:textAppearance="@style/TextAppearance.AppCompat.SearchResult.Subtitle"
+            android:textSize="14sp"
+            android:maxLines="1"
+            android:layout_marginBottom="4dp"
+            android:layout_toLeftOf="@id/schedjoules_event_item_thumbnail"
+            android:layout_below="@id/schedjoules_event_item_title"
+            tools:text="start time"/>
+
+    <TextView
+            android:id="@+id/schedjoules_event_item_location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:textSize="12sp"
+            android:layout_alignParentLeft="true"
+            android:layout_toLeftOf="@id/schedjoules_event_item_thumbnail"
+            android:layout_below="@id/schedjoules_event_item_times"
+            tools:text="event location"/>
+
+    <TextView
+            android:id="@+id/schedjoules_event_item_category"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:layout_marginTop="4dp"
+            android:layout_below="@id/schedjoules_event_item_location"
+            android:textColor="#f7dc2e"
+            android:visibility="gone"
+            tools:visibility="visible"
+            android:layout_alignParentLeft="true"
+            android:layout_toLeftOf="@id/schedjoules_event_item_thumbnail"
+            android:maxLines="1"
+            android:ellipsize="end"
+            tools:text="Category"/>
+
+
+</com.schedjoules.eventdiscovery.eventlist.items.EventItemView>

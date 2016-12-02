@@ -1,0 +1,1 @@
+include ':eventdiscovery-demo', ':eventdiscovery-sdk'

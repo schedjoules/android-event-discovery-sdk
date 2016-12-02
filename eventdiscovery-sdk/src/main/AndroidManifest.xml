@@ -1,0 +1,50 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          package="com.schedjoules.eventdiscovery">
+
+    <uses-permission android:name="android.permission.INTERNET"/>
+
+    <application>
+        <activity
+                android:name="com.schedjoules.eventdiscovery.eventlist.EventListActivity"
+                android:theme="@style/SchedJoules_AppTheme.NoActionBar"
+                android:exported="false"
+                android:enabled="true"
+                android:label="@string/schedjoules_title_event_list">
+            <intent-filter>
+                <action android:name="schedjoules.intent.action.EVENT_DISCOVERY"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+
+        <activity
+                android:name="com.schedjoules.eventdiscovery.eventdetails.EventDetailActivity"
+                android:label="@string/schedjoules_title_event_detail"
+                android:exported="false"
+                android:enabled="true"
+                android:theme="@style/SchedJoules_AppTheme.NoActionBar">
+        </activity>
+
+        <activity
+                android:name=".proxies.DefaultAddToCalendarActivity"
+                android:exported="false"
+                android:theme="@android:style/Theme.NoDisplay"
+                android:enabled="true">
+            <intent-filter android:priority="-999">
+                <action android:name="schedjoules.event.intent.action.ADD_TO_CALENDAR"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+
+        <service
+                android:name=".service.BasicInsightsService"
+                android:exported="false"
+                android:stopWithTask="true"
+                android:enabled="true"/>
+
+        <meta-data
+                android:name="com.schedjoules.eventdiscovery.common.OurGlideModule"
+                android:value="GlideModule"/>
+
+    </application>
+
+</manifest>
