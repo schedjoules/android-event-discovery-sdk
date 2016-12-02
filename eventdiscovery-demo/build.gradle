@@ -4,7 +4,8 @@ Properties properties = new Properties()
 properties.load(project.rootProject.file('local.properties').newDataInputStream())
 def googlePlacesApiKey = properties.getProperty('google.places.api.key')
 if (googlePlacesApiKey == null) {
-    throw new MissingPropertyException("No Google Places API key provided in local.properties with key 'google.places.api.key'")
+    // use a dummy key instead of throwing an Exception to allow automated build on Travis, Jenkins, Jitpack et al.
+    googlePlacesApiKey = "replace-me"
 }
 
 android {
