@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <bool name="schedjoules_hasTwoPanes">true</bool>
+    <!-- TODO change back to true when two pane mode is supported -->
+    <bool name="schedjoules_hasTwoPanes">false</bool>
 </resources>
