@@ -51,9 +51,16 @@ public final class PlacesApiLocationSelection implements LocationSelection, OnAc
 
 
     @Override
-    public void setListener(Listener listener)
+    public void registerListener(Listener listener)
     {
         mListener = listener;
+    }
+
+
+    @Override
+    public void unregisterListener()
+    {
+        mListener = null;
     }
 
 
@@ -92,7 +99,10 @@ public final class PlacesApiLocationSelection implements LocationSelection, OnAc
             if (resultCode == Activity.RESULT_OK)
             {
                 Place place = PlaceAutocomplete.getPlace(mActivity, data);
-                mListener.onLocationSelected(new PlacesApiLocationSelectionResult(place));
+                if (mListener != null)
+                {
+                    mListener.onLocationSelected(new PlacesApiLocationSelectionResult(place));
+                }
             }
             else if (resultCode == PlaceAutocomplete.RESULT_ERROR)
             {

@@ -78,6 +78,7 @@ public final class EventListActivity extends BaseActivity implements EvenListScr
     {
         super.onCreate(savedInstanceState);
 
+        // TODO It's only Toolbar now inside ScreenView, make it declarative, move rest (related to list) to elsewhere
         mScreenView = new EvenListScreenViewImpl(this);
         mScreenView.init();
 
@@ -91,21 +92,22 @@ public final class EventListActivity extends BaseActivity implements EvenListScr
                         new EventListBackgroundMessage(this), new EventListLoadingIndicatorOverlay(this)));
 
         mLocationSelection = new PlacesApiLocationSelection(this);
-        mLocationSelection.setListener(this);
+        mLocationSelection.registerListener(this);
 
         mLastSelectedLocation = retainedObjects.getOr(1, new SharedPrefLastSelectedLocation(this));
 
         mScreenView.setUserActionListener(this);
+
         mScreenView.setToolbarTitle(mLastSelectedLocation.get().name());
         mScreenView.setBottomReachScrollListener(mListItemsProvider);
 
         setupListAdapter();
 
-        if (savedInstanceState == null)
+        if (!retainedObjects.hasAny())
         {
-            GeoLocation geoLocation = getIntent().getParcelableExtra(EXTRA_GEOLOCATION);
-            mListItemsProvider.loadEvents(geoLocation == null ? mLastSelectedLocation.get().geoLocation() : geoLocation, startAfter());
+            mListItemsProvider.loadEvents(location(), startAfter());
         }
+
         new InsightsTask(this).execute(new Screen(new StringToken("list")));
     }
 
@@ -191,10 +193,25 @@ public final class EventListActivity extends BaseActivity implements EvenListScr
     {
         super.onDestroy();
         mApiService.disconnect();
+        mLocationSelection.unregisterListener();
     }
 
 
-    public DateTime startAfter()
+    private GeoLocation location()
+    {
+        if (getIntent().hasExtra(EXTRA_GEOLOCATION))
+        {
+            // TODO Save location and update Toolbar title with name when Event Discovery for input geo-location is actually supported
+            return getIntent().getParcelableExtra(EXTRA_GEOLOCATION);
+        }
+        else
+        {
+            return mLastSelectedLocation.get().geoLocation();
+        }
+    }
+
+
+    private DateTime startAfter()
     {
         if (getIntent().hasExtra(EXTRA_START_AFTER_TIMESTAMP))
         {

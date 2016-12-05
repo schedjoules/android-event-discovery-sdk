@@ -47,4 +47,11 @@ public final class Restoring implements RetainedObjects
     {
         return mDelegate.getOr(index, defaultValue);
     }
+
+
+    @Override
+    public boolean hasAny()
+    {
+        return mDelegate.hasAny();
+    }
 }
