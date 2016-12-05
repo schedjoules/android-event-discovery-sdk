@@ -115,7 +115,7 @@ public final class EventListActivity extends BaseActivity implements EvenListScr
         // Using FlexibleAdapter with sticky headers:
         FlexibleAdapter<IFlexible> adapter = new FlexibleAdapter<>(null);
         adapter.setDisplayHeadersAtStartUp(true);
-        adapter.enableStickyHeaders();
+        adapter.setStickyHeaders(true);
         AdapterNotifier adapterNotifier = new FlexibleAdapterNotifier(adapter);
 
         // Using GeneralMultiTypeAdapter (no sticky headers):
