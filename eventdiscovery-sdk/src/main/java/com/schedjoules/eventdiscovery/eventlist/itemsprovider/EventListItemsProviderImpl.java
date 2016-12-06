@@ -25,6 +25,7 @@ import com.schedjoules.client.eventsdiscovery.Event;
 import com.schedjoules.client.eventsdiscovery.GeoLocation;
 import com.schedjoules.client.eventsdiscovery.ResultPage;
 import com.schedjoules.eventdiscovery.eventlist.items.ErrorItem;
+import com.schedjoules.eventdiscovery.eventlist.items.LoadingIndicatorItem;
 import com.schedjoules.eventdiscovery.eventlist.items.NoMoreEventsItem;
 import com.schedjoules.eventdiscovery.eventlist.itemsprovider.EventListDownloadTask.TaskParam;
 import com.schedjoules.eventdiscovery.eventlist.itemsprovider.EventListDownloadTask.TaskResult;
@@ -65,12 +66,10 @@ public class EventListItemsProviderImpl implements EventListItemsProvider, Event
 
     private final EventListBackgroundMessage mBackgroundMessage;
 
-    // TODO currently loading indicator doesn't distinguish from top or bottom loading, thus can hide before both finished
+    private final EventListItems mItems;
     private final EventListLoadingIndicatorOverlay mLoadingIndicatorOverlay;
 
-    private final EventListItems mItems;
-
-    private Map<ScrollDirection, ResultPage<Envelope<Event>>> mLastResultPage;
+    private final EventPageQueries mPageQueries;
 
     private GeoLocation mLocation;
     private Map<ScrollDirection, Boolean> mIsLoading;
@@ -81,18 +80,15 @@ public class EventListItemsProviderImpl implements EventListItemsProvider, Event
     private Map<ScrollDirection, TaskParam> mErrorTaskParam;
 
 
-    public EventListItemsProviderImpl(FutureServiceConnection<ApiService> apiService,
-                                      EventListItems items, EventListBackgroundMessage backgroundMessage,
-                                      EventListLoadingIndicatorOverlay loadingIndicatorOverlay)
+    public EventListItemsProviderImpl(FutureServiceConnection<ApiService> apiService, EventListItems items, EventListBackgroundMessage backgroundMessage, EventListLoadingIndicatorOverlay loadingIndicatorOverlay)
     {
         mApiService = apiService;
         mBackgroundMessage = backgroundMessage;
         mItems = items;
-        mBackgroundMessage.setOnClickListener(this);
         mLoadingIndicatorOverlay = loadingIndicatorOverlay;
+        mBackgroundMessage.setOnClickListener(this);
         mExecutorService = Executors.newSingleThreadExecutor();
         mDownloadTaskClient = new DownloadTaskClient();
-        mLastResultPage = new HashMap<>(2);
         mErrorTaskParam = new HashMap<>(2);
 
         mIsInErrorMode = new HashMap<>(2);
@@ -102,6 +98,8 @@ public class EventListItemsProviderImpl implements EventListItemsProvider, Event
         mIsLoading = new HashMap<>(2);
         mIsLoading.put(TOP, false);
         mIsLoading.put(BOTTOM, false);
+
+        mPageQueries = new EventPageQueries();
     }
 
 
@@ -139,6 +137,15 @@ public class EventListItemsProviderImpl implements EventListItemsProvider, Event
     }
 
 
+    private void queueComingPage(ScrollDirection direction)
+    {
+        if (mPageQueries.hasComingPage(direction))
+        {
+            queueDownloadTask(mPageQueries.comingPageQuery(direction), direction);
+        }
+    }
+
+
     @Override
     public void onBackgroundMessageClick()
     {
@@ -155,32 +162,9 @@ public class EventListItemsProviderImpl implements EventListItemsProvider, Event
             {
                 queueDownloadTask(mErrorTaskParam.get(direction));
             }
-            else if (mLastResultPage.get(direction) != null && !mLastResultPage.get(direction).isLastPage())
+            else
             {
-                queuePage(direction);
-            }
-        }
-    }
-
-
-    private void queuePage(ScrollDirection direction)
-    {
-        DirectionalQuery<Envelope<Event>> directionalQuery = new DirectionalQuery<>(mLastResultPage, direction);
-        if (directionalQuery.hasQuery())
-        {
-            queueDownloadTask(directionalQuery.query(), direction);
-        }
-    }
-
-
-    private void addNoMoreEventsMsgItem(ScrollDirection direction)
-    {
-        if (direction == BOTTOM || (direction == TOP && !mItems.isTodayShown()))
-        {
-            // TODO has check could go inside as well
-            if (!mItems.hasSpecialItemAdded(NoMoreEventsItem.get(direction), direction))
-            {
-                mItems.addSpecialItem(NoMoreEventsItem.get(direction), direction);
+                queueComingPage(direction);
             }
         }
     }
@@ -195,62 +179,93 @@ public class EventListItemsProviderImpl implements EventListItemsProvider, Event
         mIsLoading.put(TOP, false);
         mIsLoading.put(BOTTOM, false);
         mErrorTaskParam.clear();
-        mLastResultPage.clear();
+        mPageQueries.clear();
     }
 
 
-    private void addErrorItem(ScrollDirection direction)
+    private void markLoadStarted(boolean isEmpty, ScrollDirection direction)
     {
-        if (mItems.isEmpty())
+        mIsLoading.put(direction, true);
+        if (isEmpty)
         {
-            mBackgroundMessage.showErrorMsg();
+            mLoadingIndicatorOverlay.show();
         }
         else
         {
-            mItems.addSpecialItem(ErrorItem.get(direction), direction);
+            mItems.addSpecialItemPost(LoadingIndicatorItem.get(direction), direction);
         }
     }
 
 
-    private void removeErrorItem(ScrollDirection direction)
+    private void markLoadFinishedSuccess(boolean isEmptyBefore, boolean isEmptyAfter, ScrollDirection direction)
     {
-        if (mItems.isEmpty())
+        mIsLoading.put(direction, false);
+
+        // Hide loading:
+        if (isEmptyBefore)
         {
+            mLoadingIndicatorOverlay.hide();
             mBackgroundMessage.hide();
         }
         else
         {
-            mItems.removeSpecialItem(ErrorItem.get(direction), direction);
+            mItems.removeSpecialItem(LoadingIndicatorItem.get(direction), direction);
         }
-    }
 
+        // Resuming from error mode:
+        if (mIsInErrorMode.get(direction))
+        {
+            if (isEmptyBefore)
+            {
+                mBackgroundMessage.hide();
+            }
+            else
+            {
+                mItems.removeSpecialItem(ErrorItem.get(direction), direction);
+            }
+            mIsInErrorMode.put(direction, false);
+        }
 
-    private void markLoadStarted(ScrollDirection direction)
-    {
-        mIsLoading.put(direction, true);
-        mLoadingIndicatorOverlay.show();
-    }
-
-
-    private void markLoadFinished(ScrollDirection direction)
-    {
-        mIsLoading.put(direction, false);
-        mLoadingIndicatorOverlay.hide();
-        if (mItems.isEmpty())
+        // No more events message:
+        if (isEmptyAfter)
         {
             mBackgroundMessage.showNoEventsFoundMsg();
         }
-        else
+        else if (!mPageQueries.hasComingPage(direction)
+                && (direction == BOTTOM || (direction == TOP && !mItems.isTodayShown())))
         {
-            mBackgroundMessage.hide();
+            mItems.addSpecialItemNow(NoMoreEventsItem.get(direction), direction);
         }
     }
 
 
-    private void markLoadFinishedError(ScrollDirection direction)
+    private void markLoadFinishedError(boolean isEmpty, ScrollDirection direction)
     {
         mIsLoading.put(direction, false);
-        mLoadingIndicatorOverlay.hide();
+
+        // Hide loading:
+        if (isEmpty)
+        {
+            mLoadingIndicatorOverlay.hide();
+            mBackgroundMessage.hide();
+        }
+        else
+        {
+            mItems.removeSpecialItem(LoadingIndicatorItem.get(direction), direction);
+        }
+
+        if (!mIsInErrorMode.get(direction))
+        {
+            if (isEmpty)
+            {
+                mBackgroundMessage.showErrorMsg();
+            }
+            else
+            {
+                mItems.addSpecialItemPost(ErrorItem.get(direction), direction);
+            }
+            mIsInErrorMode.put(direction, true);
+        }
     }
 
 
@@ -260,7 +275,7 @@ public class EventListItemsProviderImpl implements EventListItemsProvider, Event
         @Override
         public void onPreExecute(TaskParam taskParam)
         {
-            markLoadStarted(taskParam.mDirection);
+            markLoadStarted(mItems.isEmpty(), taskParam.mDirection);
         }
 
 
@@ -291,46 +306,26 @@ public class EventListItemsProviderImpl implements EventListItemsProvider, Event
 
         private void onTaskSuccess(TaskResult result, TaskParam taskParam)
         {
-            ScrollDirection direction = taskParam.mDirection;
+            mPageQueries.saveLastResult(result.mResultPage, taskParam.mDirection);
 
-            mLastResultPage.put(direction, result.mResultPage);
-
-            if (mIsInErrorMode.get(direction))
-            {
-                removeErrorItem(direction);
-                mIsInErrorMode.put(direction, false);
-            }
-
+            boolean isEmptyBefore = mItems.isEmpty();
             mItems.mergeNewItems(result.mListItems, taskParam.mDirection);
 
-            // TODO would be better to handle it as a state as well, like mHasNoMoreEvents
-            if (!new DirectionalQuery<>(mLastResultPage, direction).hasQuery())
-            {
-                addNoMoreEventsMsgItem(direction);
-            }
-
-            markLoadFinished(taskParam.mDirection);
+            markLoadFinishedSuccess(isEmptyBefore, mItems.isEmpty(), taskParam.mDirection);
 
             if (taskParam.mQuery instanceof InitialEventsDiscovery)
             {
-                mLastResultPage.put(TOP, result.mResultPage);
-                queuePage(TOP);
+                mPageQueries.saveLastResult(result.mResultPage, TOP);
+                queueComingPage(TOP);
             }
         }
 
 
         private void onTaskError(TaskParam taskParam, Exception e)
         {
-            ScrollDirection direction = taskParam.mDirection;
-            if (!mIsInErrorMode.get(direction))
-            {
-                addErrorItem(direction);
-            }
-            mIsInErrorMode.put(direction, true);
-            mErrorTaskParam.put(direction, taskParam);
-
+            mErrorTaskParam.put(taskParam.mDirection, taskParam);
             Log.e(TAG, "Error during download task", e);
-            markLoadFinishedError(taskParam.mDirection);
+            markLoadFinishedError(mItems.isEmpty(), taskParam.mDirection);
         }
     }
 }

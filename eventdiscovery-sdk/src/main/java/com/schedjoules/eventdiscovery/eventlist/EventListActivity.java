@@ -97,7 +97,6 @@ public final class EventListActivity extends BaseActivity implements EvenListScr
         mLastSelectedLocation = retainedObjects.getOr(1, new SharedPrefLastSelectedLocation(this));
 
         mScreenView.setUserActionListener(this);
-
         mScreenView.setToolbarTitle(mLastSelectedLocation.get().name());
         mScreenView.setBottomReachScrollListener(mListItemsProvider);
 

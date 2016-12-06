@@ -18,6 +18,7 @@
 package com.schedjoules.eventdiscovery.model;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.util.Pair;
 
 import com.schedjoules.client.ApiQuery;
@@ -54,10 +55,10 @@ public final class DummyEvents
     static Map<ScrollDirection, Integer> pageLimits = new HashMap<>();
     static Map<ScrollDirection, Integer> eventCounters = new HashMap<>();
     static Map<ScrollDirection, Integer> pageCounters = new HashMap<>();
-
     static Map<ScrollDirection, Pair<Integer, Integer>> errorOccurrences = new HashMap<>();
 
-    static final int NO_OF_EVENTS_PER_PAGE = 3;
+    static final int HOURS_BETWEEN_EVENTS = 5;
+    static final int NO_OF_EVENTS_PER_PAGE = 10;
 
     static
     {
@@ -82,7 +83,8 @@ public final class DummyEvents
 
     public static ResultPage<Envelope<Event>> resultPage(ScrollDirection direction)
     {
-        sleep(1000);
+        Log.d("Network", String.format("DummyRequest: dir %s, page %s", direction, pageCounters.get(direction)));
+        sleep(2000);
 
         if (pageCounters.get(direction).equals(errorOccurrences.get(direction).first)
                 && (errorOccurrences.get(direction).second > 0))
@@ -138,7 +140,7 @@ public final class DummyEvents
     {
         int sign = direction == BOTTOM ? 1 : -1;
         int multiplier = direction == BOTTOM ? eventCounters.get(direction) : eventCounters.get(direction) + 1;
-        return new Duration(sign, 0, multiplier * 5, 0, 0);
+        return new Duration(sign, 0, multiplier * HOURS_BETWEEN_EVENTS, 0, 0);
     }
 
 

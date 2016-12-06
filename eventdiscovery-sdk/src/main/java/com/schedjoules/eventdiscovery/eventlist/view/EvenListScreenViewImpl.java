@@ -25,10 +25,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.schedjoules.eventdiscovery.utils.BaseActivity;
 import com.schedjoules.eventdiscovery.R;
 import com.schedjoules.eventdiscovery.databinding.SchedjoulesActivityEventListBinding;
 import com.schedjoules.eventdiscovery.eventlist.itemsprovider.EventListItemsProviderImpl;
+import com.schedjoules.eventdiscovery.utils.BaseActivity;
 
 
 /**
@@ -62,7 +62,6 @@ public final class EvenListScreenViewImpl implements EvenListScreenView
         // TODO These divider appear around date header items as well, remove them from there
         // TODO Check FlexibleAdapter, it might have solution out of the box
         mRecyclerView = mViews.schedjoulesEventListInclude.schedjoulesEventList;
-        mRecyclerView.addItemDecoration(new DividerItemDecoration(mActivity));
     }
 
 

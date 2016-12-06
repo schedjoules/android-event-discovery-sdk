@@ -26,32 +26,32 @@ import com.schedjoules.eventdiscovery.framework.adapter.flexibleadapter.Abstract
 
 
 /**
- * Represents a loading error message item at the bottom or top of the event list.
+ * Event list UI item for loading indicator.
  *
  * @author Gabor Keszthelyi
  */
-// TODO create one layout for both ErrorItem and NoMoreEventsItem and set text in bindData
-public final class ErrorItem extends AbstractFlexible<View> implements ListItem<View>
+public final class LoadingIndicatorItem extends AbstractFlexible<View> implements ListItem<View>
 {
-    public static final ErrorItem TOP = new ErrorItem();
-    public static final ErrorItem BOTTOM = new ErrorItem();
+    public static final LoadingIndicatorItem TOP = new LoadingIndicatorItem();
+    public static final LoadingIndicatorItem BOTTOM = new LoadingIndicatorItem();
 
 
-    public static ErrorItem get(ScrollDirection direction)
+    public static LoadingIndicatorItem get(ScrollDirection direction)
     {
         return direction == ScrollDirection.BOTTOM ? BOTTOM : TOP;
     }
 
 
-    private ErrorItem()
+    private LoadingIndicatorItem()
     {
+
     }
 
 
     @Override
     public int layoutResId()
     {
-        return R.layout.schedjoules_list_item_error;
+        return R.layout.schedjoules_list_item_loading;
     }
 
 

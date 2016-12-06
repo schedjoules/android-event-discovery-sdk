@@ -20,38 +20,21 @@ package com.schedjoules.eventdiscovery.eventlist.items;
 import android.view.View;
 
 import com.schedjoules.eventdiscovery.R;
-import com.schedjoules.eventdiscovery.eventlist.itemsprovider.ScrollDirection;
 import com.schedjoules.eventdiscovery.framework.adapter.ListItem;
 import com.schedjoules.eventdiscovery.framework.adapter.flexibleadapter.AbstractFlexible;
 
 
 /**
- * Represents a loading error message item at the bottom or top of the event list.
+ * A divider item for the event list UI.
  *
  * @author Gabor Keszthelyi
  */
-// TODO create one layout for both ErrorItem and NoMoreEventsItem and set text in bindData
-public final class ErrorItem extends AbstractFlexible<View> implements ListItem<View>
+public final class DividerItem extends AbstractFlexible<View> implements ListItem<View>
 {
-    public static final ErrorItem TOP = new ErrorItem();
-    public static final ErrorItem BOTTOM = new ErrorItem();
-
-
-    public static ErrorItem get(ScrollDirection direction)
-    {
-        return direction == ScrollDirection.BOTTOM ? BOTTOM : TOP;
-    }
-
-
-    private ErrorItem()
-    {
-    }
-
-
     @Override
     public int layoutResId()
     {
-        return R.layout.schedjoules_list_item_error;
+        return R.layout.schedjoules_list_item_divider;
     }
 
 

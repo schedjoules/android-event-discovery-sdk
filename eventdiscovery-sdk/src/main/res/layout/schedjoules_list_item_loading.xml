@@ -3,8 +3,10 @@
              android:layout_width="match_parent"
              android:layout_height="@dimen/schedjoules_list_item_default_height">
 
-    <TextView
-            style="@style/SchedJoules_EventListSpecialItemText"
-            android:text="@string/schedjoules_event_list_error_item"/>
+    <ProgressBar
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:indeterminateTint="@color/schedjoules_colorPrimary"
+            android:layout_gravity="center"/>
 
 </FrameLayout>

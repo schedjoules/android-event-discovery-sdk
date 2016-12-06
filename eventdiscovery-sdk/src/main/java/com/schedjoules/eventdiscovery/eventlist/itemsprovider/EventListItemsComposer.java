@@ -17,10 +17,13 @@
 
 package com.schedjoules.eventdiscovery.eventlist.itemsprovider;
 
+import android.util.Log;
+
 import com.schedjoules.client.eventsdiscovery.Envelope;
 import com.schedjoules.client.eventsdiscovery.Event;
 import com.schedjoules.client.eventsdiscovery.ResultPage;
 import com.schedjoules.eventdiscovery.eventlist.items.DateHeaderItem;
+import com.schedjoules.eventdiscovery.eventlist.items.DividerItem;
 import com.schedjoules.eventdiscovery.eventlist.items.EventItem;
 import com.schedjoules.eventdiscovery.framework.adapter.ListItem;
 
@@ -73,7 +76,7 @@ public final class EventListItemsComposer
             if (envelope.hasPayload())
             {
                 Event event = envelope.payload();
-//                Log.d("Network", String.format("event | %s | %s", event.start(), event.title()));
+                Log.d("Network", String.format("event | %s | %s", event.start(), event.title()));
 
                 DateTime day = toLocalDay(event.start());
 
@@ -86,6 +89,7 @@ public final class EventListItemsComposer
                 EventItem item = new EventItem(event);
                 item.setHeader(days.get(day));
                 items.add(item);
+                items.add(new DividerItem());
             }
         }
 
