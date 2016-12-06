@@ -29,7 +29,9 @@ public interface LocationSelection
      */
     void initiateSelection();
 
-    void setListener(Listener listener);
+    void registerListener(Listener listener);
+
+    void unregisterListener();
 
     interface Listener
     {

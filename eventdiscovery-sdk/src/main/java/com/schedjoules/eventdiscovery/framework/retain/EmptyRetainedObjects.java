@@ -31,4 +31,11 @@ public final class EmptyRetainedObjects implements RetainedObjects
     {
         return defaultValue;
     }
+
+
+    @Override
+    public boolean hasAny()
+    {
+        return false;
+    }
 }

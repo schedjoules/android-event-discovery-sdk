@@ -40,4 +40,11 @@ public final class RealRetainedObjects implements RetainedObjects
         return (T) mRetainedObjects[index];
     }
 
+
+    @Override
+    public boolean hasAny()
+    {
+        return true;
+    }
+
 }
