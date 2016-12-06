@@ -49,6 +49,12 @@ import static com.schedjoules.eventdiscovery.eventlist.itemsprovider.ScrollDirec
  *
  * @author Gabor Keszthelyi
  */
+/*
+Use in EventListDownloadTask.doInBackgroundWithException():
+
+ // ResultPage<Envelope<Event>> resultPage = apiService.service(1000).apiResponse(taskParam.mQuery);
+ ResultPage<Envelope<Event>> resultPage = DummyEvents.resultPage(taskParam.mDirection);
+*/
 public final class DummyEvents
 {
     private static final String TAG = "Network";
@@ -59,7 +65,7 @@ public final class DummyEvents
     static Map<ScrollDirection, Pair<Integer, Integer>> errorOccurrences = new HashMap<>();
 
     static final int HOURS_BETWEEN_EVENTS = 5;
-    static final int NO_OF_EVENTS_PER_PAGE = 4;
+    static final int NO_OF_EVENTS_PER_PAGE = 1;
 
     static
     {
@@ -74,11 +80,11 @@ public final class DummyEvents
         eventCounters.put(TOP, 0);
         eventCounters.put(BOTTOM, 0);
 
-        pageLimits.put(TOP, 10);
+        pageLimits.put(TOP, 8);
         pageLimits.put(BOTTOM, 10);
 
-        errorOccurrences.put(TOP, Pair.create(3, 3));
-        errorOccurrences.put(BOTTOM, Pair.create(8, 4));
+        errorOccurrences.put(TOP, Pair.create(6, 3));
+        errorOccurrences.put(BOTTOM, Pair.create(8, 2));
     }
 
 
@@ -98,7 +104,7 @@ public final class DummyEvents
 
         if (pageLimits.get(direction) <= pageCounters.get(direction))
         {
-            return new EmptyResultPage();
+            return new EmptyResultPage(direction);
         }
         return new DummyResultPage(envelopes(direction));
     }
@@ -304,6 +310,15 @@ public final class DummyEvents
 
     private static class EmptyResultPage implements ResultPage<Envelope<Event>>
     {
+        private final ScrollDirection mDirection;
+
+
+        public EmptyResultPage(ScrollDirection direction)
+        {
+            mDirection = direction;
+        }
+
+
         @Override
         public Iterable<Envelope<Event>> items()
         {
@@ -314,28 +329,36 @@ public final class DummyEvents
         @Override
         public boolean isFirstPage()
         {
-            return true;
+            return mDirection == TOP;
         }
 
 
         @Override
         public boolean isLastPage()
         {
-            return true;
+            return mDirection == BOTTOM;
         }
 
 
         @Override
         public ApiQuery<ResultPage<Envelope<Event>>> previousPageQuery() throws IllegalStateException
         {
-            throw new IllegalStateException();
+            if (mDirection == TOP)
+            {
+                throw new IllegalStateException();
+            }
+            return new SimpleEventsDiscovery();
         }
 
 
         @Override
         public ApiQuery<ResultPage<Envelope<Event>>> nextPageQuery() throws IllegalStateException
         {
-            throw new IllegalStateException();
+            if (mDirection == BOTTOM)
+            {
+                throw new IllegalStateException();
+            }
+            return new SimpleEventsDiscovery();
         }
     }
 }

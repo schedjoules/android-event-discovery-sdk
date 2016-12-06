@@ -247,7 +247,6 @@ public class EventListItemsProviderImpl implements EventListItemsProvider, Event
         if (isEmpty)
         {
             mLoadingIndicatorOverlay.hide();
-            mBackgroundMessage.hide();
         }
         else
         {
