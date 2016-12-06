@@ -17,7 +17,7 @@
 
 package com.schedjoules.eventdiscovery.eventlist.items;
 
-import android.view.View;
+import android.widget.TextView;
 
 import com.schedjoules.eventdiscovery.R;
 import com.schedjoules.eventdiscovery.eventlist.itemsprovider.ScrollDirection;
@@ -30,7 +30,7 @@ import com.schedjoules.eventdiscovery.framework.adapter.flexibleadapter.Abstract
  *
  * @author Gabor Keszthelyi
  */
-public final class NoMoreEventsItem extends AbstractFlexible<View> implements ListItem<View>
+public final class NoMoreEventsItem extends AbstractFlexible<TextView> implements ListItem<TextView>
 {
     public static final NoMoreEventsItem TOP = new NoMoreEventsItem();
     public static final NoMoreEventsItem BOTTOM = new NoMoreEventsItem();
@@ -50,13 +50,13 @@ public final class NoMoreEventsItem extends AbstractFlexible<View> implements Li
     @Override
     public int layoutResId()
     {
-        return R.layout.schedjoules_list_item_no_more;
+        return R.layout.schedjoules_list_item_special_text;
     }
 
 
     @Override
-    public void bindDataTo(View view)
+    public void bindDataTo(TextView view)
     {
-
+        view.setText(R.string.schedjoules_event_list_no_more);
     }
 }
