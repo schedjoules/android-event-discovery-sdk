@@ -262,7 +262,7 @@ public class EventListItemsProviderImpl implements EventListItemsProvider, Event
             }
             else
             {
-                mItems.addSpecialItemPost(ErrorItem.get(direction), direction);
+                mItems.addSpecialItemNow(ErrorItem.get(direction), direction);
             }
             mIsInErrorMode.put(direction, true);
         }

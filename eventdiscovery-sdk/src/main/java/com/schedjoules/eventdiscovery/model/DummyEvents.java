@@ -51,6 +51,7 @@ import static com.schedjoules.eventdiscovery.eventlist.itemsprovider.ScrollDirec
  */
 public final class DummyEvents
 {
+    private static final String TAG = "Network";
 
     static Map<ScrollDirection, Integer> pageLimits = new HashMap<>();
     static Map<ScrollDirection, Integer> eventCounters = new HashMap<>();
@@ -58,7 +59,7 @@ public final class DummyEvents
     static Map<ScrollDirection, Pair<Integer, Integer>> errorOccurrences = new HashMap<>();
 
     static final int HOURS_BETWEEN_EVENTS = 5;
-    static final int NO_OF_EVENTS_PER_PAGE = 10;
+    static final int NO_OF_EVENTS_PER_PAGE = 4;
 
     static
     {
@@ -83,7 +84,7 @@ public final class DummyEvents
 
     public static ResultPage<Envelope<Event>> resultPage(ScrollDirection direction)
     {
-        Log.d("Network", String.format("DummyRequest: dir %s, page %s", direction, pageCounters.get(direction)));
+        Log.d(TAG, String.format("DummyRequest: dir %s, page %s", direction, pageCounters.get(direction)));
         sleep(2000);
 
         if (pageCounters.get(direction).equals(errorOccurrences.get(direction).first)
@@ -211,14 +212,14 @@ public final class DummyEvents
         @Override
         public String etag()
         {
-            return null;
+            return "dummy etag";
         }
 
 
         @Override
         public String uid()
         {
-            return null;
+            return "dummy env uid";
         }
 
 
@@ -254,7 +255,7 @@ public final class DummyEvents
         @Override
         public String uid()
         {
-            return null;
+            return "dummy uid";
         }
 
 
@@ -268,7 +269,7 @@ public final class DummyEvents
         @Override
         public Duration duration()
         {
-            return null;
+            return new Duration(1, 0, 2, 0, 0);
         }
 
 
@@ -282,7 +283,7 @@ public final class DummyEvents
         @Override
         public String description()
         {
-            return null;
+            return "dummy desc";
         }
 
 

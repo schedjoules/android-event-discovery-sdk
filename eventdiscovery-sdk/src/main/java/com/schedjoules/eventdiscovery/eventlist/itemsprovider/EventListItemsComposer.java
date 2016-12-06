@@ -17,8 +17,6 @@
 
 package com.schedjoules.eventdiscovery.eventlist.itemsprovider;
 
-import android.util.Log;
-
 import com.schedjoules.client.eventsdiscovery.Envelope;
 import com.schedjoules.client.eventsdiscovery.Event;
 import com.schedjoules.client.eventsdiscovery.ResultPage;
@@ -76,7 +74,8 @@ public final class EventListItemsComposer
             if (envelope.hasPayload())
             {
                 Event event = envelope.payload();
-                Log.d("Network", String.format("event | %s | %s", event.start(), event.title()));
+//                Log.d("Network", String.format("event | %s | %s",
+//                        new SimpleDateFormat("M dd HH:mm").format(event.start().getTimestamp()), event.title()));
 
                 DateTime day = toLocalDay(event.start());
 
