@@ -192,7 +192,11 @@ public class EventListItemsProviderImpl implements EventListItemsProvider, Event
         }
         else
         {
-            mItems.addSpecialItemPost(LoadingIndicatorItem.get(direction), direction);
+            // This request will result in empty first page, so not worth showing the loading
+            if (!(direction == TOP && mItems.isTodayShown()))
+            {
+                mItems.addSpecialItemPost(LoadingIndicatorItem.get(direction), direction);
+            }
         }
     }
 
