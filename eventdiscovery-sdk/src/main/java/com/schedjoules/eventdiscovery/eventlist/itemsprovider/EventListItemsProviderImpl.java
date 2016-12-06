@@ -314,7 +314,7 @@ public class EventListItemsProviderImpl implements EventListItemsProvider, Event
             if (taskParam.mQuery instanceof InitialEventsDiscovery)
             {
                 mLastResultPage.put(TOP, result.mResultPage);
-//                queuePage(TOP);  // TODO re-enable when top header turning white bug is fixed
+                queuePage(TOP);
             }
         }
 
