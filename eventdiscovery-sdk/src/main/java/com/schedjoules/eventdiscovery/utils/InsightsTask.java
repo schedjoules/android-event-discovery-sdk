@@ -24,8 +24,6 @@ import android.os.AsyncTask;
 import com.schedjoules.client.insights.Step;
 import com.schedjoules.eventdiscovery.service.BasicInsightsService;
 import com.schedjoules.eventdiscovery.service.InsightsService;
-import com.smoothsync.smoothsetup.services.FutureLocalServiceConnection;
-import com.smoothsync.smoothsetup.services.FutureServiceConnection;
 
 import java.lang.ref.WeakReference;
 import java.util.concurrent.TimeoutException;
