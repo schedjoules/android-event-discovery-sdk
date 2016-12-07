@@ -18,6 +18,7 @@
 package com.schedjoules.eventdiscovery.eventlist.items;
 
 import android.view.View;
+import android.widget.TextView;
 
 import com.schedjoules.eventdiscovery.R;
 import com.schedjoules.eventdiscovery.eventlist.itemsprovider.ScrollDirection;
@@ -32,8 +33,8 @@ import com.schedjoules.eventdiscovery.framework.adapter.flexibleadapter.Abstract
  */
 public final class NoMoreEventsItem extends AbstractFlexible<View> implements ListItem<View>
 {
-    public static final NoMoreEventsItem TOP = new NoMoreEventsItem();
-    public static final NoMoreEventsItem BOTTOM = new NoMoreEventsItem();
+    public static final NoMoreEventsItem TOP = new NoMoreEventsItem(R.string.schedjoules_event_list_no_past_events);
+    public static final NoMoreEventsItem BOTTOM = new NoMoreEventsItem(R.string.schedjoules_event_list_no_future_events);
 
 
     public static NoMoreEventsItem get(ScrollDirection direction)
@@ -42,8 +43,12 @@ public final class NoMoreEventsItem extends AbstractFlexible<View> implements Li
     }
 
 
-    private NoMoreEventsItem()
+    private final int mText;
+
+
+    private NoMoreEventsItem(int text)
     {
+        mText = text;
     }
 
 
@@ -57,6 +62,6 @@ public final class NoMoreEventsItem extends AbstractFlexible<View> implements Li
     @Override
     public void bindDataTo(View view)
     {
-
+        ((TextView) view.findViewById(android.R.id.message)).setText(mText);
     }
 }
