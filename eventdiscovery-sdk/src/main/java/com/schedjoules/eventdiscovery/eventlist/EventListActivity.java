@@ -66,10 +66,9 @@ public final class EventListActivity extends BaseActivity implements EvenListScr
 {
     private FutureServiceConnection<ApiService> mApiService;
     private EvenListScreenView mScreenView;
-
     private PlacesApiLocationSelection mLocationSelection;
     private EventListItemsProvider mListItemsProvider;
-
+    private EventListItemsImpl mEventListItems;
     private LastSelectedLocation mLastSelectedLocation;
 
 
@@ -87,8 +86,9 @@ public final class EventListActivity extends BaseActivity implements EvenListScr
         mApiService = new FutureLocalServiceConnection<>(this,
                 new Intent("com.schedjoules.API").setPackage(getPackageName()));
 
+        mEventListItems = new EventListItemsImpl();
         mListItemsProvider = retainedObjects.getOr(0,
-                new EventListItemsProviderImpl(mApiService, new EventListItemsImpl(),
+                new EventListItemsProviderImpl(mApiService, mEventListItems,
                         new EventListBackgroundMessage(this), new EventListLoadingIndicatorOverlay(this)));
 
         mLocationSelection = new PlacesApiLocationSelection(this);
@@ -120,7 +120,7 @@ public final class EventListActivity extends BaseActivity implements EvenListScr
         AdapterNotifier adapterNotifier = new FlexibleAdapterNotifier(adapter);
 
         // Using GeneralMultiTypeAdapter (no sticky headers):
-//        GeneralMultiTypeAdapter adapter = new GeneralMultiTypeAdapter(mListItemsProvider);
+//        GeneralMultiTypeAdapter adapter = new GeneralMultiTypeAdapter(mEventListItems);
 //        AdapterNotifier adapterNotifier = new StandardAdapterNotifier(adapter);
 
         mListItemsProvider.setAdapterNotifier(adapterNotifier);
