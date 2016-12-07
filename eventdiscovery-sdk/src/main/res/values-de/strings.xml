@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright 2016 SchedJoules
+  ~
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<resources>
+    <string name="schedjoules_location_search_hint">Ort…</string>
+    <string name="schedjoules_action_book_hotel">Hotel</string>
+    <string name="schedjoules_action_book_parking">Parkschein</string>
+    <string name="schedjoules_action_book_taxi">Taxi</string>
+    <string name="schedjoules_action_buy">Kaufen</string>
+    <string name="schedjoules_action_call">Anrufen</string>
+    <string name="schedjoules_action_cannot_handle_message">Keine App für diese Aktion gefunden.</string>
+    <string name="schedjoules_action_directions">Navigation</string>
+    <string name="schedjoules_action_info">Information</string>
+    <string name="schedjoules_action_invite">Einladen</string>
+    <string name="schedjoules_action_remind">Erinnern</string>
+    <string name="schedjoules_action_share">Teilen</string>
+    <string name="schedjoules_action_watch_live">Ansehen</string>
+    <string name="schedjoules_default_location_placeholder_name">Alle Orte</string>
+    <string name="schedjoules_entry_point">Konzerte finden</string>
+    <string name="schedjoules_event_details_no_description">Keine Beschreibung</string>
+    <string name="schedjoules_event_list_error_bg_msg">Ein Fehler ist aufgetreten\\nKann keine Ergebnisse laden\\n\\nTippe um es erneut zu versuchen</string>
+    <string name="schedjoules_event_list_error_item">Ein Fehler ist aufgetreten\\nKann keine weiteren Ergebnisse laden\\n\\nScrolle um es erneut zu versuchen</string>
+    <string name="schedjoules_event_list_no_events_found">Keine Ergebnisse</string>
+    <string name="schedjoules_event_list_no_future_events">Derzeit keine weiteren Ereignisse verfügbar</string>
+    <string name="schedjoules_event_list_no_past_events">Keine älteren Ereignisse gefunden.</string>
+    <string name="schedjoules_title_event_detail">Ereignisdetails</string>
+    <string name="schedjoules_title_event_list">Ereignisse</string>
+    <string name="schedjoules_today">Heute</string>
+    <string name="schedjoules_tomorrow">Morgen</string>
+    <string name="schedjoules_action_book">Karten kaufen</string>
+    <string name="schedjoules_action_add_to_calendar">Termin speichern</string>
+</resources>
