@@ -50,7 +50,7 @@
                 android:id="@+id/schedjoules_event_detail_schedjoules_footer"
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
-                android:layout_margin="@dimen/activity_horizontal_margin"
+                android:layout_margin="@dimen/schedjoules_activity_horizontal_margin"
                 android:textAppearance="@style/TextAppearance.AppCompat.Small"
                 android:gravity="right|end"
                 android:alpha="0"

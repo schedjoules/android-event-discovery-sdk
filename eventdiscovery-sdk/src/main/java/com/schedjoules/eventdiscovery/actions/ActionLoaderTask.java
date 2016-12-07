@@ -21,9 +21,10 @@ import android.os.AsyncTask;
 
 import com.schedjoules.client.actions.queries.ActionsQuery;
 import com.schedjoules.client.eventsdiscovery.Event;
+import com.schedjoules.eventdiscovery.framework.async.SafeAsyncTask;
+import com.schedjoules.eventdiscovery.framework.async.SafeAsyncTaskCallback;
 import com.schedjoules.eventdiscovery.service.ApiService;
-import com.smoothsync.smoothsetup.services.FutureServiceConnection;
-import com.smoothsync.smoothsetup.utils.ThrowingAsyncTask;
+import com.schedjoules.eventdiscovery.utils.FutureServiceConnection;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -35,22 +36,22 @@ import java.util.List;
  *
  * @author Marten Gajda
  */
-public final class ActionLoaderTask extends ThrowingAsyncTask<Event, Void, Iterator<Iterable<Action>>>
+public final class ActionLoaderTask extends SafeAsyncTask<Void, Event, Void, Iterator<Iterable<Action>>>
 {
     private final FutureServiceConnection<ApiService> mApiService;
     private final ActionFactory mActionFactory;
 
 
-    public ActionLoaderTask(FutureServiceConnection<ApiService> apiService, ActionFactory actionFactory, OnResultCallback<Iterator<Iterable<Action>>> resultCallback)
+    public ActionLoaderTask(FutureServiceConnection<ApiService> apiService, ActionFactory actionFactory, SafeAsyncTaskCallback<Void, Iterator<Iterable<Action>>> resultCallback)
     {
-        super(resultCallback);
+        super(null, resultCallback);
         mApiService = apiService;
         mActionFactory = actionFactory;
     }
 
 
     @Override
-    protected Iterator<Iterable<Action>> doInBackgroundWithException(Event[] events) throws Exception
+    protected Iterator<Iterable<Action>> doInBackgroundWithException(Void aVoid, Event... events) throws Exception
     {
         ApiService service = mApiService.service(1000);
         // we can't return a lazy Iterator, because we need to make sure all network operations are performed in the background task
