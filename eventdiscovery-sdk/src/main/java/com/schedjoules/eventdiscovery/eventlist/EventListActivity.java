@@ -82,19 +82,20 @@ public final class EventListActivity extends BaseActivity implements EvenListScr
         mScreenView = new EvenListScreenViewImpl(this);
         mScreenView.init();
 
-        RetainedObjects retainedObjects = new Restoring(getLastCustomNonConfigurationInstance());
-
         mApiService = new FutureLocalServiceConnection<>(this,
                 new Intent("com.schedjoules.API").setPackage(getPackageName()));
 
-        mListItemsProvider = retainedObjects.getOr(0,
-                new EventListItemsProviderImpl(mApiService, new EventListItemsImpl(),
-                        new EventListBackgroundMessage(this), new EventListLoadingIndicatorOverlay(this)));
+        RetainedObjects retainedObjects = new Restoring(getLastCustomNonConfigurationInstance());
+        mListItemsProvider = retainedObjects.getOr(0, new EventListItemsProviderImpl(new EventListItemsImpl()));
+
+        mListItemsProvider.setApiService(mApiService);
+        mListItemsProvider.setBackgroundMessageUI(new EventListBackgroundMessage(this));
+        mListItemsProvider.setLoadingIndicatorOverlayUI(new EventListLoadingIndicatorOverlay(this));
 
         mLocationSelection = new PlacesApiLocationSelection(this);
         mLocationSelection.registerListener(this);
 
-        mLastSelectedLocation = retainedObjects.getOr(1, new SharedPrefLastSelectedLocation(this));
+        mLastSelectedLocation = retainedObjects.getOr(1, new SharedPrefLastSelectedLocation(getApplicationContext()));
 
         mScreenView.setUserActionListener(this);
 

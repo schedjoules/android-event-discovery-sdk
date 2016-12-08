@@ -59,37 +59,24 @@ public class EventListItemsProviderImpl implements EventListItemsProvider, Event
 
     private static final String TAG = EventListItemsProviderImpl.class.getSimpleName();
 
-    private final FutureServiceConnection<ApiService> mApiService;
-
     private final ExecutorService mExecutorService;
-
-    private final EventListBackgroundMessage mBackgroundMessage;
-
-    // TODO currently loading indicator doesn't distinguish from top or bottom loading, thus can hide before both finished
-    private final EventListLoadingIndicatorOverlay mLoadingIndicatorOverlay;
-
     private final EventListItems mItems;
 
-    private Map<ScrollDirection, ResultPage<Envelope<Event>>> mLastResultPage;
+    private FutureServiceConnection<ApiService> mApiService;
+    private EventListBackgroundMessage mBackgroundMessage;
+    private EventListLoadingIndicatorOverlay mLoadingIndicatorOverlay;
 
+    private Map<ScrollDirection, ResultPage<Envelope<Event>>> mLastResultPage;
     private GeoLocation mLocation;
     private Map<ScrollDirection, Boolean> mIsLoading;
-
     private DownloadTaskClient mDownloadTaskClient;
-
     private Map<ScrollDirection, Boolean> mIsInErrorMode;
     private Map<ScrollDirection, TaskParam> mErrorTaskParam;
 
 
-    public EventListItemsProviderImpl(FutureServiceConnection<ApiService> apiService,
-                                      EventListItems items, EventListBackgroundMessage backgroundMessage,
-                                      EventListLoadingIndicatorOverlay loadingIndicatorOverlay)
+    public EventListItemsProviderImpl(EventListItems items)
     {
-        mApiService = apiService;
-        mBackgroundMessage = backgroundMessage;
         mItems = items;
-        mBackgroundMessage.setOnClickListener(this);
-        mLoadingIndicatorOverlay = loadingIndicatorOverlay;
         mExecutorService = Executors.newSingleThreadExecutor();
         mDownloadTaskClient = new DownloadTaskClient();
         mLastResultPage = new HashMap<>(2);
@@ -118,9 +105,30 @@ public class EventListItemsProviderImpl implements EventListItemsProvider, Event
 
 
     @Override
+    public void setApiService(FutureServiceConnection<ApiService> apiService)
+    {
+        mApiService = apiService;
+    }
+
+
+    @Override
     public void setAdapterNotifier(AdapterNotifier adapterNotifier)
     {
         mItems.setAdapterNotifier(adapterNotifier);
+    }
+
+
+    @Override
+    public void setBackgroundMessageUI(EventListBackgroundMessage backgroundMessage)
+    {
+        mBackgroundMessage = backgroundMessage;
+    }
+
+
+    @Override
+    public void setLoadingIndicatorOverlayUI(EventListLoadingIndicatorOverlay loadingIndicator)
+    {
+        mLoadingIndicatorOverlay = loadingIndicator;
     }
 
 
