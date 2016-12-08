@@ -100,9 +100,9 @@ public final class EvenListScreenViewImpl implements EvenListScreenView
 
 
     @Override
-    public void setBottomReachScrollListener(BottomReachScrollListener.Listener listener)
+    public void setEdgeReachScrollListener(EdgeReachScrollListener.Listener listener)
     {
-        BottomReachScrollListener scrollListener = new BottomReachScrollListener(mRecyclerView, listener,
+        EdgeReachScrollListener scrollListener = new EdgeReachScrollListener(mRecyclerView, listener,
                 EventListItemsProviderImpl.CLOSE_TO_TOP_OR_BOTTOM_THRESHOLD);
         mRecyclerView.addOnScrollListener(scrollListener);
     }

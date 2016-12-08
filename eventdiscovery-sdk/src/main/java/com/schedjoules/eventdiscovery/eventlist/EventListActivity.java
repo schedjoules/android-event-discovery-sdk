@@ -97,7 +97,7 @@ public final class EventListActivity extends BaseActivity implements EvenListScr
 
         mScreenView.setUserActionListener(this);
         mScreenView.setToolbarTitle(mLastSelectedLocation.get().name());
-        mScreenView.setBottomReachScrollListener(mListItemsProvider);
+        mScreenView.setEdgeReachScrollListener(mListItemsProvider);
 
         setupListAdapter();
 
