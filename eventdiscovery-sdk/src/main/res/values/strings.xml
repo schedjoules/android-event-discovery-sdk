@@ -1,6 +1,5 @@
 <resources>
     <string name="schedjoules_entry_point">Find concerts</string>
-    <string name="schedjoules_app_name" translatable="false">SchedJoules Event Discovery</string>
     <string name="schedjoules_title_event_list">Events</string>
     <string name="schedjoules_title_event_detail">Event Detail</string>
     <string name="schedjoules_event_list_no_events_found">No events found</string>
@@ -8,7 +7,6 @@
     <string name="schedjoules_event_list_no_future_events">No future events available yet</string>
     <string name="schedjoules_event_list_error_item">An error occurred\nCan\'t load further results\n\nPull to retry</string>
     <string name="schedjoules_event_list_error_bg_msg">An error occurred\nCan\'t load results\n\nTap to retry</string>
-    <string name="schedjoules_event_details_no_description">No description</string>
     <string name="schedjoules_today">Today</string>
     <string name="schedjoules_tomorrow">Tomorrow</string>
     <plurals name="schedjoules_hours">

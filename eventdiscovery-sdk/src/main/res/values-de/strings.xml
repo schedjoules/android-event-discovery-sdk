@@ -32,7 +32,6 @@
     <string name="schedjoules_action_watch_live">Ansehen</string>
     <string name="schedjoules_default_location_placeholder_name">Alle Orte</string>
     <string name="schedjoules_entry_point">Konzerte finden</string>
-    <string name="schedjoules_event_details_no_description">Keine Beschreibung</string>
     <string name="schedjoules_event_list_error_bg_msg">Ein Fehler ist aufgetreten\\nKann keine Ergebnisse laden\\n\\nTippe um es erneut zu versuchen</string>
     <string name="schedjoules_event_list_error_item">Ein Fehler ist aufgetreten\\nKann keine weiteren Ergebnisse laden\\n\\nScrolle um es erneut zu versuchen</string>
     <string name="schedjoules_event_list_no_events_found">Keine Ergebnisse</string>
@@ -44,4 +43,12 @@
     <string name="schedjoules_tomorrow">Morgen</string>
     <string name="schedjoules_action_book">Karten kaufen</string>
     <string name="schedjoules_action_add_to_calendar">Termin speichern</string>
+    <plurals name="schedjoules_hours">
+        <item quantity="one">%d Stunde</item>
+        <item quantity="other">%d Stunden</item>
+    </plurals>
+    <plurals name="schedjoules_minutes">
+        <item quantity="one">%d Minute</item>
+        <item quantity="other">%d Minuten</item>
+    </plurals>
 </resources>
