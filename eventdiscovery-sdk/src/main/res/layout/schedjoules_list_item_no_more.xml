@@ -4,6 +4,7 @@
              android:layout_height="wrap_content">
 
     <TextView
+            android:id="@android:id/message"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="40dp"
@@ -11,6 +12,6 @@
             android:gravity="center"
             android:layout_gravity="center_horizontal"
             android:textSize="14sp"
-            android:text="@string/schedjoules_event_list_no_more"/>
+            android:text=""/>
 
 </FrameLayout>
