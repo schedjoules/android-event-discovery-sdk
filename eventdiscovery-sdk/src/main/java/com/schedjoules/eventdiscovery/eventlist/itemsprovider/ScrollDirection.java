@@ -19,6 +19,7 @@ package com.schedjoules.eventdiscovery.eventlist.itemsprovider;
 
 import com.schedjoules.client.ApiQuery;
 import com.schedjoules.client.eventsdiscovery.ResultPage;
+import com.schedjoules.eventdiscovery.R;
 import com.schedjoules.eventdiscovery.eventlist.items.ErrorItem;
 import com.schedjoules.eventdiscovery.eventlist.items.LoadingIndicatorItem;
 import com.schedjoules.eventdiscovery.eventlist.items.NoMoreEventsItem;
@@ -33,7 +34,7 @@ import java.util.EnumMap;
  */
 public enum ScrollDirection
 {
-    TOP
+    TOP(new NoMoreEventsItem(R.string.schedjoules_event_list_no_past_events))
             {
                 @Override
                 public <T> boolean hasComingPageQuery(EnumMap<ScrollDirection, ResultPage<T>> lastResultPages)
@@ -48,7 +49,8 @@ public enum ScrollDirection
                     return lastResultPages.get(this).previousPageQuery();
                 }
             },
-    BOTTOM
+
+    BOTTOM(new NoMoreEventsItem(R.string.schedjoules_event_list_no_future_events))
             {
                 @Override
                 public <T> boolean hasComingPageQuery(EnumMap<ScrollDirection, ResultPage<T>> lastResultPages)
@@ -64,9 +66,15 @@ public enum ScrollDirection
                 }
             };
 
-    public ErrorItem errorItem = new ErrorItem();
-    public NoMoreEventsItem noMoreEventsItem = new NoMoreEventsItem();
-    public LoadingIndicatorItem loadingIndicatorItem = new LoadingIndicatorItem();
+    public final ErrorItem errorItem = new ErrorItem();
+    public final LoadingIndicatorItem loadingIndicatorItem = new LoadingIndicatorItem();
+    public final NoMoreEventsItem noMoreEventsItem;
+
+
+    ScrollDirection(NoMoreEventsItem noMoreEventsItem)
+    {
+        this.noMoreEventsItem = noMoreEventsItem;
+    }
 
 
     public abstract <T> boolean hasComingPageQuery(EnumMap<ScrollDirection, ResultPage<T>> lastResultPages);

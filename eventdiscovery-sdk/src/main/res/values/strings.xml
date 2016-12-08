@@ -1,12 +1,12 @@
 <resources>
-    <string name="schedjoules_app_name">SchedJoules Event Discovery</string>
+    <string name="schedjoules_entry_point">Find concerts</string>
     <string name="schedjoules_title_event_list">Events</string>
     <string name="schedjoules_title_event_detail">Event Detail</string>
     <string name="schedjoules_event_list_no_events_found">No events found</string>
-    <string name="schedjoules_event_list_no_more">No more events found</string>
-    <string name="schedjoules_event_list_error_item">An error occurred\nCan\'t load events\n\nPull to retry</string>
-    <string name="schedjoules_event_list_error_bg_msg">An error occurred\nCan\'t load events\n\nTap to retry</string>
-    <string name="schedjoules_event_details_no_description">No description</string>
+    <string name="schedjoules_event_list_no_past_events">No previous events found</string>
+    <string name="schedjoules_event_list_no_future_events">No future events available yet</string>
+    <string name="schedjoules_event_list_error_item">An error occurred\nCan\'t load further results\n\nPull to retry</string>
+    <string name="schedjoules_event_list_error_bg_msg">An error occurred\nCan\'t load results\n\nTap to retry</string>
     <string name="schedjoules_today">Today</string>
     <string name="schedjoules_tomorrow">Tomorrow</string>
     <plurals name="schedjoules_hours">
@@ -18,7 +18,7 @@
         <item quantity="other">%d minutes</item>
     </plurals>
     <string name="schedjoules_location_search_hint">Location…</string>
-    <string name="schedjoules_default_location_placeholder_name">All cities</string>
+    <string name="schedjoules_default_location_placeholder_name">All locations</string>
 
     <!-- Action labels -->
     <string name="schedjoules_action_book">Book</string>
@@ -29,12 +29,12 @@
     <string name="schedjoules_action_invite">Invite</string>
     <string name="schedjoules_action_remind">Remind</string>
     <string name="schedjoules_action_directions">Directions</string>
-    <string name="schedjoules_action_watch_live">Watch live</string>
+    <string name="schedjoules_action_watch_live">Watch</string>
     <string name="schedjoules_action_cannot_handle_message">Sorry, no app is installed to handle this action</string>
     <string name="schedjoules_action_book_taxi">Taxi</string>
     <string name="schedjoules_action_book_hotel">Hotel</string>
     <string name="schedjoules_action_book_parking">Parking</string>
     <string name="schedjoules_action_add_to_calendar">Add to calendar</string>
-    <string name="schedjoules_powered_by_footer">Powered by SchedJoules</string>
+    <string name="schedjoules_powered_by_footer" translatable="false">Powered by SchedJoules</string>
 
 </resources>

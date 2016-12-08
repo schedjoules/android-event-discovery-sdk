@@ -36,15 +36,15 @@ import com.schedjoules.eventdiscovery.actions.ActionViewIterable;
 import com.schedjoules.eventdiscovery.actions.BaseActionFactory;
 import com.schedjoules.eventdiscovery.databinding.SchedjoulesEventDetailContentBinding;
 import com.schedjoules.eventdiscovery.eventlist.EventListActivity;
+import com.schedjoules.eventdiscovery.framework.async.SafeAsyncTaskCallback;
+import com.schedjoules.eventdiscovery.framework.async.SafeAsyncTaskResult;
 import com.schedjoules.eventdiscovery.model.ParcelableEvent;
 import com.schedjoules.eventdiscovery.service.ApiService;
+import com.schedjoules.eventdiscovery.utils.FutureLocalServiceConnection;
+import com.schedjoules.eventdiscovery.utils.FutureServiceConnection;
 import com.schedjoules.eventdiscovery.utils.InsightsTask;
 import com.schedjoules.eventdiscovery.utils.Limiting;
 import com.schedjoules.eventdiscovery.utils.Skipping;
-import com.smoothsync.smoothsetup.services.FutureLocalServiceConnection;
-import com.smoothsync.smoothsetup.services.FutureServiceConnection;
-import com.smoothsync.smoothsetup.utils.AsyncTaskResult;
-import com.smoothsync.smoothsetup.utils.ThrowingAsyncTask;
 
 import org.dmfs.httpessentials.types.StringToken;
 
@@ -61,7 +61,7 @@ import static com.schedjoules.eventdiscovery.utils.LocationFormatter.longLocatio
  *
  * @author Gabor Keszthelyi
  */
-public final class EventDetailFragment extends Fragment implements ThrowingAsyncTask.OnResultCallback<Iterator<Iterable<Action>>>
+public final class EventDetailFragment extends Fragment implements SafeAsyncTaskCallback<Void, Iterator<Iterable<Action>>>
 {
     private static final String ARG_EVENT = "event";
 
@@ -136,13 +136,27 @@ public final class EventDetailFragment extends Fragment implements ThrowingAsync
     }
 
 
+    private void removeHorizontalActionsView()
+    {
+        ((ViewGroup) mViews.getRoot()).removeView(mHorizontalActions);
+    }
+
+
     @Override
-    public void onResult(AsyncTaskResult<Iterator<Iterable<Action>>> asyncTaskResult)
+    public void onDestroy()
+    {
+        super.onDestroy();
+        mApiService.disconnect();
+    }
+
+
+    @Override
+    public void onTaskFinish(SafeAsyncTaskResult<Iterator<Iterable<Action>>> result, Void o)
     {
         try
         {
             // there must be a next value
-            Iterable<Action> actions = asyncTaskResult.value().next();
+            Iterable<Action> actions = result.value().next();
 
             if (actions.iterator().hasNext())
             {
@@ -179,19 +193,4 @@ public final class EventDetailFragment extends Fragment implements ThrowingAsync
 
         mViews.schedjoulesEventDetailSchedjoulesFooter.animate().alpha(1).setStartDelay(500).setDuration(500);
     }
-
-
-    private void removeHorizontalActionsView()
-    {
-        ((ViewGroup) mViews.getRoot()).removeView(mHorizontalActions);
-    }
-
-
-    @Override
-    public void onDestroy()
-    {
-        super.onDestroy();
-        mApiService.disconnect();
-    }
-
 }

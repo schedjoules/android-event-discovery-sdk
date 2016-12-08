@@ -32,8 +32,8 @@ import com.schedjoules.eventdiscovery.framework.adapter.ListItemsProvider;
 import com.schedjoules.eventdiscovery.framework.async.SafeAsyncTaskResult;
 import com.schedjoules.eventdiscovery.model.UndefinedGeoLocation;
 import com.schedjoules.eventdiscovery.service.ApiService;
+import com.schedjoules.eventdiscovery.utils.FutureServiceConnection;
 import com.schedjoules.eventdiscovery.utils.Objects;
-import com.smoothsync.smoothsetup.services.FutureServiceConnection;
 
 import org.dmfs.rfc5545.DateTime;
 

@@ -17,6 +17,7 @@
 
 package com.schedjoules.eventdiscovery.eventlist.items;
 
+import android.support.annotation.StringRes;
 import android.widget.TextView;
 
 import com.schedjoules.eventdiscovery.R;
@@ -31,6 +32,15 @@ import com.schedjoules.eventdiscovery.framework.adapter.flexibleadapter.Abstract
  */
 public final class NoMoreEventsItem extends AbstractFlexible<TextView> implements ListItem<TextView>
 {
+    private final int mText;
+
+
+    public NoMoreEventsItem(@StringRes int text)
+    {
+        mText = text;
+    }
+
+
     @Override
     public int layoutResId()
     {
@@ -41,6 +51,6 @@ public final class NoMoreEventsItem extends AbstractFlexible<TextView> implement
     @Override
     public void bindDataTo(TextView view)
     {
-        view.setText(R.string.schedjoules_event_list_no_more);
+        view.setText(mText);
     }
 }

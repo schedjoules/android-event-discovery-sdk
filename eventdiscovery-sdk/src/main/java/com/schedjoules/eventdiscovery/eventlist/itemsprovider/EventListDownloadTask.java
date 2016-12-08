@@ -30,7 +30,7 @@ import com.schedjoules.eventdiscovery.framework.async.DiscardingSafeAsyncTask;
 import com.schedjoules.eventdiscovery.framework.async.PreExecuteCallback;
 import com.schedjoules.eventdiscovery.framework.async.SafeAsyncTaskCallback;
 import com.schedjoules.eventdiscovery.service.ApiService;
-import com.smoothsync.smoothsetup.services.FutureServiceConnection;
+import com.schedjoules.eventdiscovery.utils.FutureServiceConnection;
 
 import java.util.List;
 

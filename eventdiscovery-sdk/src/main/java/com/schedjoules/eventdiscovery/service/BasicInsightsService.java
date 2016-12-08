@@ -32,9 +32,9 @@ import com.schedjoules.client.insights.sessions.SimpleSession;
 import com.schedjoules.client.insights.steps.Session;
 import com.schedjoules.eventdiscovery.utils.AndroidClient;
 import com.schedjoules.eventdiscovery.utils.AndroidPlatform;
+import com.schedjoules.eventdiscovery.utils.FutureLocalServiceConnection;
+import com.schedjoules.eventdiscovery.utils.FutureServiceConnection;
 import com.schedjoules.eventdiscovery.utils.SharedPrefsUserIdentifier;
-import com.smoothsync.smoothsetup.services.FutureLocalServiceConnection;
-import com.smoothsync.smoothsetup.services.FutureServiceConnection;
 
 import org.dmfs.httpessentials.types.StringToken;
 import org.dmfs.rfc5545.DateTime;

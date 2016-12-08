@@ -33,6 +33,7 @@ import org.dmfs.rfc5545.DateTime;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.TimeZone;
 
 
 /**
@@ -56,8 +57,8 @@ public final class InitialEventsDiscovery implements ApiQuery<ResultPage<Envelop
     @Override
     public ResultPage<Envelope<Event>> queryResult(Api api) throws IOException, URISyntaxException, ProtocolError, ProtocolException
     {
-        boolean isToday = mDateTime.toAllDay().equals(DateTime.now().toAllDay());
-        DateTime startAfter = isToday ? DateTime.nowAndHere() : mDateTime.startOfDay();
+        // convert any floating time to absolute time using the current time zone
+        DateTime startAfter = mDateTime.isFloating() ? mDateTime.swapTimeZone(TimeZone.getDefault()) : mDateTime;
 
         EventsDiscovery query = new SimpleEventsDiscovery()
                 .withStartAtOrAfter(startAfter);
