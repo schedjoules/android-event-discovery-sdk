@@ -17,6 +17,15 @@
 
 package com.schedjoules.eventdiscovery.eventlist.itemsprovider;
 
+import com.schedjoules.client.ApiQuery;
+import com.schedjoules.client.eventsdiscovery.ResultPage;
+import com.schedjoules.eventdiscovery.eventlist.items.ErrorItem;
+import com.schedjoules.eventdiscovery.eventlist.items.LoadingIndicatorItem;
+import com.schedjoules.eventdiscovery.eventlist.items.NoMoreEventsItem;
+
+import java.util.EnumMap;
+
+
 /**
  * Represents a list scrolling direction.
  *
@@ -24,6 +33,43 @@ package com.schedjoules.eventdiscovery.eventlist.itemsprovider;
  */
 public enum ScrollDirection
 {
-    TOP,
+    TOP
+            {
+                @Override
+                public <T> boolean hasComingPageQuery(EnumMap<ScrollDirection, ResultPage<T>> lastResultPages)
+                {
+                    return !lastResultPages.get(this).isFirstPage();
+                }
+
+
+                @Override
+                public <T> ApiQuery<ResultPage<T>> comingPageQuery(EnumMap<ScrollDirection, ResultPage<T>> lastResultPages) throws IllegalStateException
+                {
+                    return lastResultPages.get(this).previousPageQuery();
+                }
+            },
     BOTTOM
+            {
+                @Override
+                public <T> boolean hasComingPageQuery(EnumMap<ScrollDirection, ResultPage<T>> lastResultPages)
+                {
+                    return !lastResultPages.get(this).isLastPage();
+                }
+
+
+                @Override
+                public <T> ApiQuery<ResultPage<T>> comingPageQuery(EnumMap<ScrollDirection, ResultPage<T>> lastResultPages) throws IllegalStateException
+                {
+                    return lastResultPages.get(this).nextPageQuery();
+                }
+            };
+
+    public ErrorItem errorItem = new ErrorItem();
+    public NoMoreEventsItem noMoreEventsItem = new NoMoreEventsItem();
+    public LoadingIndicatorItem loadingIndicatorItem = new LoadingIndicatorItem();
+
+
+    public abstract <T> boolean hasComingPageQuery(EnumMap<ScrollDirection, ResultPage<T>> lastResultPages);
+
+    public abstract <T> ApiQuery<ResultPage<T>> comingPageQuery(EnumMap<ScrollDirection, ResultPage<T>> lastResultPages) throws IllegalStateException;
 }

@@ -20,7 +20,6 @@ package com.schedjoules.eventdiscovery.eventlist.items;
 import android.widget.TextView;
 
 import com.schedjoules.eventdiscovery.R;
-import com.schedjoules.eventdiscovery.eventlist.itemsprovider.ScrollDirection;
 import com.schedjoules.eventdiscovery.framework.adapter.ListItem;
 import com.schedjoules.eventdiscovery.framework.adapter.flexibleadapter.AbstractFlexible;
 
@@ -32,21 +31,6 @@ import com.schedjoules.eventdiscovery.framework.adapter.flexibleadapter.Abstract
  */
 public final class ErrorItem extends AbstractFlexible<TextView> implements ListItem<TextView>
 {
-    public static final ErrorItem TOP = new ErrorItem();
-    public static final ErrorItem BOTTOM = new ErrorItem();
-
-
-    public static ErrorItem get(ScrollDirection direction)
-    {
-        return direction == ScrollDirection.BOTTOM ? BOTTOM : TOP;
-    }
-
-
-    private ErrorItem()
-    {
-    }
-
-
     @Override
     public int layoutResId()
     {

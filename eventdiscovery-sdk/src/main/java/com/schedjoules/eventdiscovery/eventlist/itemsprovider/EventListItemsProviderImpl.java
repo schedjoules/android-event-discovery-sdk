@@ -24,9 +24,6 @@ import com.schedjoules.client.eventsdiscovery.Envelope;
 import com.schedjoules.client.eventsdiscovery.Event;
 import com.schedjoules.client.eventsdiscovery.GeoLocation;
 import com.schedjoules.client.eventsdiscovery.ResultPage;
-import com.schedjoules.eventdiscovery.eventlist.items.ErrorItem;
-import com.schedjoules.eventdiscovery.eventlist.items.LoadingIndicatorItem;
-import com.schedjoules.eventdiscovery.eventlist.items.NoMoreEventsItem;
 import com.schedjoules.eventdiscovery.eventlist.itemsprovider.EventListDownloadTask.TaskParam;
 import com.schedjoules.eventdiscovery.eventlist.itemsprovider.EventListDownloadTask.TaskResult;
 import com.schedjoules.eventdiscovery.eventlist.view.EventListBackgroundMessage;
@@ -40,7 +37,7 @@ import com.smoothsync.smoothsetup.services.FutureServiceConnection;
 
 import org.dmfs.rfc5545.DateTime;
 
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -69,7 +66,7 @@ public class EventListItemsProviderImpl implements EventListItemsProvider, Event
     private final EventListItems mItems;
     private final EventListLoadingIndicatorOverlay mLoadingIndicatorOverlay;
 
-    private final EventPageQueries mPageQueries;
+    private final EnumMap<ScrollDirection, ResultPage<Envelope<Event>>> mLastResultPages;
 
     private GeoLocation mLocation;
     private Map<ScrollDirection, Boolean> mIsLoading;
@@ -89,17 +86,17 @@ public class EventListItemsProviderImpl implements EventListItemsProvider, Event
         mBackgroundMessage.setOnClickListener(this);
         mExecutorService = Executors.newSingleThreadExecutor();
         mDownloadTaskClient = new DownloadTaskClient();
-        mErrorTaskParam = new HashMap<>(2);
+        mErrorTaskParam = new EnumMap<>(ScrollDirection.class);
 
-        mIsInErrorMode = new HashMap<>(2);
+        mIsInErrorMode = new EnumMap<>(ScrollDirection.class);
         mIsInErrorMode.put(TOP, false);
         mIsInErrorMode.put(BOTTOM, false);
 
-        mIsLoading = new HashMap<>(2);
+        mIsLoading = new EnumMap<>(ScrollDirection.class);
         mIsLoading.put(TOP, false);
         mIsLoading.put(BOTTOM, false);
 
-        mPageQueries = new EventPageQueries();
+        mLastResultPages = new EnumMap<>(ScrollDirection.class);
     }
 
 
@@ -139,9 +136,9 @@ public class EventListItemsProviderImpl implements EventListItemsProvider, Event
 
     private void queueComingPage(ScrollDirection direction)
     {
-        if (mPageQueries.hasComingPage(direction))
+        if (direction.hasComingPageQuery(mLastResultPages))
         {
-            queueDownloadTask(mPageQueries.comingPageQuery(direction), direction);
+            queueDownloadTask(direction.comingPageQuery(mLastResultPages), direction);
         }
     }
 
@@ -179,7 +176,7 @@ public class EventListItemsProviderImpl implements EventListItemsProvider, Event
         mIsLoading.put(TOP, false);
         mIsLoading.put(BOTTOM, false);
         mErrorTaskParam.clear();
-        mPageQueries.clear();
+        mLastResultPages.clear();
     }
 
 
@@ -195,7 +192,7 @@ public class EventListItemsProviderImpl implements EventListItemsProvider, Event
             // This request will result in empty first page, so not worth showing the loading
             if (!(direction == TOP && mItems.isTodayShown()))
             {
-                mItems.addSpecialItemPost(LoadingIndicatorItem.get(direction), direction);
+                mItems.addSpecialItemPost(direction.loadingIndicatorItem, direction);
             }
         }
     }
@@ -213,7 +210,7 @@ public class EventListItemsProviderImpl implements EventListItemsProvider, Event
         }
         else
         {
-            mItems.removeSpecialItem(LoadingIndicatorItem.get(direction), direction);
+            mItems.removeSpecialItem(direction.loadingIndicatorItem, direction);
         }
 
         // Resuming from error mode:
@@ -225,7 +222,7 @@ public class EventListItemsProviderImpl implements EventListItemsProvider, Event
             }
             else
             {
-                mItems.removeSpecialItem(ErrorItem.get(direction), direction);
+                mItems.removeSpecialItem(direction.errorItem, direction);
             }
             mIsInErrorMode.put(direction, false);
         }
@@ -235,10 +232,10 @@ public class EventListItemsProviderImpl implements EventListItemsProvider, Event
         {
             mBackgroundMessage.showNoEventsFoundMsg();
         }
-        else if (!mPageQueries.hasComingPage(direction)
+        else if (!direction.hasComingPageQuery(mLastResultPages)
                 && (direction == BOTTOM || (direction == TOP && !mItems.isTodayShown())))
         {
-            mItems.addSpecialItemNow(NoMoreEventsItem.get(direction), direction);
+            mItems.addSpecialItemNow(direction.noMoreEventsItem, direction);
         }
     }
 
@@ -254,7 +251,7 @@ public class EventListItemsProviderImpl implements EventListItemsProvider, Event
         }
         else
         {
-            mItems.removeSpecialItem(LoadingIndicatorItem.get(direction), direction);
+            mItems.removeSpecialItem(direction.loadingIndicatorItem, direction);
         }
 
         if (!mIsInErrorMode.get(direction))
@@ -265,7 +262,7 @@ public class EventListItemsProviderImpl implements EventListItemsProvider, Event
             }
             else
             {
-                mItems.addSpecialItemNow(ErrorItem.get(direction), direction);
+                mItems.addSpecialItemNow(direction.errorItem, direction);
             }
             mIsInErrorMode.put(direction, true);
         }
@@ -309,7 +306,7 @@ public class EventListItemsProviderImpl implements EventListItemsProvider, Event
 
         private void onTaskSuccess(TaskResult result, TaskParam taskParam)
         {
-            mPageQueries.saveLastResult(result.mResultPage, taskParam.mDirection);
+            mLastResultPages.put(taskParam.mDirection, result.mResultPage);
 
             boolean isEmptyBefore = mItems.isEmpty();
             mItems.mergeNewItems(result.mListItems, taskParam.mDirection);
@@ -318,7 +315,7 @@ public class EventListItemsProviderImpl implements EventListItemsProvider, Event
 
             if (taskParam.mQuery instanceof InitialEventsDiscovery)
             {
-                mPageQueries.saveLastResult(result.mResultPage, TOP);
+                mLastResultPages.put(TOP, result.mResultPage);
                 queueComingPage(TOP);
             }
         }

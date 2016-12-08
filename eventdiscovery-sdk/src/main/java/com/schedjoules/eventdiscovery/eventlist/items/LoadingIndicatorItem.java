@@ -20,7 +20,6 @@ package com.schedjoules.eventdiscovery.eventlist.items;
 import android.view.View;
 
 import com.schedjoules.eventdiscovery.R;
-import com.schedjoules.eventdiscovery.eventlist.itemsprovider.ScrollDirection;
 import com.schedjoules.eventdiscovery.framework.adapter.ListItem;
 import com.schedjoules.eventdiscovery.framework.adapter.flexibleadapter.AbstractFlexible;
 
@@ -32,22 +31,6 @@ import com.schedjoules.eventdiscovery.framework.adapter.flexibleadapter.Abstract
  */
 public final class LoadingIndicatorItem extends AbstractFlexible<View> implements ListItem<View>
 {
-    public static final LoadingIndicatorItem TOP = new LoadingIndicatorItem();
-    public static final LoadingIndicatorItem BOTTOM = new LoadingIndicatorItem();
-
-
-    public static LoadingIndicatorItem get(ScrollDirection direction)
-    {
-        return direction == ScrollDirection.BOTTOM ? BOTTOM : TOP;
-    }
-
-
-    private LoadingIndicatorItem()
-    {
-
-    }
-
-
     @Override
     public int layoutResId()
     {
