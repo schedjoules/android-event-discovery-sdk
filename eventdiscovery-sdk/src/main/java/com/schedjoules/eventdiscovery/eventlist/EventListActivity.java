@@ -43,7 +43,6 @@ import com.schedjoules.eventdiscovery.location.PlacesApiLocationSelection;
 import com.schedjoules.eventdiscovery.location.SharedPrefLastSelectedLocation;
 import com.schedjoules.eventdiscovery.service.ApiService;
 import com.schedjoules.eventdiscovery.utils.BaseActivity;
-import com.schedjoules.eventdiscovery.utils.FutureLocalServiceConnection;
 import com.schedjoules.eventdiscovery.utils.FutureServiceConnection;
 import com.schedjoules.eventdiscovery.utils.InsightsTask;
 
@@ -84,8 +83,7 @@ public final class EventListActivity extends BaseActivity implements EvenListScr
 
         RetainedObjects retainedObjects = new Restoring(getLastCustomNonConfigurationInstance());
 
-        mApiService = new FutureLocalServiceConnection<>(this,
-                new Intent("com.schedjoules.API").setPackage(getPackageName()));
+        mApiService = new ApiService.FutureConnection(this);
 
         mListItemsProvider = retainedObjects.getOr(0,
                 new EventListItemsProviderImpl(mApiService, new EventListItemsImpl(),

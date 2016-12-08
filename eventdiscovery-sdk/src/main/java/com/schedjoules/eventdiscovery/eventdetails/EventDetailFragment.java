@@ -17,7 +17,6 @@
 
 package com.schedjoules.eventdiscovery.eventdetails;
 
-import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -40,7 +39,6 @@ import com.schedjoules.eventdiscovery.framework.async.SafeAsyncTaskCallback;
 import com.schedjoules.eventdiscovery.framework.async.SafeAsyncTaskResult;
 import com.schedjoules.eventdiscovery.model.ParcelableEvent;
 import com.schedjoules.eventdiscovery.service.ApiService;
-import com.schedjoules.eventdiscovery.utils.FutureLocalServiceConnection;
 import com.schedjoules.eventdiscovery.utils.FutureServiceConnection;
 import com.schedjoules.eventdiscovery.utils.InsightsTask;
 import com.schedjoules.eventdiscovery.utils.Limiting;
@@ -88,8 +86,7 @@ public final class EventDetailFragment extends Fragment implements SafeAsyncTask
     {
         mEvent = getArguments().getParcelable(ARG_EVENT);
 
-        mApiService = new FutureLocalServiceConnection<>(getContext(),
-                new Intent("com.schedjoules.API").setPackage(getContext().getPackageName()));
+        mApiService = new ApiService.FutureConnection(getContext());
 
         if (savedInstanceState == null)
         {
