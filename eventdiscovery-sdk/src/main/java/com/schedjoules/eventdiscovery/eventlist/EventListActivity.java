@@ -24,7 +24,6 @@ import android.view.MenuItem;
 
 import com.schedjoules.client.eventsdiscovery.GeoLocation;
 import com.schedjoules.client.insights.steps.Screen;
-import com.schedjoules.eventdiscovery.eventlist.itemsprovider.AdapterNotifier;
 import com.schedjoules.eventdiscovery.eventlist.itemsprovider.EventListItemsImpl;
 import com.schedjoules.eventdiscovery.eventlist.itemsprovider.EventListItemsProvider;
 import com.schedjoules.eventdiscovery.eventlist.itemsprovider.EventListItemsProviderImpl;
@@ -113,18 +112,11 @@ public final class EventListActivity extends BaseActivity implements EvenListScr
 
     private void setupListAdapter()
     {
-        // Using FlexibleAdapter with sticky headers:
         FlexibleAdapter<IFlexible> adapter = new FlexibleAdapter<>(null);
         adapter.setDisplayHeadersAtStartUp(true);
         adapter.setStickyHeaders(true);
-        AdapterNotifier adapterNotifier = new FlexibleAdapterNotifier(adapter);
-
-        // Using GeneralMultiTypeAdapter (no sticky headers):
-//        GeneralMultiTypeAdapter adapter = new GeneralMultiTypeAdapter(mEventListItems);
-//        AdapterNotifier adapterNotifier = new StandardAdapterNotifier(adapter);
-
-        mListItemsProvider.setAdapterNotifier(adapterNotifier);
         mScreenView.setAdapter(adapter);
+        mListItemsProvider.setAdapterNotifier(new FlexibleAdapterNotifier(adapter));
     }
 
 
