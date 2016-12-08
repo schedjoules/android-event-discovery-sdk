@@ -21,7 +21,7 @@
     <string name="schedjoules_action_book_hotel">Hotel</string>
     <string name="schedjoules_action_book_parking">Parkschein</string>
     <string name="schedjoules_action_book_taxi">Taxi</string>
-    <string name="schedjoules_action_buy">Kaufen</string>
+    <string name="schedjoules_action_buy">Einkaufen</string>
     <string name="schedjoules_action_call">Anrufen</string>
     <string name="schedjoules_action_cannot_handle_message">Keine App für diese Aktion gefunden.</string>
     <string name="schedjoules_action_directions">Navigation</string>

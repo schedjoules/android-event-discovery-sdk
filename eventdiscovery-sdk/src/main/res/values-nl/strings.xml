@@ -1,0 +1,42 @@
+<resources>
+    <string name="schedjoules_entry_point">Zoek Concerten</string>
+    <string name="schedjoules_app_name" translatable="false">SchedJoules Event Discovery</string>
+    <string name="schedjoules_title_event_list">Events</string>
+    <string name="schedjoules_title_event_detail">Event Detail</string>
+    <string name="schedjoules_event_list_no_events_found">Geen events gevonden</string>
+    <string name="schedjoules_event_list_no_past_events">Geen eerdere events gevonden</string>
+    <string name="schedjoules_event_list_no_future_events">Geen toekomstige events bekend</string>
+    <string name="schedjoules_event_list_error_item">Er is een fout opgetreden\nKan niet alle resultaten tonen\n\nPull om opnieuw te proberen</string>
+    <string name="schedjoules_event_list_error_bg_msg">Er is een fout opgetreden\nKan resultaten niet tonen\n\nTap om opnieuw te proberen</string>
+    <string name="schedjoules_event_details_no_description">Geen beschrijving</string>
+    <string name="schedjoules_today">Vandaag</string>
+    <string name="schedjoules_tomorrow">Morgen</string>
+    <plurals name="schedjoules_hours">
+        <item quantity="one">%d uur</item>
+        <item quantity="other">%d uren</item>
+    </plurals>
+    <plurals name="schedjoules_minutes">
+        <item quantity="one">%d minuut</item>
+        <item quantity="other">%d minuten</item>
+    </plurals>
+    <string name="schedjoules_location_search_hint">Lokatie…</string>
+    <string name="schedjoules_default_location_placeholder_name">Alle lokaties</string>
+
+    <!-- Action labels -->
+    <string name="schedjoules_action_book">Tickets</string>
+    <string name="schedjoules_action_info">Info</string>
+    <string name="schedjoules_action_share">Delen</string>
+    <string name="schedjoules_action_call">Bellen</string>
+    <string name="schedjoules_action_buy">Kopen</string>
+    <string name="schedjoules_action_invite">Uitnodigen</string>
+    <string name="schedjoules_action_remind">Herinneren</string>
+    <string name="schedjoules_action_directions">Routebeschrijving</string>
+    <string name="schedjoules_action_watch_live">Kijken</string>
+    <string name="schedjoules_action_cannot_handle_message">Sorry, er is geen app  geïnstalleerd om deze actie uit te voeren</string>
+    <string name="schedjoules_action_book_taxi">Taxi</string>
+    <string name="schedjoules_action_book_hotel">Hotel</string>
+    <string name="schedjoules_action_book_parking">Parkeren</string>
+    <string name="schedjoules_action_add_to_calendar">Toevoegen aan agenda</string>
+    <string name="schedjoules_powered_by_footer" translatable="false">Powered by SchedJoules</string>
+
+</resources>
