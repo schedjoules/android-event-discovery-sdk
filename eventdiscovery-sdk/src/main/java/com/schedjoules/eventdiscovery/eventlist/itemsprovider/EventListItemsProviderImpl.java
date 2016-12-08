@@ -192,7 +192,7 @@ public class EventListItemsProviderImpl implements EventListItemsProvider, Event
             // This request will result in empty first page, so not worth showing the loading
             if (!(direction == TOP && mItems.isTodayShown()))
             {
-                mItems.addSpecialItemPost(direction.loadingIndicatorItem, direction);
+                mItems.addSpecialItemPost(direction.mLoadingIndicatorItem, direction);
             }
         }
     }
@@ -210,7 +210,7 @@ public class EventListItemsProviderImpl implements EventListItemsProvider, Event
         }
         else
         {
-            mItems.removeSpecialItem(direction.loadingIndicatorItem, direction);
+            mItems.removeSpecialItem(direction.mLoadingIndicatorItem, direction);
         }
 
         // Resuming from error mode:
@@ -222,7 +222,7 @@ public class EventListItemsProviderImpl implements EventListItemsProvider, Event
             }
             else
             {
-                mItems.removeSpecialItem(direction.errorItem, direction);
+                mItems.removeSpecialItem(direction.mErrorItem, direction);
             }
             mIsInErrorMode.put(direction, false);
         }
@@ -235,7 +235,7 @@ public class EventListItemsProviderImpl implements EventListItemsProvider, Event
         else if (!direction.hasComingPageQuery(mLastResultPages)
                 && (direction == BOTTOM || (direction == TOP && !mItems.isTodayShown())))
         {
-            mItems.addSpecialItemNow(direction.noMoreEventsItem, direction);
+            mItems.addSpecialItemNow(direction.mNoMoreEventsItem, direction);
         }
     }
 
@@ -251,7 +251,7 @@ public class EventListItemsProviderImpl implements EventListItemsProvider, Event
         }
         else
         {
-            mItems.removeSpecialItem(direction.loadingIndicatorItem, direction);
+            mItems.removeSpecialItem(direction.mLoadingIndicatorItem, direction);
         }
 
         if (!mIsInErrorMode.get(direction))
@@ -262,7 +262,7 @@ public class EventListItemsProviderImpl implements EventListItemsProvider, Event
             }
             else
             {
-                mItems.addSpecialItemNow(direction.errorItem, direction);
+                mItems.addSpecialItemNow(direction.mErrorItem, direction);
             }
             mIsInErrorMode.put(direction, true);
         }

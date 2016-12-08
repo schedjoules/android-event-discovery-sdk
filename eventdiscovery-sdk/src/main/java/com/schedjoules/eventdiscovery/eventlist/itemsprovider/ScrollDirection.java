@@ -66,14 +66,14 @@ public enum ScrollDirection
                 }
             };
 
-    public final ErrorItem errorItem = new ErrorItem();
-    public final LoadingIndicatorItem loadingIndicatorItem = new LoadingIndicatorItem();
-    public final NoMoreEventsItem noMoreEventsItem;
+    public final ErrorItem mErrorItem = new ErrorItem();
+    public final LoadingIndicatorItem mLoadingIndicatorItem = new LoadingIndicatorItem();
+    public final NoMoreEventsItem mNoMoreEventsItem;
 
 
     ScrollDirection(NoMoreEventsItem noMoreEventsItem)
     {
-        this.noMoreEventsItem = noMoreEventsItem;
+        mNoMoreEventsItem = noMoreEventsItem;
     }
 
 
