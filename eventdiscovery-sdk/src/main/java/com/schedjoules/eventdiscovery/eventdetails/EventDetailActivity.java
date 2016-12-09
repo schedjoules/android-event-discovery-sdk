@@ -54,6 +54,7 @@ import java.net.URISyntaxException;
  * presented side-by-side with a list of items in a {@link EventListActivity} using a {@link EventDetailFragment}.
  *
  * @author Gabor Keszthelyi
+ * @author Marten Gajda
  */
 public final class EventDetailActivity extends BaseActivity
 {
@@ -81,6 +82,7 @@ public final class EventDetailActivity extends BaseActivity
             {
                 mEvent = intent.getBundleExtra(EXTRA_CUSTOM_PARCELABLES).getParcelable(CUSTOM_EXTRA_EVENT);
                 new Fragments(this).add(R.id.schedjoules_event_detail_container, EventDetailFragment.newInstance(mEvent));
+                showEventDetailsOnToolbar(mEvent);
             }
             else
             {
@@ -110,7 +112,6 @@ public final class EventDetailActivity extends BaseActivity
                         }
                     }
 
-
                     @Override
                     public void onTimeOut()
                     {
@@ -123,10 +124,9 @@ public final class EventDetailActivity extends BaseActivity
         }
         else
         {
-            mEvent = intent.getParcelableExtra(STATE_EVENT);
+            mEvent = savedInstanceState.getParcelable(STATE_EVENT);
+            showEventDetailsOnToolbar(mEvent);
         }
-
-        showEventDetailsOnToolbar(mEvent);
     }
 
 
@@ -175,9 +175,7 @@ public final class EventDetailActivity extends BaseActivity
         {
             return;
         }
-        //noinspection ConstantConditions
-        getSupportActionBar().setTitle(event.title());
-
+        mViews.schedjoulesEventDetailToolbarLayout.setTitle(event.title());
         Glide.with(this)
                 .load(new SchedJoulesLinks(event.links()).bannerUri())
                 .into(mViews.schedjoulesEventDetailBanner);
