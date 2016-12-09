@@ -1,0 +1,12 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          package="com.schedjoules.eventdiscovery">
+
+    <application android:theme="@style/SchedJoules_AppTheme">
+
+        <activity
+                android:name="com.schedjoules.eventdiscovery.utils.TestMessageActivity"
+                android:label="Test"/>
+
+    </application>
+
+</manifest>
