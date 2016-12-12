@@ -30,20 +30,19 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 
+import static android.text.format.DateUtils.DAY_IN_MILLIS;
+import static android.text.format.DateUtils.FORMAT_ABBREV_ALL;
+import static android.text.format.DateUtils.FORMAT_SHOW_DATE;
+import static android.text.format.DateUtils.FORMAT_SHOW_WEEKDAY;
+
 
 /**
  * Date and time formatting.
  *
  * @author Gabor Keszthelyi
  */
-// TODO Bug: displayed date-times don't refresh automatically when user changes time zone or locale of the phone
-// TODO Check android.text.format.DateUtils methods, using them might be better than fix SimpleDateFormat, eg: it might handle 12/24 hours, 'today', duration formatting automatically according to local.
 public final class DateTimeFormatter
 {
-    //    private static final DateFormat SHORT_DATE_TIME = new SimpleDateFormat("d MMM HH:mm",
-//            Locale.getDefault());
-    private static final DateFormat DAY_AND_MONTH = new SimpleDateFormat("EEE, d MMM",
-            Locale.getDefault());
     private static final DateFormat LONG_DATE_FORMAT = new SimpleDateFormat("EEEE, dd MMMM yyyy",
             Locale.getDefault());
     private static final DateFormat MEDIUM_LONG_DATE_FORMAT = new SimpleDateFormat("EEE, dd MMM yyyy",
@@ -64,36 +63,20 @@ public final class DateTimeFormatter
                 DateUtils.FORMAT_SHOW_TIME | DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_WEEKDAY);
     }
 
-//    public static String shortEventDateTimeRange(Context context, Event event)
-//    {
-//        return DateUtils.formatDateRange(context, event.start().getTimestamp(), event.start().addDuration(event.duration()).getTimestamp(),
-//                DateUtils.FORMAT_SHOW_TIME);
-//    }
 
-//    public static String shortEventDateTimeRange(Event event)
-//    {
-//        return shortDateTimeFormat(event.start())
-//                + " - " +
-//                shortDateTimeFormat(event.start().addDuration(event.duration()));
-//    }
-
-//    private static String shortDateTimeFormat(DateTime dateTime)
-//    {
-//        return SHORT_DATE_TIME.format(dateTime.getTimestamp());
-//    }
-
-
-    public static String smartDayFormat(Context context, DateTime dateTime)
+    // TODO test if isToday works correctly with the local time provided
+    public static String smartDayFormat(Context context, DateTime localDay)
     {
-        if (DateUtils.isToday(dateTime.getTimestamp()))
+        long timestamp = localDay.getTimestamp();
+        if (DateUtils.isToday(timestamp) || DateUtils.isToday(timestamp - DAY_IN_MILLIS))
         {
-            return context.getString(R.string.schedjoules_today);
+            return DateUtils.getRelativeTimeSpanString(timestamp, System.currentTimeMillis(), DAY_IN_MILLIS).toString();
         }
-        if (DateUtils.isToday(dateTime.getTimestamp() - DateUtils.DAY_IN_MILLIS))
+        else
         {
-            return context.getString(R.string.schedjoules_tomorrow);
+            return DateUtils.formatDateTime(context, timestamp,
+                    FORMAT_SHOW_WEEKDAY | FORMAT_SHOW_DATE | FORMAT_ABBREV_ALL);
         }
-        return DAY_AND_MONTH.format(dateTime.getTimestamp());
     }
 
 

@@ -22,6 +22,7 @@ import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.text.format.DateUtils;
 
+import org.dmfs.rfc5545.DateTime;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -36,16 +37,15 @@ import java.util.TimeZone;
 
 import static android.support.test.InstrumentationRegistry.getContext;
 import static android.text.format.DateUtils.DAY_IN_MILLIS;
-import static android.text.format.DateUtils.FORMAT_ABBREV_ALL;
 import static android.text.format.DateUtils.FORMAT_ABBREV_MONTH;
-import static android.text.format.DateUtils.FORMAT_ABBREV_TIME;
 import static android.text.format.DateUtils.FORMAT_ABBREV_WEEKDAY;
 import static android.text.format.DateUtils.FORMAT_SHOW_DATE;
 import static android.text.format.DateUtils.FORMAT_SHOW_WEEKDAY;
 
 
 /**
- * A test that shows various {@link DateUtils} formatted texts on the screen to be able to check and compare them easily.
+ * A test that shows various {@link DateUtils} formatted texts on the screen to be able to check and compare them
+ * easily.
  *
  * @author Gabor Keszthelyi
  */
@@ -102,19 +102,6 @@ public final class DateUtilsVariationsChecker
         dates.put("90 days from now", System.currentTimeMillis() + 90 * DateUtils.DAY_IN_MILLIS);
         dates.put("1 year from now", System.currentTimeMillis() + DateUtils.YEAR_IN_MILLIS);
 
-        dates.put("1 day before", System.currentTimeMillis() - DateUtils.DAY_IN_MILLIS);
-        dates.put("2 days before", System.currentTimeMillis() - 2 * DateUtils.DAY_IN_MILLIS);
-        dates.put("3 days before", System.currentTimeMillis() - 3 * DateUtils.DAY_IN_MILLIS);
-        dates.put("7 days before", System.currentTimeMillis() - 7 * DateUtils.DAY_IN_MILLIS);
-        dates.put("8 days before", System.currentTimeMillis() - 8 - DateUtils.DAY_IN_MILLIS);
-        dates.put("1 year before", System.currentTimeMillis() - DateUtils.WEEK_IN_MILLIS);
-
-        // 1481326200000  --  Fri, 09 Dec 2016 23:30:00 UTC  --  12/10/2016, 12:30:00 AM UTC+1
-        dates.put("Fri, 09 Dec 2016 23:30:00 UTC", 1481326200000L);
-
-        // 1478133000000   --  Thu, 03 Nov 2016 00:30:00 UTC  --  11/3/2016, 1:30:00 AM UTC+1
-        dates.put("Thu, 03 Nov 2016 00:30:00 UTC", 1478133000000L);
-
         List<Formatter> formatters = new ArrayList<>();
 
         formatters.add(new Formatter()
@@ -122,109 +109,14 @@ public final class DateUtilsVariationsChecker
             @Override
             public String name()
             {
-                return "double";
+                return "DateTimeFormatter.smartDayFormat";
             }
 
 
             @Override
             public CharSequence format(Long timestamp)
             {
-                String date = DateUtils.formatDateTime(getContext(), timestamp, FORMAT_SHOW_DATE);
-                String day = DateUtils.formatDateTime(getContext(), timestamp, FORMAT_SHOW_WEEKDAY);
-                if (DateUtils.isToday(timestamp))
-                {
-                    return "Today                                   " + date;
-                }
-                else if (DateUtils.isToday(timestamp - DAY_IN_MILLIS))
-                {
-                    return "Tomorrow                                " + date;
-                }
-                else
-                {
-                    return day + "                                  "  + date;
-                }
-            }
-        });
-
-        formatters.add(new Formatter()
-        {
-            @Override
-            public String name()
-            {
-                return "special 1";
-            }
-
-
-            @Override
-            public CharSequence format(Long timestamp)
-            {
-                String cs = DateUtils.formatDateTime(getContext(), timestamp,
-                        FORMAT_SHOW_WEEKDAY | FORMAT_SHOW_DATE | FORMAT_ABBREV_ALL);
-                if (DateUtils.isToday(timestamp))
-                {
-                    return String.format("Today (%s)", cs);
-                }
-                else if (DateUtils.isToday(timestamp - DAY_IN_MILLIS))
-                {
-                    return String.format("Tomorrow (%s)", cs);
-                }
-                else
-                {
-                    return cs;
-                }
-            }
-        });
-
-        formatters.add(new Formatter()
-        {
-            @Override
-            public String name()
-            {
-                return "getRelativeDateTimeString DAY_IN_MILLIS DAY_IN_MILLIS 0";
-            }
-
-
-            @Override
-            public CharSequence format(Long timestamp)
-            {
-                return DateUtils.getRelativeDateTimeString(mContext, timestamp, DateUtils.DAY_IN_MILLIS,
-                        DateUtils.DAY_IN_MILLIS, 0);
-            }
-        });
-
-        formatters.add(new Formatter()
-        {
-            @Override
-            public String name()
-            {
-                return "getRelativeDateTimeString DAY_IN_MILLIS DAY_IN_MILLIS FORMAT_SHOW_WEEKDAY";
-            }
-
-
-            @Override
-            public CharSequence format(Long timestamp)
-            {
-                return DateUtils.getRelativeDateTimeString(
-                        mContext, timestamp, DAY_IN_MILLIS, DAY_IN_MILLIS,
-                        FORMAT_SHOW_WEEKDAY);
-            }
-        });
-
-        formatters.add(new Formatter()
-        {
-            @Override
-            public String name()
-            {
-                return "getRelativeDateTimeString DAY_IN_MILLIS DAY_IN_MILLIS FORMAT_SHOW_WEEKDAY | FORMAT_ABBREV_TIME";
-            }
-
-
-            @Override
-            public CharSequence format(Long timestamp)
-            {
-                return DateUtils.getRelativeDateTimeString(
-                        mContext, timestamp, DAY_IN_MILLIS, DAY_IN_MILLIS,
-                        FORMAT_SHOW_WEEKDAY | FORMAT_ABBREV_TIME);
+                return DateTimeFormatter.smartDayFormat(mContext, new DateTime(timestamp));
             }
         });
 
@@ -249,7 +141,7 @@ public final class DateUtilsVariationsChecker
             @Override
             public String name()
             {
-                return "formatDateTime FORMAT_ABBREV_MONTH | FORMAT_ABBREV_WEEKDAY";
+                return "formatDateTime FORMAT_SHOW_DATE | FORMAT_SHOW_WEEKDAY | FORMAT_ABBREV_MONTH";
             }
 
 
@@ -257,7 +149,7 @@ public final class DateUtilsVariationsChecker
             public CharSequence format(Long timestamp)
             {
                 return DateUtils.formatDateTime(mContext, timestamp,
-                        FORMAT_ABBREV_MONTH | FORMAT_ABBREV_WEEKDAY);
+                        FORMAT_SHOW_DATE | FORMAT_SHOW_WEEKDAY | FORMAT_ABBREV_MONTH);
             }
         });
 
@@ -266,7 +158,7 @@ public final class DateUtilsVariationsChecker
             @Override
             public String name()
             {
-                return "formatDateTime FORMAT_SHOW_WEEKDAY | FORMAT_SHOW_DATE | FORMAT_ABBREV_ALL";
+                return "formatDateTime FORMAT_SHOW_DATE | FORMAT_SHOW_WEEKDAY | FORMAT_ABBREV_MONTH | FORMAT_ABBREV_WEEKDAY";
             }
 
 
@@ -274,7 +166,7 @@ public final class DateUtilsVariationsChecker
             public CharSequence format(Long timestamp)
             {
                 return DateUtils.formatDateTime(mContext, timestamp,
-                        FORMAT_SHOW_WEEKDAY | FORMAT_SHOW_DATE | FORMAT_ABBREV_ALL);
+                        FORMAT_SHOW_DATE | FORMAT_SHOW_WEEKDAY | FORMAT_ABBREV_MONTH | FORMAT_ABBREV_WEEKDAY);
             }
         });
 
@@ -283,33 +175,82 @@ public final class DateUtilsVariationsChecker
             @Override
             public String name()
             {
-                return "getRelativeTimeSpanString(millis)";
+                return "getRelativeDateTimeString FORMAT_SHOW_WEEKDAY FORMAT_SHOW_DATE";
             }
 
 
             @Override
             public CharSequence format(Long timestamp)
             {
-                return DateUtils.getRelativeTimeSpanString(getContext(), timestamp);
+                return DateUtils.getRelativeDateTimeString(
+                        mContext, timestamp, DAY_IN_MILLIS, DAY_IN_MILLIS,
+                        FORMAT_SHOW_WEEKDAY | FORMAT_SHOW_DATE);
             }
         });
 
-        // TODO
-//        formatters.add(new Formatter()
-//        {
-//            @Override
-//            public String name()
-//            {
-//                return "getRelativeTimeSpanString(time,now,minResolution) ";
-//            }
-//
-//
-//            @Override
-//            public CharSequence format(Long timestamp)
-//            {
-//                return DateUtils.getRelativeTimeSpanString(timestamp, DateUtils.DAY_IN_MILLIS, FORMAT_SHOW_WEEKDAY);
-//            }
-//        });
+        formatters.add(new Formatter()
+        {
+            @Override
+            public String name()
+            {
+                return "getRelativeTimeSpanString(timestamp)";
+            }
+
+
+            @Override
+            public CharSequence format(Long timestamp)
+            {
+                return DateUtils.getRelativeTimeSpanString(timestamp);
+            }
+        });
+
+        formatters.add(new Formatter()
+        {
+            @Override
+            public String name()
+            {
+                return "getRelativeTimeSpanString(context, timestamp)";
+            }
+
+
+            @Override
+            public CharSequence format(Long timestamp)
+            {
+                return DateUtils.getRelativeTimeSpanString(mContext, timestamp);
+            }
+        });
+
+        formatters.add(new Formatter()
+        {
+            @Override
+            public String name()
+            {
+                return "getRelativeTimeSpanString(timestamp,now,minResolution=DAY_IN_MILLIS)";
+            }
+
+
+            @Override
+            public CharSequence format(Long timestamp)
+            {
+                return DateUtils.getRelativeTimeSpanString(timestamp, System.currentTimeMillis(), DAY_IN_MILLIS);
+            }
+        });
+
+        formatters.add(new Formatter()
+        {
+            @Override
+            public String name()
+            {
+                return "getRelativeTimeSpanString(timestamp,now,minResolution=DAY_IN_MILLIS)";
+            }
+
+
+            @Override
+            public CharSequence format(Long timestamp)
+            {
+                return DateUtils.getRelativeTimeSpanString(timestamp, System.currentTimeMillis(), DAY_IN_MILLIS);
+            }
+        });
 
         printDates(result, dates, formatters);
 
@@ -325,7 +266,8 @@ public final class DateUtilsVariationsChecker
 
             for (Map.Entry<String, Long> date : dates.entrySet())
             {
-                sb.append(formatters.get(i).format(date.getValue())).append("  <- ").append(date.getKey()).append(NL);
+                sb.append(formatters.get(i).format(date.getValue())).append(NL);
+//                        .append("  <- ").append(date.getKey()).append(NL);
             }
             sb.append(NL).append("----------------------------").append(NL).append(NL);
         }

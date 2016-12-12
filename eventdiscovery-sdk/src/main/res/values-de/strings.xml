@@ -39,8 +39,6 @@
     <string name="schedjoules_event_list_no_past_events">Keine älteren Ereignisse gefunden.</string>
     <string name="schedjoules_title_event_detail">Ereignisdetails</string>
     <string name="schedjoules_title_event_list">Ereignisse</string>
-    <string name="schedjoules_today">Heute</string>
-    <string name="schedjoules_tomorrow">Morgen</string>
     <string name="schedjoules_action_book">Karten kaufen</string>
     <string name="schedjoules_action_add_to_calendar">Termin speichern</string>
     <plurals name="schedjoules_hours">

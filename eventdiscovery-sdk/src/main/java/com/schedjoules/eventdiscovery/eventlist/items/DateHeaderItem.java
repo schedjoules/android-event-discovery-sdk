@@ -32,12 +32,12 @@ import org.dmfs.rfc5545.DateTime;
  */
 public final class DateHeaderItem extends AbstractFlexibleHeader<DateHeaderItemView> implements ListItem<DateHeaderItemView>
 {
-    private final DateTime mDateTime;
+    private final DateTime mLocalDay;
 
 
-    public DateHeaderItem(DateTime dateTime)
+    public DateHeaderItem(DateTime localDay)
     {
-        mDateTime = dateTime;
+        mLocalDay = localDay;
     }
 
 
@@ -51,14 +51,14 @@ public final class DateHeaderItem extends AbstractFlexibleHeader<DateHeaderItemV
     @Override
     public void bindDataTo(DateHeaderItemView view)
     {
-        view.setDateText(DateTimeFormatter.smartDayFormat(view.getContext(), mDateTime));
+        view.setDateText(DateTimeFormatter.smartDayFormat(view.getContext(), mLocalDay));
     }
 
 
     @Override
     public String toString()
     {
-        return mDateTime.toString();
+        return mLocalDay.toString();
     }
 
 
@@ -76,7 +76,7 @@ public final class DateHeaderItem extends AbstractFlexibleHeader<DateHeaderItemV
 
         DateHeaderItem that = (DateHeaderItem) o;
 
-        return mDateTime.equals(that.mDateTime);
+        return mLocalDay.equals(that.mLocalDay);
 
     }
 
@@ -84,6 +84,6 @@ public final class DateHeaderItem extends AbstractFlexibleHeader<DateHeaderItemV
     @Override
     public int hashCode()
     {
-        return mDateTime.hashCode();
+        return mLocalDay.hashCode();
     }
 }
