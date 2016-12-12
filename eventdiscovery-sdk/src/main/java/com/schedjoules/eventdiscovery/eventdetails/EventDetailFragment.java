@@ -19,6 +19,7 @@ package com.schedjoules.eventdiscovery.eventdetails;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -26,27 +27,27 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import com.bumptech.glide.Glide;
 import com.schedjoules.client.eventsdiscovery.Event;
 import com.schedjoules.client.insights.steps.Screen;
 import com.schedjoules.eventdiscovery.R;
-import com.schedjoules.eventdiscovery.actions.Action;
-import com.schedjoules.eventdiscovery.actions.ActionLoaderTask;
 import com.schedjoules.eventdiscovery.actions.ActionViewIterable;
+import com.schedjoules.eventdiscovery.actions.Actions;
 import com.schedjoules.eventdiscovery.actions.BaseActionFactory;
 import com.schedjoules.eventdiscovery.databinding.SchedjoulesEventDetailContentBinding;
 import com.schedjoules.eventdiscovery.eventlist.EventListActivity;
-import com.schedjoules.eventdiscovery.framework.async.SafeAsyncTaskCallback;
-import com.schedjoules.eventdiscovery.framework.async.SafeAsyncTaskResult;
 import com.schedjoules.eventdiscovery.model.ParcelableEvent;
-import com.schedjoules.eventdiscovery.service.ApiService;
-import com.schedjoules.eventdiscovery.utils.FutureServiceConnection;
+import com.schedjoules.eventdiscovery.model.ParcelableLink;
+import com.schedjoules.eventdiscovery.model.SchedJoulesLinks;
 import com.schedjoules.eventdiscovery.utils.InsightsTask;
 import com.schedjoules.eventdiscovery.utils.Limiting;
 import com.schedjoules.eventdiscovery.utils.Skipping;
 
+import org.dmfs.httpessentials.types.Link;
 import org.dmfs.httpessentials.types.StringToken;
 
-import java.util.Iterator;
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.schedjoules.eventdiscovery.utils.DateTimeFormatter.longDateFormat;
 import static com.schedjoules.eventdiscovery.utils.DateTimeFormatter.longEventTimeFormat;
@@ -59,22 +60,30 @@ import static com.schedjoules.eventdiscovery.utils.LocationFormatter.longLocatio
  *
  * @author Gabor Keszthelyi
  */
-public final class EventDetailFragment extends Fragment implements SafeAsyncTaskCallback<Void, Iterator<Iterable<Action>>>
+public final class EventDetailFragment extends Fragment
 {
     private static final String ARG_EVENT = "event";
+    private static final String ARG_ACTIONS = "actions";
 
-    private FutureServiceConnection<ApiService> mApiService;
     private Event mEvent;
+    private Iterable<ParcelableLink> mActions;
 
     private SchedjoulesEventDetailContentBinding mViews;
     private LinearLayout mVerticalItems;
     private HorizontalActionsView mHorizontalActions;
 
 
-    public static Fragment newInstance(Event event)
+    public static Fragment newInstance(Event event, List<Link> actionLinks)
     {
         Bundle arguments = new Bundle();
         arguments.putParcelable(ARG_EVENT, new ParcelableEvent(event));
+
+        ArrayList<Parcelable> links = new ArrayList<>(actionLinks.size());
+        for (Link actionLink : actionLinks)
+        {
+            links.add(actionLink instanceof Parcelable ? (Parcelable) actionLink : new ParcelableLink(actionLink));
+        }
+        arguments.putParcelableArrayList(ARG_ACTIONS, links);
         EventDetailFragment fragment = new EventDetailFragment();
         fragment.setArguments(arguments);
         return fragment;
@@ -85,21 +94,24 @@ public final class EventDetailFragment extends Fragment implements SafeAsyncTask
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         mEvent = getArguments().getParcelable(ARG_EVENT);
-
-        mApiService = new ApiService.FutureConnection(getContext());
+        mActions = getArguments().getParcelableArrayList(ARG_ACTIONS);
 
         if (savedInstanceState == null)
         {
             new InsightsTask(getActivity()).execute(new Screen(new StringToken("details"), mEvent));
         }
 
-        new ActionLoaderTask(mApiService, new BaseActionFactory(), this).execute(mEvent);
-
         mViews = DataBindingUtil.inflate(inflater, R.layout.schedjoules_event_detail_content, container, false);
         mVerticalItems = mViews.schedjoulesEventDetailVerticalItems;
         mHorizontalActions = mViews.schedjoulesEventHorizontalActions;
-
+        mViews.header.schedjoulesEventDetailToolbarLayout.setTitle(mEvent.title());
         addFixVerticalItems();
+        showActions();
+        Glide.with(getActivity())
+                .load(new SchedJoulesLinks(mEvent.links()).bannerUri())
+                .into(mViews.header.schedjoulesEventDetailBanner);
+
+        mViews.schedjoulesEventDetailSchedjoulesFooter.animate().alpha(1).setStartDelay(1000).setDuration(400).start();
         return mViews.getRoot();
     }
 
@@ -139,55 +151,29 @@ public final class EventDetailFragment extends Fragment implements SafeAsyncTask
     }
 
 
-    @Override
-    public void onDestroy()
+    private void showActions()
     {
-        super.onDestroy();
-        mApiService.disconnect();
-    }
-
-
-    @Override
-    public void onTaskFinish(SafeAsyncTaskResult<Iterator<Iterable<Action>>> result, Void o)
-    {
-        try
+        if (mActions.iterator().hasNext())
         {
-            // there must be a next value
-            Iterable<Action> actions = result.value().next();
+            int maxNumberOfItemsInTopBar = getResources().getInteger(R.integer.schedjoules_maxNumberOfHorizontalActions);
 
-            if (actions.iterator().hasNext())
+            mHorizontalActions.showActionViews(
+                    new ActionViewIterable(new Limiting<>(new Actions(mActions, mEvent, new BaseActionFactory()), maxNumberOfItemsInTopBar),
+                            new SmallEventActionView.Factory(mHorizontalActions)));
+
+            mViews.schedjoulesEventDetailsDivider.setVisibility(View.VISIBLE);
+            mHorizontalActions.setVisibility(View.VISIBLE);
+
+            for (View view : new ActionViewIterable(new Skipping<>(new Actions(mActions, mEvent, new BaseActionFactory()), maxNumberOfItemsInTopBar),
+                    new EventDetailsItemView.Factory(mVerticalItems)))
             {
-                int maxNumberOfItemsInTopBar = getResources().getInteger(
-                        R.integer.schedjoules_maxNumberOfHorizontalActions);
-
-                mHorizontalActions.showActionViews(
-                        new ActionViewIterable(new Limiting<>(actions, maxNumberOfItemsInTopBar),
-                                new SmallEventActionView.Factory(mHorizontalActions)));
-
-                mViews.schedjoulesEventDetailsDivider.setVisibility(View.VISIBLE);
-                mHorizontalActions.setVisibility(View.VISIBLE);
-
-                for (View view : new ActionViewIterable(new Skipping<>(actions, maxNumberOfItemsInTopBar),
-                        new EventDetailsItemView.Factory(mVerticalItems)))
-                {
-                    mVerticalItems.addView(view);
-                    view.setAlpha(0);
-                    view.animate().alpha(1).setDuration(500);
-                }
+                mVerticalItems.addView(view);
             }
-            else
-            {
-                // TODO: can we synthesize a few common actions that don't depend on the server response? I.e. share, add to calendar, directions
-                removeHorizontalActionsView();
-            }
-
         }
-        catch (Exception e)
+        else
         {
-            // TODO: can we synthesize a few common actions that don't depend on the server response?
+            // TODO: can we synthesize a few common actions that don't depend on the server response? I.e. share, add to calendar, directions
             removeHorizontalActionsView();
         }
-
-        mViews.schedjoulesEventDetailSchedjoulesFooter.animate().alpha(1).setStartDelay(500).setDuration(500);
     }
 }

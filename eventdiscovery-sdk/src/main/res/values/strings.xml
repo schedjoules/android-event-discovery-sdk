@@ -39,4 +39,7 @@
     <string name="schedjoules_this_might_take_a_moment">This might take a moment</string>
     <string name="schedjoules_error_loading_event">Could not load event\nPlease check your internet connection</string>
 
+    <string name="schedjoules_title_error">Error</string>
+    <string name="schedjoules_generic_error">Something went wrong.\nPlease try again later.</string>
+
 </resources>

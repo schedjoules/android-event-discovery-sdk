@@ -17,11 +17,12 @@
 
 package com.schedjoules.eventdiscovery.service;
 
-import android.os.AsyncTask;
-
 import com.schedjoules.eventdiscovery.utils.FutureServiceConnection;
 
 import java.util.concurrent.Executor;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 
@@ -38,7 +39,8 @@ public final class SimpleServiceJobQueue<S> implements ServiceJobQueue<S>
 
     public SimpleServiceJobQueue(FutureServiceConnection<S> futureConnection)
     {
-        this(futureConnection, AsyncTask.SERIAL_EXECUTOR);
+        this(futureConnection,
+                new ThreadPoolExecutor(1 /* thread min */, 5 /* threads max */, 30 /* keep alive */, TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>(128)));
     }
 
 
@@ -60,7 +62,6 @@ public final class SimpleServiceJobQueue<S> implements ServiceJobQueue<S>
                 try
                 {
                     job.execute(mFutureConnection.service(executionTimeout));
-                    mFutureConnection.disconnect();
                 }
                 catch (TimeoutException | InterruptedException e)
                 {
@@ -69,5 +70,15 @@ public final class SimpleServiceJobQueue<S> implements ServiceJobQueue<S>
                 }
             }
         });
+    }
+
+
+    @Override
+    public void disconnect()
+    {
+        if (mFutureConnection.isConnected())
+        {
+            mFutureConnection.disconnect();
+        }
     }
 }

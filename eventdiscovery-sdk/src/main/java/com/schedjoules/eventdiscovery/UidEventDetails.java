@@ -19,12 +19,12 @@ package com.schedjoules.eventdiscovery;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 
 import com.schedjoules.client.eventsdiscovery.Event;
 import com.schedjoules.eventdiscovery.eventdetails.EventDetailActivity;
-
-import static com.schedjoules.eventdiscovery.eventdetails.EventDetailActivity.EXTRA_EVENT_UID;
+import com.schedjoules.eventdiscovery.eventdetails.wizardsteps.EventLoaderStep;
 
 
 /**
@@ -47,7 +47,9 @@ public final class UidEventDetails implements EventDetails
     public void show(@NonNull Activity activity)
     {
         Intent intent = new Intent(activity, EventDetailActivity.class);
-        intent.putExtra(EXTRA_EVENT_UID, mEventUid);
+        Bundle nestedBundle = new Bundle();
+        nestedBundle.putParcelable("WizardStep", new EventLoaderStep(mEventUid));
+        intent.putExtra("com.schedjoules.nestedExtras", nestedBundle);
         activity.startActivity(intent);
     }
 }

@@ -24,10 +24,7 @@ import android.support.annotation.NonNull;
 
 import com.schedjoules.client.eventsdiscovery.Event;
 import com.schedjoules.eventdiscovery.eventdetails.EventDetailActivity;
-import com.schedjoules.eventdiscovery.model.ParcelableEvent;
-
-import static com.schedjoules.eventdiscovery.eventdetails.EventDetailActivity.CUSTOM_EXTRA_EVENT;
-import static com.schedjoules.eventdiscovery.eventdetails.EventDetailActivity.EXTRA_CUSTOM_PARCELABLES;
+import com.schedjoules.eventdiscovery.eventdetails.wizardsteps.ActionLoaderStep;
 
 
 /**
@@ -51,8 +48,8 @@ public final class BasicEventDetails implements EventDetails
     {
         Intent intent = new Intent(activity, EventDetailActivity.class);
         Bundle nestedBundle = new Bundle();
-        nestedBundle.putParcelable(CUSTOM_EXTRA_EVENT, new ParcelableEvent(mEvent));
-        intent.putExtra(EXTRA_CUSTOM_PARCELABLES, nestedBundle);
+        nestedBundle.putParcelable("WizardStep", new ActionLoaderStep(mEvent));
+        intent.putExtra("com.schedjoules.nestedExtras", nestedBundle);
         activity.startActivity(intent);
     }
 }

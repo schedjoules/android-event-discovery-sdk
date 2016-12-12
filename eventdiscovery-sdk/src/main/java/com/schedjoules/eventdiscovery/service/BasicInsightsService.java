@@ -97,7 +97,7 @@ public final class BasicInsightsService extends Service implements InsightsServi
     public final void onCreate()
     {
         super.onCreate();
-        mApiServiceConnection = new FutureLocalServiceConnection<>(this, new Intent("com.schedjoules.API").setPackage(this.getPackageName()));
+        mApiServiceConnection = new ApiService.FutureConnection(this);
         post(new Session(new StringToken("start")));
         mSession = new SimpleSession(new SharedPrefsUserIdentifier(this));
         mTimer.scheduleAtFixedRate(new TimerTask()

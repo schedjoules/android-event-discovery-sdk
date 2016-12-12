@@ -41,6 +41,16 @@
                 android:stopWithTask="true"
                 android:enabled="true"/>
 
+        <service
+                android:name=".service.BasicActionsService"
+                android:exported="false"
+                android:stopWithTask="true"
+                android:enabled="true">
+            <intent-filter>
+                <action android:name="com.schedjoules.ACTIONS"/>
+            </intent-filter>
+        </service>
+
         <meta-data
                 android:name="com.schedjoules.eventdiscovery.common.OurGlideModule"
                 android:value="GlideModule"/>

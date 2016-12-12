@@ -23,4 +23,6 @@ package com.schedjoules.eventdiscovery.service;
 public interface ServiceJobQueue<S>
 {
     void post(ServiceJob<S> job, int executionTimeout);
+
+    void disconnect();
 }
