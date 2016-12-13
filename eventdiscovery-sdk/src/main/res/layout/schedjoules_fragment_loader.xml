@@ -39,7 +39,7 @@
                     android:layout_centerInParent="true"
                     android:gravity="center"
                     android:layout_height="match_parent"
-                    android:text="@string/schedjoules_this_might_take_a_moment"
+                    android:text="@string/schedjoules_wait_message"
                     android:alpha="0"/>
 
         </RelativeLayout>
