@@ -38,7 +38,7 @@ public final class DateHeaderItem extends AbstractFlexibleHeader<DateHeaderItemV
 
     private final DateTime mLocalDay;
 
-    // Not used for equals()
+    // Should not be used for equals()
     private final FormattedDateTime formattedDay;
 
 

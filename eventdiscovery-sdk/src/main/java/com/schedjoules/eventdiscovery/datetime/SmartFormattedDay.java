@@ -63,29 +63,4 @@ public final class SmartFormattedDay implements FormattedDateTime
         }
     }
 
-
-    @Override
-    public boolean equals(Object o)
-    {
-        if (this == o)
-        {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass())
-        {
-            return false;
-        }
-
-        SmartFormattedDay that = (SmartFormattedDay) o;
-
-        return mDateTime.equals(that.mDateTime);
-
-    }
-
-
-    @Override
-    public int hashCode()
-    {
-        return mDateTime.hashCode();
-    }
 }
