@@ -60,16 +60,16 @@ public final class ForwardFadeOperation extends AbstractWizardOperation
         {
             transaction.setCustomAnimations(
                     R.anim.schedjoules_fade_in, R.anim.schedjoules_anim_none,
-                    org.dmfs.android.dumbledore.R.anim.wand_wizard_enter_left,
-                    org.dmfs.android.dumbledore.R.anim.wand_wizard_exit_right);
+                    org.dmfs.android.dumbledore.R.anim.dumbledore_wizard_enter_left,
+                    org.dmfs.android.dumbledore.R.anim.dumbledore_wizard_exit_right);
         }
         else
         {
             // apparently the new fragment is underneath to old one, so fade th old one out instead of fading the new one in
             transaction.setCustomAnimations(
                     R.anim.schedjoules_anim_none, R.anim.schedjoules_fade_out,
-                    org.dmfs.android.dumbledore.R.anim.wand_wizard_enter_right,
-                    org.dmfs.android.dumbledore.R.anim.wand_wizard_exit_left);
+                    org.dmfs.android.dumbledore.R.anim.dumbledore_wizard_enter_right,
+                    org.dmfs.android.dumbledore.R.anim.dumbledore_wizard_exit_left);
         }
         transaction.replace(org.dmfs.android.dumbledore.R.id.dumbledore_wizard_host, mNextStep.fragment(context));
         if (fragmentManager.getBackStackEntryCount() > 0 || !previousStep.skipOnBack())

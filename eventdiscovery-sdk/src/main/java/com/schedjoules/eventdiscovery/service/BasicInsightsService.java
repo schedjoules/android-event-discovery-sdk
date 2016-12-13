@@ -32,7 +32,6 @@ import com.schedjoules.client.insights.sessions.SimpleSession;
 import com.schedjoules.client.insights.steps.Session;
 import com.schedjoules.eventdiscovery.utils.AndroidClient;
 import com.schedjoules.eventdiscovery.utils.AndroidPlatform;
-import com.schedjoules.eventdiscovery.utils.FutureLocalServiceConnection;
 import com.schedjoules.eventdiscovery.utils.FutureServiceConnection;
 import com.schedjoules.eventdiscovery.utils.SharedPrefsUserIdentifier;
 
