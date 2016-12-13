@@ -18,6 +18,7 @@
 package com.schedjoules.eventdiscovery.datetime;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.text.format.DateUtils;
 
 import org.dmfs.rfc5545.DateTime;
@@ -40,7 +41,7 @@ public final class SmartFormattedDay implements FormattedDateTime
     private final DateTime mDateTime;
 
 
-    public SmartFormattedDay(DateTime dateTime)
+    public SmartFormattedDay(@NonNull DateTime dateTime)
     {
         mDateTime = dateTime;
     }
@@ -52,12 +53,39 @@ public final class SmartFormattedDay implements FormattedDateTime
         long timestamp = mDateTime.getTimestamp();
         if (DateUtils.isToday(timestamp) || DateUtils.isToday(timestamp - DAY_IN_MILLIS)) // For "Today" and "Tomorrow"
         {
-            return DateUtils.getRelativeTimeSpanString(timestamp, System.currentTimeMillis(), DAY_IN_MILLIS).toString();
+            long nowToRelateTo = System.currentTimeMillis();
+            return DateUtils.getRelativeTimeSpanString(timestamp, nowToRelateTo, DAY_IN_MILLIS).toString();
         }
         else
         {
             return DateUtils.formatDateTime(context, timestamp,
                     FORMAT_SHOW_WEEKDAY | FORMAT_SHOW_DATE | FORMAT_ABBREV_ALL);
         }
+    }
+
+
+    @Override
+    public boolean equals(Object o)
+    {
+        if (this == o)
+        {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass())
+        {
+            return false;
+        }
+
+        SmartFormattedDay that = (SmartFormattedDay) o;
+
+        return mDateTime.equals(that.mDateTime);
+
+    }
+
+
+    @Override
+    public int hashCode()
+    {
+        return mDateTime.hashCode();
     }
 }
