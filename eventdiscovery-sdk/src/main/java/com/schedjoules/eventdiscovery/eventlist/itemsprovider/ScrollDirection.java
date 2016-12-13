@@ -17,6 +17,16 @@
 
 package com.schedjoules.eventdiscovery.eventlist.itemsprovider;
 
+import com.schedjoules.client.ApiQuery;
+import com.schedjoules.client.eventsdiscovery.ResultPage;
+import com.schedjoules.eventdiscovery.R;
+import com.schedjoules.eventdiscovery.eventlist.items.ErrorItem;
+import com.schedjoules.eventdiscovery.eventlist.items.LoadingIndicatorItem;
+import com.schedjoules.eventdiscovery.eventlist.items.NoMoreEventsItem;
+
+import java.util.Map;
+
+
 /**
  * Represents a list scrolling direction.
  *
@@ -24,6 +34,50 @@ package com.schedjoules.eventdiscovery.eventlist.itemsprovider;
  */
 public enum ScrollDirection
 {
-    TOP,
-    BOTTOM
+    TOP(new NoMoreEventsItem(R.string.schedjoules_event_list_no_past_events))
+            {
+                @Override
+                public <T> boolean hasComingPageQuery(Map<ScrollDirection, ResultPage<T>> lastResultPages)
+                {
+                    return !lastResultPages.get(this).isFirstPage();
+                }
+
+
+                @Override
+                public <T> ApiQuery<ResultPage<T>> comingPageQuery(Map<ScrollDirection, ResultPage<T>> lastResultPages) throws IllegalStateException
+                {
+                    return lastResultPages.get(this).previousPageQuery();
+                }
+            },
+
+    BOTTOM(new NoMoreEventsItem(R.string.schedjoules_event_list_no_future_events))
+            {
+                @Override
+                public <T> boolean hasComingPageQuery(Map<ScrollDirection, ResultPage<T>> lastResultPages)
+                {
+                    return !lastResultPages.get(this).isLastPage();
+                }
+
+
+                @Override
+                public <T> ApiQuery<ResultPage<T>> comingPageQuery(Map<ScrollDirection, ResultPage<T>> lastResultPages) throws IllegalStateException
+                {
+                    return lastResultPages.get(this).nextPageQuery();
+                }
+            };
+
+    public final ErrorItem mErrorItem = new ErrorItem();
+    public final LoadingIndicatorItem mLoadingIndicatorItem = new LoadingIndicatorItem();
+    public final NoMoreEventsItem mNoMoreEventsItem;
+
+
+    ScrollDirection(NoMoreEventsItem noMoreEventsItem)
+    {
+        mNoMoreEventsItem = noMoreEventsItem;
+    }
+
+
+    public abstract <T> boolean hasComingPageQuery(Map<ScrollDirection, ResultPage<T>> lastResultPages);
+
+    public abstract <T> ApiQuery<ResultPage<T>> comingPageQuery(Map<ScrollDirection, ResultPage<T>> lastResultPages) throws IllegalStateException;
 }

@@ -24,7 +24,6 @@ import android.view.MenuItem;
 
 import com.schedjoules.client.eventsdiscovery.GeoLocation;
 import com.schedjoules.client.insights.steps.Screen;
-import com.schedjoules.eventdiscovery.eventlist.itemsprovider.AdapterNotifier;
 import com.schedjoules.eventdiscovery.eventlist.itemsprovider.EventListItemsImpl;
 import com.schedjoules.eventdiscovery.eventlist.itemsprovider.EventListItemsProvider;
 import com.schedjoules.eventdiscovery.eventlist.itemsprovider.EventListItemsProviderImpl;
@@ -66,10 +65,8 @@ public final class EventListActivity extends BaseActivity implements EvenListScr
 {
     private FutureServiceConnection<ApiService> mApiService;
     private EvenListScreenView mScreenView;
-
     private PlacesApiLocationSelection mLocationSelection;
     private EventListItemsProvider mListItemsProvider;
-
     private LastSelectedLocation mLastSelectedLocation;
 
 
@@ -98,9 +95,8 @@ public final class EventListActivity extends BaseActivity implements EvenListScr
         mLastSelectedLocation = retainedObjects.getOr(1, new SharedPrefLastSelectedLocation(getApplicationContext()));
 
         mScreenView.setUserActionListener(this);
-
         mScreenView.setToolbarTitle(mLastSelectedLocation.get().name());
-        mScreenView.setBottomReachScrollListener(mListItemsProvider);
+        mScreenView.setEdgeReachScrollListener(mListItemsProvider);
 
         setupListAdapter();
 
@@ -115,18 +111,11 @@ public final class EventListActivity extends BaseActivity implements EvenListScr
 
     private void setupListAdapter()
     {
-        // Using FlexibleAdapter with sticky headers:
         FlexibleAdapter<IFlexible> adapter = new FlexibleAdapter<>(null);
         adapter.setDisplayHeadersAtStartUp(true);
         adapter.setStickyHeaders(true);
-        AdapterNotifier adapterNotifier = new FlexibleAdapterNotifier(adapter);
-
-        // Using GeneralMultiTypeAdapter (no sticky headers):
-//        GeneralMultiTypeAdapter adapter = new GeneralMultiTypeAdapter(mListItemsProvider);
-//        AdapterNotifier adapterNotifier = new StandardAdapterNotifier(adapter);
-
-        mListItemsProvider.setAdapterNotifier(adapterNotifier);
         mScreenView.setAdapter(adapter);
+        mListItemsProvider.setAdapterNotifier(new FlexibleAdapterNotifier(adapter));
     }
 
 
