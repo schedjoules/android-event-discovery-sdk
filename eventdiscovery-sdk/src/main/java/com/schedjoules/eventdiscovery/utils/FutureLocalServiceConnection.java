@@ -83,7 +83,10 @@ public final class FutureLocalServiceConnection<T> implements FutureServiceConne
     @Override
     public boolean isConnected()
     {
-        return mIsConnected;
+        synchronized (mConnection)
+        {
+            return mIsConnected;
+        }
     }
 
 
@@ -116,7 +119,11 @@ public final class FutureLocalServiceConnection<T> implements FutureServiceConne
     @Override
     public void disconnect()
     {
-        mContext.unbindService(mConnection);
+        synchronized (mConnection)
+        {
+            mIsConnected = false;
+            mContext.unbindService(mConnection);
+        }
     }
 
 }

@@ -21,8 +21,8 @@ import android.view.View;
 
 import com.schedjoules.client.eventsdiscovery.Event;
 import com.schedjoules.client.insights.steps.Interaction;
+import com.schedjoules.eventdiscovery.BasicEventDetails;
 import com.schedjoules.eventdiscovery.R;
-import com.schedjoules.eventdiscovery.eventdetails.EventDetailActivity;
 import com.schedjoules.eventdiscovery.eventdetails.EventDetailFragment;
 import com.schedjoules.eventdiscovery.eventlist.view.EvenListScreenView;
 import com.schedjoules.eventdiscovery.framework.access.Fragments;
@@ -104,8 +104,7 @@ public final class EventItem extends AbstractFlexibleSectionable<EventItemView> 
         }
         else
         {
-            activity.startActivity(
-                    EventDetailActivity.launchIntent(activity, mEvent));
+            new BasicEventDetails(mEvent).show(activity);
         }
     }
 

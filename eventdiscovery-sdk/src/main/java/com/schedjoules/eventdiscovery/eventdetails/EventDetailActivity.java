@@ -17,7 +17,6 @@
 
 package com.schedjoules.eventdiscovery.eventdetails;
 
-import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -27,13 +26,27 @@ import android.view.MenuItem;
 
 import com.bumptech.glide.Glide;
 import com.schedjoules.client.eventsdiscovery.Event;
-import com.schedjoules.eventdiscovery.utils.BaseActivity;
+import com.schedjoules.client.eventsdiscovery.queries.EventByUid;
 import com.schedjoules.eventdiscovery.R;
+import com.schedjoules.eventdiscovery.common.ErrorFragment;
+import com.schedjoules.eventdiscovery.common.LoaderFragment;
 import com.schedjoules.eventdiscovery.databinding.SchedjoulesActivityEventDetailBinding;
 import com.schedjoules.eventdiscovery.eventlist.EventListActivity;
 import com.schedjoules.eventdiscovery.framework.access.Fragments;
 import com.schedjoules.eventdiscovery.model.ParcelableEvent;
 import com.schedjoules.eventdiscovery.model.SchedJoulesLinks;
+import com.schedjoules.eventdiscovery.service.ApiService;
+import com.schedjoules.eventdiscovery.service.ServiceJob;
+import com.schedjoules.eventdiscovery.service.SimpleServiceJobQueue;
+import com.schedjoules.eventdiscovery.utils.BaseActivity;
+import com.schedjoules.eventdiscovery.utils.FutureServiceConnection;
+
+import org.dmfs.httpessentials.exceptions.ProtocolError;
+import org.dmfs.httpessentials.exceptions.ProtocolException;
+import org.dmfs.httpessentials.types.StringToken;
+
+import java.io.IOException;
+import java.net.URISyntaxException;
 
 
 /**
@@ -41,39 +54,98 @@ import com.schedjoules.eventdiscovery.model.SchedJoulesLinks;
  * presented side-by-side with a list of items in a {@link EventListActivity} using a {@link EventDetailFragment}.
  *
  * @author Gabor Keszthelyi
+ * @author Marten Gajda
  */
 public final class EventDetailActivity extends BaseActivity
 {
-    private final static String EXTRA_CUSTOM_PARCELABLES = "com.schedjoules.CUSTOM_PARCELABLES";
-    private static final String EXTRA_EVENT = "event";
+    public final static String EXTRA_CUSTOM_PARCELABLES = "com.schedjoules.CUSTOM_PARCELABLES";
+    public final static String CUSTOM_EXTRA_EVENT = "event";
+    public final static String EXTRA_EVENT_UID = "com.schedjoules.event_uid";
+
+    private final static String STATE_EVENT = "com.schedjoules.event";
 
     private SchedjoulesActivityEventDetailBinding mViews;
+    private FutureServiceConnection<ApiService> mApiServiceConnection;
+    private ParcelableEvent mEvent;
 
 
-    public static Intent launchIntent(Context context, Event event)
+    @Override
+    protected void onCreate(final Bundle savedInstanceState)
     {
-        Intent intent = new Intent(context, EventDetailActivity.class);
-        Bundle nestedBundle = new Bundle();
-        nestedBundle.putParcelable(EXTRA_EVENT, new ParcelableEvent(event));
-        intent.putExtra(EXTRA_CUSTOM_PARCELABLES, nestedBundle);
-        return intent;
+        super.onCreate(savedInstanceState);
+        final Intent intent = getIntent();
+        initView();
+
+        if (savedInstanceState == null)
+        {
+            if (intent.hasExtra(EXTRA_CUSTOM_PARCELABLES))
+            {
+                mEvent = intent.getBundleExtra(EXTRA_CUSTOM_PARCELABLES).getParcelable(CUSTOM_EXTRA_EVENT);
+                new Fragments(this).add(R.id.schedjoules_event_detail_container, EventDetailFragment.newInstance(mEvent));
+                showEventDetailsOnToolbar(mEvent);
+            }
+            else
+            {
+                mApiServiceConnection = new ApiService.FutureConnection(this);
+                new SimpleServiceJobQueue<>(mApiServiceConnection).post(new ServiceJob<ApiService>()
+                {
+                    @Override
+                    public void execute(ApiService service)
+                    {
+                        try
+                        {
+                            mEvent = new ParcelableEvent(
+                                    service.apiResponse(new EventByUid(new StringToken(intent.getStringExtra(EXTRA_EVENT_UID)))).payload());
+                            new Fragments(EventDetailActivity.this).replace(R.id.schedjoules_event_detail_container, EventDetailFragment.newInstance(mEvent));
+                            runOnUiThread(new Runnable()
+                            {
+                                @Override
+                                public void run()
+                                {
+                                    showEventDetailsOnToolbar(mEvent);
+                                }
+                            });
+                        }
+                        catch (URISyntaxException | ProtocolError | ProtocolException | IOException | RuntimeException e)
+                        {
+                            showError();
+                        }
+                    }
+
+                    @Override
+                    public void onTimeOut()
+                    {
+                        showError();
+                    }
+                }, 5000);
+                // show an in-progress fragment
+                new Fragments(this).add(R.id.schedjoules_event_detail_container, new LoaderFragment());
+            }
+        }
+        else
+        {
+            mEvent = savedInstanceState.getParcelable(STATE_EVENT);
+            showEventDetailsOnToolbar(mEvent);
+        }
     }
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
+    protected void onSaveInstanceState(Bundle outState)
     {
-        super.onCreate(savedInstanceState);
+        super.onSaveInstanceState(outState);
+        outState.putParcelable(STATE_EVENT, mEvent);
+    }
 
-        Event event = getIntent().getBundleExtra(EXTRA_CUSTOM_PARCELABLES).getParcelable(EXTRA_EVENT);
 
-        initView();
-        showEventDetailsOnToolbar(event);
-
-        if (savedInstanceState == null)
+    @Override
+    protected void onDestroy()
+    {
+        if (mApiServiceConnection != null && mApiServiceConnection.isConnected())
         {
-            new Fragments(this).add(R.id.schedjoules_event_detail_container, EventDetailFragment.newInstance(event));
+            mApiServiceConnection.disconnect();
         }
+        super.onDestroy();
     }
 
 
@@ -87,16 +159,23 @@ public final class EventDetailActivity extends BaseActivity
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
-        mViews.schedjoulesEventDetailToolbarLayout.setContentScrimColor(
-                ContextCompat.getColor(this, R.color.schedjoules_colorPrimary));
+        mViews.schedjoulesEventDetailToolbarLayout.setContentScrimColor(ContextCompat.getColor(this, R.color.schedjoules_colorPrimary));
+    }
+
+
+    private void showError()
+    {
+        new Fragments(this).replace(R.id.schedjoules_event_detail_container, new ErrorFragment());
     }
 
 
     private void showEventDetailsOnToolbar(Event event)
     {
-        //noinspection ConstantConditions
-        getSupportActionBar().setTitle(event.title());
-
+        if (event == null)
+        {
+            return;
+        }
+        mViews.schedjoulesEventDetailToolbarLayout.setTitle(event.title());
         Glide.with(this)
                 .load(new SchedJoulesLinks(event.links()).bannerUri())
                 .into(mViews.schedjoulesEventDetailBanner);
