@@ -40,7 +40,6 @@ import java.util.List;
  *
  * @author Gabor Keszthelyi
  */
-// TODO What EventListItemsComposer does would be nicer with a separate task, but that composition of async adds complexity as well
 public final class EventListDownloadTask extends
         DiscardingSafeAsyncTask<EventListDownloadTask.TaskParam, FutureServiceConnection<ApiService>, Void, EventListDownloadTask.TaskResult>
 {

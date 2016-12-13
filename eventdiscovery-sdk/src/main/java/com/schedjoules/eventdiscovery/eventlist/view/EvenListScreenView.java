@@ -39,7 +39,7 @@ public interface EvenListScreenView extends OnCreateOptionsMenu, OnOptionsItemSe
 
     void setAdapter(RecyclerView.Adapter adapter);
 
-    void setBottomReachScrollListener(BottomReachScrollListener.Listener listener);
+    void setEdgeReachScrollListener(EdgeReachScrollListener.Listener listener);
 
     void setUserActionListener(UserActionListener userActionListener);
 
