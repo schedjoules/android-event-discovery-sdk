@@ -98,7 +98,7 @@ public final class EventListItemsImpl implements EventListItems
     @Override
     public boolean isTodayShown()
     {
-        return indexOfItem(new DateHeaderItem(DateTime.now().toAllDay()), TOP) >= 0;
+        return indexOfItem(new DateHeaderItem(DateTime.now()), TOP) >= 0;
     }
 
 

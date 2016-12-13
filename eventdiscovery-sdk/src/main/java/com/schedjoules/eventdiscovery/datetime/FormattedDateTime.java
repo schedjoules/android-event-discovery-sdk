@@ -15,28 +15,22 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery.eventlist.items;
+package com.schedjoules.eventdiscovery.datetime;
 
 import android.content.Context;
-import android.util.AttributeSet;
-import android.widget.TextView;
+import android.support.annotation.NonNull;
 
 
 /**
- * View for the date header items in the event list.
+ * Represents a formatted date/time.
  *
  * @author Gabor Keszthelyi
  */
-public final class DateHeaderItemView extends TextView
+public interface FormattedDateTime
 {
-    public DateHeaderItemView(Context context, AttributeSet attrs)
-    {
-        super(context, attrs);
-    }
-
-
-    public void setDateText(CharSequence dateText)
-    {
-        setText(dateText);
-    }
+    /**
+     * Creates the actual formatted {@link CharSequence} value.
+     */
+    @NonNull
+    CharSequence value(@NonNull Context context);
 }

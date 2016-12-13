@@ -30,11 +30,6 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 
-import static android.text.format.DateUtils.DAY_IN_MILLIS;
-import static android.text.format.DateUtils.FORMAT_ABBREV_ALL;
-import static android.text.format.DateUtils.FORMAT_SHOW_DATE;
-import static android.text.format.DateUtils.FORMAT_SHOW_WEEKDAY;
-
 
 /**
  * Date and time formatting.
@@ -61,22 +56,6 @@ public final class DateTimeFormatter
     {
         return DateUtils.formatDateTime(context, event.start().getTimestamp(),
                 DateUtils.FORMAT_SHOW_TIME | DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_WEEKDAY);
-    }
-
-
-    // TODO test if isToday works correctly with the local time provided
-    public static String smartDayFormat(Context context, DateTime localDay)
-    {
-        long timestamp = localDay.getTimestamp();
-        if (DateUtils.isToday(timestamp) || DateUtils.isToday(timestamp - DAY_IN_MILLIS))
-        {
-            return DateUtils.getRelativeTimeSpanString(timestamp, System.currentTimeMillis(), DAY_IN_MILLIS).toString();
-        }
-        else
-        {
-            return DateUtils.formatDateTime(context, timestamp,
-                    FORMAT_SHOW_WEEKDAY | FORMAT_SHOW_DATE | FORMAT_ABBREV_ALL);
-        }
     }
 
 

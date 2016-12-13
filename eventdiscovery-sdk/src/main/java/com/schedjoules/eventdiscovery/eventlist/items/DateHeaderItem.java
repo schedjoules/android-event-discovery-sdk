@@ -18,11 +18,13 @@
 package com.schedjoules.eventdiscovery.eventlist.items;
 
 import com.schedjoules.eventdiscovery.R;
+import com.schedjoules.eventdiscovery.datetime.SmartFormattedDay;
 import com.schedjoules.eventdiscovery.framework.adapter.ListItem;
 import com.schedjoules.eventdiscovery.framework.adapter.flexibleadapter.AbstractFlexibleHeader;
-import com.schedjoules.eventdiscovery.utils.DateTimeFormatter;
 
 import org.dmfs.rfc5545.DateTime;
+
+import java.util.TimeZone;
 
 
 /**
@@ -35,9 +37,15 @@ public final class DateHeaderItem extends AbstractFlexibleHeader<DateHeaderItemV
     private final DateTime mLocalDay;
 
 
-    public DateHeaderItem(DateTime localDay)
+    public DateHeaderItem(DateTime dateTime)
     {
-        mLocalDay = localDay;
+        mLocalDay = toLocalDay(dateTime);
+    }
+
+
+    private DateTime toLocalDay(DateTime dateTime)
+    {
+        return dateTime.shiftTimeZone(TimeZone.getDefault()).toAllDay();
     }
 
 
@@ -51,7 +59,7 @@ public final class DateHeaderItem extends AbstractFlexibleHeader<DateHeaderItemV
     @Override
     public void bindDataTo(DateHeaderItemView view)
     {
-        view.setDateText(DateTimeFormatter.smartDayFormat(view.getContext(), mLocalDay));
+        view.setDateText(new SmartFormattedDay(mLocalDay).value(view.getContext()));
     }
 
 

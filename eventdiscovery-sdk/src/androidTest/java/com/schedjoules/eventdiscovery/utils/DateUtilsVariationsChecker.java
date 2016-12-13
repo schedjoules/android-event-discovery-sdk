@@ -22,6 +22,8 @@ import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.text.format.DateUtils;
 
+import com.schedjoules.eventdiscovery.datetime.SmartFormattedDay;
+
 import org.dmfs.rfc5545.DateTime;
 import org.junit.Before;
 import org.junit.Rule;
@@ -109,14 +111,14 @@ public final class DateUtilsVariationsChecker
             @Override
             public String name()
             {
-                return "DateTimeFormatter.smartDayFormat";
+                return "SmartFormattedDay";
             }
 
 
             @Override
             public CharSequence format(Long timestamp)
             {
-                return DateTimeFormatter.smartDayFormat(mContext, new DateTime(timestamp));
+                return new SmartFormattedDay(new DateTime(timestamp)).value(mContext);
             }
         });
 
