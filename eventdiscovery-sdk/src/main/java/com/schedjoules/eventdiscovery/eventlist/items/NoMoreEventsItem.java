@@ -17,11 +17,10 @@
 
 package com.schedjoules.eventdiscovery.eventlist.items;
 
-import android.view.View;
+import android.support.annotation.StringRes;
 import android.widget.TextView;
 
 import com.schedjoules.eventdiscovery.R;
-import com.schedjoules.eventdiscovery.eventlist.itemsprovider.ScrollDirection;
 import com.schedjoules.eventdiscovery.framework.adapter.ListItem;
 import com.schedjoules.eventdiscovery.framework.adapter.flexibleadapter.AbstractFlexible;
 
@@ -31,22 +30,12 @@ import com.schedjoules.eventdiscovery.framework.adapter.flexibleadapter.Abstract
  *
  * @author Gabor Keszthelyi
  */
-public final class NoMoreEventsItem extends AbstractFlexible<View> implements ListItem<View>
+public final class NoMoreEventsItem extends AbstractFlexible<TextView> implements ListItem<TextView>
 {
-    public static final NoMoreEventsItem TOP = new NoMoreEventsItem(R.string.schedjoules_event_list_no_past_events);
-    public static final NoMoreEventsItem BOTTOM = new NoMoreEventsItem(R.string.schedjoules_event_list_no_future_events);
-
-
-    public static NoMoreEventsItem get(ScrollDirection direction)
-    {
-        return direction == ScrollDirection.BOTTOM ? BOTTOM : TOP;
-    }
-
-
     private final int mText;
 
 
-    private NoMoreEventsItem(int text)
+    public NoMoreEventsItem(@StringRes int text)
     {
         mText = text;
     }
@@ -55,13 +44,13 @@ public final class NoMoreEventsItem extends AbstractFlexible<View> implements Li
     @Override
     public int layoutResId()
     {
-        return R.layout.schedjoules_list_item_no_more;
+        return R.layout.schedjoules_list_item_special_text;
     }
 
 
     @Override
-    public void bindDataTo(View view)
+    public void bindDataTo(TextView view)
     {
-        ((TextView) view.findViewById(android.R.id.message)).setText(mText);
+        view.setText(mText);
     }
 }

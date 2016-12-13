@@ -17,6 +17,9 @@
 
 package com.schedjoules.eventdiscovery.eventlist.itemsprovider;
 
+import android.os.Handler;
+import android.os.Looper;
+
 import com.schedjoules.eventdiscovery.eventlist.items.DateHeaderItem;
 import com.schedjoules.eventdiscovery.eventlist.items.EventItem;
 import com.schedjoules.eventdiscovery.framework.adapter.ListItem;
@@ -40,7 +43,15 @@ public final class EventListItemsImpl implements EventListItems
 {
     private final List<ListItem> mItems = new ArrayList<>();
 
+    private final Handler mainHandler;
+
     private AdapterNotifier mAdapterNotifier;
+
+
+    public EventListItemsImpl()
+    {
+        mainHandler = new Handler(Looper.getMainLooper());
+    }
 
 
     @Override
@@ -67,7 +78,22 @@ public final class EventListItemsImpl implements EventListItems
 
 
     @Override
-    public void addSpecialItem(ListItem specialItem, ScrollDirection direction)
+    public void addSpecialItemPost(final ListItem specialItem, final ScrollDirection direction)
+    {
+        // Posting is needed otherwise it can get added in the same loop, resulting in pushing the list down
+        mainHandler.postDelayed(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                addSpecialItemNow(specialItem, direction);
+            }
+        }, 1);
+    }
+
+
+    @Override
+    public void addSpecialItemNow(ListItem specialItem, ScrollDirection direction)
     {
         int position = direction == TOP ? 0 : mItems.size();
         mItems.add(position, specialItem);
@@ -85,13 +111,6 @@ public final class EventListItemsImpl implements EventListItems
             mItems.remove(index);
             mAdapterNotifier.notifyItemRemoved(index);
         }
-    }
-
-
-    @Override
-    public boolean hasSpecialItemAdded(ListItem specialItem, ScrollDirection direction)
-    {
-        return indexOfItem(specialItem, direction) >= 0;
     }
 
 

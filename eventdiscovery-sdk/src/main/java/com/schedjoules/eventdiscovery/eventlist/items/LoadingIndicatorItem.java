@@ -17,7 +17,7 @@
 
 package com.schedjoules.eventdiscovery.eventlist.items;
 
-import android.widget.TextView;
+import android.view.View;
 
 import com.schedjoules.eventdiscovery.R;
 import com.schedjoules.eventdiscovery.framework.adapter.ListItem;
@@ -25,22 +25,22 @@ import com.schedjoules.eventdiscovery.framework.adapter.flexibleadapter.Abstract
 
 
 /**
- * Represents a loading error message item at the bottom or top of the event list.
+ * Event list UI item for loading indicator.
  *
  * @author Gabor Keszthelyi
  */
-public final class ErrorItem extends AbstractFlexible<TextView> implements ListItem<TextView>
+public final class LoadingIndicatorItem extends AbstractFlexible<View> implements ListItem<View>
 {
     @Override
     public int layoutResId()
     {
-        return R.layout.schedjoules_list_item_special_text;
+        return R.layout.schedjoules_list_item_loading;
     }
 
 
     @Override
-    public void bindDataTo(TextView view)
+    public void bindDataTo(View view)
     {
-        view.setText(R.string.schedjoules_event_list_error_item);
+
     }
 }
