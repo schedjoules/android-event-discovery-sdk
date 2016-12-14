@@ -24,7 +24,7 @@ import com.schedjoules.eventdiscovery.eventlist.items.ErrorItem;
 import com.schedjoules.eventdiscovery.eventlist.items.LoadingIndicatorItem;
 import com.schedjoules.eventdiscovery.eventlist.items.NoMoreEventsItem;
 
-import java.util.EnumMap;
+import java.util.Map;
 
 
 /**
@@ -37,14 +37,14 @@ public enum ScrollDirection
     TOP(new NoMoreEventsItem(R.string.schedjoules_event_list_no_past_events))
             {
                 @Override
-                public <T> boolean hasComingPageQuery(EnumMap<ScrollDirection, ResultPage<T>> lastResultPages)
+                public <T> boolean hasComingPageQuery(Map<ScrollDirection, ResultPage<T>> lastResultPages)
                 {
                     return !lastResultPages.get(this).isFirstPage();
                 }
 
 
                 @Override
-                public <T> ApiQuery<ResultPage<T>> comingPageQuery(EnumMap<ScrollDirection, ResultPage<T>> lastResultPages) throws IllegalStateException
+                public <T> ApiQuery<ResultPage<T>> comingPageQuery(Map<ScrollDirection, ResultPage<T>> lastResultPages) throws IllegalStateException
                 {
                     return lastResultPages.get(this).previousPageQuery();
                 }
@@ -53,14 +53,14 @@ public enum ScrollDirection
     BOTTOM(new NoMoreEventsItem(R.string.schedjoules_event_list_no_future_events))
             {
                 @Override
-                public <T> boolean hasComingPageQuery(EnumMap<ScrollDirection, ResultPage<T>> lastResultPages)
+                public <T> boolean hasComingPageQuery(Map<ScrollDirection, ResultPage<T>> lastResultPages)
                 {
                     return !lastResultPages.get(this).isLastPage();
                 }
 
 
                 @Override
-                public <T> ApiQuery<ResultPage<T>> comingPageQuery(EnumMap<ScrollDirection, ResultPage<T>> lastResultPages) throws IllegalStateException
+                public <T> ApiQuery<ResultPage<T>> comingPageQuery(Map<ScrollDirection, ResultPage<T>> lastResultPages) throws IllegalStateException
                 {
                     return lastResultPages.get(this).nextPageQuery();
                 }
@@ -77,7 +77,7 @@ public enum ScrollDirection
     }
 
 
-    public abstract <T> boolean hasComingPageQuery(EnumMap<ScrollDirection, ResultPage<T>> lastResultPages);
+    public abstract <T> boolean hasComingPageQuery(Map<ScrollDirection, ResultPage<T>> lastResultPages);
 
-    public abstract <T> ApiQuery<ResultPage<T>> comingPageQuery(EnumMap<ScrollDirection, ResultPage<T>> lastResultPages) throws IllegalStateException;
+    public abstract <T> ApiQuery<ResultPage<T>> comingPageQuery(Map<ScrollDirection, ResultPage<T>> lastResultPages) throws IllegalStateException;
 }

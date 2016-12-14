@@ -57,35 +57,27 @@ public class EventListItemsProviderImpl implements EventListItemsProvider, Event
 
     private static final String TAG = EventListItemsProviderImpl.class.getSimpleName();
 
-    private final FutureServiceConnection<ApiService> mApiService;
-
-    private final ExecutorService mExecutorService;
-
-    private final EventListBackgroundMessage mBackgroundMessage;
-
     private final EventListItems mItems;
-    private final EventListLoadingIndicatorOverlay mLoadingIndicatorOverlay;
+    private final ExecutorService mExecutorService;
+    private final Map<ScrollDirection, ResultPage<Envelope<Event>>> mLastResultPages;
+    private final Map<ScrollDirection, Boolean> mIsLoading;
+    private final Map<ScrollDirection, Boolean> mIsInErrorMode;
+    private final Map<ScrollDirection, TaskParam> mErrorTaskParam;
 
-    private final EnumMap<ScrollDirection, ResultPage<Envelope<Event>>> mLastResultPages;
+    private FutureServiceConnection<ApiService> mApiService;
+    private EventListBackgroundMessage mBackgroundMessage;
+    private EventListLoadingIndicatorOverlay mLoadingIndicatorOverlay;
 
     private GeoLocation mLocation;
-    private Map<ScrollDirection, Boolean> mIsLoading;
-
     private DownloadTaskClient mDownloadTaskClient;
 
-    private Map<ScrollDirection, Boolean> mIsInErrorMode;
-    private Map<ScrollDirection, TaskParam> mErrorTaskParam;
 
-
-    public EventListItemsProviderImpl(FutureServiceConnection<ApiService> apiService, EventListItems items, EventListBackgroundMessage backgroundMessage, EventListLoadingIndicatorOverlay loadingIndicatorOverlay)
+    public EventListItemsProviderImpl(EventListItems items)
     {
-        mApiService = apiService;
-        mBackgroundMessage = backgroundMessage;
         mItems = items;
-        mLoadingIndicatorOverlay = loadingIndicatorOverlay;
-        mBackgroundMessage.setOnClickListener(this);
         mExecutorService = Executors.newSingleThreadExecutor();
         mDownloadTaskClient = new DownloadTaskClient();
+
         mErrorTaskParam = new EnumMap<>(ScrollDirection.class);
 
         mIsInErrorMode = new EnumMap<>(ScrollDirection.class);
@@ -113,9 +105,31 @@ public class EventListItemsProviderImpl implements EventListItemsProvider, Event
 
 
     @Override
+    public void setApiService(FutureServiceConnection<ApiService> apiService)
+    {
+        mApiService = apiService;
+    }
+
+
+    @Override
     public void setAdapterNotifier(AdapterNotifier adapterNotifier)
     {
         mItems.setAdapterNotifier(adapterNotifier);
+    }
+
+
+    @Override
+    public void setBackgroundMessageUI(EventListBackgroundMessage backgroundMessage)
+    {
+        mBackgroundMessage = backgroundMessage;
+        mBackgroundMessage.setOnClickListener(this);
+    }
+
+
+    @Override
+    public void setLoadingIndicatorOverlayUI(EventListLoadingIndicatorOverlay loadingIndicator)
+    {
+        mLoadingIndicatorOverlay = loadingIndicator;
     }
 
 

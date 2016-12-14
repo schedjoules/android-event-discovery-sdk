@@ -19,7 +19,11 @@ package com.schedjoules.eventdiscovery.eventlist.itemsprovider;
 
 import com.schedjoules.client.eventsdiscovery.GeoLocation;
 import com.schedjoules.eventdiscovery.eventlist.view.EdgeReachScrollListener;
+import com.schedjoules.eventdiscovery.eventlist.view.EventListBackgroundMessage;
+import com.schedjoules.eventdiscovery.eventlist.view.EventListLoadingIndicatorOverlay;
 import com.schedjoules.eventdiscovery.framework.adapter.ListItemsProvider;
+import com.schedjoules.eventdiscovery.service.ApiService;
+import com.schedjoules.eventdiscovery.utils.FutureServiceConnection;
 
 import org.dmfs.rfc5545.DateTime;
 
@@ -38,6 +42,12 @@ public interface EventListItemsProvider extends EdgeReachScrollListener.Listener
      */
     void loadEvents(GeoLocation geoLocation, DateTime dateTime);
 
+    void setApiService(FutureServiceConnection<ApiService> apiService);
+
     void setAdapterNotifier(AdapterNotifier adapterNotifier);
+
+    void setBackgroundMessageUI(EventListBackgroundMessage backgroundMessage);
+
+    void setLoadingIndicatorOverlayUI(EventListLoadingIndicatorOverlay loadingIndicator);
 
 }
