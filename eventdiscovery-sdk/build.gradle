@@ -43,4 +43,7 @@ dependencies {
     compile 'net.opacapp:multiline-collapsingtoolbar:1.3.0'
     compile 'com.google.android.gms:play-services-places:9.8.0'
     compile 'com.github.davideas:FlexibleAdapter:0320868e9319c87926e645cd620f93ab12b9ba3b'
+
+    testCompile 'junit:junit:4.12'
+    testCompile 'org.mockito:mockito-core:2.3.0'
 }
