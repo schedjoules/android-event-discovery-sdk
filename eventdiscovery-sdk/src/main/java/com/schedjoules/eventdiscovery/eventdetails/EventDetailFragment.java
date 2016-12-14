@@ -110,8 +110,6 @@ public final class EventDetailFragment extends Fragment
         Glide.with(getActivity())
                 .load(new SchedJoulesLinks(mEvent.links()).bannerUri())
                 .into(mViews.header.schedjoulesEventDetailBanner);
-
-        mViews.schedjoulesEventDetailSchedjoulesFooter.animate().alpha(1).setStartDelay(1000).setDuration(400).start();
         return mViews.getRoot();
     }
 

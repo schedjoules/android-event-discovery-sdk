@@ -26,7 +26,6 @@ import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,10 +33,7 @@ import android.widget.LinearLayout;
 
 import com.bumptech.glide.Glide;
 import com.schedjoules.client.eventsdiscovery.Event;
-import com.schedjoules.eventdiscovery.R;
 import com.schedjoules.eventdiscovery.databinding.SchedjoulesEventDetailContentLoadingActionsBinding;
-import com.schedjoules.eventdiscovery.eventdetails.EventDetailsItemView;
-import com.schedjoules.eventdiscovery.eventdetails.EventDetailsTwoLineItemView;
 import com.schedjoules.eventdiscovery.eventdetails.transitions.AutomaticWizardTransition;
 import com.schedjoules.eventdiscovery.model.ParcelableEvent;
 import com.schedjoules.eventdiscovery.model.SchedJoulesLinks;
@@ -48,12 +44,13 @@ import com.schedjoules.eventdiscovery.service.SimpleServiceJobQueue;
 
 import org.dmfs.android.dumbledore.WizardStep;
 import org.dmfs.android.dumbledore.transitions.WizardTransition;
+import org.dmfs.httpessentials.types.Link;
 import org.dmfs.httpessentials.types.StringToken;
 
+import java.util.Collections;
+import java.util.List;
+
 import static com.schedjoules.eventdiscovery.R.layout.schedjoules_event_detail_content_loading_actions;
-import static com.schedjoules.eventdiscovery.utils.DateTimeFormatter.longDateFormat;
-import static com.schedjoules.eventdiscovery.utils.DateTimeFormatter.longEventTimeFormat;
-import static com.schedjoules.eventdiscovery.utils.LocationFormatter.longLocationFormat;
 
 
 /**
@@ -155,7 +152,6 @@ public final class ActionLoaderStep implements WizardStep
             mViews.header.schedjoulesEventDetailToolbarLayout.setTitle(mEvent.title());
             mVerticalItems = mViews.schedjoulesEventDetailVerticalItems;
 
-            addFixVerticalItems();
             // we already have the event, so load and show the image right away
             Glide.with(getActivity())
                     .load(new SchedJoulesLinks(mEvent.links()).bannerUri())
@@ -173,7 +169,8 @@ public final class ActionLoaderStep implements WizardStep
                 @Override
                 public void execute(ActionService service)
                 {
-                    advanceWizard(new AutomaticWizardTransition(new ShowEventStep(mEvent, service.actions(new StringToken(mEvent.uid())))));
+                    List<Link> links = service.actions(new StringToken(mEvent.uid()));
+                    advanceWizard(new AutomaticWizardTransition(new ShowEventStep(mEvent, links == null ? Collections.<Link>emptyList() : links)));
                 }
 
 
@@ -201,35 +198,6 @@ public final class ActionLoaderStep implements WizardStep
             {
                 wizardTransition.execute(activity);
             }
-        }
-
-
-        // TODO Could be factored out declaratively to sg like EventDetailItems implements Iterator<View>.
-        // (And create LinearLayout with addViews(Iterator<View> views) for mVerticalItems (would be useful in onResult, too))
-        private void addFixVerticalItems()
-        {
-            EventDetailsTwoLineItemView dateTimeItem = EventDetailsTwoLineItemView.inflate(mVerticalItems);
-            dateTimeItem.setIcon(R.drawable.schedjoules_ic_time);
-            dateTimeItem.setTitle(longDateFormat(mEvent.start()));
-            dateTimeItem.setSubTitle(longEventTimeFormat(getContext(), mEvent));
-            mVerticalItems.addView(dateTimeItem);
-
-            if (mEvent.locations().iterator().hasNext())
-            {
-                EventDetailsItemView locationItem = EventDetailsItemView.inflate(mVerticalItems);
-                locationItem.setIcon(R.drawable.schedjoules_ic_location);
-                locationItem.setTextAsTitle(longLocationFormat(mEvent.locations()));
-                mVerticalItems.addView(locationItem);
-            }
-
-            if (!TextUtils.isEmpty(mEvent.description()))
-            {
-                EventDetailsItemView descriptionItem = EventDetailsItemView.inflate(mVerticalItems);
-                descriptionItem.setIcon(R.drawable.schedjoules_ic_description);
-                descriptionItem.setTextAsTitle(mEvent.description());
-                mVerticalItems.addView(descriptionItem);
-            }
-
         }
     }
 }

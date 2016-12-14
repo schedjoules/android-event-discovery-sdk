@@ -49,6 +49,7 @@ import org.dmfs.httpessentials.types.StringToken;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -190,6 +191,10 @@ public final class EventLoaderStep implements WizardStep
                         public void execute(ActionService service)
                         {
                             mActions = service.actions(new StringToken(mEventUid));
+                            if (mActions == null)
+                            {
+                                mActions = Collections.emptyList();
+                            }
                             loaderReady();
                         }
 
