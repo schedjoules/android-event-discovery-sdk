@@ -20,9 +20,7 @@ package com.schedjoules.eventdiscovery.service;
 import com.schedjoules.eventdiscovery.utils.FutureServiceConnection;
 
 import java.util.concurrent.Executor;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.Executors;
 import java.util.concurrent.TimeoutException;
 
 
@@ -39,8 +37,7 @@ public final class SimpleServiceJobQueue<S> implements ServiceJobQueue<S>
 
     public SimpleServiceJobQueue(FutureServiceConnection<S> futureConnection)
     {
-        this(futureConnection,
-                new ThreadPoolExecutor(1 /* thread min */, 5 /* threads max */, 30 /* keep alive */, TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>(128)));
+        this(futureConnection, Executors.newFixedThreadPool(2));
     }
 
 

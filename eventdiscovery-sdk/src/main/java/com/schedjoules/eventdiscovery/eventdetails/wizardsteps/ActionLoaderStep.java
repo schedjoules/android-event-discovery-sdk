@@ -44,11 +44,15 @@ import com.schedjoules.eventdiscovery.service.SimpleServiceJobQueue;
 
 import org.dmfs.android.dumbledore.WizardStep;
 import org.dmfs.android.dumbledore.transitions.WizardTransition;
+import org.dmfs.httpessentials.exceptions.ProtocolError;
+import org.dmfs.httpessentials.exceptions.ProtocolException;
 import org.dmfs.httpessentials.types.Link;
-import org.dmfs.httpessentials.types.StringToken;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.TimeoutException;
 
 import static com.schedjoules.eventdiscovery.R.layout.schedjoules_event_detail_content_loading_actions;
 
@@ -128,7 +132,7 @@ public final class ActionLoaderStep implements WizardStep
 
     public final static class LoaderFragment extends Fragment
     {
-        private ServiceJobQueue<ActionService> mServiceJobQueue;
+        private ServiceJobQueue<ActionService> mActionServiceJobQueue;
         private Event mEvent;
         private LinearLayout mVerticalItems;
 
@@ -137,7 +141,7 @@ public final class ActionLoaderStep implements WizardStep
         public void onCreate(@Nullable Bundle savedInstanceState)
         {
             super.onCreate(savedInstanceState);
-            mServiceJobQueue = new SimpleServiceJobQueue<>(new ActionService.FutureConnection(getActivity()));
+            mActionServiceJobQueue = new SimpleServiceJobQueue<>(new ActionService.FutureConnection(getActivity()));
             mEvent = getArguments().getParcelable("event");
         }
 
@@ -164,13 +168,21 @@ public final class ActionLoaderStep implements WizardStep
         public void onActivityCreated(@Nullable Bundle savedInstanceState)
         {
             super.onActivityCreated(savedInstanceState);
-            mServiceJobQueue.post(new ServiceJob<ActionService>()
+            mActionServiceJobQueue.post(new ServiceJob<ActionService>()
             {
                 @Override
                 public void execute(ActionService service)
                 {
-                    List<Link> links = service.actions(new StringToken(mEvent.uid()));
-                    advanceWizard(new AutomaticWizardTransition(new ShowEventStep(mEvent, links == null ? Collections.<Link>emptyList() : links)));
+                    try
+                    {
+                        List<Link> links = service.actions(mEvent.uid());
+                        advanceWizard(new AutomaticWizardTransition(new ShowEventStep(mEvent, links)));
+                    }
+                    catch (TimeoutException | InterruptedException | ProtocolError | IOException | ProtocolException | URISyntaxException | RuntimeException e)
+                    {
+                        // for some reason we were unable to load the actions, move on without actions.
+                        advanceWizard(new AutomaticWizardTransition(new ShowEventStep(mEvent, Collections.<Link>emptyList())));
+                    }
                 }
 
 
@@ -186,7 +198,7 @@ public final class ActionLoaderStep implements WizardStep
         @Override
         public void onDestroy()
         {
-            mServiceJobQueue.disconnect();
+            mActionServiceJobQueue.disconnect();
             super.onDestroy();
         }
 
@@ -194,7 +206,7 @@ public final class ActionLoaderStep implements WizardStep
         private void advanceWizard(WizardTransition wizardTransition)
         {
             Activity activity = getActivity();
-            if (activity != null)
+            if (activity != null && isAdded())
             {
                 wizardTransition.execute(activity);
             }

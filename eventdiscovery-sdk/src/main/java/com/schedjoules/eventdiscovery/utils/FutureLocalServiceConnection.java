@@ -125,5 +125,4 @@ public final class FutureLocalServiceConnection<T> implements FutureServiceConne
             mContext.unbindService(mConnection);
         }
     }
-
 }

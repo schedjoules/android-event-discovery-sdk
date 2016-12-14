@@ -25,6 +25,15 @@ import android.support.annotation.NonNull;
 import com.schedjoules.client.eventsdiscovery.Event;
 import com.schedjoules.eventdiscovery.eventdetails.EventDetailActivity;
 import com.schedjoules.eventdiscovery.eventdetails.wizardsteps.ActionLoaderStep;
+import com.schedjoules.eventdiscovery.eventdetails.wizardsteps.ShowEventStep;
+import com.schedjoules.eventdiscovery.service.ActionService;
+import com.schedjoules.eventdiscovery.utils.FutureServiceConnection;
+
+import org.dmfs.httpessentials.types.Link;
+
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.concurrent.TimeoutException;
 
 
 /**
@@ -44,12 +53,56 @@ public final class BasicEventDetails implements EventDetails
 
 
     @Override
-    public void show(@NonNull Activity activity)
+    public void show(@NonNull final Activity activity)
     {
-        Intent intent = new Intent(activity, EventDetailActivity.class);
-        Bundle nestedBundle = new Bundle();
-        nestedBundle.putParcelable("WizardStep", new ActionLoaderStep(mEvent));
-        intent.putExtra("com.schedjoules.nestedExtras", nestedBundle);
-        activity.startActivity(intent);
+        new Thread(new StartEventDetailsRunnable(activity, mEvent)).start();
+    }
+
+
+    /**
+     * A {@link Runnable} that starts the details activity in the background after trying to load any actions from the cache.
+     */
+    private final static class StartEventDetailsRunnable implements Runnable
+    {
+        private final Activity mActivity;
+        private final Event mEvent;
+
+
+        private StartEventDetailsRunnable(@NonNull Activity activity, @NonNull Event event)
+        {
+            mActivity = activity;
+            mEvent = event;
+        }
+
+
+        @Override
+        public void run()
+        {
+            Intent intent = new Intent(mActivity, EventDetailActivity.class);
+            Bundle nestedBundle = new Bundle();
+
+            FutureServiceConnection<ActionService> actionService = new ActionService.FutureConnection(mActivity);
+            try
+            {
+                List<Link> actions = actionService.service(40).cachedActions(mEvent.uid());
+                // Start the details with the actions from the cache.
+                nestedBundle.putParcelable("WizardStep", new ShowEventStep(mEvent, actions));
+            }
+            catch (InterruptedException | TimeoutException | NoSuchElementException e)
+            {
+                // An error occurred or the actions are not in the cache yet, let the details activity load the actions.
+                nestedBundle.putParcelable("WizardStep", new ActionLoaderStep(mEvent));
+            }
+            finally
+            {
+                if (actionService.isConnected())
+                {
+                    actionService.disconnect();
+                }
+            }
+            intent.putExtra("com.schedjoules.nestedExtras", nestedBundle);
+
+            mActivity.startActivity(intent);
+        }
     }
 }

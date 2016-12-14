@@ -51,6 +51,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.TimeoutException;
 
 
 /**
@@ -140,7 +141,7 @@ public final class EventLoaderStep implements WizardStep
         {
             super.onCreate(savedInstanceState);
             mActionServiceJobQueue = new SimpleServiceJobQueue<>(new ActionService.FutureConnection(getActivity()));
-            mApiServiceJobQueue = new SimpleServiceJobQueue<ApiService>(new ApiService.FutureConnection(getActivity()));
+            mApiServiceJobQueue = new SimpleServiceJobQueue<>(new ApiService.FutureConnection(getActivity()));
             mEventUid = getArguments().getString("eventUid");
         }
 
@@ -160,7 +161,6 @@ public final class EventLoaderStep implements WizardStep
         public void onActivityCreated(@Nullable Bundle savedInstanceState)
         {
             super.onActivityCreated(savedInstanceState);
-            // TODO: load actions in parallel
             mApiServiceJobQueue.post(new ServiceJob<ApiService>()
             {
                 @Override
@@ -190,9 +190,13 @@ public final class EventLoaderStep implements WizardStep
                         @Override
                         public void execute(ActionService service)
                         {
-                            mActions = service.actions(new StringToken(mEventUid));
-                            if (mActions == null)
+                            try
                             {
+                                mActions = service.actions(mEventUid);
+                            }
+                            catch (TimeoutException | InterruptedException | ProtocolError | IOException | ProtocolException | URISyntaxException e)
+                            {
+                                // actions could not be loaded - fall back to an empty list
                                 mActions = Collections.emptyList();
                             }
                             loaderReady();

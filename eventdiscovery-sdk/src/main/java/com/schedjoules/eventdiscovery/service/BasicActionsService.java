@@ -24,25 +24,32 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.util.LruCache;
+import android.util.LruCache;
 
 import com.schedjoules.client.actions.queries.ActionsQuery;
 import com.schedjoules.eventdiscovery.utils.FutureServiceConnection;
 
+import org.dmfs.httpessentials.exceptions.ProtocolError;
+import org.dmfs.httpessentials.exceptions.ProtocolException;
 import org.dmfs.httpessentials.types.Link;
-import org.dmfs.httpessentials.types.Token;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.concurrent.TimeoutException;
 
 
 /**
+ * A basic implementation of an {@link ActionService} that caches the results.
+ *
  * @author Marten Gajda
  */
 public final class BasicActionsService extends Service implements ActionService
 {
-    private final static int CACHE_SIZE = 200; // links / actions
+    private final static int CACHE_SIZE = 200; // actions
 
 
     private final static class ActionServiceBinder extends Binder implements ActionService
@@ -56,10 +63,19 @@ public final class BasicActionsService extends Service implements ActionService
         }
 
 
+        @NonNull
         @Override
-        public List<Link> actions(Token eventUid)
+        public List<Link> actions(@NonNull String eventUid) throws InterruptedException, ProtocolError, IOException, TimeoutException, URISyntaxException, ProtocolException
         {
             return mDelegate.actions(eventUid);
+        }
+
+
+        @NonNull
+        @Override
+        public List<Link> cachedActions(@NonNull String eventUid)
+        {
+            return mDelegate.cachedActions(eventUid);
         }
 
     }
@@ -104,36 +120,41 @@ public final class BasicActionsService extends Service implements ActionService
     }
 
 
+    @NonNull
     @Override
-    public List<Link> actions(Token eventUid)
+    public List<Link> actions(@NonNull String eventUid) throws TimeoutException, InterruptedException, ProtocolError, IOException, ProtocolException, URISyntaxException
     {
-        return mActionCache.get(eventUid.toString());
+        List<Link> actions = mActionCache.get(eventUid);
+        if (actions != null)
+        {
+            return actions;
+        }
+        Iterator<Link> links = mApiServiceConnection.service(1000).apiResponse(new ActionsQuery(eventUid));
+        List<Link> result = new ArrayList<>(16);
+        while (links.hasNext())
+        {
+            result.add(links.next());
+        }
+        mActionCache.put(eventUid, result);
+        return result;
+    }
+
+
+    @NonNull
+    @Override
+    public List<Link> cachedActions(@NonNull String eventUid) throws NoSuchElementException
+    {
+        List<Link> actionLinks = mActionCache.get(eventUid);
+        if (actionLinks == null)
+        {
+            throw new NoSuchElementException(String.format("Element with UID %s not found.", eventUid));
+        }
+        return actionLinks;
     }
 
 
     private final LruCache<String, List<Link>> mActionCache = new LruCache<String, List<Link>>(CACHE_SIZE)
     {
-        @Override
-        protected List<Link> create(String key)
-        {
-            try
-            {
-                ApiService service = mApiServiceConnection.service(1000);
-                Iterator<Link> links = service.apiResponse(new ActionsQuery(key));
-                List<Link> result = new ArrayList<>();
-                while (links.hasNext())
-                {
-                    result.add(links.next());
-                }
-                return result;
-            }
-            catch (Exception e)
-            {
-                return null;
-            }
-        }
-
-
         @Override
         protected int sizeOf(String key, List<Link> value)
         {
