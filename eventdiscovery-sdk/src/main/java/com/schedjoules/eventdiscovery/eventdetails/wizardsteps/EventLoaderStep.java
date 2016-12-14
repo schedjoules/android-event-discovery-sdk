@@ -161,29 +161,30 @@ public final class EventLoaderStep implements WizardStep
         public void onActivityCreated(@Nullable Bundle savedInstanceState)
         {
             super.onActivityCreated(savedInstanceState);
-            mApiServiceJobQueue.post(new ServiceJob<ApiService>()
-            {
-                @Override
-                public void execute(ApiService service)
-                {
-                    try
+            mApiServiceJobQueue.post(
+                    new ServiceJob<ApiService>()
                     {
-                        mEvent = service.apiResponse(new EventByUid(new StringToken(mEventUid))).payload();
-                        loaderReady();
-                    }
-                    catch (URISyntaxException | ProtocolError | ProtocolException | IOException | RuntimeException e)
-                    {
-                        advanceWizard(new AutomaticWizardTransition(new ErrorStep()));
-                    }
-                }
+                        @Override
+                        public void execute(ApiService service)
+                        {
+                            try
+                            {
+                                mEvent = service.apiResponse(new EventByUid(new StringToken(mEventUid))).payload();
+                                loaderReady();
+                            }
+                            catch (URISyntaxException | ProtocolError | ProtocolException | IOException | RuntimeException e)
+                            {
+                                advanceWizard(new AutomaticWizardTransition(new ErrorStep()));
+                            }
+                        }
 
 
-                @Override
-                public void onTimeOut()
-                {
-                    advanceWizard(new AutomaticWizardTransition(new ErrorStep()));
-                }
-            }, 5000);
+                        @Override
+                        public void onTimeOut()
+                        {
+                            advanceWizard(new AutomaticWizardTransition(new ErrorStep()));
+                        }
+                    }, 5000);
             mActionServiceJobQueue.post(
                     new ServiceJob<ActionService>()
                     {
@@ -234,7 +235,7 @@ public final class EventLoaderStep implements WizardStep
         private void advanceWizard(WizardTransition wizardTransition)
         {
             Activity activity = getActivity();
-            if (activity != null)
+            if (activity != null && isAdded())
             {
                 wizardTransition.execute(activity);
             }

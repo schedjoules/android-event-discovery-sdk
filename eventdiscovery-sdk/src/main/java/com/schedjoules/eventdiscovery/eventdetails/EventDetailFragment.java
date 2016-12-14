@@ -66,7 +66,7 @@ public final class EventDetailFragment extends Fragment
     private static final String ARG_ACTIONS = "actions";
 
     private Event mEvent;
-    private Iterable<ParcelableLink> mActions;
+    private List<ParcelableLink> mActions;
 
     private SchedjoulesEventDetailContentBinding mViews;
     private LinearLayout mVerticalItems;
@@ -104,12 +104,12 @@ public final class EventDetailFragment extends Fragment
         mViews = DataBindingUtil.inflate(inflater, R.layout.schedjoules_event_detail_content, container, false);
         mVerticalItems = mViews.schedjoulesEventDetailVerticalItems;
         mHorizontalActions = mViews.schedjoulesEventHorizontalActions;
-        mViews.header.schedjoulesEventDetailToolbarLayout.setTitle(mEvent.title());
+        mViews.schedjoulesDetailsHeader.schedjoulesEventDetailToolbarLayout.setTitle(mEvent.title());
         addFixVerticalItems();
         showActions();
         Glide.with(getActivity())
                 .load(new SchedJoulesLinks(mEvent.links()).bannerUri())
-                .into(mViews.header.schedjoulesEventDetailBanner);
+                .into(mViews.schedjoulesDetailsHeader.schedjoulesEventDetailBanner);
         return mViews.getRoot();
     }
 
@@ -143,15 +143,9 @@ public final class EventDetailFragment extends Fragment
     }
 
 
-    private void removeHorizontalActionsView()
-    {
-        ((ViewGroup) mViews.getRoot()).removeView(mHorizontalActions);
-    }
-
-
     private void showActions()
     {
-        if (mActions.iterator().hasNext())
+        if (mActions.size() > 0)
         {
             int maxNumberOfItemsInTopBar = getResources().getInteger(R.integer.schedjoules_maxNumberOfHorizontalActions);
 
@@ -170,8 +164,8 @@ public final class EventDetailFragment extends Fragment
         }
         else
         {
-            // TODO: can we synthesize a few common actions that don't depend on the server response? I.e. share, add to calendar, directions
-            removeHorizontalActionsView();
+            // hide actions bar
+            mViews.schedjoulesEventHorizontalActions.setVisibility(View.GONE);
         }
     }
 }

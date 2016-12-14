@@ -29,7 +29,6 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 
 import com.bumptech.glide.Glide;
 import com.schedjoules.client.eventsdiscovery.Event;
@@ -134,7 +133,6 @@ public final class ActionLoaderStep implements WizardStep
     {
         private ServiceJobQueue<ActionService> mActionServiceJobQueue;
         private Event mEvent;
-        private LinearLayout mVerticalItems;
 
 
         @Override
@@ -153,13 +151,12 @@ public final class ActionLoaderStep implements WizardStep
             SchedjoulesEventDetailContentLoadingActionsBinding mViews = DataBindingUtil.inflate(inflater, schedjoules_event_detail_content_loading_actions,
                     container, false);
 
-            mViews.header.schedjoulesEventDetailToolbarLayout.setTitle(mEvent.title());
-            mVerticalItems = mViews.schedjoulesEventDetailVerticalItems;
+            mViews.schedjoulesDetailsHeader.schedjoulesEventDetailToolbarLayout.setTitle(mEvent.title());
 
             // we already have the event, so load and show the image right away
             Glide.with(getActivity())
                     .load(new SchedJoulesLinks(mEvent.links()).bannerUri())
-                    .into(mViews.header.schedjoulesEventDetailBanner);
+                    .into(mViews.schedjoulesDetailsHeader.schedjoulesEventDetailBanner);
             return mViews.getRoot();
         }
 
