@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery.utils;
+package com.schedjoules.eventdiscovery.common;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;

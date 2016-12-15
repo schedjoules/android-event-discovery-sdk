@@ -34,6 +34,7 @@ import com.schedjoules.eventdiscovery.actions.Action;
 import com.schedjoules.eventdiscovery.actions.ActionLoaderTask;
 import com.schedjoules.eventdiscovery.actions.ActionViewIterable;
 import com.schedjoules.eventdiscovery.actions.BaseActionFactory;
+import com.schedjoules.eventdiscovery.common.BaseFragment;
 import com.schedjoules.eventdiscovery.databinding.SchedjoulesEventDetailContentBinding;
 import com.schedjoules.eventdiscovery.eventlist.EventListActivity;
 import com.schedjoules.eventdiscovery.framework.async.SafeAsyncTaskCallback;
@@ -56,12 +57,12 @@ import static com.schedjoules.eventdiscovery.utils.LocationFormatter.longLocatio
 
 
 /**
- * A fragment representing a single Event detail screen. This fragment is either contained in a {@link EventListActivity} in two-pane mode (on tablets) or a
- * {@link EventDetailActivity} on handsets.
+ * A fragment representing a single Event detail screen. This fragment is either contained in a {@link
+ * EventListActivity} in two-pane mode (on tablets) or a {@link EventDetailActivity} on handsets.
  *
  * @author Gabor Keszthelyi
  */
-public final class EventDetailFragment extends Fragment implements SafeAsyncTaskCallback<Void, Iterator<Iterable<Action>>>
+public final class EventDetailFragment extends BaseFragment implements SafeAsyncTaskCallback<Void, Iterator<Iterable<Action>>>
 {
     private static final String ARG_EVENT = "event";
 

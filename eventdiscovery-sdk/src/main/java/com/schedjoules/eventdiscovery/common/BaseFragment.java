@@ -15,36 +15,17 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery.eventlist.view;
+package com.schedjoules.eventdiscovery.common;
 
-import android.view.View;
-import android.widget.ProgressBar;
+import android.support.v4.app.Fragment;
 
 
 /**
- * Represents the loading indicator overlay on the event list.
+ * Base class for all Fragments in the app.
  *
  * @author Gabor Keszthelyi
  */
-public final class EventListLoadingIndicatorOverlay
+public abstract class BaseFragment extends Fragment
 {
-    private final ProgressBar mProgressBar;
 
-
-    public EventListLoadingIndicatorOverlay(ProgressBar progressBar)
-    {
-        mProgressBar = progressBar;
-    }
-
-
-    public void show()
-    {
-        mProgressBar.setVisibility(View.VISIBLE);
-    }
-
-
-    public void hide()
-    {
-        mProgressBar.setVisibility(View.GONE);
-    }
 }

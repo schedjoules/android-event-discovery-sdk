@@ -27,8 +27,8 @@ import android.view.MenuItem;
 
 import com.bumptech.glide.Glide;
 import com.schedjoules.client.eventsdiscovery.Event;
-import com.schedjoules.eventdiscovery.utils.BaseActivity;
 import com.schedjoules.eventdiscovery.R;
+import com.schedjoules.eventdiscovery.common.BaseActivity;
 import com.schedjoules.eventdiscovery.databinding.SchedjoulesActivityEventDetailBinding;
 import com.schedjoules.eventdiscovery.eventlist.EventListActivity;
 import com.schedjoules.eventdiscovery.framework.access.Fragments;
