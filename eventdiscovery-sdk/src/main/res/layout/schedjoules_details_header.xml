@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <android.support.design.widget.AppBarLayout
+            android:id="@+id/schedjoules_event_detail_app_bar"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/schedjoules_app_bar_height"
+            android:fitsSystemWindows="true"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+        <net.opacapp.multilinecollapsingtoolbar.CollapsingToolbarLayout
+                android:id="@+id/schedjoules_event_detail_toolbar_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fitsSystemWindows="false"
+                app:expandedTitleGravity="bottom|left"
+                app:expandedTitleTextAppearance="@style/SchedJoules_ExpandedTitle"
+                app:expandedTitleMarginStart="@dimen/schedjoules_activity_horizontal_margin"
+                app:expandedTitleMarginEnd="@dimen/schedjoules_activity_horizontal_margin"
+                app:expandedTitleMarginBottom="@dimen/schedjoules_activity_horizontal_margin"
+                app:contentScrim="@color/schedjoules_colorPrimary"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed"
+                app:toolbarId="@+id/schedjoules_toolbar">
+
+            <ImageView
+                    android:id="@+id/schedjoules_event_detail_banner"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:layout_collapseMode="parallax"
+                    android:scaleType="centerCrop"
+                    android:fitsSystemWindows="true"/>
+
+            <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    android:fitsSystemWindows="true"
+                    app:layout_collapseMode="pin"
+                    android:src="@drawable/schedjoules_inverse_gradient_drawable"/>
+
+            <View
+                    android:layout_width="match_parent"
+                    app:layout_collapseMode="parallax"
+                    android:layout_height="160dp"
+                    android:background="@drawable/schedjoules_gradient_drawable"
+                    android:layout_gravity="center_horizontal|bottom"/>
+
+            <android.support.v7.widget.Toolbar
+                    android:id="@+id/schedjoules_event_detail_toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    app:layout_collapseMode="pin"
+                    app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+
+        </net.opacapp.multilinecollapsingtoolbar.CollapsingToolbarLayout>
+
+    </android.support.design.widget.AppBarLayout>
+
+</layout>
