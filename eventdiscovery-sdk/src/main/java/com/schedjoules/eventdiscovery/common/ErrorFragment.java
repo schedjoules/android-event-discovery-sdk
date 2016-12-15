@@ -15,37 +15,37 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery.eventlist;
+package com.schedjoules.eventdiscovery.common;
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import com.schedjoules.eventdiscovery.R;
-import com.schedjoules.eventdiscovery.common.BaseActivity;
-import com.schedjoules.eventdiscovery.framework.access.Fragments;
 
 
 /**
- * Activity for the Event List screen.
+ * A simple fragment that just informs the user of a background operation.
  *
- * @author Gabor Keszthelyi
+ * @author Marten Gajda
  */
-public final class EventListActivity extends BaseActivity
+public final class ErrorFragment extends Fragment
 {
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
+    public void onCreate(@Nullable Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-
-        setContentView(R.layout.schedjoules_activity_event_list);
-
-        Fragments fragments = new Fragments(this);
-        if (fragments.hasNotBeenAddedYet(R.id.schedjoules_event_list_activity_content))
-
-        {
-            fragments.add(R.id.schedjoules_event_list_activity_content,
-                    EventListFragment.newInstance(getIntent().getExtras()));
-        }
     }
 
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
+    {
+        return inflater.inflate(R.layout.schedjoules_fragment_error, container, false);
+    }
 }

@@ -22,6 +22,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
 
+import com.schedjoules.eventdiscovery.service.BasicActionsService;
 import com.schedjoules.eventdiscovery.service.BasicInsightsService;
 
 
@@ -44,5 +45,6 @@ public abstract class BaseActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         // Start the insight service if not started yet. No need to stop it manually, it will stop automatically.
         BasicInsightsService.start(this);
+        BasicActionsService.start(this);
     }
 }

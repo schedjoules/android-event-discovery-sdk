@@ -24,6 +24,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.schedjoules.eventdiscovery.BasicEventDiscovery;
+import com.schedjoules.eventdiscovery.UidEventDetails;
 import com.schedjoules.eventdiscovery.demo.optionals.AddToCalendarActivity;
 
 import org.dmfs.rfc5545.DateTime;
@@ -61,5 +62,11 @@ public final class MainActivity extends AppCompatActivity
         new BasicEventDiscovery()
                 .withStart(DateTime.now().addDuration(new Duration(1, 10, 0)))
                 .start(this);
+    }
+
+
+    public void onEventDetailsByUid(View view)
+    {
+        new UidEventDetails("ada36d012294c9c4").show(this);
     }
 }
