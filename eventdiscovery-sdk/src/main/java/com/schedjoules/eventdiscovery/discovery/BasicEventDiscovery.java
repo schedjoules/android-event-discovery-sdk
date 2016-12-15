@@ -23,14 +23,14 @@ import android.support.annotation.NonNull;
 import android.support.annotation.StyleRes;
 
 import com.schedjoules.client.eventsdiscovery.GeoLocation;
-import com.schedjoules.eventdiscovery.framework.model.location.geolocation.ParcelableGeoLocation;
+import com.schedjoules.eventdiscovery.framework.serialization.Keys;
+import com.schedjoules.eventdiscovery.framework.serialization.boxes.DateTimeBox;
+import com.schedjoules.eventdiscovery.framework.serialization.boxes.GeoLocationBox;
+import com.schedjoules.eventdiscovery.framework.serialization.boxes.IntBox;
+import com.schedjoules.eventdiscovery.framework.serialization.commons.IntentBuilder;
+import com.schedjoules.eventdiscovery.framework.serialization.core.FluentBuilder;
 
 import org.dmfs.rfc5545.DateTime;
-
-import static com.schedjoules.eventdiscovery.framework.EventIntents.EXTRA_GEOLOCATION;
-import static com.schedjoules.eventdiscovery.framework.EventIntents.EXTRA_RADIUS;
-import static com.schedjoules.eventdiscovery.framework.EventIntents.EXTRA_START_AFTER_TIMESTAMP;
-import static com.schedjoules.eventdiscovery.framework.EventIntents.EXTRA_THEME;
 
 
 /**
@@ -40,19 +40,18 @@ import static com.schedjoules.eventdiscovery.framework.EventIntents.EXTRA_THEME;
  */
 public final class BasicEventDiscovery implements EventDiscovery
 {
-    @NonNull
-    private final Intent mIntent;
+    private final FluentBuilder<Intent> mIntentBuilder;
 
 
     public BasicEventDiscovery()
     {
-        this(new Intent("schedjoules.intent.action.EVENT_DISCOVERY"));
+        this(new IntentBuilder("schedjoules.intent.action.EVENT_DISCOVERY"));
     }
 
 
-    private BasicEventDiscovery(@NonNull Intent intent)
+    private BasicEventDiscovery(FluentBuilder<Intent> intentBuilder)
     {
-        mIntent = intent;
+        mIntentBuilder = intentBuilder;
     }
 
 
@@ -60,7 +59,7 @@ public final class BasicEventDiscovery implements EventDiscovery
     @Override
     public EventDiscovery withStart(@NonNull DateTime dateTime)
     {
-        return new BasicEventDiscovery(new Intent(mIntent).putExtra(EXTRA_START_AFTER_TIMESTAMP, dateTime.getTimestamp()));
+        return new BasicEventDiscovery(mIntentBuilder.with(Keys.DATE_TIME_START_AFTER, new DateTimeBox(dateTime)));
     }
 
 
@@ -68,7 +67,7 @@ public final class BasicEventDiscovery implements EventDiscovery
     @Override
     public EventDiscovery withLocation(@NonNull GeoLocation location)
     {
-        return new BasicEventDiscovery(new Intent(mIntent).putExtra(EXTRA_GEOLOCATION, new ParcelableGeoLocation(location)));
+        return new BasicEventDiscovery(mIntentBuilder.with(Keys.GEO_LOCATION, new GeoLocationBox(location)));
     }
 
 
@@ -76,20 +75,22 @@ public final class BasicEventDiscovery implements EventDiscovery
     @Override
     public EventDiscovery withLocation(@NonNull GeoLocation location, int radius)
     {
-        return new BasicEventDiscovery(new Intent(mIntent).putExtra(EXTRA_GEOLOCATION, new ParcelableGeoLocation(location)).putExtra(EXTRA_RADIUS, radius));
+        return new BasicEventDiscovery(mIntentBuilder
+                .with(Keys.GEO_LOCATION, new GeoLocationBox(location))
+                .with(Keys.LOCATION_RADIUS, new IntBox(radius)));
     }
 
 
     @Override
     public EventDiscovery withTheme(@StyleRes int theme)
     {
-        return new BasicEventDiscovery(new Intent(mIntent).putExtra(EXTRA_THEME, theme));
+        return new BasicEventDiscovery(mIntentBuilder.with(Keys.THEME, new IntBox(theme)));
     }
 
 
     @Override
     public void start(@NonNull Activity activity)
     {
-        activity.startActivity(new Intent(mIntent).setPackage(activity.getPackageName()));
+        activity.startActivity(mIntentBuilder.build().setPackage(activity.getPackageName()));
     }
 }

@@ -15,21 +15,24 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery.framework.utils.factory;
+package com.schedjoules.eventdiscovery.framework.serialization.core;
+
+import android.os.Parcelable;
+
 
 /**
- * Represents a lazily created instance of type <code>T</code>.
+ * Represents a parcelable container holding an object of type <code>T</code>.
+ * <p>
+ * Implementations serves to define the parcelling for a type.
  *
  * @author Gabor Keszthelyi
  */
-public interface Lazy<T>
+public interface Box<T> extends Parcelable
 {
+
     /**
-     * Returns the instance which is created on first access.
-     * <p>
-     * Note:
-     * If <code>T</code> is mutable, the returned object is always the same instance.
-     * If <code>T</code> is immutable, the instance can be different (as there is no need for it to be the same).
+     * Returns the content object.
      */
-    T get();
+    T content();
+
 }

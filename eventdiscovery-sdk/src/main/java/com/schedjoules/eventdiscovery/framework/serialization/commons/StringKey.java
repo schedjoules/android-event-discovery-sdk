@@ -15,21 +15,31 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery.framework.utils.factory;
+package com.schedjoules.eventdiscovery.framework.serialization.commons;
+
+import com.schedjoules.eventdiscovery.framework.serialization.core.Key;
+
 
 /**
- * Represents a lazily created instance of type <code>T</code>.
+ * {@link Key} that takes a {@link String} to use for the name.
  *
  * @author Gabor Keszthelyi
  */
-public interface Lazy<T>
+public final class StringKey<V> implements Key<V>
 {
-    /**
-     * Returns the instance which is created on first access.
-     * <p>
-     * Note:
-     * If <code>T</code> is mutable, the returned object is always the same instance.
-     * If <code>T</code> is immutable, the instance can be different (as there is no need for it to be the same).
-     */
-    T get();
+    private final String mName;
+
+
+    public StringKey(String name)
+    {
+        mName = name;
+    }
+
+
+    @Override
+    public String name()
+    {
+        return mName;
+    }
+
 }

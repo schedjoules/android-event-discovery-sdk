@@ -15,21 +15,17 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery.framework.utils.factory;
+package com.schedjoules.eventdiscovery.framework.serialization.core;
 
 /**
- * Represents a lazily created instance of type <code>T</code>.
+ * Interface for representing a String key bound to a value type.
  *
  * @author Gabor Keszthelyi
  */
-public interface Lazy<T>
+public interface Key<T>
 {
     /**
-     * Returns the instance which is created on first access.
-     * <p>
-     * Note:
-     * If <code>T</code> is mutable, the returned object is always the same instance.
-     * If <code>T</code> is immutable, the instance can be different (as there is no need for it to be the same).
+     * Returns the actual String key.
      */
-    T get();
+    String name();
 }

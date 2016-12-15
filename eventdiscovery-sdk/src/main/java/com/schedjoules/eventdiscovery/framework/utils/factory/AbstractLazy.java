@@ -18,18 +18,24 @@
 package com.schedjoules.eventdiscovery.framework.utils.factory;
 
 /**
- * Represents a lazily created instance of type <code>T</code>.
+ * Abstract class for {@link Lazy}.
  *
  * @author Gabor Keszthelyi
  */
-public interface Lazy<T>
+public abstract class AbstractLazy<T> implements Lazy<T>
 {
-    /**
-     * Returns the instance which is created on first access.
-     * <p>
-     * Note:
-     * If <code>T</code> is mutable, the returned object is always the same instance.
-     * If <code>T</code> is immutable, the instance can be different (as there is no need for it to be the same).
-     */
-    T get();
+    private final Lazy<T> mDelegate;
+
+
+    public AbstractLazy(Factory<T> factory)
+    {
+        mDelegate = new SimpleLazy<>(factory);
+    }
+
+
+    @Override
+    public final T get()
+    {
+        return mDelegate.get();
+    }
 }
