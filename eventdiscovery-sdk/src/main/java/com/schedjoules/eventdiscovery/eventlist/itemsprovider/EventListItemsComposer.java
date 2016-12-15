@@ -21,6 +21,7 @@ import com.schedjoules.client.eventsdiscovery.Envelope;
 import com.schedjoules.client.eventsdiscovery.Event;
 import com.schedjoules.client.eventsdiscovery.ResultPage;
 import com.schedjoules.eventdiscovery.eventlist.items.DateHeaderItem;
+import com.schedjoules.eventdiscovery.eventlist.items.DividerItem;
 import com.schedjoules.eventdiscovery.eventlist.items.EventItem;
 import com.schedjoules.eventdiscovery.framework.adapter.ListItem;
 
@@ -73,7 +74,8 @@ public final class EventListItemsComposer
             if (envelope.hasPayload())
             {
                 Event event = envelope.payload();
-//                Log.d("Network", String.format("event | %s | %s", event.start(), event.title()));
+//                Log.d("Network", String.format("event | %s | %s",
+//                        new SimpleDateFormat("M dd HH:mm").format(event.start().getTimestamp()), event.title()));
 
                 DateHeaderItem dayHeader = new DateHeaderItem(event.start());
 
@@ -85,6 +87,7 @@ public final class EventListItemsComposer
                 EventItem item = new EventItem(event);
                 item.setHeader(dayHeaders.get(dayHeader));
                 items.add(item);
+                items.add(new DividerItem());
             }
         }
 

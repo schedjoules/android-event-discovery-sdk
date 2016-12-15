@@ -35,11 +35,11 @@ public interface EventListItems extends ListItemsProvider
 
     void mergeNewItems(List<ListItem> newItems, ScrollDirection direction);
 
-    void addSpecialItem(ListItem specialItem, ScrollDirection direction);
+    void addSpecialItemPost(ListItem specialItem, ScrollDirection direction);
+
+    void addSpecialItemNow(ListItem specialItem, ScrollDirection direction);
 
     void removeSpecialItem(ListItem specialItem, ScrollDirection direction);
-
-    boolean hasSpecialItemAdded(ListItem specialItem, ScrollDirection direction);
 
     boolean isTodayShown();
 
