@@ -24,6 +24,7 @@
     <string name="schedjoules_action_book">Book</string>
     <string name="schedjoules_action_info">Info</string>
     <string name="schedjoules_action_share">Share</string>
+    <string name="schedjoules_action_share_chooser_title">Share Event</string>
     <string name="schedjoules_action_call">Call</string>
     <string name="schedjoules_action_buy">Shop</string>
     <string name="schedjoules_action_invite">Invite</string>
@@ -41,6 +42,5 @@
 
     <string name="schedjoules_title_error">Error</string>
     <string name="schedjoules_generic_error">Something went wrong.\nPlease try again later.</string>
-    <string name="schedjoules_share_title">Share Event information</string>
 
 </resources>

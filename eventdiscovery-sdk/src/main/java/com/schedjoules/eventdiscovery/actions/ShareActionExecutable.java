@@ -69,7 +69,7 @@ public final class ShareActionExecutable implements ActionExecutable
                     .from((Activity) context)
                     .setText(eventText)
                     .setType("text/plain")
-                    .setChooserTitle(R.string.schedjoules_share_title)
+                    .setChooserTitle(R.string.schedjoules_action_share_chooser_title)
                     .createChooserIntent();
         }
         else
@@ -78,7 +78,7 @@ public final class ShareActionExecutable implements ActionExecutable
             pureIntent.setAction(Intent.ACTION_SEND);
             pureIntent.putExtra(Intent.EXTRA_TEXT, eventText);
             pureIntent.setType("text/plain");
-            sendIntent = Intent.createChooser(pureIntent, context.getString(R.string.schedjoules_share_title));
+            sendIntent = Intent.createChooser(pureIntent, context.getString(R.string.schedjoules_action_share_chooser_title));
         }
 
         if (sendIntent.resolveActivity(context.getPackageManager()) != null)
