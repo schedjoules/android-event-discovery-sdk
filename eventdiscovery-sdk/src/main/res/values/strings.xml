@@ -41,5 +41,6 @@
 
     <string name="schedjoules_title_error">Error</string>
     <string name="schedjoules_generic_error">Something went wrong.\nPlease try again later.</string>
+    <string name="schedjoules_share_title">Share Event information</string>
 
 </resources>
