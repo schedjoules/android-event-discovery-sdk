@@ -37,7 +37,8 @@ public final class DateHeaderItem extends AbstractFlexibleHeader<DateHeaderItemV
 
     public DateHeaderItem(DateTime dateTime)
     {
-        mDateTime = dateTime;
+        // This will be replaced after a merge..
+        mDateTime = dateTime.toAllDay();
     }
 
 

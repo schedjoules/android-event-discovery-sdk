@@ -25,18 +25,21 @@ import com.schedjoules.eventdiscovery.framework.adapter.ListItem;
 import com.schedjoules.eventdiscovery.model.DummyEvent;
 
 import org.dmfs.rfc5545.DateTime;
-import org.dmfs.rfc5545.Duration;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.TimeZone;
 
 import static com.schedjoules.eventdiscovery.eventlist.itemsprovider.ScrollDirection.BOTTOM;
 import static com.schedjoules.eventdiscovery.eventlist.itemsprovider.ScrollDirection.TOP;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertSame;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 
 /**
@@ -47,7 +50,7 @@ import static org.mockito.Mockito.mock;
 public class EventListItemsTest
 {
 
-    private EventListItemsImpl mUnderTest;
+    private EventListItems mUnderTest;
 
     private AdapterNotifier mAdapterNotifier;
 
@@ -55,8 +58,10 @@ public class EventListItemsTest
     @Before
     public void setup()
     {
+        TimeZone.setDefault(DateTime.UTC);
         mUnderTest = new EventListItemsImpl(mock(Handler.class));
         mAdapterNotifier = mock(AdapterNotifier.class);
+        mAdapterNotifier.notifyInitialItemsAdded(new ArrayList());
         mUnderTest.setAdapterNotifier(mAdapterNotifier);
     }
 
@@ -64,14 +69,12 @@ public class EventListItemsTest
     @Test
     public void testNewItemsOnTopWithCommonDayAreMergedCorrectly()
     {
-        // TODO verify AdapterNotifier calls as well
-
         // Initial page:
-
-        DateTime eventStart1 = DateTime.now().addDuration(new Duration(1, 0, 2, 0, 0));
-        DateHeaderItem h1orig = new DateHeaderItem(eventStart1);
-        EventItem e1 = new EventItem(new DummyEvent(eventStart1));
-        EventItem e2 = new EventItem(new DummyEvent(DateTime.now().addDuration(new Duration(1, 0, 4, 0, 0))));
+        // ARRANGE
+        DateTime e1start = new DateTime(2016, 12 - 1, 16, 14, 0, 0);
+        DateHeaderItem h1orig = new DateHeaderItem(e1start);
+        EventItem e1 = new EventItem(new DummyEvent(e1start));
+        EventItem e2 = new EventItem(new DummyEvent(new DateTime(2016, 12 - 1, 16, 17, 0, 0)));
         e1.setHeader(h1orig);
         e2.setHeader(h1orig);
 
@@ -80,18 +83,21 @@ public class EventListItemsTest
         newItems.add(e1);
         newItems.add(e2);
 
+        // ACT
         mUnderTest.mergeNewItems(newItems, BOTTOM);
 
+        // ASSERT
+        verify(mAdapterNotifier, times(1)).notifyNewItemsAdded(newItems, 0);
         assertSameElementsInProvider(newItems);
         assertHeaderForItem(1, h1orig);
         assertHeaderForItem(2, h1orig);
 
         // New page to TOP with same header:
-
-        DateTime eventStart2 = DateTime.now().addDuration(new Duration(-1, 0, 4, 0, 0));
+        // ARRANGE
+        DateTime eventStart2 = new DateTime(2016, 12 - 1, 16, 10, 0, 0);
         DateHeaderItem h1new = new DateHeaderItem(eventStart2);
         EventItem eMinus1 = new EventItem(new DummyEvent(eventStart2));
-        EventItem eMinus2 = new EventItem(new DummyEvent(DateTime.now().addDuration(new Duration(-1, 0, 2, 0, 0))));
+        EventItem eMinus2 = new EventItem(new DummyEvent(new DateTime(2016, 12 - 1, 16, 11, 0, 0)));
         eMinus1.setHeader(h1new);
         eMinus2.setHeader(h1new);
 
@@ -100,15 +106,70 @@ public class EventListItemsTest
         newItemsTop.add(eMinus1);
         newItemsTop.add(eMinus2);
 
+        // ACT
         mUnderTest.mergeNewItems(newItemsTop, TOP);
 
-        List<ListItem> expected = new ArrayList<>();
-        expected.add(h1orig);
-        expected.add(eMinus1);
-        expected.add(eMinus2);
-        expected.add(e1);
-        expected.add(e2);
-        assertSameElementsInProvider(expected);
+        // ASSERT
+        verify(mAdapterNotifier, times(1)).notifyItemRemoved(0);
+        verify(mAdapterNotifier, times(1)).notifyNewItemsAdded(Arrays.asList(h1orig, eMinus1, eMinus2), 0);
+        assertSameElementsInProvider(Arrays.<ListItem>asList(h1orig, eMinus1, eMinus2, e1, e2));
+        assertHeaderForItem(1, h1orig);
+        assertHeaderForItem(2, h1orig);
+        assertHeaderForItem(3, h1orig);
+        assertHeaderForItem(4, h1orig);
+    }
+
+
+    @Test
+    public void testNewItemsBottomWithCommonDayAreMergedCorrectly()
+    {
+        // Initial page:
+        // ARRANGE
+        DateTime e1start = new DateTime(2016, 12 - 1, 16, 14, 0, 0);
+        DateHeaderItem h1orig = new DateHeaderItem(e1start);
+        EventItem e1 = new EventItem(new DummyEvent(e1start));
+        EventItem e2 = new EventItem(new DummyEvent(new DateTime(2016, 12 - 1, 16, 17, 0, 0)));
+        e1.setHeader(h1orig);
+        e2.setHeader(h1orig);
+
+        List<ListItem> newItems = new ArrayList<>();
+        newItems.add(h1orig);
+        newItems.add(e1);
+        newItems.add(e2);
+
+        // ACT
+        mUnderTest.mergeNewItems(newItems, BOTTOM);
+
+        // ASSERT
+        verify(mAdapterNotifier, times(1)).notifyNewItemsAdded(newItems, 0);
+        assertSameElementsInProvider(newItems);
+        assertHeaderForItem(1, h1orig);
+        assertHeaderForItem(2, h1orig);
+
+        // New page to BOTTOM with same header:
+        // ARRANGE
+        DateTime eventStart2 = new DateTime(2016, 12 - 1, 16, 18, 0, 0);
+        DateHeaderItem h1new = new DateHeaderItem(eventStart2);
+        EventItem ePlus1 = new EventItem(new DummyEvent(eventStart2));
+        EventItem ePlus2 = new EventItem(new DummyEvent(new DateTime(2016, 12 - 1, 16, 19, 0, 0)));
+        ePlus1.setHeader(h1new);
+        ePlus2.setHeader(h1new);
+
+        List<ListItem> newItemsBottom = new ArrayList<>();
+        newItemsBottom.add(h1new);
+        newItemsBottom.add(ePlus1);
+        newItemsBottom.add(ePlus2);
+
+        // ACT
+        mUnderTest.mergeNewItems(newItemsBottom, BOTTOM);
+
+        // ASSERT
+        verify(mAdapterNotifier, times(1)).notifyNewItemsAdded(Arrays.asList(ePlus1, ePlus2), 3);
+        assertSameElementsInProvider(Arrays.<ListItem>asList(h1orig, e1, e2, ePlus1, ePlus2));
+        assertHeaderForItem(1, h1orig);
+        assertHeaderForItem(2, h1orig);
+        assertHeaderForItem(3, h1orig);
+        assertHeaderForItem(4, h1orig);
     }
 
 
