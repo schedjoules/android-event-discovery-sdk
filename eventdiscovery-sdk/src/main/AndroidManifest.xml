@@ -16,6 +16,27 @@
             </intent-filter>
         </activity>
 
+
+        <activity
+                android:name=".proxies.DeeplinkEventDetailsProxy"
+                android:label="Event details"
+                android:exported="true"
+                android:enabled="true"
+                android:theme="@style/SchedJoules_AppTheme.NoActionBar">
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+
+                <data
+                        android:scheme="https"
+                        android:host="web.schedjoules.com"
+                        android:pathPattern="/events/.*"/>
+            </intent-filter>
+        </activity>
+
+
         <activity
                 android:name="com.schedjoules.eventdiscovery.eventdetails.EventDetailActivity"
                 android:label=""
