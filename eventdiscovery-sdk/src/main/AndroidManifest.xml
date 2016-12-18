@@ -22,7 +22,7 @@
                 android:label="Event details"
                 android:exported="true"
                 android:enabled="true"
-                android:theme="@style/SchedJoules_AppTheme.NoActionBar">
+                android:theme="@android:style/Theme.NoDisplay">
             <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW"/>
 
