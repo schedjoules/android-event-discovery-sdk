@@ -20,7 +20,6 @@ package com.schedjoules.eventdiscovery.eventlist.view;
 import android.view.View;
 import android.widget.TextView;
 
-import com.schedjoules.eventdiscovery.utils.BaseActivity;
 import com.schedjoules.eventdiscovery.R;
 
 
@@ -34,9 +33,9 @@ public final class EventListBackgroundMessage
     private final TextView mTextView;
 
 
-    public EventListBackgroundMessage(BaseActivity activity)
+    public EventListBackgroundMessage(TextView textView)
     {
-        mTextView = (TextView) activity.findViewById(R.id.schedjoules_event_list_background_message);
+        mTextView = textView;
     }
 
 

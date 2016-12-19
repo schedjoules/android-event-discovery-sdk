@@ -61,10 +61,10 @@ public class EventListItemsProviderImpl implements EventListItemsProvider, Event
 
     private final ExecutorService mExecutorService;
 
-    private final EventListBackgroundMessage mBackgroundMessage;
+    private EventListBackgroundMessage mBackgroundMessage;
 
     private final EventListItems mItems;
-    private final EventListLoadingIndicatorOverlay mLoadingIndicatorOverlay;
+    private EventListLoadingIndicatorOverlay mLoadingIndicatorOverlay;
 
     private final EnumMap<ScrollDirection, ResultPage<Envelope<Event>>> mLastResultPages;
 
@@ -77,13 +77,10 @@ public class EventListItemsProviderImpl implements EventListItemsProvider, Event
     private Map<ScrollDirection, TaskParam> mErrorTaskParam;
 
 
-    public EventListItemsProviderImpl(FutureServiceConnection<ApiService> apiService, EventListItems items, EventListBackgroundMessage backgroundMessage, EventListLoadingIndicatorOverlay loadingIndicatorOverlay)
+    public EventListItemsProviderImpl(FutureServiceConnection<ApiService> apiService, EventListItems items)
     {
         mApiService = apiService;
-        mBackgroundMessage = backgroundMessage;
         mItems = items;
-        mLoadingIndicatorOverlay = loadingIndicatorOverlay;
-        mBackgroundMessage.setOnClickListener(this);
         mExecutorService = Executors.newSingleThreadExecutor();
         mDownloadTaskClient = new DownloadTaskClient();
         mErrorTaskParam = new EnumMap<>(ScrollDirection.class);
@@ -116,6 +113,21 @@ public class EventListItemsProviderImpl implements EventListItemsProvider, Event
     public void setAdapterNotifier(AdapterNotifier adapterNotifier)
     {
         mItems.setAdapterNotifier(adapterNotifier);
+    }
+
+
+    @Override
+    public void setBackgroundMessageUI(EventListBackgroundMessage backgroundMessage)
+    {
+        mBackgroundMessage = backgroundMessage;
+        mBackgroundMessage.setOnClickListener(this);
+    }
+
+
+    @Override
+    public void setLoadingIndicatorUI(EventListLoadingIndicatorOverlay loadingIndicatorOverlay)
+    {
+        mLoadingIndicatorOverlay = loadingIndicatorOverlay;
     }
 
 

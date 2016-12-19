@@ -21,7 +21,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,7 +31,7 @@ import com.schedjoules.eventdiscovery.R;
 /**
  * Created by marten on 10.11.16.
  */
-public final class FeedbackFragment extends Fragment implements View.OnClickListener
+public final class FeedbackFragment extends BaseFragment implements View.OnClickListener
 {
     public FeedbackFragment()
     {
