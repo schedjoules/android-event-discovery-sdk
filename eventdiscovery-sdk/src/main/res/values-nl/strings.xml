@@ -22,6 +22,7 @@
     <string name="schedjoules_action_book">Tickets</string>
     <string name="schedjoules_action_info">Info</string>
     <string name="schedjoules_action_share">Delen</string>
+    <string name="schedjoules_action_share_chooser_title">Delen …</string>
     <string name="schedjoules_action_call">Bellen</string>
     <string name="schedjoules_action_buy">Kopen</string>
     <string name="schedjoules_action_invite">Uitnodigen</string>

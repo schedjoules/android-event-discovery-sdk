@@ -15,34 +15,37 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery.utils;
+package com.schedjoules.eventdiscovery.common;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.app.AppCompatDelegate;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
-import com.schedjoules.eventdiscovery.service.BasicInsightsService;
+import com.schedjoules.eventdiscovery.R;
 
 
 /**
- * Base class for all Activities in the app.
+ * A simple fragment that just informs the user of a background operation.
  *
- * @author Gabor Keszthelyi
+ * @author Marten Gajda
  */
-public abstract class BaseActivity extends AppCompatActivity
+public final class ErrorFragment extends Fragment
 {
 
-    static
-    {
-        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
-    }
-
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState)
+    public void onCreate(@Nullable Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        // Start the insight service if not started yet. No need to stop it manually, it will stop automatically.
-        BasicInsightsService.start(this);
+    }
+
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
+    {
+        return inflater.inflate(R.layout.schedjoules_fragment_error, container, false);
     }
 }

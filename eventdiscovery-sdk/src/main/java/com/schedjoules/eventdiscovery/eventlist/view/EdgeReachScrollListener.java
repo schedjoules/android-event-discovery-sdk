@@ -27,12 +27,13 @@ import static com.schedjoules.eventdiscovery.eventlist.itemsprovider.ScrollDirec
 
 
 /**
- * A {@link RecyclerView.OnScrollListener} that detects when the user has scrolled close to the bottom of the list.
+ * A {@link RecyclerView.OnScrollListener} that detects when the user has scrolled close to the bottom or top of the
+ * list.
  *
  * @author Gabor Keszthelyi
  */
 // TODO Would simply tracking when {@link RecyclerView#onBindViewHolder} is called for position close to size enough as well?
-public final class BottomReachScrollListener extends RecyclerView.OnScrollListener
+public final class EdgeReachScrollListener extends RecyclerView.OnScrollListener
 {
 
     private final RecyclerView mRecyclerView;
@@ -40,7 +41,7 @@ public final class BottomReachScrollListener extends RecyclerView.OnScrollListen
     private final int mCloseToTopOrBottomThreshold;
 
 
-    public BottomReachScrollListener(RecyclerView recyclerView, Listener listener, int closeToTopOrBottomThreshold)
+    public EdgeReachScrollListener(RecyclerView recyclerView, Listener listener, int closeToTopOrBottomThreshold)
     {
         mRecyclerView = recyclerView;
         mListener = listener;
@@ -73,7 +74,7 @@ public final class BottomReachScrollListener extends RecyclerView.OnScrollListen
     @Override
     public void onScrolled(RecyclerView recyclerView, int dx, int dy)
     {
-        // dy could be used to assess direction, but this method is only called when the scroll finished
+        // dy could be used to assess direction, but this method is only called when the scroll finished. TODO try it though
     }
 
 

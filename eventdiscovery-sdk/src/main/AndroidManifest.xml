@@ -16,9 +16,30 @@
             </intent-filter>
         </activity>
 
+
+        <activity
+                android:name=".proxies.DeeplinkEventDetailsProxy"
+                android:label="Event details"
+                android:exported="true"
+                android:enabled="true"
+                android:theme="@android:style/Theme.NoDisplay">
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+
+                <data
+                        android:scheme="https"
+                        android:host="web.schedjoules.com"
+                        android:pathPattern="/events/.*"/>
+            </intent-filter>
+        </activity>
+
+
         <activity
                 android:name="com.schedjoules.eventdiscovery.eventdetails.EventDetailActivity"
-                android:label="@string/schedjoules_title_event_detail"
+                android:label=""
                 android:exported="false"
                 android:enabled="true"
                 android:theme="@style/SchedJoules_AppTheme.NoActionBar">
@@ -40,6 +61,16 @@
                 android:exported="false"
                 android:stopWithTask="true"
                 android:enabled="true"/>
+
+        <service
+                android:name=".service.BasicActionsService"
+                android:exported="false"
+                android:stopWithTask="true"
+                android:enabled="true">
+            <intent-filter>
+                <action android:name="com.schedjoules.ACTIONS"/>
+            </intent-filter>
+        </service>
 
         <meta-data
                 android:name="com.schedjoules.eventdiscovery.common.OurGlideModule"

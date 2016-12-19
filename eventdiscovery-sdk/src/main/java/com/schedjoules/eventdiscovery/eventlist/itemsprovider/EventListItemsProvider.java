@@ -18,7 +18,9 @@
 package com.schedjoules.eventdiscovery.eventlist.itemsprovider;
 
 import com.schedjoules.client.eventsdiscovery.GeoLocation;
-import com.schedjoules.eventdiscovery.eventlist.view.BottomReachScrollListener;
+import com.schedjoules.eventdiscovery.eventlist.view.EdgeReachScrollListener;
+import com.schedjoules.eventdiscovery.eventlist.view.EventListBackgroundMessage;
+import com.schedjoules.eventdiscovery.eventlist.view.EventListLoadingIndicatorOverlay;
 import com.schedjoules.eventdiscovery.framework.adapter.ListItemsProvider;
 
 import org.dmfs.rfc5545.DateTime;
@@ -30,7 +32,7 @@ import org.dmfs.rfc5545.DateTime;
  *
  * @author Gabor Keszthelyi
  */
-public interface EventListItemsProvider extends BottomReachScrollListener.Listener
+public interface EventListItemsProvider extends EdgeReachScrollListener.Listener
 {
 
     /**
@@ -39,5 +41,9 @@ public interface EventListItemsProvider extends BottomReachScrollListener.Listen
     void loadEvents(GeoLocation geoLocation, DateTime dateTime);
 
     void setAdapterNotifier(AdapterNotifier adapterNotifier);
+
+    void setBackgroundMessageUI(EventListBackgroundMessage backgroundMessage);
+
+    void setLoadingIndicatorUI(EventListLoadingIndicatorOverlay loadingIndicatorOverlay);
 
 }

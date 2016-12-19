@@ -21,6 +21,7 @@ import com.schedjoules.client.eventsdiscovery.Event;
 
 import org.dmfs.httpessentials.types.Link;
 import org.dmfs.iterables.Repeatable;
+import org.dmfs.iterators.AbstractBaseIterator;
 import org.dmfs.iterators.AbstractConvertedIterator;
 import org.dmfs.iterators.ConvertedIterator;
 import org.dmfs.iterators.FilteredIterator;
@@ -36,18 +37,18 @@ import java.util.Iterator;
  */
 public final class Actions implements Iterable<Action>
 {
-    private final Iterable<Link> mLinks;
+    private final Iterable<? extends Link> mLinks;
     private final Event mEvent;
     private final ActionFactory mActionFactory;
 
 
-    public Actions(@android.support.annotation.NonNull Iterator<Link> links, @android.support.annotation.NonNull Event event, @android.support.annotation.NonNull ActionFactory actionFactory)
+    public Actions(@android.support.annotation.NonNull Iterator<? extends Link> links, @android.support.annotation.NonNull Event event, @android.support.annotation.NonNull ActionFactory actionFactory)
     {
         this(new Repeatable<>(links), event, actionFactory);
     }
 
 
-    public Actions(@android.support.annotation.NonNull Iterable<Link> links, @android.support.annotation.NonNull Event event, @android.support.annotation.NonNull ActionFactory actionFactory)
+    public Actions(@android.support.annotation.NonNull Iterable<? extends Link> links, @android.support.annotation.NonNull Event event, @android.support.annotation.NonNull ActionFactory actionFactory)
     {
         mLinks = links;
         mEvent = event;
@@ -61,8 +62,23 @@ public final class Actions implements Iterable<Action>
     {
         final ActionFactory actionFactory = mActionFactory;
         final Event event = mEvent;
+        final Iterator<? extends Link> links = mLinks.iterator();
 
-        return new FilteredIterator<>(new ConvertedIterator<>(mLinks.iterator(), new AbstractConvertedIterator.Converter<Action, Link>()
+        return new FilteredIterator<>(new ConvertedIterator<>(new AbstractBaseIterator<Link>()
+        {
+            @Override
+            public boolean hasNext()
+            {
+                return links.hasNext();
+            }
+
+
+            @Override
+            public Link next()
+            {
+                return links.next();
+            }
+        }, new AbstractConvertedIterator.Converter<Action, Link>()
         {
             @Override
             public Action convert(Link link)
