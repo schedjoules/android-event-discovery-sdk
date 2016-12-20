@@ -15,36 +15,28 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery.utils;
+package com.schedjoules.eventdiscovery.proxies;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.app.AppCompatDelegate;
 
-import com.schedjoules.eventdiscovery.service.BasicActionsService;
-import com.schedjoules.eventdiscovery.service.BasicInsightsService;
+import com.schedjoules.eventdiscovery.UidEventDetails;
 
 
 /**
- * Base class for all Activities in the app.
+ * Invisible {@link Activity} to handle deep links to the event details web site.
  *
- * @author Gabor Keszthelyi
+ * @author Marten Gajda
  */
-public abstract class BaseActivity extends AppCompatActivity
+public final class DeeplinkEventDetailsProxy extends Activity
 {
-
-    static
-    {
-        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
-    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        // Start the insight service if not started yet. No need to stop it manually, it will stop automatically.
-        BasicInsightsService.start(this);
-        BasicActionsService.start(this);
+        new UidEventDetails(getIntent().getData().getLastPathSegment()).show(this);
+        finish();
     }
 }

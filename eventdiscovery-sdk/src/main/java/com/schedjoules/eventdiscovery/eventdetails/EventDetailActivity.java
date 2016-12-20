@@ -20,16 +20,17 @@ package com.schedjoules.eventdiscovery.eventdetails;
 import android.os.Bundle;
 
 import com.schedjoules.eventdiscovery.R;
+import com.schedjoules.eventdiscovery.common.BaseActivity;
 import com.schedjoules.eventdiscovery.eventlist.EventListActivity;
-import com.schedjoules.eventdiscovery.utils.BaseActivity;
 
 import org.dmfs.android.dumbledore.SimpleWizard;
 import org.dmfs.android.dumbledore.WizardStep;
 
 
 /**
- * An activity representing a single Event detail screen. This activity is only used on narrow width devices. On tablet-size devices, Event details are
- * presented side-by-side with a list of items in a {@link EventListActivity} using a {@link EventDetailFragment}.
+ * An activity representing a single Event detail screen. This activity is only used on narrow width devices. On
+ * tablet-size devices, Event details are presented side-by-side with a list of items in a {@link EventListActivity}
+ * using a {@link EventDetailFragment}.
  *
  * @author Gabor Keszthelyi
  * @author Marten Gajda

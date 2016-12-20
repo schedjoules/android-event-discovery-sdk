@@ -22,6 +22,7 @@
     <string name="schedjoules_action_book">Book</string>
     <string name="schedjoules_action_info">Info</string>
     <string name="schedjoules_action_share">Share</string>
+    <string name="schedjoules_action_share_chooser_title">Share Event</string>
     <string name="schedjoules_action_call">Call</string>
     <string name="schedjoules_action_buy">Shop</string>
     <string name="schedjoules_action_invite">Invite</string>

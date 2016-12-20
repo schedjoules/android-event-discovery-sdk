@@ -15,36 +15,23 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery.eventlist.view;
+package com.schedjoules.eventdiscovery.framework.listen;
 
-import android.view.View;
-import android.widget.ProgressBar;
+import android.support.v4.app.Fragment;
+import android.view.Menu;
+import android.view.MenuInflater;
 
 
 /**
- * Represents the loading indicator overlay on the event list.
+ * Components that handle {@link Fragment#onCreateOptionsMenu(Menu, MenuInflater)} callbacks can implement this
+ * interface.
  *
  * @author Gabor Keszthelyi
  */
-public final class EventListLoadingIndicatorOverlay
+public interface OnCreateOptionsMenuFragment
 {
-    private final ProgressBar mProgressBar;
-
-
-    public EventListLoadingIndicatorOverlay(ProgressBar progressBar)
-    {
-        mProgressBar = progressBar;
-    }
-
-
-    public void show()
-    {
-        mProgressBar.setVisibility(View.VISIBLE);
-    }
-
-
-    public void hide()
-    {
-        mProgressBar.setVisibility(View.GONE);
-    }
+    /**
+     * @see Fragment#onCreateOptionsMenu(Menu, MenuInflater)
+     */
+    void onCreateOptionsMenu(Menu menu, MenuInflater inflater);
 }

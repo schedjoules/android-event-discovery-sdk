@@ -19,6 +19,7 @@ package com.schedjoules.eventdiscovery.location;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 
 import com.google.android.gms.common.GoogleApiAvailability;
@@ -40,13 +41,13 @@ public final class PlacesApiLocationSelection implements LocationSelection, OnAc
 {
     private static final int PLACE_AUTOCOMPLETE_REQUEST_CODE = 7512;
 
-    private final Activity mActivity;
+    private final Fragment mFragment;
     private Listener mListener;
 
 
-    public PlacesApiLocationSelection(Activity activity)
+    public PlacesApiLocationSelection(Fragment fragment)
     {
-        mActivity = activity;
+        mFragment = fragment;
     }
 
 
@@ -75,17 +76,17 @@ public final class PlacesApiLocationSelection implements LocationSelection, OnAc
 
             Intent intent = new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_OVERLAY)
                     .setFilter(citiesFilter)
-                    .build(mActivity);
+                    .build(mFragment.getActivity());
 
-            mActivity.startActivityForResult(intent, PLACE_AUTOCOMPLETE_REQUEST_CODE);
+            mFragment.startActivityForResult(intent, PLACE_AUTOCOMPLETE_REQUEST_CODE);
         }
         catch (GooglePlayServicesRepairableException e)
         {
-            GoogleApiAvailability.getInstance().getErrorDialog(mActivity, e.getConnectionStatusCode(), 4579).show();
+            GoogleApiAvailability.getInstance().getErrorDialog(mFragment.getActivity(), e.getConnectionStatusCode(), 4579).show();
         }
         catch (GooglePlayServicesNotAvailableException e)
         {
-            GoogleApiAvailability.getInstance().getErrorDialog(mActivity, e.errorCode, 4573).show();
+            GoogleApiAvailability.getInstance().getErrorDialog(mFragment.getActivity(), e.errorCode, 4573).show();
         }
 
     }
@@ -94,11 +95,11 @@ public final class PlacesApiLocationSelection implements LocationSelection, OnAc
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data)
     {
-        if (requestCode == PLACE_AUTOCOMPLETE_REQUEST_CODE)
+        if (requestCode == PLACE_AUTOCOMPLETE_REQUEST_CODE && mFragment.isAdded())
         {
             if (resultCode == Activity.RESULT_OK)
             {
-                Place place = PlaceAutocomplete.getPlace(mActivity, data);
+                Place place = PlaceAutocomplete.getPlace(mFragment.getActivity(), data);
                 if (mListener != null)
                 {
                     mListener.onLocationSelected(new PlacesApiLocationSelectionResult(place));
@@ -106,7 +107,7 @@ public final class PlacesApiLocationSelection implements LocationSelection, OnAc
             }
             else if (resultCode == PlaceAutocomplete.RESULT_ERROR)
             {
-                Status status = PlaceAutocomplete.getStatus(mActivity, data);
+                Status status = PlaceAutocomplete.getStatus(mFragment.getActivity(), data);
                 Log.e(getClass().getName(), status.getStatusMessage());
             }
             // Activity.RESULT_CANCELED -> user canceled the operation, we do nothing

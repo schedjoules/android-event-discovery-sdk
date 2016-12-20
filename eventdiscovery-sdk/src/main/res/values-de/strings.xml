@@ -29,6 +29,7 @@
     <string name="schedjoules_action_invite">Einladen</string>
     <string name="schedjoules_action_remind">Erinnern</string>
     <string name="schedjoules_action_share">Teilen</string>
+    <string name="schedjoules_action_share_chooser_title">Ereignis teilen</string>
     <string name="schedjoules_action_watch_live">Ansehen</string>
     <string name="schedjoules_default_location_placeholder_name">Alle Orte</string>
     <string name="schedjoules_entry_point">Konzerte finden</string>

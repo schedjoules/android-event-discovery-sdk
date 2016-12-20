@@ -34,6 +34,7 @@ import com.schedjoules.eventdiscovery.R;
 import com.schedjoules.eventdiscovery.actions.ActionViewIterable;
 import com.schedjoules.eventdiscovery.actions.Actions;
 import com.schedjoules.eventdiscovery.actions.BaseActionFactory;
+import com.schedjoules.eventdiscovery.common.BaseFragment;
 import com.schedjoules.eventdiscovery.databinding.SchedjoulesEventDetailContentBinding;
 import com.schedjoules.eventdiscovery.eventlist.EventListActivity;
 import com.schedjoules.eventdiscovery.model.ParcelableEvent;
@@ -55,12 +56,12 @@ import static com.schedjoules.eventdiscovery.utils.LocationFormatter.longLocatio
 
 
 /**
- * A fragment representing a single Event detail screen. This fragment is either contained in a {@link EventListActivity} in two-pane mode (on tablets) or a
- * {@link EventDetailActivity} on handsets.
+ * A fragment representing a single Event detail screen. This fragment is either contained in a {@link
+ * EventListActivity} in two-pane mode (on tablets) or a {@link EventDetailActivity} on handsets.
  *
  * @author Gabor Keszthelyi
  */
-public final class EventDetailFragment extends Fragment
+public final class EventDetailFragment extends BaseFragment
 {
     private static final String ARG_EVENT = "event";
     private static final String ARG_ACTIONS = "actions";
