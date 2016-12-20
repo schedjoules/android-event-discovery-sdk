@@ -18,12 +18,13 @@
 package com.schedjoules.eventdiscovery.datetime;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.text.format.DateUtils;
 
 import org.dmfs.rfc5545.DateTime;
 
 import static android.text.format.DateUtils.DAY_IN_MILLIS;
-import static android.text.format.DateUtils.FORMAT_ABBREV_ALL;
+import static android.text.format.DateUtils.FORMAT_ABBREV_WEEKDAY;
 import static android.text.format.DateUtils.FORMAT_SHOW_DATE;
 import static android.text.format.DateUtils.FORMAT_SHOW_WEEKDAY;
 
@@ -40,7 +41,7 @@ public final class SmartFormattedDay implements FormattedDateTime
     private final DateTime mDateTime;
 
 
-    public SmartFormattedDay(DateTime dateTime)
+    public SmartFormattedDay(@NonNull DateTime dateTime)
     {
         mDateTime = dateTime;
     }
@@ -52,12 +53,14 @@ public final class SmartFormattedDay implements FormattedDateTime
         long timestamp = mDateTime.getTimestamp();
         if (DateUtils.isToday(timestamp) || DateUtils.isToday(timestamp - DAY_IN_MILLIS)) // For "Today" and "Tomorrow"
         {
-            return DateUtils.getRelativeTimeSpanString(timestamp, System.currentTimeMillis(), DAY_IN_MILLIS).toString();
+            long nowToRelateTo = System.currentTimeMillis();
+            return DateUtils.getRelativeTimeSpanString(timestamp, nowToRelateTo, DAY_IN_MILLIS).toString();
         }
         else
         {
             return DateUtils.formatDateTime(context, timestamp,
-                    FORMAT_SHOW_WEEKDAY | FORMAT_SHOW_DATE | FORMAT_ABBREV_ALL);
+                    FORMAT_SHOW_WEEKDAY | FORMAT_SHOW_DATE | FORMAT_ABBREV_WEEKDAY);
         }
     }
+
 }

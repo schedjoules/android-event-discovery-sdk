@@ -18,6 +18,7 @@
 package com.schedjoules.eventdiscovery.eventlist.items;
 
 import com.schedjoules.eventdiscovery.R;
+import com.schedjoules.eventdiscovery.datetime.FormattedDateTime;
 import com.schedjoules.eventdiscovery.datetime.SmartFormattedDay;
 import com.schedjoules.eventdiscovery.framework.adapter.ListItem;
 import com.schedjoules.eventdiscovery.framework.adapter.flexibleadapter.AbstractFlexibleHeader;
@@ -34,12 +35,17 @@ import java.util.TimeZone;
  */
 public final class DateHeaderItem extends AbstractFlexibleHeader<DateHeaderItemView> implements ListItem<DateHeaderItemView>
 {
+
     private final DateTime mLocalDay;
+
+    // Should not be used for equals()
+    private final FormattedDateTime formattedDay;
 
 
     public DateHeaderItem(DateTime dateTime)
     {
         mLocalDay = toLocalDay(dateTime);
+        formattedDay = new SmartFormattedDay(dateTime);
     }
 
 
@@ -59,7 +65,7 @@ public final class DateHeaderItem extends AbstractFlexibleHeader<DateHeaderItemV
     @Override
     public void bindDataTo(DateHeaderItemView view)
     {
-        view.setDateText(new SmartFormattedDay(mLocalDay).value(view.getContext()));
+        view.setDateText(formattedDay.value(view.getContext()));
     }
 
 
