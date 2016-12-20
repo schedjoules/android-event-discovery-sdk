@@ -35,7 +35,7 @@ public final class DateHeaderItemView extends TextView
     }
 
 
-    public void setDateText(String dateText)
+    public void setDateText(CharSequence dateText)
     {
         setText(dateText);
     }

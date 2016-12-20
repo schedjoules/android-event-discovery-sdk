@@ -28,12 +28,15 @@ import java.util.concurrent.TimeoutException;
 
 /**
  * A {@link FutureServiceConnection} to connect to local services.
+ * <p>
+ * TODO: refactor into two components: A ServiceIntent that describes the intent and returns FuturServiceConnections on request.
  *
  * @author Marten Gajda <marten@dmfs.org>
  */
 public final class FutureLocalServiceConnection<T> implements FutureServiceConnection<T>
 {
     private final Context mContext;
+    private final boolean mBindSucceeded;
     private boolean mIsConnected;
     private T mService;
 
@@ -76,14 +79,17 @@ public final class FutureLocalServiceConnection<T> implements FutureServiceConne
     public FutureLocalServiceConnection(Context context, Intent intent)
     {
         mContext = context.getApplicationContext();
-        mContext.bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
+        mBindSucceeded = mContext.bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
     }
 
 
     @Override
     public boolean isConnected()
     {
-        return mIsConnected;
+        synchronized (mConnection)
+        {
+            return mIsConnected;
+        }
     }
 
 
@@ -116,7 +122,13 @@ public final class FutureLocalServiceConnection<T> implements FutureServiceConne
     @Override
     public void disconnect()
     {
-        mContext.unbindService(mConnection);
+        synchronized (mConnection)
+        {
+            if (mBindSucceeded)
+            {
+                mIsConnected = false;
+                mContext.unbindService(mConnection);
+            }
+        }
     }
-
 }

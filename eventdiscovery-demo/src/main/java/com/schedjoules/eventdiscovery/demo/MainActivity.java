@@ -23,9 +23,13 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
+import com.schedjoules.client.insights.steps.EntryPoint;
 import com.schedjoules.eventdiscovery.BasicEventDiscovery;
+import com.schedjoules.eventdiscovery.UidEventDetails;
 import com.schedjoules.eventdiscovery.demo.optionals.AddToCalendarActivity;
+import com.schedjoules.eventdiscovery.utils.InsightsTask;
 
+import org.dmfs.httpessentials.types.StringToken;
 import org.dmfs.rfc5545.DateTime;
 import org.dmfs.rfc5545.Duration;
 
@@ -47,6 +51,11 @@ public final class MainActivity extends AppCompatActivity
         // Re-registering AddToCalendarActivity in case it had been disabled with the button click on that screen
         getPackageManager().setComponentEnabledSetting(new ComponentName(this, AddToCalendarActivity.class),
                 PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP);
+        if (savedInstanceState == null)
+        {
+            // first launch send insight about presentation of entry point
+            new InsightsTask(this).execute(new EntryPoint(new StringToken("MainActivity")));
+        }
     }
 
 
@@ -61,5 +70,11 @@ public final class MainActivity extends AppCompatActivity
         new BasicEventDiscovery()
                 .withStart(DateTime.now().addDuration(new Duration(1, 10, 0)))
                 .start(this);
+    }
+
+
+    public void onEventDetailsByUid(View view)
+    {
+        new UidEventDetails("ada36d012294c9c4").show(this);
     }
 }

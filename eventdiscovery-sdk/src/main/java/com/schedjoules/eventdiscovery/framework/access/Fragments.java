@@ -21,11 +21,11 @@ import android.support.annotation.IdRes;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 
-import com.schedjoules.eventdiscovery.utils.BaseActivity;
+import com.schedjoules.eventdiscovery.common.BaseActivity;
 
 
 /**
- * A convenience wrapper around FragmentManager and common FragmentTransactions used in the app.
+ * A convenience wrapper around FragmentManager and common FragmentTransactions used in the app, to reduce boilerplate.
  *
  * @author Gabor Keszthelyi
  */
@@ -40,14 +40,21 @@ public final class Fragments
     }
 
 
-    public void replace(@IdRes int containerViewId, Fragment fragment)
+    public void replace(@IdRes int container, Fragment fragment)
     {
-        mFragmentManager.beginTransaction().replace(containerViewId, fragment).commit();
+        mFragmentManager.beginTransaction().replace(container, fragment).commit();
     }
 
 
-    public void add(@IdRes int containerViewId, Fragment fragment)
+    public void add(@IdRes int container, Fragment fragment)
     {
-        mFragmentManager.beginTransaction().add(containerViewId, fragment).commit();
+        mFragmentManager.beginTransaction().add(container, fragment).commit();
     }
+
+
+    public boolean hasNotBeenAddedYet(@IdRes int container)
+    {
+        return mFragmentManager.findFragmentById(container) == null;
+    }
+
 }

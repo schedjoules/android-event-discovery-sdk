@@ -17,9 +17,11 @@
 
 package com.schedjoules.eventdiscovery.actions;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ShareCompat;
 import android.widget.Toast;
 
 import com.schedjoules.client.eventsdiscovery.Event;
@@ -60,10 +62,24 @@ public final class ShareActionExecutable implements ActionExecutable
 
         String eventText = eventText(context);
 
-        Intent sendIntent = new Intent();
-        sendIntent.setAction(Intent.ACTION_SEND);
-        sendIntent.putExtra(Intent.EXTRA_TEXT, eventText);
-        sendIntent.setType("text/plain");
+        Intent sendIntent;
+        if (context instanceof Activity)
+        {
+            sendIntent = ShareCompat.IntentBuilder
+                    .from((Activity) context)
+                    .setText(eventText)
+                    .setType("text/plain")
+                    .setChooserTitle(R.string.schedjoules_action_share_chooser_title)
+                    .createChooserIntent();
+        }
+        else
+        {
+            Intent pureIntent = new Intent();
+            pureIntent.setAction(Intent.ACTION_SEND);
+            pureIntent.putExtra(Intent.EXTRA_TEXT, eventText);
+            pureIntent.setType("text/plain");
+            sendIntent = Intent.createChooser(pureIntent, context.getString(R.string.schedjoules_action_share_chooser_title));
+        }
 
         if (sendIntent.resolveActivity(context.getPackageManager()) != null)
         {
@@ -76,8 +92,7 @@ public final class ShareActionExecutable implements ActionExecutable
     }
 
 
-    @NonNull
-    private String eventText(@NonNull Context context)
+    private String eventText(Context context)
     {
         URI uri = mLink.target();
         return String.format(uri == null ? "%s - %s" : "%s - %s %s",

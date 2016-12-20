@@ -20,9 +20,6 @@ package com.schedjoules.eventdiscovery.eventlist.view;
 import android.view.View;
 import android.widget.ProgressBar;
 
-import com.schedjoules.eventdiscovery.utils.BaseActivity;
-import com.schedjoules.eventdiscovery.R;
-
 
 /**
  * Represents the loading indicator overlay on the event list.
@@ -34,9 +31,9 @@ public final class EventListLoadingIndicatorOverlay
     private final ProgressBar mProgressBar;
 
 
-    public EventListLoadingIndicatorOverlay(BaseActivity activity)
+    public EventListLoadingIndicatorOverlay(ProgressBar progressBar)
     {
-        mProgressBar = (ProgressBar) activity.findViewById(R.id.schedjoules_event_list_progress_bar);
+        mProgressBar = progressBar;
     }
 
 

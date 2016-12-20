@@ -25,13 +25,10 @@ import com.schedjoules.eventdiscovery.eventlist.items.DividerItem;
 import com.schedjoules.eventdiscovery.eventlist.items.EventItem;
 import com.schedjoules.eventdiscovery.framework.adapter.ListItem;
 
-import org.dmfs.rfc5545.DateTime;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.TimeZone;
 
 
 /**
@@ -68,7 +65,10 @@ public final class EventListItemsComposer
 
         List<ListItem> items = new ArrayList<>();
 
-        Map<DateTime, DateHeaderItem> days = new HashMap<>();
+        // DateHeaderItem is used as value object here as the key for the Map,
+        // but we need the reference to the actual object as well, so the need for the Map instead of a Set.
+        Map<DateHeaderItem, DateHeaderItem> dayHeaders = new HashMap<>();
+
         for (Envelope<Event> envelope : resultPage.items())
         {
             if (envelope.hasPayload())
@@ -77,28 +77,21 @@ public final class EventListItemsComposer
 //                Log.d("Network", String.format("event | %s | %s",
 //                        new SimpleDateFormat("M dd HH:mm").format(event.start().getTimestamp()), event.title()));
 
-                DateTime day = toLocalDay(event.start());
+                DateHeaderItem dayHeader = new DateHeaderItem(event.start());
 
-                if (!days.containsKey(day))
+                if (!dayHeaders.containsKey(dayHeader))
                 {
-                    DateHeaderItem headerItem = new DateHeaderItem(day);
-                    days.put(day, headerItem);
-                    items.add(headerItem);
+                    dayHeaders.put(dayHeader, dayHeader);
+                    items.add(dayHeader);
                 }
                 EventItem item = new EventItem(event);
-                item.setHeader(days.get(day));
+                item.setHeader(dayHeaders.get(dayHeader));
                 items.add(item);
                 items.add(new DividerItem());
             }
         }
 
         return items;
-    }
-
-
-    private DateTime toLocalDay(DateTime dateTime)
-    {
-        return dateTime.shiftTimeZone(TimeZone.getDefault()).toAllDay();
     }
 
 }

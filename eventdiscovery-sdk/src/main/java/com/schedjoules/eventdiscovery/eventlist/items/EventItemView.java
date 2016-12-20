@@ -89,7 +89,10 @@ public final class EventItemView extends RelativeLayout
     {
         if (uri != null)
         {
-            Glide.with(getContext())
+            // TODO not using Glide's lifecycle awareness here currently.
+            // Glide.with(getContext()) uses the Activity actually and because it's destroyed, it crashes.
+            // Glide.with(fragment) should be used but how to get that here?
+            Glide.with(getContext().getApplicationContext())
                     .load(uri)
                 /*
                  Note: Using simply .error(R.drawable.schedjoules_empty_thumbnail) doesn't work because of the vector drawable involved (crash on pre-Lollipop).

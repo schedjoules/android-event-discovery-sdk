@@ -21,15 +21,12 @@ import android.view.View;
 
 import com.schedjoules.client.eventsdiscovery.Event;
 import com.schedjoules.client.insights.steps.Interaction;
+import com.schedjoules.eventdiscovery.BasicEventDetails;
 import com.schedjoules.eventdiscovery.R;
-import com.schedjoules.eventdiscovery.eventdetails.EventDetailActivity;
-import com.schedjoules.eventdiscovery.eventdetails.EventDetailFragment;
-import com.schedjoules.eventdiscovery.eventlist.view.EvenListScreenView;
-import com.schedjoules.eventdiscovery.framework.access.Fragments;
+import com.schedjoules.eventdiscovery.common.BaseActivity;
 import com.schedjoules.eventdiscovery.framework.adapter.ListItem;
 import com.schedjoules.eventdiscovery.framework.adapter.flexibleadapter.AbstractFlexibleSectionable;
 import com.schedjoules.eventdiscovery.model.SchedJoulesLinks;
-import com.schedjoules.eventdiscovery.utils.BaseActivity;
 import com.schedjoules.eventdiscovery.utils.DateTimeFormatter;
 import com.schedjoules.eventdiscovery.utils.InsightsTask;
 
@@ -98,14 +95,14 @@ public final class EventItem extends AbstractFlexibleSectionable<EventItemView> 
 
         if (twoPane)
         {
-            new Fragments(activity).replace(
-                    EvenListScreenView.TABLET_EVENT_DETAIL_CONTAINER,
-                    EventDetailFragment.newInstance(mEvent));
+            // currently not supported
+//            new Fragments(activity).replace(
+//                    R.id.schedjoules_event_detail_container,
+//                    EventDetailFragment.newInstance(mEvent));
         }
         else
         {
-            activity.startActivity(
-                    EventDetailActivity.launchIntent(activity, mEvent));
+            new BasicEventDetails(mEvent).show(activity);
         }
     }
 

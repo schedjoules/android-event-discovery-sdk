@@ -36,14 +36,8 @@ import java.util.Locale;
  *
  * @author Gabor Keszthelyi
  */
-// TODO Bug: displayed date-times don't refresh automatically when user changes time zone or locale of the phone
-// TODO Check android.text.format.DateUtils methods, using them might be better than fix SimpleDateFormat, eg: it might handle 12/24 hours, 'today', duration formatting automatically according to local.
 public final class DateTimeFormatter
 {
-    //    private static final DateFormat SHORT_DATE_TIME = new SimpleDateFormat("d MMM HH:mm",
-//            Locale.getDefault());
-    private static final DateFormat DAY_AND_MONTH = new SimpleDateFormat("EEE, d MMM",
-            Locale.getDefault());
     private static final DateFormat LONG_DATE_FORMAT = new SimpleDateFormat("EEEE, dd MMMM yyyy",
             Locale.getDefault());
     private static final DateFormat MEDIUM_LONG_DATE_FORMAT = new SimpleDateFormat("EEE, dd MMM yyyy",
@@ -62,38 +56,6 @@ public final class DateTimeFormatter
     {
         return DateUtils.formatDateTime(context, event.start().getTimestamp(),
                 DateUtils.FORMAT_SHOW_TIME | DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_WEEKDAY);
-    }
-
-//    public static String shortEventDateTimeRange(Context context, Event event)
-//    {
-//        return DateUtils.formatDateRange(context, event.start().getTimestamp(), event.start().addDuration(event.duration()).getTimestamp(),
-//                DateUtils.FORMAT_SHOW_TIME);
-//    }
-
-//    public static String shortEventDateTimeRange(Event event)
-//    {
-//        return shortDateTimeFormat(event.start())
-//                + " - " +
-//                shortDateTimeFormat(event.start().addDuration(event.duration()));
-//    }
-
-//    private static String shortDateTimeFormat(DateTime dateTime)
-//    {
-//        return SHORT_DATE_TIME.format(dateTime.getTimestamp());
-//    }
-
-
-    public static String smartDayFormat(Context context, DateTime dateTime)
-    {
-        if (DateUtils.isToday(dateTime.getTimestamp()))
-        {
-            return context.getString(R.string.schedjoules_today);
-        }
-        if (DateUtils.isToday(dateTime.getTimestamp() - DateUtils.DAY_IN_MILLIS))
-        {
-            return context.getString(R.string.schedjoules_tomorrow);
-        }
-        return DAY_AND_MONTH.format(dateTime.getTimestamp());
     }
 
 
