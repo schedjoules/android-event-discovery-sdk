@@ -19,45 +19,18 @@ package com.schedjoules.eventdiscovery.eventlist.view;
 
 import android.support.v7.widget.RecyclerView;
 
-import com.schedjoules.eventdiscovery.eventlist.itemsprovider.EventListItemsProviderImpl;
-
-import eu.davidea.flexibleadapter.FlexibleAdapter;
-import eu.davidea.flexibleadapter.items.IFlexible;
-
 
 /**
- * Handles the RecyclerView and the Adapter initialization for the Event list.
+ * Represents the Event list UI component, i.e. the {@link RecyclerView} and it's {@link RecyclerView.Adapter}.
  *
  * @author Gabor Keszthelyi
  */
-public final class EventListView
+public interface EventListView<A extends RecyclerView.Adapter>
 {
 
-    private final RecyclerView mRecyclerView;
-    private final FlexibleAdapter<IFlexible> mAdapter;
+    /**
+     * The {@link RecyclerView.Adapter} of the {@link RecyclerView}.
+     */
+    A adapter();
 
-
-    public EventListView(RecyclerView recyclerView)
-    {
-        mRecyclerView = recyclerView;
-
-        mAdapter = new FlexibleAdapter<>(null);
-        mAdapter.setDisplayHeadersAtStartUp(true);
-        mAdapter.setStickyHeaders(true);
-        mRecyclerView.setAdapter(mAdapter);
-    }
-
-
-    public FlexibleAdapter getAdapter()
-    {
-        return mAdapter;
-    }
-
-
-    public void setEdgeScrollListener(EdgeReachScrollListener.Listener edgeScrollListener)
-    {
-        EdgeReachScrollListener scrollListener = new EdgeReachScrollListener(mRecyclerView, edgeScrollListener,
-                EventListItemsProviderImpl.CLOSE_TO_TOP_OR_BOTTOM_THRESHOLD);
-        mRecyclerView.addOnScrollListener(scrollListener);
-    }
 }

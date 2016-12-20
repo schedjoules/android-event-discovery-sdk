@@ -42,7 +42,8 @@ import com.schedjoules.eventdiscovery.eventlist.view.EventListBackgroundMessage;
 import com.schedjoules.eventdiscovery.eventlist.view.EventListLoadingIndicatorOverlay;
 import com.schedjoules.eventdiscovery.eventlist.view.EventListMenu;
 import com.schedjoules.eventdiscovery.eventlist.view.EventListToolbar;
-import com.schedjoules.eventdiscovery.eventlist.view.EventListView;
+import com.schedjoules.eventdiscovery.eventlist.view.EventListToolbarImpl;
+import com.schedjoules.eventdiscovery.eventlist.view.FlexibleAdapterEventListView;
 import com.schedjoules.eventdiscovery.location.LastSelectedLocation;
 import com.schedjoules.eventdiscovery.location.LocationSelection;
 import com.schedjoules.eventdiscovery.location.LocationSelectionResult;
@@ -64,7 +65,7 @@ import static com.schedjoules.eventdiscovery.EventIntents.EXTRA_START_AFTER_TIME
  *
  * @author Gabor Keszthelyi
  */
-public final class EventListFragment extends BaseFragment implements LocationSelection.Listener, EventListMenu.Listener, EventListToolbar.Listener
+public final class EventListFragment extends BaseFragment implements LocationSelection.Listener, EventListMenu.Listener, EventListToolbarImpl.Listener
 {
     private FutureServiceConnection<ApiService> mApiService;
     private EventListItemsProvider mListItemsProvider;
@@ -115,8 +116,7 @@ public final class EventListFragment extends BaseFragment implements LocationSel
         mMenu = new EventListMenu(this);
         setHasOptionsMenu(true);
 
-        mToolbar = new EventListToolbar(views.schedjoulesEventListToolbar, this);
-        mToolbar.initToolbar(getActivity());
+        mToolbar = new EventListToolbarImpl(views.schedjoulesEventListToolbar, this, getActivity());
         mToolbar.setToolbarTitle(mLastSelectedLocation.get().name());
 
         mListItemsProvider.setBackgroundMessageUI(
@@ -124,10 +124,10 @@ public final class EventListFragment extends BaseFragment implements LocationSel
         mListItemsProvider.setLoadingIndicatorUI(
                 new EventListLoadingIndicatorOverlay(views.schedjoulesEventListProgressBar));
 
-        EventListView eventListView = new EventListView(views.schedjoulesEventListInclude.schedjoulesEventList);
-        eventListView.setEdgeScrollListener(mListItemsProvider);
+        FlexibleAdapterEventListView eventListView = new FlexibleAdapterEventListView(
+                views.schedjoulesEventListInclude.schedjoulesEventList, mListItemsProvider);
 
-        mListItemsProvider.setAdapterNotifier(new FlexibleAdapterNotifier(eventListView.getAdapter()));
+        mListItemsProvider.setAdapterNotifier(new FlexibleAdapterNotifier(eventListView.adapter()));
 
         return views.getRoot();
     }
