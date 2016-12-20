@@ -17,7 +17,7 @@
 
 package com.schedjoules.eventdiscovery.actions;
 
-import android.content.Context;
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -56,15 +56,14 @@ public final class AddToCalendarActionExecutable implements ActionExecutable
 
 
     @Override
-    public void execute(@NonNull Context context)
+    public void execute(@NonNull Activity activity)
     {
-        new InsightsTask(context).execute(
-                new ActionInteraction(mLink, mEvent));
+        new InsightsTask(activity).execute(new ActionInteraction(mLink, mEvent));
 
         Intent addIntent = new Intent(EventIntents.ACTION_ADD_TO_CALENDAR);
         addIntent.putExtras(extrasForAddToCalendar());
-        addIntent.setPackage(context.getPackageName());
-        context.startActivity(addIntent);
+        addIntent.setPackage(activity.getPackageName());
+        activity.startActivity(addIntent);
     }
 
 
@@ -72,7 +71,8 @@ public final class AddToCalendarActionExecutable implements ActionExecutable
     {
         Bundle bundle = new Bundle(8);
         bundle.putLong(CalendarContract.EXTRA_EVENT_BEGIN_TIME, mEvent.start().getTimestamp());
-        bundle.putLong(CalendarContract.EXTRA_EVENT_END_TIME, mEvent.start().addDuration(mEvent.duration()).getTimestamp());
+        bundle.putLong(CalendarContract.EXTRA_EVENT_END_TIME,
+                mEvent.start().addDuration(mEvent.duration()).getTimestamp());
         bundle.putBoolean(CalendarContract.EXTRA_EVENT_ALL_DAY, mEvent.start().isAllDay());
         bundle.putString(CalendarContract.Events.TITLE, mEvent.title());
         bundle.putString(CalendarContract.Events.DESCRIPTION, mEvent.description());

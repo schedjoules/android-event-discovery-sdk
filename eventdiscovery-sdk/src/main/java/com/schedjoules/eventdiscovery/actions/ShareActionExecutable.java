@@ -56,38 +56,26 @@ public final class ShareActionExecutable implements ActionExecutable
 
 
     @Override
-    public void execute(@NonNull Context context)
+    public void execute(@NonNull Activity activity)
     {
-        new InsightsTask(context).execute(new ActionInteraction(mLink, mEvent));
+        new InsightsTask(activity).execute(new ActionInteraction(mLink, mEvent));
 
-        String eventText = eventText(context);
+        String eventText = eventText(activity);
 
-        Intent sendIntent;
-        if (context instanceof Activity)
+        Intent sendIntent = ShareCompat.IntentBuilder
+                .from(activity)
+                .setText(eventText)
+                .setType("text/plain")
+                .setChooserTitle(R.string.schedjoules_action_share_chooser_title)
+                .createChooserIntent();
+
+        if (sendIntent.resolveActivity(activity.getPackageManager()) != null)
         {
-            sendIntent = ShareCompat.IntentBuilder
-                    .from((Activity) context)
-                    .setText(eventText)
-                    .setType("text/plain")
-                    .setChooserTitle(R.string.schedjoules_action_share_chooser_title)
-                    .createChooserIntent();
+            activity.startActivity(sendIntent);
         }
         else
         {
-            Intent pureIntent = new Intent();
-            pureIntent.setAction(Intent.ACTION_SEND);
-            pureIntent.putExtra(Intent.EXTRA_TEXT, eventText);
-            pureIntent.setType("text/plain");
-            sendIntent = Intent.createChooser(pureIntent, context.getString(R.string.schedjoules_action_share_chooser_title));
-        }
-
-        if (sendIntent.resolveActivity(context.getPackageManager()) != null)
-        {
-            context.startActivity(sendIntent);
-        }
-        else
-        {
-            Toast.makeText(context, R.string.schedjoules_action_cannot_handle_message, Toast.LENGTH_LONG).show();
+            Toast.makeText(activity, R.string.schedjoules_action_cannot_handle_message, Toast.LENGTH_LONG).show();
         }
     }
 

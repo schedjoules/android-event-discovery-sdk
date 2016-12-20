@@ -17,7 +17,7 @@
 
 package com.schedjoules.eventdiscovery.actions;
 
-import android.content.Context;
+import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.NonNull;
@@ -32,7 +32,8 @@ import org.dmfs.httpessentials.types.Link;
 
 
 /**
- * An {@link ActionExecutable} that fires a {@link Intent#ACTION_VIEW} Intent with the given {@link Link#target()} as data.
+ * An {@link ActionExecutable} that fires a {@link Intent#ACTION_VIEW} Intent with the given {@link Link#target()} as
+ * data.
  *
  * @author Gabor Keszthelyi
  */
@@ -50,19 +51,19 @@ public final class ViewIntentActionExecutable implements ActionExecutable
 
 
     @Override
-    public void execute(@NonNull Context context)
+    public void execute(@NonNull Activity activity)
     {
-        new InsightsTask(context).execute(new ActionInteraction(mLink, mEvent));
+        new InsightsTask(activity).execute(new ActionInteraction(mLink, mEvent));
 
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(mLink.target().toString()));
 
-        if (intent.resolveActivity(context.getPackageManager()) != null)
+        if (intent.resolveActivity(activity.getPackageManager()) != null)
         {
-            context.startActivity(intent);
+            activity.startActivity(intent);
         }
         else
         {
-            Toast.makeText(context, R.string.schedjoules_action_cannot_handle_message, Toast.LENGTH_LONG).show();
+            Toast.makeText(activity, R.string.schedjoules_action_cannot_handle_message, Toast.LENGTH_LONG).show();
         }
     }
 }
