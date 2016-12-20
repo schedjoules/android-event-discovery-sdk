@@ -17,6 +17,7 @@
 
 package com.schedjoules.eventdiscovery.eventdetails;
 
+import android.app.Activity;
 import android.content.Context;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
@@ -114,7 +115,7 @@ public final class EventDetailsItemView extends RelativeLayout
             @Override
             public void onClick(View v)
             {
-                action.actionExecutable().execute(getContext());
+                action.actionExecutable().execute((Activity) getContext());
             }
         });
 

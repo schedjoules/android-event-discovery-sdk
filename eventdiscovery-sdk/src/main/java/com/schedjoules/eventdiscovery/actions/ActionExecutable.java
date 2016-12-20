@@ -17,12 +17,13 @@
 
 package com.schedjoules.eventdiscovery.actions;
 
-import android.content.Context;
+import android.app.Activity;
 import android.support.annotation.NonNull;
 
 
 /**
- * An executable command that's returned by an {@link Action}. Usually this will be fired when the user clicks on the action.
+ * An executable command that's returned by an {@link Action}. Usually this will be fired when the user clicks on the
+ * action.
  *
  * @author Gabor Keszthelyi
  */
@@ -31,9 +32,6 @@ public interface ActionExecutable
 
     /**
      * Execute the command.
-     *
-     * @param context
-     *         A {@link Context}.
      */
-    void execute(@NonNull Context context);
+    void execute(@NonNull Activity activity);
 }
