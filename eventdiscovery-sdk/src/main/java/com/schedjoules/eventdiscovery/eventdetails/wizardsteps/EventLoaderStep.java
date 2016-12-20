@@ -195,8 +195,9 @@ public final class EventLoaderStep implements WizardStep
                             {
                                 mActions = service.actions(mEventUid);
                             }
-                            catch (TimeoutException | InterruptedException | ProtocolError | IOException | ProtocolException | URISyntaxException e)
+                            catch (TimeoutException | InterruptedException | ProtocolError | IOException | ProtocolException | URISyntaxException | RuntimeException e)
                             {
+                                // TODO: remove RuntimeException when https://github.com/dmfs/http-client-essentials-suite/issues/36 is fixed
                                 // actions could not be loaded - fall back to an empty list
                                 mActions = Collections.emptyList();
                             }
