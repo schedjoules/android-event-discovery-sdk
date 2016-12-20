@@ -27,25 +27,28 @@ import java.lang.ref.WeakReference;
 /**
  * Improved {@link AsyncTask} with a callback (kept with WeakReference) that delivers both success and failed results
  * along with the input params of the task, and with a {@link DiscardCheck} callback that is called from multiple points
- * in the execution to enable the client to discard/cancel the task.
+ * in the execution to enable the client to discard/cancel the task. There is also a onPreExecute callback.
  *
  * @author Gabor Keszthelyi
  */
-public abstract class DiscardingSafeAsyncTask<TASK_PARAM, EXECUTE_PARAM, PROGRESS, TASK_RESULT> extends AsyncTask<EXECUTE_PARAM, PROGRESS, SafeAsyncTaskResult<TASK_RESULT>>
+public abstract class DiscardingPreExecuteSafeAsyncTask<TASK_PARAM, EXECUTE_PARAM, PROGRESS, TASK_RESULT> extends AsyncTask<EXECUTE_PARAM, PROGRESS, SafeAsyncTaskResult<TASK_RESULT>>
 {
     private final TASK_PARAM mTaskParam;
     private final WeakReference<SafeAsyncTaskCallback<TASK_PARAM, TASK_RESULT>> mCallback;
     private final WeakReference<DiscardCheck<TASK_PARAM>> mDiscardCheck;
+    private final WeakReference<PreExecuteCallback<TASK_PARAM>> mPreExecuteCallback;
 
 
-    public DiscardingSafeAsyncTask(
+    public DiscardingPreExecuteSafeAsyncTask(
             TASK_PARAM taskParam,
             SafeAsyncTaskCallback<TASK_PARAM, TASK_RESULT> callback,
-            DiscardCheck<TASK_PARAM> discardCheck)
+            DiscardCheck<TASK_PARAM> discardCheck,
+            PreExecuteCallback<TASK_PARAM> preExecuteCallback)
     {
         mTaskParam = taskParam;
         mCallback = new WeakReference<>(callback);
         mDiscardCheck = new WeakReference<>(discardCheck);
+        mPreExecuteCallback = new WeakReference<>(preExecuteCallback);
     }
 
 
@@ -55,6 +58,10 @@ public abstract class DiscardingSafeAsyncTask<TASK_PARAM, EXECUTE_PARAM, PROGRES
         if (shouldDiscard())
         {
             cancel(false);
+        }
+        else if (mPreExecuteCallback.get() != null)
+        {
+            mPreExecuteCallback.get().onPreExecute(mTaskParam);
         }
     }
 

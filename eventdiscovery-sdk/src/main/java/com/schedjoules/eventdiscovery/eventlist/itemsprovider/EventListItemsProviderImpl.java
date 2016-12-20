@@ -136,6 +136,7 @@ public class EventListItemsProviderImpl implements EventListItemsProvider, Event
         //noinspection unchecked
         new EventListDownloadTask(new TaskParam(mLocation, query, scrollDirection), mDownloadTaskClient)
                 .executeOnExecutor(mExecutorService, mApiService);
+        markLoadStarted(mItems.isEmpty(), scrollDirection);
     }
 
 
@@ -143,6 +144,7 @@ public class EventListItemsProviderImpl implements EventListItemsProvider, Event
     {
         //noinspection unchecked
         new EventListDownloadTask(taskParam, mDownloadTaskClient).executeOnExecutor(mExecutorService, mApiService);
+        markLoadStarted(mItems.isEmpty(), taskParam.mDirection);
     }
 
 
@@ -256,7 +258,7 @@ public class EventListItemsProviderImpl implements EventListItemsProvider, Event
     {
         mIsLoading.put(direction, false);
 
-        // Hide loading:
+        // Hide loading indicator:
         if (isEmpty)
         {
             mLoadingIndicatorOverlay.hide();
@@ -283,13 +285,6 @@ public class EventListItemsProviderImpl implements EventListItemsProvider, Event
 
     private class DownloadTaskClient implements EventListDownloadTask.Client
     {
-
-        @Override
-        public void onPreExecute(TaskParam taskParam)
-        {
-            markLoadStarted(mItems.isEmpty(), taskParam.mDirection);
-        }
-
 
         // Called from both background and main thread
         @Override
