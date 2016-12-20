@@ -73,9 +73,9 @@ public class DateHeaderFormatAndroidTest
 
         assertEquals("Today", dateHeaderText(DateTime.now()));
         assertEquals("Tomorrow", dateHeaderText(DateTime.now().addDuration(new Duration(1, 1, 0))));
-        assertEquals("Mon, Oct 24", dateHeaderText(new DateTime(2016, 10 - 1, 24, 23, 44, 33)));
-        assertEquals("Tue, Oct 18", dateHeaderText(new DateTime(2016, 10 - 1, 18, 0, 44, 33)));
-        assertEquals("Sun, Jan 1, 2017", dateHeaderText(new DateTime(2017, 0, 1, 0, 44, 33)));
+        assertEquals("Mon, October 24", dateHeaderText(new DateTime(2016, 10 - 1, 24, 23, 44, 33)));
+        assertEquals("Tue, October 18", dateHeaderText(new DateTime(2016, 10 - 1, 18, 0, 44, 33)));
+        assertEquals("Sun, January 1, 2017", dateHeaderText(new DateTime(2017, 0, 1, 0, 44, 33)));
     }
 
 
@@ -87,9 +87,9 @@ public class DateHeaderFormatAndroidTest
 
         assertEquals("Today", dateHeaderText(DateTime.now()));
         assertEquals("Tomorrow", dateHeaderText(DateTime.now().addDuration(new Duration(1, 1, 0))));
-        assertEquals("Tue, Oct 25", dateHeaderText(new DateTime(2016, 10 - 1, 24, 23, 44, 33)));
-        assertEquals("Tue, Oct 18", dateHeaderText(new DateTime(2016, 10 - 1, 18, 0, 44, 33)));
-        assertEquals("Sun, Jan 1, 2017", dateHeaderText(new DateTime(2017, 0, 1, 0, 44, 33)));
+        assertEquals("Tue, October 25", dateHeaderText(new DateTime(2016, 10 - 1, 24, 23, 44, 33)));
+        assertEquals("Tue, October 18", dateHeaderText(new DateTime(2016, 10 - 1, 18, 0, 44, 33)));
+        assertEquals("Sun, January 1, 2017", dateHeaderText(new DateTime(2017, 0, 1, 0, 44, 33)));
     }
 
 
@@ -106,9 +106,9 @@ public class DateHeaderFormatAndroidTest
 
         assertEquals("Today", dateHeaderText(DateTime.now()));
         assertEquals("Tomorrow", dateHeaderText(DateTime.now().addDuration(new Duration(1, 1, 0))));
-        assertEquals("Tue, Oct 25", dateHeaderText(new DateTime(2016, 10 - 1, 24, 23, 44, 33)));
-        assertEquals("Tue, Oct 18", dateHeaderText(new DateTime(2016, 10 - 1, 18, 0, 44, 33)));
-        assertEquals("Sun, Jan 1, 2017", dateHeaderText(new DateTime(2017, 0, 1, 0, 44, 33)));
+        assertEquals("Tue, October 25", dateHeaderText(new DateTime(2016, 10 - 1, 24, 23, 44, 33)));
+        assertEquals("Tue, October 18", dateHeaderText(new DateTime(2016, 10 - 1, 18, 0, 44, 33)));
+        assertEquals("Sun, January 1, 2017", dateHeaderText(new DateTime(2017, 0, 1, 0, 44, 33)));
     }
 
 
@@ -120,9 +120,9 @@ public class DateHeaderFormatAndroidTest
 
         assertEquals("Vandaag", dateHeaderText(DateTime.now()));
         assertEquals("Morgen", dateHeaderText(DateTime.now().addDuration(new Duration(1, 1, 0))));
-        assertEquals("di 25 okt.", dateHeaderText(new DateTime(2016, 10 - 1, 24, 23, 44, 33)));
-        assertEquals("di 18 okt.", dateHeaderText(new DateTime(2016, 10 - 1, 18, 0, 44, 33)));
-        assertEquals("zo 1 jan. 2017", dateHeaderText(new DateTime(2017, 0, 1, 0, 44, 33)));
+        assertEquals("di 25 oktober", dateHeaderText(new DateTime(2016, 10 - 1, 24, 23, 44, 33)));
+        assertEquals("di 18 oktober", dateHeaderText(new DateTime(2016, 10 - 1, 18, 0, 44, 33)));
+        assertEquals("zo 1 januari 2017", dateHeaderText(new DateTime(2017, 0, 1, 0, 44, 33)));
     }
 
 
@@ -134,9 +134,9 @@ public class DateHeaderFormatAndroidTest
 
         assertEquals("Heute", dateHeaderText(DateTime.now()));
         assertEquals("Morgen", dateHeaderText(DateTime.now().addDuration(new Duration(1, 1, 0))));
-        assertEquals("Di., 25. Okt.", dateHeaderText(new DateTime(2016, 10 - 1, 24, 23, 44, 33)));
-        assertEquals("Di., 18. Okt.", dateHeaderText(new DateTime(2016, 10 - 1, 18, 0, 44, 33)));
-        assertEquals("So., 1. Jan. 2017", dateHeaderText(new DateTime(2017, 0, 1, 0, 44, 33)));
+        assertEquals("Di., 25. Oktober", dateHeaderText(new DateTime(2016, 10 - 1, 24, 23, 44, 33)));
+        assertEquals("Di., 18. Oktober", dateHeaderText(new DateTime(2016, 10 - 1, 18, 0, 44, 33)));
+        assertEquals("So., 1. Januar 2017", dateHeaderText(new DateTime(2017, 0, 1, 0, 44, 33)));
     }
 
 

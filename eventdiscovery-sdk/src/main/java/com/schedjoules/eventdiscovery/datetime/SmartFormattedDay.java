@@ -24,7 +24,7 @@ import android.text.format.DateUtils;
 import org.dmfs.rfc5545.DateTime;
 
 import static android.text.format.DateUtils.DAY_IN_MILLIS;
-import static android.text.format.DateUtils.FORMAT_ABBREV_ALL;
+import static android.text.format.DateUtils.FORMAT_ABBREV_WEEKDAY;
 import static android.text.format.DateUtils.FORMAT_SHOW_DATE;
 import static android.text.format.DateUtils.FORMAT_SHOW_WEEKDAY;
 
@@ -59,7 +59,7 @@ public final class SmartFormattedDay implements FormattedDateTime
         else
         {
             return DateUtils.formatDateTime(context, timestamp,
-                    FORMAT_SHOW_WEEKDAY | FORMAT_SHOW_DATE | FORMAT_ABBREV_ALL);
+                    FORMAT_SHOW_WEEKDAY | FORMAT_SHOW_DATE | FORMAT_ABBREV_WEEKDAY);
         }
     }
 
