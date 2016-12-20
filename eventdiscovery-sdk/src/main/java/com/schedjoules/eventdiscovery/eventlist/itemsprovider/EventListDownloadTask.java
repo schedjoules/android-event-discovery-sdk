@@ -27,7 +27,6 @@ import com.schedjoules.client.eventsdiscovery.ResultPage;
 import com.schedjoules.eventdiscovery.framework.adapter.ListItem;
 import com.schedjoules.eventdiscovery.framework.async.DiscardCheck;
 import com.schedjoules.eventdiscovery.framework.async.DiscardingSafeAsyncTask;
-import com.schedjoules.eventdiscovery.framework.async.PreExecuteCallback;
 import com.schedjoules.eventdiscovery.framework.async.SafeAsyncTaskCallback;
 import com.schedjoules.eventdiscovery.service.ApiService;
 import com.schedjoules.eventdiscovery.utils.FutureServiceConnection;
@@ -44,19 +43,17 @@ public final class EventListDownloadTask extends
         DiscardingSafeAsyncTask<EventListDownloadTask.TaskParam, FutureServiceConnection<ApiService>, Void, EventListDownloadTask.TaskResult>
 {
 
-    private EventListDownloadTask(
-            TaskParam taskParam,
-            SafeAsyncTaskCallback<TaskParam, TaskResult> callback,
-            DiscardCheck<TaskParam> discardCheck,
-            PreExecuteCallback<TaskParam> preExecuteCallback)
+    private EventListDownloadTask(TaskParam taskParam,
+                                  SafeAsyncTaskCallback<TaskParam, TaskResult> callback,
+                                  DiscardCheck<TaskParam> discardCheck)
     {
-        super(taskParam, callback, discardCheck, preExecuteCallback);
+        super(taskParam, callback, discardCheck);
     }
 
 
     public EventListDownloadTask(TaskParam taskParam, EventListDownloadTask.Client client)
     {
-        this(taskParam, client, client, client);
+        this(taskParam, client, client);
     }
 
 
@@ -107,8 +104,7 @@ public final class EventListDownloadTask extends
     }
 
 
-    public interface Client extends
-            SafeAsyncTaskCallback<TaskParam, TaskResult>, DiscardCheck<TaskParam>, PreExecuteCallback<TaskParam>
+    public interface Client extends SafeAsyncTaskCallback<TaskParam, TaskResult>, DiscardCheck<TaskParam>
     {
     }
 }
