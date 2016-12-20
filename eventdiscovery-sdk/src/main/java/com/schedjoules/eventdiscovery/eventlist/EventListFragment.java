@@ -49,7 +49,6 @@ import com.schedjoules.eventdiscovery.location.LocationSelectionResult;
 import com.schedjoules.eventdiscovery.location.PlacesApiLocationSelection;
 import com.schedjoules.eventdiscovery.location.SharedPrefLastSelectedLocation;
 import com.schedjoules.eventdiscovery.service.ApiService;
-import com.schedjoules.eventdiscovery.utils.FutureLocalServiceConnection;
 import com.schedjoules.eventdiscovery.utils.FutureServiceConnection;
 import com.schedjoules.eventdiscovery.utils.InsightsTask;
 
@@ -93,9 +92,7 @@ public final class EventListFragment extends BaseFragment implements LocationSel
         setRetainInstance(true);
         mIsInitializing = true;
 
-        // Application context used now, if changed to Activity, this and disconnect() has to move to other callbacks
-        mApiService = new FutureLocalServiceConnection<>(getContext().getApplicationContext(),
-                new Intent("com.schedjoules.API").setPackage(getContext().getPackageName()));
+        mApiService = new ApiService.FutureConnection(getActivity());
 
         mListItemsProvider = new EventListItemsProviderImpl(mApiService, new EventListItemsImpl());
 
