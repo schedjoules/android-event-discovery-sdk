@@ -41,7 +41,7 @@
                         android:id="@+id/schedjoules_event_list_include"
                         layout="@layout/schedjoules_event_list"/>
 
-                <TextView
+                <com.schedjoules.eventdiscovery.widgets.StateSavingTextView
                         android:id="@+id/schedjoules_event_list_background_message"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
