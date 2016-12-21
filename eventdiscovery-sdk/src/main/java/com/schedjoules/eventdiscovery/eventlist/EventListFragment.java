@@ -18,10 +18,13 @@
 package com.schedjoules.eventdiscovery.eventlist;
 
 import android.content.Intent;
+import android.content.res.Resources;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -32,18 +35,17 @@ import android.view.ViewGroup;
 import com.schedjoules.client.eventsdiscovery.GeoLocation;
 import com.schedjoules.client.insights.steps.Screen;
 import com.schedjoules.eventdiscovery.R;
+import com.schedjoules.eventdiscovery.common.BaseActivity;
 import com.schedjoules.eventdiscovery.common.BaseFragment;
 import com.schedjoules.eventdiscovery.databinding.SchedjoulesFragmentEventListBinding;
 import com.schedjoules.eventdiscovery.eventlist.itemsprovider.EventListItemsImpl;
 import com.schedjoules.eventdiscovery.eventlist.itemsprovider.EventListItemsProvider;
 import com.schedjoules.eventdiscovery.eventlist.itemsprovider.EventListItemsProviderImpl;
 import com.schedjoules.eventdiscovery.eventlist.itemsprovider.FlexibleAdapterNotifier;
+import com.schedjoules.eventdiscovery.eventlist.view.EdgeReachScrollListener;
 import com.schedjoules.eventdiscovery.eventlist.view.EventListBackgroundMessage;
 import com.schedjoules.eventdiscovery.eventlist.view.EventListLoadingIndicatorOverlay;
 import com.schedjoules.eventdiscovery.eventlist.view.EventListMenu;
-import com.schedjoules.eventdiscovery.eventlist.view.EventListToolbar;
-import com.schedjoules.eventdiscovery.eventlist.view.EventListToolbarImpl;
-import com.schedjoules.eventdiscovery.eventlist.view.FlexibleAdapterEventListView;
 import com.schedjoules.eventdiscovery.location.LastSelectedLocation;
 import com.schedjoules.eventdiscovery.location.LocationSelection;
 import com.schedjoules.eventdiscovery.location.LocationSelectionResult;
@@ -56,6 +58,9 @@ import com.schedjoules.eventdiscovery.utils.InsightsTask;
 import org.dmfs.httpessentials.types.StringToken;
 import org.dmfs.rfc5545.DateTime;
 
+import eu.davidea.flexibleadapter.FlexibleAdapter;
+import eu.davidea.flexibleadapter.items.IFlexible;
+
 import static com.schedjoules.eventdiscovery.EventIntents.EXTRA_GEOLOCATION;
 import static com.schedjoules.eventdiscovery.EventIntents.EXTRA_START_AFTER_TIMESTAMP;
 
@@ -65,14 +70,14 @@ import static com.schedjoules.eventdiscovery.EventIntents.EXTRA_START_AFTER_TIME
  *
  * @author Gabor Keszthelyi
  */
-public final class EventListFragment extends BaseFragment implements LocationSelection.Listener, EventListMenu.Listener, EventListToolbarImpl.Listener
+public final class EventListFragment extends BaseFragment implements LocationSelection.Listener, EventListMenu.Listener
 {
     private FutureServiceConnection<ApiService> mApiService;
     private EventListItemsProvider mListItemsProvider;
     private PlacesApiLocationSelection mLocationSelection;
     private LastSelectedLocation mLastSelectedLocation;
 
-    private EventListToolbar mToolbar;
+    private Toolbar mToolbar;
     private EventListMenu mMenu;
 
     private boolean mIsInitializing;
@@ -116,20 +121,63 @@ public final class EventListFragment extends BaseFragment implements LocationSel
         mMenu = new EventListMenu(this);
         setHasOptionsMenu(true);
 
-        mToolbar = new EventListToolbarImpl(views.schedjoulesEventListToolbar, this, getActivity());
-        mToolbar.setToolbarTitle(mLastSelectedLocation.get().name());
+        mToolbar = views.schedjoulesEventListToolbar;
+        setupToolbar();
 
         mListItemsProvider.setBackgroundMessageUI(
                 new EventListBackgroundMessage(views.schedjoulesEventListBackgroundMessage));
         mListItemsProvider.setLoadingIndicatorUI(
                 new EventListLoadingIndicatorOverlay(views.schedjoulesEventListProgressBar));
 
-        FlexibleAdapterEventListView eventListView = new FlexibleAdapterEventListView(
-                views.schedjoulesEventListInclude.schedjoulesEventList, mListItemsProvider);
+        FlexibleAdapter adapter = createAdapter();
 
-        mListItemsProvider.setAdapterNotifier(new FlexibleAdapterNotifier(eventListView.adapter()));
+        RecyclerView recyclerView = views.schedjoulesEventListInclude.schedjoulesEventList;
+        recyclerView.setAdapter(adapter);
+
+        EdgeReachScrollListener scrollListener = new EdgeReachScrollListener(recyclerView, mListItemsProvider,
+                EventListItemsProviderImpl.CLOSE_TO_TOP_OR_BOTTOM_THRESHOLD);
+        recyclerView.addOnScrollListener(scrollListener);
+
+        mListItemsProvider.setAdapterNotifier(new FlexibleAdapterNotifier(adapter));
 
         return views.getRoot();
+    }
+
+
+    private void setupToolbar()
+    {
+        mToolbar.setTitle(mLastSelectedLocation.get().name());
+        mToolbar.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                onToolbarTitleClick();
+            }
+        });
+
+        BaseActivity activity = (BaseActivity) getActivity();
+        activity.setSupportActionBar(mToolbar);
+
+        Resources res = activity.getResources();
+        if (res.getBoolean(R.bool.schedjoules_enableBackArrowOnEventListScreen))
+        {
+            //noinspection ConstantConditions
+            activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+        else
+        {
+            mToolbar.setTitleMarginStart(res.getDimensionPixelSize(R.dimen.schedjoules_list_item_horizontal_margin));
+        }
+    }
+
+
+    private FlexibleAdapter createAdapter()
+    {
+        FlexibleAdapter<IFlexible> adapter = new FlexibleAdapter<>(null);
+        adapter.setDisplayHeadersAtStartUp(true);
+        adapter.setStickyHeaders(true);
+        return adapter;
     }
 
 
@@ -171,7 +219,6 @@ public final class EventListFragment extends BaseFragment implements LocationSel
     }
 
 
-    @Override
     public void onToolbarTitleClick()
     {
         mLocationSelection.initiateSelection();
@@ -196,7 +243,7 @@ public final class EventListFragment extends BaseFragment implements LocationSel
     public void onLocationSelected(LocationSelectionResult result)
     {
         mLastSelectedLocation.update(result);
-        mToolbar.setToolbarTitle(result.name());
+        mToolbar.setTitle(result.name());
         mListItemsProvider.loadEvents(result.geoLocation(), startAfter());
     }
 
