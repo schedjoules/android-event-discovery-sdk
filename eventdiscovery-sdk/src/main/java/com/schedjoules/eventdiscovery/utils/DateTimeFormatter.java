@@ -46,12 +46,6 @@ public final class DateTimeFormatter
             Locale.getDefault());
 
 
-    public static String shortEventStartTime(Context context, Event event)
-    {
-        return DateUtils.formatDateTime(context, event.start().getTimestamp(), DateUtils.FORMAT_SHOW_TIME);
-    }
-
-
     public static String longEventStartDateTime(Context context, Event event)
     {
         return DateUtils.formatDateTime(context, event.start().getTimestamp(),
