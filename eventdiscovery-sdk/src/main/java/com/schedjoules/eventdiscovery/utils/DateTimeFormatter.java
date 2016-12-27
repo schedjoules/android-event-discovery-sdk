@@ -18,7 +18,6 @@
 package com.schedjoules.eventdiscovery.utils;
 
 import android.content.Context;
-import android.text.format.DateUtils;
 
 import com.schedjoules.client.eventsdiscovery.Event;
 import com.schedjoules.eventdiscovery.R;
@@ -44,13 +43,6 @@ public final class DateTimeFormatter
             Locale.getDefault());
     private static final DateFormat TIME_FORMAT = new SimpleDateFormat("HH:mm",
             Locale.getDefault());
-
-
-    public static String longEventStartDateTime(Context context, Event event)
-    {
-        return DateUtils.formatDateTime(context, event.start().getTimestamp(),
-                DateUtils.FORMAT_SHOW_TIME | DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_WEEKDAY);
-    }
 
 
     public static String longDateFormat(DateTime dateTime)

@@ -27,7 +27,7 @@ import android.widget.Toast;
 import com.schedjoules.client.eventsdiscovery.Event;
 import com.schedjoules.client.insights.steps.ActionInteraction;
 import com.schedjoules.eventdiscovery.R;
-import com.schedjoules.eventdiscovery.utils.DateTimeFormatter;
+import com.schedjoules.eventdiscovery.datetime.LongDateAndTime;
 import com.schedjoules.eventdiscovery.utils.InsightsTask;
 
 import org.dmfs.httpessentials.types.Link;
@@ -84,7 +84,7 @@ public final class ShareActionExecutable implements ActionExecutable
     {
         URI uri = mLink.target();
         return String.format(uri == null ? "%s - %s" : "%s - %s %s",
-                DateTimeFormatter.longEventStartDateTime(context, mEvent),
+                new LongDateAndTime(mEvent.start()).value(context),
                 mEvent.title(), uri);
     }
 }
