@@ -28,7 +28,8 @@ import org.dmfs.rfc5545.Duration;
 
 
 /**
- * Formatted start and end time, e.g.: 11:00 - 13:00
+ * Formatted start and end time, e.g.: "11:00 - 13:00" or "Jan 20, 20:00 - Jan 21, 03:00" when start and end is not on
+ * the same local day.
  *
  * @author Gabor Keszthelyi
  */
@@ -57,7 +58,7 @@ public final class StartAndEndTime implements FormattedDateTime
     {
         return DateUtils.formatDateRange(context,
                 mStartTime.getTimestamp(), mStartTime.addDuration(mDuration).getTimestamp(),
-                DateUtils.FORMAT_SHOW_TIME);
+                DateUtils.FORMAT_SHOW_TIME | DateUtils.FORMAT_NO_YEAR | DateUtils.FORMAT_ABBREV_ALL);
     }
 
 }
