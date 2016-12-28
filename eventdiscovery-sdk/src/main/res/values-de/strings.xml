@@ -42,12 +42,4 @@
     <string name="schedjoules_title_event_list">Ereignisse</string>
     <string name="schedjoules_action_book">Karten</string>
     <string name="schedjoules_action_add_to_calendar">Termin speichern</string>
-    <plurals name="schedjoules_hours">
-        <item quantity="one">%d Stunde</item>
-        <item quantity="other">%d Stunden</item>
-    </plurals>
-    <plurals name="schedjoules_minutes">
-        <item quantity="one">%d Minute</item>
-        <item quantity="other">%d Minuten</item>
-    </plurals>
 </resources>
