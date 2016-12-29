@@ -23,7 +23,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 
 import com.schedjoules.client.eventsdiscovery.Event;
-import com.schedjoules.eventdiscovery.eventdetails.EventDetailActivity;
+import com.schedjoules.eventdiscovery.eventdetails.EventDetailsActivity;
 import com.schedjoules.eventdiscovery.eventdetails.wizardsteps.ActionLoaderStep;
 import com.schedjoules.eventdiscovery.eventdetails.wizardsteps.ShowEventStep;
 import com.schedjoules.eventdiscovery.service.ActionService;
@@ -78,7 +78,7 @@ public final class BasicEventDetails implements EventDetails
         @Override
         public void run()
         {
-            Intent intent = new Intent(mActivity, EventDetailActivity.class);
+            Intent intent = new Intent(mActivity, EventDetailsActivity.class);
             Bundle nestedBundle = new Bundle();
 
             FutureServiceConnection<ActionService> actionService = new ActionService.FutureConnection(mActivity);

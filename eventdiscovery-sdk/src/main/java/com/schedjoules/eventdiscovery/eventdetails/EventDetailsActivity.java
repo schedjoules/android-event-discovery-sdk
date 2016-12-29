@@ -35,13 +35,13 @@ import org.dmfs.android.dumbledore.WizardStep;
  * @author Gabor Keszthelyi
  * @author Marten Gajda
  */
-public final class EventDetailActivity extends BaseActivity
+public final class EventDetailsActivity extends BaseActivity
 {
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.schedjoules_activity_event_detail);
+        setContentView(R.layout.schedjoules_activity_event_details);
 
         if (savedInstanceState == null)
         {

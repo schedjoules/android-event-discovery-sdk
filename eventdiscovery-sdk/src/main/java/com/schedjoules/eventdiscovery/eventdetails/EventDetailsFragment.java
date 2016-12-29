@@ -62,7 +62,7 @@ import static com.schedjoules.eventdiscovery.utils.LocationFormatter.longLocatio
 
 /**
  * A fragment representing a single Event detail screen. This fragment is either contained in a {@link
- * EventListActivity} in two-pane mode (on tablets) or a {@link EventDetailActivity} on handsets.
+ * EventListActivity} in two-pane mode (on tablets) or a {@link EventDetailsActivity} on handsets.
  *
  * @author Gabor Keszthelyi
  */
