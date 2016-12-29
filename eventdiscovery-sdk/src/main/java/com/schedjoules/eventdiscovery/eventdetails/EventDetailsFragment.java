@@ -40,7 +40,7 @@ import com.schedjoules.eventdiscovery.actions.BaseActionFactory;
 import com.schedjoules.eventdiscovery.common.BaseActivity;
 import com.schedjoules.eventdiscovery.common.BaseFragment;
 import com.schedjoules.eventdiscovery.common.ExternalUrlFeedbackForm;
-import com.schedjoules.eventdiscovery.databinding.SchedjoulesEventDetailContentBinding;
+import com.schedjoules.eventdiscovery.databinding.SchedjoulesFragmentEventDetailsBinding;
 import com.schedjoules.eventdiscovery.eventlist.EventListActivity;
 import com.schedjoules.eventdiscovery.model.ParcelableEvent;
 import com.schedjoules.eventdiscovery.model.ParcelableLink;
@@ -66,7 +66,7 @@ import static com.schedjoules.eventdiscovery.utils.LocationFormatter.longLocatio
  *
  * @author Gabor Keszthelyi
  */
-public final class EventDetailFragment extends BaseFragment implements EventDetailsMenu.Listener
+public final class EventDetailsFragment extends BaseFragment implements EventDetailsMenu.Listener
 {
     private static final String ARG_EVENT = "event";
     private static final String ARG_ACTIONS = "actions";
@@ -74,7 +74,7 @@ public final class EventDetailFragment extends BaseFragment implements EventDeta
     private Event mEvent;
     private List<ParcelableLink> mActions;
 
-    private SchedjoulesEventDetailContentBinding mViews;
+    private SchedjoulesFragmentEventDetailsBinding mViews;
     private LinearLayout mVerticalItems;
     private HorizontalActionsView mHorizontalActions;
     private EventDetailsMenu mMenu;
@@ -91,7 +91,7 @@ public final class EventDetailFragment extends BaseFragment implements EventDeta
             links.add(actionLink instanceof Parcelable ? (Parcelable) actionLink : new ParcelableLink(actionLink));
         }
         arguments.putParcelableArrayList(ARG_ACTIONS, links);
-        EventDetailFragment fragment = new EventDetailFragment();
+        EventDetailsFragment fragment = new EventDetailsFragment();
         fragment.setArguments(arguments);
         return fragment;
     }
@@ -108,7 +108,7 @@ public final class EventDetailFragment extends BaseFragment implements EventDeta
             new InsightsTask(getActivity()).execute(new Screen(new StringToken("details"), mEvent));
         }
 
-        mViews = DataBindingUtil.inflate(inflater, R.layout.schedjoules_event_detail_content, container, false);
+        mViews = DataBindingUtil.inflate(inflater, R.layout.schedjoules_fragment_event_details, container, false);
 
         ((BaseActivity) getActivity()).setSupportActionBar(
                 mViews.schedjoulesDetailsHeader.schedjoulesEventDetailToolbar);
