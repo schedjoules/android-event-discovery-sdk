@@ -32,7 +32,7 @@ import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
 import com.schedjoules.client.eventsdiscovery.Event;
-import com.schedjoules.eventdiscovery.databinding.SchedjoulesEventDetailContentLoadingActionsBinding;
+import com.schedjoules.eventdiscovery.databinding.SchedjoulesFragmentEventDetailsLoadingActionsBinding;
 import com.schedjoules.eventdiscovery.eventdetails.transitions.AutomaticWizardTransition;
 import com.schedjoules.eventdiscovery.model.ParcelableEvent;
 import com.schedjoules.eventdiscovery.model.SchedJoulesLinks;
@@ -53,7 +53,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeoutException;
 
-import static com.schedjoules.eventdiscovery.R.layout.schedjoules_event_detail_content_loading_actions;
+import static com.schedjoules.eventdiscovery.R.layout.schedjoules_fragment_event_details_loading_actions;
 
 
 /**
@@ -148,7 +148,8 @@ public final class ActionLoaderStep implements WizardStep
         @Override
         public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
         {
-            SchedjoulesEventDetailContentLoadingActionsBinding mViews = DataBindingUtil.inflate(inflater, schedjoules_event_detail_content_loading_actions,
+            SchedjoulesFragmentEventDetailsLoadingActionsBinding mViews = DataBindingUtil.inflate(inflater,
+                    schedjoules_fragment_event_details_loading_actions,
                     container, false);
 
             mViews.schedjoulesDetailsHeader.schedjoulesEventDetailToolbarLayout.setTitle(mEvent.title());
@@ -178,7 +179,8 @@ public final class ActionLoaderStep implements WizardStep
                     catch (TimeoutException | InterruptedException | ProtocolError | IOException | ProtocolException | URISyntaxException | RuntimeException e)
                     {
                         // for some reason we were unable to load the actions, move on without actions.
-                        advanceWizard(new AutomaticWizardTransition(new ShowEventStep(mEvent, Collections.<Link>emptyList())));
+                        advanceWizard(new AutomaticWizardTransition(
+                                new ShowEventStep(mEvent, Collections.<Link>emptyList())));
                     }
                 }
 

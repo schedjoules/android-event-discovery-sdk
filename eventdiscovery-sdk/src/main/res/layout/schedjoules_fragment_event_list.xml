@@ -62,11 +62,8 @@
 
             </FrameLayout>
 
-            <fragment
-                    android:id="@+id/feedback_fragment"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    class="com.schedjoules.eventdiscovery.common.FeedbackFragment"/>
+            <include layout="@layout/schedjoules_powered_by_footer"/>
+
         </LinearLayout>
 
 

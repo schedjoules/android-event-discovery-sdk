@@ -49,7 +49,7 @@ public final class LoaderFragment extends Fragment
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
     {
-        View result = inflater.inflate(R.layout.schedjoules_fragment_loader, container, false);
+        View result = inflater.inflate(R.layout.schedjoules_fragment_event_details_loader, container, false);
         // TODO: the delay and animation will be started on every rotate, which is not correct
         result.findViewById(android.R.id.message).animate().alpha(1).setStartDelay(WAIT_MESSAGE_DELAY_MILLIS).start();
         return result;

@@ -132,7 +132,7 @@ public final class ErrorStep implements WizardStep
         @Override
         public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
         {
-            View view = inflater.inflate(R.layout.schedjoules_fragment_error, container, false);
+            View view = inflater.inflate(R.layout.schedjoules_fragment_event_details_error, container, false);
             Bundle args = getArguments();
             String title = args.getString("title");
             String message = args.getString("message");
