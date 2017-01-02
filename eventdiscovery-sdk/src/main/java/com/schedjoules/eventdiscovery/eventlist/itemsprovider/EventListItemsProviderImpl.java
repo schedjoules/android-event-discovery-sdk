@@ -102,7 +102,7 @@ public class EventListItemsProviderImpl implements EventListItemsProvider, Event
     {
         clearEverything();
 
-        // TODO maybe use a transparent GeoLocation proxy object, or use NoLocationSelected, or ...
+        // TODO maybe use a transparent GeoLocation proxy object, or use Anywhere, or ...
         mLocation = geoLocation == null ? UndefinedGeoLocation.INSTANCE : geoLocation;
 
         queueDownloadTask(new InitialEventsDiscovery(dateTime, mLocation), BOTTOM);

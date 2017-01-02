@@ -49,7 +49,7 @@ public final class SharedPrefLastSelectedLocation implements LastSelectedLocatio
 
 
     @Override
-    public void update(LocationSelectionResult location)
+    public void update(NamedLocation location)
     {
         mPrefs.edit()
                 .putString(KEY_LOCATION_NAME, location.name().toString())
@@ -60,7 +60,7 @@ public final class SharedPrefLastSelectedLocation implements LastSelectedLocatio
 
 
     @Override
-    public LocationSelectionResult get()
+    public NamedLocation get()
     {
         String name = mPrefs.getString(KEY_LOCATION_NAME, null);
         float latitude = mPrefs.getFloat(KEY_LATITUDE, NOT_EXIST);
@@ -68,11 +68,11 @@ public final class SharedPrefLastSelectedLocation implements LastSelectedLocatio
 
         if (name == null || longitude == NOT_EXIST || latitude == NOT_EXIST)
         {
-            return new NoLocationSelected(mContext);
+            return new Anywhere(mContext);
         }
         else
         {
-            return new StructuredLocationSelectionResult(
+            return new StructuredNamedLocation(
                     name, new StructuredGeoLocation(latitude, longitude));
         }
     }

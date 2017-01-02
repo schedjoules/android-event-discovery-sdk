@@ -17,38 +17,37 @@
 
 package com.schedjoules.eventdiscovery.location;
 
-import android.content.Context;
-
 import com.schedjoules.client.eventsdiscovery.GeoLocation;
-import com.schedjoules.eventdiscovery.R;
 
 
 /**
- * A {@link LocationSelectionResult} that indicates that no location has been selected yet or it has been cleared.
+ * {@link NamedLocation} that simply takes the properties as constructor parameters.
  *
  * @author Gabor Keszthelyi
  */
-public final class NoLocationSelected implements LocationSelectionResult
+public final class StructuredNamedLocation implements NamedLocation
 {
-    private String mDefaultNameToDisplay;
+    private final CharSequence mName;
+    private final GeoLocation mGeoLocation;
 
 
-    public NoLocationSelected(Context context)
+    public StructuredNamedLocation(CharSequence name, GeoLocation geoLocation)
     {
-        mDefaultNameToDisplay = context.getString(R.string.schedjoules_default_location_placeholder_name);
+        mName = name;
+        mGeoLocation = geoLocation;
     }
 
 
     @Override
     public CharSequence name()
     {
-        return mDefaultNameToDisplay;
+        return mName;
     }
 
 
     @Override
     public GeoLocation geoLocation()
     {
-        return null;
+        return mGeoLocation;
     }
 }

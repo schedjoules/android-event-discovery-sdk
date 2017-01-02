@@ -43,10 +43,10 @@ import com.schedjoules.eventdiscovery.eventlist.view.EventListLoadingIndicatorOv
 import com.schedjoules.eventdiscovery.eventlist.view.EventListMenu;
 import com.schedjoules.eventdiscovery.eventlist.view.EventListToolbar;
 import com.schedjoules.eventdiscovery.eventlist.view.EventListView;
+import com.schedjoules.eventdiscovery.location.CustomLocationSelection;
 import com.schedjoules.eventdiscovery.location.LastSelectedLocation;
 import com.schedjoules.eventdiscovery.location.LocationSelection;
-import com.schedjoules.eventdiscovery.location.LocationSelectionResult;
-import com.schedjoules.eventdiscovery.location.PlacesApiLocationSelection;
+import com.schedjoules.eventdiscovery.location.NamedLocation;
 import com.schedjoules.eventdiscovery.location.SharedPrefLastSelectedLocation;
 import com.schedjoules.eventdiscovery.service.ApiService;
 import com.schedjoules.eventdiscovery.utils.FutureLocalServiceConnection;
@@ -69,7 +69,7 @@ public final class EventListFragment extends BaseFragment implements LocationSel
 {
     private FutureServiceConnection<ApiService> mApiService;
     private EventListItemsProvider mListItemsProvider;
-    private PlacesApiLocationSelection mLocationSelection;
+    private CustomLocationSelection mLocationSelection;
     private LastSelectedLocation mLastSelectedLocation;
 
     private EventListToolbar mToolbar;
@@ -99,7 +99,7 @@ public final class EventListFragment extends BaseFragment implements LocationSel
 
         mListItemsProvider = new EventListItemsProviderImpl(mApiService, new EventListItemsImpl());
 
-        mLocationSelection = new PlacesApiLocationSelection(this);
+        mLocationSelection = new CustomLocationSelection(this);
         mLocationSelection.registerListener(this);
 
         mLastSelectedLocation = new SharedPrefLastSelectedLocation(getContext());
@@ -196,7 +196,7 @@ public final class EventListFragment extends BaseFragment implements LocationSel
 
 
     @Override
-    public void onLocationSelected(LocationSelectionResult result)
+    public void onLocationSelected(NamedLocation result)
     {
         mLastSelectedLocation.update(result);
         mToolbar.setToolbarTitle(result.name());

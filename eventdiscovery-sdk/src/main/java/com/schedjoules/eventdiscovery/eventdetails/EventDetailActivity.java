@@ -41,14 +41,14 @@ public final class EventDetailActivity extends BaseActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.schedjoules_activity_event_detail);
+        setContentView(R.layout.schedjoules_activity_frame);
 
         if (savedInstanceState == null)
         {
             // start the wizard with the initial step
             Bundle nestedExtras = getIntent().getBundleExtra("com.schedjoules.nestedExtras");
             WizardStep initialStep = nestedExtras.getParcelable("WizardStep");
-            new SimpleWizard(initialStep, R.id.schedjoules_wizard_host).start(this);
+            new SimpleWizard(initialStep, R.id.schedjoules_activity_content).start(this);
         }
     }
 }

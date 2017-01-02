@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 SchedJoules
+ * Copyright 2017 SchedJoules
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,37 +17,29 @@
 
 package com.schedjoules.eventdiscovery.location;
 
-import com.schedjoules.client.eventsdiscovery.GeoLocation;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+
+import com.schedjoules.eventdiscovery.R;
+import com.schedjoules.eventdiscovery.common.BaseActivity;
+import com.schedjoules.eventdiscovery.framework.access.Fragments;
 
 
 /**
- * {@link LocationSelectionResult} that simply takes the properties as constructor parameters.
+ * Activity hosting the location selection.
  *
  * @author Gabor Keszthelyi
  */
-public final class StructuredLocationSelectionResult implements LocationSelectionResult
+public final class LocationSelectionActivity extends BaseActivity
 {
-    private final CharSequence mName;
-    private final GeoLocation mGeoLocation;
-
-
-    public StructuredLocationSelectionResult(CharSequence name, GeoLocation geoLocation)
-    {
-        mName = name;
-        mGeoLocation = geoLocation;
-    }
-
 
     @Override
-    public CharSequence name()
+    protected void onCreate(@Nullable Bundle savedInstanceState)
     {
-        return mName;
-    }
+        super.onCreate(savedInstanceState);
 
+        setContentView(R.layout.schedjoules_activity_frame);
 
-    @Override
-    public GeoLocation geoLocation()
-    {
-        return mGeoLocation;
+        new Fragments(this).add(R.id.schedjoules_activity_content, LocationSelectionFragment.newInstance());
     }
 }

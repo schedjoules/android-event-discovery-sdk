@@ -17,37 +17,38 @@
 
 package com.schedjoules.eventdiscovery.location;
 
-import com.google.android.gms.location.places.Place;
+import android.content.Context;
+
 import com.schedjoules.client.eventsdiscovery.GeoLocation;
-import com.schedjoules.client.eventsdiscovery.locations.StructuredGeoLocation;
+import com.schedjoules.eventdiscovery.R;
 
 
 /**
- * {@link LocationSelectionResult} adapting a {@link Place}.
+ * A {@link NamedLocation} that indicates that no location has been selected yet or it has been cleared.
  *
  * @author Gabor Keszthelyi
  */
-public final class PlacesApiLocationSelectionResult implements LocationSelectionResult
+public final class Anywhere implements NamedLocation
 {
-    private final Place mPlace;
+    private String mDefaultNameToDisplay;
 
 
-    public PlacesApiLocationSelectionResult(Place place)
+    public Anywhere(Context context)
     {
-        mPlace = place;
+        mDefaultNameToDisplay = context.getString(R.string.schedjoules_default_location_placeholder_name);
     }
 
 
     @Override
     public CharSequence name()
     {
-        return mPlace.getName();
+        return mDefaultNameToDisplay;
     }
 
 
     @Override
     public GeoLocation geoLocation()
     {
-        return new StructuredGeoLocation((float) mPlace.getLatLng().latitude, (float) mPlace.getLatLng().longitude);
+        return null;
     }
 }

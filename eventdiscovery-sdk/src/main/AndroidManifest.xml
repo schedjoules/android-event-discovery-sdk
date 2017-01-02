@@ -5,7 +5,7 @@
 
     <application>
         <activity
-                android:name="com.schedjoules.eventdiscovery.eventlist.EventListActivity"
+                android:name=".eventlist.EventListActivity"
                 android:theme="@style/SchedJoules_AppTheme.NoActionBar"
                 android:exported="false"
                 android:enabled="true"
@@ -38,12 +38,11 @@
 
 
         <activity
-                android:name="com.schedjoules.eventdiscovery.eventdetails.EventDetailActivity"
+                android:name=".eventdetails.EventDetailActivity"
                 android:label=""
                 android:exported="false"
                 android:enabled="true"
-                android:theme="@style/SchedJoules_AppTheme.NoActionBar">
-        </activity>
+                android:theme="@style/SchedJoules_AppTheme.NoActionBar"/>
 
         <activity
                 android:name=".proxies.DefaultAddToCalendarActivity"
@@ -55,6 +54,13 @@
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>
+
+        <activity
+                android:name=".location.LocationSelectionActivity"
+                android:label=""
+                android:exported="false"
+                android:enabled="true"
+                android:theme="@style/SchedJoules_AppTheme.NoActionBar"/>
 
         <service
                 android:name=".service.BasicInsightsService"

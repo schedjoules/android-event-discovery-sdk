@@ -24,9 +24,9 @@ package com.schedjoules.eventdiscovery.location;
  */
 public interface LastSelectedLocation
 {
-    void update(LocationSelectionResult selectedLocation);
+    void update(NamedLocation selectedLocation);
 
-    LocationSelectionResult get();
+    NamedLocation get();
 
     void clear();
 }

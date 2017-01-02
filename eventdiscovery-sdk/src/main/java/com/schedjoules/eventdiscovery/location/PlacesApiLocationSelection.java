@@ -102,7 +102,7 @@ public final class PlacesApiLocationSelection implements LocationSelection, OnAc
                 Place place = PlaceAutocomplete.getPlace(mFragment.getActivity(), data);
                 if (mListener != null)
                 {
-                    mListener.onLocationSelected(new PlacesApiLocationSelectionResult(place));
+                    mListener.onLocationSelected(new GoogleApiNamedLocation(place));
                 }
             }
             else if (resultCode == PlaceAutocomplete.RESULT_ERROR)

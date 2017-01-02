@@ -17,28 +17,37 @@
 
 package com.schedjoules.eventdiscovery.location;
 
+import com.google.android.gms.location.places.Place;
+import com.schedjoules.client.eventsdiscovery.GeoLocation;
+import com.schedjoules.client.eventsdiscovery.locations.StructuredGeoLocation;
+
+
 /**
- * Location selection controller.
+ * {@link NamedLocation} adapting a {@link Place}.
  *
  * @author Gabor Keszthelyi
  */
-public interface LocationSelection
+public final class GoogleApiNamedLocation implements NamedLocation
 {
-    /**
-     * Prompt user to select a location.
-     */
-    void initiateSelection();
+    private final Place mPlace;
 
-    void registerListener(Listener listener);
 
-    void unregisterListener();
-
-    interface Listener
+    public GoogleApiNamedLocation(Place place)
     {
-        /**
-         * Called when the user has selected a location.
-         */
-        void onLocationSelected(NamedLocation result);
+        mPlace = place;
     }
 
+
+    @Override
+    public CharSequence name()
+    {
+        return mPlace.getName();
+    }
+
+
+    @Override
+    public GeoLocation geoLocation()
+    {
+        return new StructuredGeoLocation((float) mPlace.getLatLng().latitude, (float) mPlace.getLatLng().longitude);
+    }
 }

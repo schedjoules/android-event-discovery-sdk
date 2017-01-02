@@ -25,7 +25,7 @@ import com.schedjoules.client.eventsdiscovery.GeoLocation;
  *
  * @author Gabor Keszthelyi
  */
-public interface LocationSelectionResult
+public interface NamedLocation
 {
     CharSequence name();
 
