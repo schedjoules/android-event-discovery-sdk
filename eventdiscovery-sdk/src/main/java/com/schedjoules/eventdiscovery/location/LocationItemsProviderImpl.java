@@ -17,20 +17,18 @@
 
 package com.schedjoules.eventdiscovery.location;
 
-import android.os.Handler;
-import android.os.Looper;
+import android.util.Log;
 
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.PendingResult;
-import com.google.android.gms.location.places.AutocompletePrediction;
-import com.google.android.gms.location.places.AutocompletePredictionBuffer;
-import com.google.android.gms.location.places.Places;
-import com.schedjoules.eventdiscovery.eventlist.items.DividerItem;
 import com.schedjoules.eventdiscovery.eventlist.itemsprovider.AdapterNotifier;
 import com.schedjoules.eventdiscovery.framework.adapter.ListItem;
+import com.schedjoules.eventdiscovery.framework.async.SafeAsyncTaskResult;
+import com.schedjoules.eventdiscovery.utils.Objects;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 
 /**
@@ -40,55 +38,30 @@ import java.util.List;
  */
 public final class LocationItemsProviderImpl implements LocationItemsProvider
 {
+    private static final String TAG = LocationItemsProviderImpl.class.getSimpleName();
 
     private final GoogleApiClient mApiClient;
-    private AdapterNotifier mAdapterNotifier;
+    private final ExecutorService mExecutorService;
+    private final PlaceSuggestionQueryTask.Client mTaskClient;
 
+    private AdapterNotifier mAdapterNotifier;
     private List<ListItem> mListItems = new ArrayList<>();
+    private String mLastQuery;
 
 
     public LocationItemsProviderImpl(GoogleApiClient apiClient)
     {
         mApiClient = apiClient;
+        mExecutorService = Executors.newSingleThreadExecutor();
+        mTaskClient = new PlaceSuggestionQueryTaskClient();
     }
 
 
     @Override
     public void query(String queryText)
     {
-        // TODO create the proper AsyncTask for the download
-
-        final PendingResult<AutocompletePredictionBuffer> result =
-                Places.GeoDataApi.getAutocompletePredictions(mApiClient, queryText,
-                        null, null);
-
-        new Thread(new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                final AutocompletePredictionBuffer predictions = result.await();
-                new Handler(Looper.getMainLooper()).post(new Runnable()
-                {
-                    @Override
-                    public void run()
-                    {
-                        List<ListItem> newItems = new ArrayList<>();
-                        for (AutocompletePrediction prediction : predictions)
-                        {
-                            CharSequence fullText = prediction.getFullText(null);
-                            newItems.add(new LocationSuggestionItem(fullText));
-                            newItems.add(new DividerItem());
-                        }
-
-                        int sizeBefore = mListItems.size();
-                        mListItems = newItems;
-                        mAdapterNotifier.notifyItemsCleared(sizeBefore);
-                        mAdapterNotifier.notifyNewItemsAdded(mListItems, 0);
-                    }
-                });
-            }
-        }).start();
+        mLastQuery = queryText;
+        new PlaceSuggestionQueryTask(queryText, mTaskClient).executeOnExecutor(mExecutorService, mApiClient);
     }
 
 
@@ -110,5 +83,46 @@ public final class LocationItemsProviderImpl implements LocationItemsProvider
     public int itemCount()
     {
         return mListItems.size();
+    }
+
+
+    private class PlaceSuggestionQueryTaskClient implements PlaceSuggestionQueryTask.Client
+    {
+
+        @Override
+        public boolean shouldDiscard(String query)
+        {
+            return !Objects.equals(query, mLastQuery);
+        }
+
+
+        @Override
+        public void onTaskFinish(SafeAsyncTaskResult<List<ListItem>> taskResult, String query)
+        {
+            try
+            {
+                onTaskSuccess(taskResult.value());
+            }
+            catch (Exception e)
+            {
+                onTaskFailed(e);
+            }
+        }
+
+
+        private void onTaskSuccess(List<ListItem> newItems)
+        {
+            int sizeBefore = mListItems.size();
+            mListItems = newItems;
+            mAdapterNotifier.notifyItemsCleared(sizeBefore);
+            mAdapterNotifier.notifyNewItemsAdded(mListItems, 0);
+        }
+
+
+        private void onTaskFailed(Exception e)
+        {
+            Log.e(TAG, "Error during places suggestion query task.", e);
+            // TODO UI
+        }
     }
 }

@@ -49,6 +49,7 @@ public final class Anywhere implements NamedLocation
     @Override
     public GeoLocation geoLocation()
     {
+        // TODO UndefinedGeoLocation instead of null?
         return null;
     }
 }
