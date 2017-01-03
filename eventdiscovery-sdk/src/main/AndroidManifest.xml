@@ -60,6 +60,7 @@
                 android:label=""
                 android:exported="false"
                 android:enabled="true"
+                android:windowSoftInputMode="adjustPan"
                 android:theme="@style/SchedJoules_AppTheme.NoActionBar"/>
 
         <service

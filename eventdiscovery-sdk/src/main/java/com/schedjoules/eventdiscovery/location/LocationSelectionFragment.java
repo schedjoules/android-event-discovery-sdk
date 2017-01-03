@@ -20,18 +20,28 @@ package com.schedjoules.eventdiscovery.location;
 import android.app.Activity;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.places.Places;
 import com.schedjoules.eventdiscovery.R;
 import com.schedjoules.eventdiscovery.common.BaseActivity;
 import com.schedjoules.eventdiscovery.common.BaseFragment;
 import com.schedjoules.eventdiscovery.databinding.SchedjoulesFragmentLocationSelectionBinding;
+import com.schedjoules.eventdiscovery.eventlist.itemsprovider.StandardAdapterNotifier;
+import com.schedjoules.eventdiscovery.framework.adapter.GeneralMultiTypeAdapter;
 
 
 /**
@@ -41,6 +51,10 @@ import com.schedjoules.eventdiscovery.databinding.SchedjoulesFragmentLocationSel
  */
 public final class LocationSelectionFragment extends BaseFragment
 {
+    private GoogleApiClient mGoogleApiClient;
+    private LocationItemsProviderImpl mLocationItemsProvider;
+
+
     public static Fragment newInstance()
     {
         return new LocationSelectionFragment();
@@ -51,7 +65,20 @@ public final class LocationSelectionFragment extends BaseFragment
     public void onCreate(@Nullable Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
+
+        mGoogleApiClient = new GoogleApiClient
+                .Builder(getContext())
+                .addApi(Places.GEO_DATA_API)
+                .addApi(Places.PLACE_DETECTION_API)
+                .enableAutoManage(getActivity(), new GoogleApiClient.OnConnectionFailedListener()
+                {
+                    @Override
+                    public void onConnectionFailed(@NonNull ConnectionResult connectionResult)
+                    {
+                        // TODO
+                    }
+                })
+                .build();
     }
 
 
@@ -62,20 +89,61 @@ public final class LocationSelectionFragment extends BaseFragment
         SchedjoulesFragmentLocationSelectionBinding views = DataBindingUtil.inflate(inflater,
                 R.layout.schedjoules_fragment_location_selection, container, false);
 
-        initToolbar(views);
+        initToolbar(views.schedjoulesLocationSelectionToolbar);
+
+        initList(views.schedjoulesLocationSelectionList);
 
         return views.getRoot();
     }
 
 
-    private void initToolbar(SchedjoulesFragmentLocationSelectionBinding views)
+    private void initToolbar(Toolbar toolbar)
     {
+        setHasOptionsMenu(true);
         BaseActivity activity = (BaseActivity) getActivity();
-        Toolbar toolbar = views.schedjoulesLocationSelectionToolbar;
 
         toolbar.setTitle("Location selection");
         activity.setSupportActionBar(toolbar);
         activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+
+
+    private void initList(RecyclerView recyclerView)
+    {
+        mLocationItemsProvider = new LocationItemsProviderImpl(mGoogleApiClient);
+        GeneralMultiTypeAdapter adapter = new GeneralMultiTypeAdapter(mLocationItemsProvider);
+        mLocationItemsProvider.setAdapterNotifier(new StandardAdapterNotifier(adapter));
+        recyclerView.setAdapter(adapter);
+    }
+
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
+    {
+        inflater.inflate(R.menu.schedjoules_location_selection, menu);
+
+        SearchView searchView = (SearchView) menu.findItem(R.id.schedjoules_location_search).getActionView();
+        searchView.requestFocus();
+        searchView.setIconifiedByDefault(false); // Expand by default
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener()
+        {
+            @Override
+            public boolean onQueryTextSubmit(String query)
+            {
+                // TODO review what we should do here
+                mLocationItemsProvider.query(query);
+                return true;
+            }
+
+
+            @Override
+            public boolean onQueryTextChange(String newText)
+            {
+                mLocationItemsProvider.query(newText);
+                return true;
+            }
+        });
     }
 
 
@@ -84,6 +152,7 @@ public final class LocationSelectionFragment extends BaseFragment
     {
         if (item.getItemId() == android.R.id.home)
         {
+            // TODO revisit
             getActivity().setResult(Activity.RESULT_CANCELED);
             getActivity().finish();
         }
