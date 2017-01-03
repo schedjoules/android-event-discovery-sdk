@@ -21,7 +21,15 @@
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
                     app:titleTextAppearance="@style/SchedJoules_ToolbarTitle"
-                    app:popupTheme="@style/SchedJoules_AppTheme.PopupOverlay"/>
+                    app:popupTheme="@style/SchedJoules_AppTheme.PopupOverlay">
+
+                <EditText
+                        android:id="@+id/schedjoules_location_selection_input"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@android:color/transparent"
+                        android:hint="@string/schedjoules_location_selection_hint"/>
+            </android.support.v7.widget.Toolbar>
 
         </android.support.design.widget.AppBarLayout>
 

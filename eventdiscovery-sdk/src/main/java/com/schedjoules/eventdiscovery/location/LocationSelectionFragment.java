@@ -24,11 +24,9 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,6 +40,7 @@ import com.schedjoules.eventdiscovery.common.BaseFragment;
 import com.schedjoules.eventdiscovery.databinding.SchedjoulesFragmentLocationSelectionBinding;
 import com.schedjoules.eventdiscovery.eventlist.itemsprovider.StandardAdapterNotifier;
 import com.schedjoules.eventdiscovery.framework.adapter.GeneralMultiTypeAdapter;
+import com.schedjoules.eventdiscovery.widgets.SimpleTextWatcher;
 
 
 /**
@@ -93,6 +92,15 @@ public final class LocationSelectionFragment extends BaseFragment
 
         initList(views.schedjoulesLocationSelectionList);
 
+        views.schedjoulesLocationSelectionInput.addTextChangedListener(new SimpleTextWatcher()
+        {
+            @Override
+            public void afterTextChanged(Editable s)
+            {
+                mLocationItemsProvider.query(s.toString());
+            }
+        });
+
         return views.getRoot();
     }
 
@@ -101,8 +109,6 @@ public final class LocationSelectionFragment extends BaseFragment
     {
         setHasOptionsMenu(true);
         BaseActivity activity = (BaseActivity) getActivity();
-
-        toolbar.setTitle("Location selection");
         activity.setSupportActionBar(toolbar);
         activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
@@ -116,7 +122,8 @@ public final class LocationSelectionFragment extends BaseFragment
         recyclerView.setAdapter(adapter);
     }
 
-
+    // TODO decide if SearchView or EditText is better
+/*
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
     {
@@ -145,6 +152,7 @@ public final class LocationSelectionFragment extends BaseFragment
             }
         });
     }
+*/
 
 
     @Override
