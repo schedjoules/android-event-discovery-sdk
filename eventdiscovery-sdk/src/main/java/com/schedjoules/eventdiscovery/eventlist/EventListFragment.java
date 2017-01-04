@@ -185,6 +185,10 @@ public final class EventListFragment extends BaseFragment implements LocationSel
     public void onActivityCreated(@Nullable Bundle savedInstanceState)
     {
         super.onActivityCreated(savedInstanceState);
+
+//        ViewGroup content = (ViewGroup) getActivity().findViewById(android.R.id.content);
+//        content.addView(getActivity().getLayoutInflater().inflate(R.layout.schedjoules_powered_by_footer, null));
+
         if (mIsInitializing)
         {
             mIsInitializing = false;
