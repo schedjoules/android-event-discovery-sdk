@@ -37,7 +37,7 @@ import com.schedjoules.eventdiscovery.R;
 public final class EventItemView extends RelativeLayout
 {
     private TextView mTitle;
-    private TextView mTimes;
+    private TextView mTime;
     private TextView mLocation;
     private TextView mCategory;
     private ImageView mThumbnail;
@@ -54,7 +54,7 @@ public final class EventItemView extends RelativeLayout
     {
         super.onFinishInflate();
         mTitle = (TextView) findViewById(R.id.schedjoules_event_item_title);
-        mTimes = (TextView) findViewById(R.id.schedjoules_event_item_times);
+        mTime = (TextView) findViewById(R.id.schedjoules_event_item_time);
         mLocation = (TextView) findViewById(R.id.schedjoules_event_item_location);
         mCategory = (TextView) findViewById(R.id.schedjoules_event_item_category);
         mThumbnail = (ImageView) findViewById(R.id.schedjoules_event_item_thumbnail);
@@ -67,9 +67,9 @@ public final class EventItemView extends RelativeLayout
     }
 
 
-    public void setDateTimes(CharSequence formattedDateTimes)
+    public void setTime(CharSequence formattedTime)
     {
-        mTimes.setText(formattedDateTimes);
+        mTime.setText(formattedTime);
     }
 
 
