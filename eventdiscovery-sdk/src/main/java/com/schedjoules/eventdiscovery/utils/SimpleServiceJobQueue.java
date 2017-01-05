@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 SchedJoules
+ * Copyright 2017 SchedJoules
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,9 +15,7 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery.service;
-
-import com.schedjoules.eventdiscovery.utils.FutureServiceConnection;
+package com.schedjoules.eventdiscovery.utils;
 
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;

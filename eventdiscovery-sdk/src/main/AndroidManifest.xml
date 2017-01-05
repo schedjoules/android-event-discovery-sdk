@@ -5,6 +5,13 @@
 
     <application>
         <activity
+                android:name="com.schedjoules.eventdiscovery.activities.MicroFragmentHostActivity"
+                android:exported="false"
+                android:enabled="true"
+                android:theme="@style/SchedJoules_AppTheme.NoActionBar">
+        </activity>
+
+        <activity
                 android:name="com.schedjoules.eventdiscovery.eventlist.EventListActivity"
                 android:theme="@style/SchedJoules_AppTheme.NoActionBar"
                 android:exported="false"
@@ -18,7 +25,7 @@
 
 
         <activity
-                android:name=".proxies.DeeplinkEventDetailsProxy"
+                android:name=".activities.proxies.DeeplinkEventDetailsProxy"
                 android:label="Event details"
                 android:exported="true"
                 android:enabled="true"
@@ -36,17 +43,8 @@
             </intent-filter>
         </activity>
 
-
         <activity
-                android:name="com.schedjoules.eventdiscovery.eventdetails.EventDetailActivity"
-                android:label=""
-                android:exported="false"
-                android:enabled="true"
-                android:theme="@style/SchedJoules_AppTheme.NoActionBar">
-        </activity>
-
-        <activity
-                android:name=".proxies.DefaultAddToCalendarActivity"
+                android:name=".activities.defaults.DefaultAddToCalendarActivity"
                 android:exported="false"
                 android:theme="@android:style/Theme.NoDisplay"
                 android:enabled="true">

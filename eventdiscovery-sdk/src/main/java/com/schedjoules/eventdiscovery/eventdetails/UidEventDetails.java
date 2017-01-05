@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 SchedJoules
+ * Copyright 2017 SchedJoules
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery;
+package com.schedjoules.eventdiscovery.eventdetails;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -23,8 +23,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 
 import com.schedjoules.client.eventsdiscovery.Event;
-import com.schedjoules.eventdiscovery.eventdetails.EventDetailActivity;
-import com.schedjoules.eventdiscovery.eventdetails.wizardsteps.EventLoaderStep;
+import com.schedjoules.eventdiscovery.activities.MicroFragmentHostActivity;
+import com.schedjoules.eventdiscovery.microfragments.eventdetails.EventLoaderMicroFragment;
 
 
 /**
@@ -46,9 +46,9 @@ public final class UidEventDetails implements EventDetails
     @Override
     public void show(@NonNull Activity activity)
     {
-        Intent intent = new Intent(activity, EventDetailActivity.class);
+        Intent intent = new Intent(activity, MicroFragmentHostActivity.class);
         Bundle nestedBundle = new Bundle();
-        nestedBundle.putParcelable("WizardStep", new EventLoaderStep(mEventUid));
+        nestedBundle.putParcelable("MicroFragment", new EventLoaderMicroFragment(mEventUid));
         intent.putExtra("com.schedjoules.nestedExtras", nestedBundle);
         activity.startActivity(intent);
     }

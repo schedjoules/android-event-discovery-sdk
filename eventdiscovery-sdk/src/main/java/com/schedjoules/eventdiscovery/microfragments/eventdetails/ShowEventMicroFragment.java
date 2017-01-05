@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 SchedJoules
+ * Copyright 2017 SchedJoules
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,20 +15,23 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery.eventdetails.wizardsteps;
+package com.schedjoules.eventdiscovery.microfragments.eventdetails;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 
 import com.schedjoules.client.eventsdiscovery.Event;
-import com.schedjoules.eventdiscovery.eventdetails.EventDetailFragment;
+import com.schedjoules.eventdiscovery.microfragments.eventdetails.fragments.EventDetailFragment;
 import com.schedjoules.eventdiscovery.model.ParcelableEvent;
 import com.schedjoules.eventdiscovery.model.ParcelableLink;
 
-import org.dmfs.android.dumbledore.WizardStep;
+import org.dmfs.android.microfragments.BasicMicroFragmentEnvironment;
+import org.dmfs.android.microfragments.MicroFragment;
+import org.dmfs.android.microfragments.MicroFragmentHost;
 import org.dmfs.httpessentials.types.Link;
 
 import java.util.ArrayList;
@@ -36,17 +39,25 @@ import java.util.List;
 
 
 /**
- * A {@link WizardStep} that shows the event.
+ * A {@link MicroFragment} that shows the event.
  *
  * @author Marten Gajda
  */
-public final class ShowEventStep implements WizardStep
+public final class ShowEventMicroFragment implements MicroFragment<ShowEventMicroFragment.EventParams>
 {
+    public interface EventParams
+    {
+        Event event();
+
+        List<Link> actions();
+    }
+
+
     private final Event mEvent;
     private final List<Link> mActionLinks;
 
 
-    public ShowEventStep(Event event, List<Link> actionLinks)
+    public ShowEventMicroFragment(Event event, List<Link> actionLinks)
     {
         mEvent = event;
         mActionLinks = actionLinks;
@@ -63,9 +74,35 @@ public final class ShowEventStep implements WizardStep
 
     @NonNull
     @Override
-    public Fragment fragment(@NonNull Context context)
+    public Fragment fragment(@NonNull Context context, MicroFragmentHost host)
     {
-        return EventDetailFragment.newInstance(mEvent, mActionLinks);
+        Fragment result = new EventDetailFragment();
+        Bundle args = new Bundle(2);
+        args.putParcelable(MicroFragment.ARG_ENVIRONMENT, new BasicMicroFragmentEnvironment<>(this, host));
+        result.setArguments(args);
+        return result;
+    }
+
+
+    @NonNull
+    @Override
+    public EventParams parameters()
+    {
+        return new EventParams()
+        {
+            @Override
+            public Event event()
+            {
+                return mEvent;
+            }
+
+
+            @Override
+            public List<Link> actions()
+            {
+                return mActionLinks;
+            }
+        };
     }
 
 
@@ -95,10 +132,10 @@ public final class ShowEventStep implements WizardStep
     }
 
 
-    public final static Creator<ShowEventStep> CREATOR = new Creator<ShowEventStep>()
+    public final static Creator<ShowEventMicroFragment> CREATOR = new Creator<ShowEventMicroFragment>()
     {
         @Override
-        public ShowEventStep createFromParcel(Parcel source)
+        public ShowEventMicroFragment createFromParcel(Parcel source)
         {
             ClassLoader loader = getClass().getClassLoader();
             Event event = source.readParcelable(loader);
@@ -110,14 +147,14 @@ public final class ShowEventStep implements WizardStep
                 actionLinks.add(link);
             }
 
-            return new ShowEventStep(event, actionLinks);
+            return new ShowEventMicroFragment(event, actionLinks);
         }
 
 
         @Override
-        public ShowEventStep[] newArray(int size)
+        public ShowEventMicroFragment[] newArray(int size)
         {
-            return new ShowEventStep[size];
+            return new ShowEventMicroFragment[size];
         }
     };
 }

@@ -39,12 +39,6 @@ public final class EventIntents
     public static final String EXTRA_RADIUS = "schedjoules.event.intent.extra.RADIUS";
 
     /**
-     * Intent action for adding an event to the calendar. The default operation for the "Add to calendar" button will look for Activities registered for this
-     * Action first, so clients can make sure to direct user to their calendar without showing chooser to user.
-     */
-    public static final String ACTION_ADD_TO_CALENDAR = "schedjoules.event.intent.action.ADD_TO_CALENDAR";
-
-    /**
      * Extra for the event uid field sent in the add to calendar intent.
      */
     public static final String EXTRA_SCHEDJOULES_EVENT_UID = "schedjoules.event.intent.extra.UID";

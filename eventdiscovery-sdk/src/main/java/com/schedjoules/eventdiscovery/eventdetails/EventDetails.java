@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 SchedJoules
+ * Copyright 2017 SchedJoules
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,22 +15,23 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery.service;
+package com.schedjoules.eventdiscovery.eventdetails;
+
+import android.app.Activity;
+import android.support.annotation.NonNull;
+
 
 /**
  * @author Marten Gajda
  */
-public interface ServiceJob<S>
+public interface EventDetails
 {
     /**
-     * Called to perform the actual work on the given service.
+     * Show these {@link EventDetails}.
      *
-     * @param service
+     * @param activity
+     *         An {@link Activity}.
      */
-    void execute(S service);
+    void show(@NonNull Activity activity);
 
-    /**
-     * Called this job was not executed because the service connection was not established within the given time.
-     */
-    void onTimeOut();
 }

@@ -24,8 +24,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.schedjoules.client.insights.steps.EntryPoint;
-import com.schedjoules.eventdiscovery.BasicEventDiscovery;
-import com.schedjoules.eventdiscovery.UidEventDetails;
+import com.schedjoules.eventdiscovery.discovery.BasicEventDiscovery;
+import com.schedjoules.eventdiscovery.eventdetails.UidEventDetails;
 import com.schedjoules.eventdiscovery.demo.optionals.AddToCalendarActivity;
 import com.schedjoules.eventdiscovery.utils.InsightsTask;
 

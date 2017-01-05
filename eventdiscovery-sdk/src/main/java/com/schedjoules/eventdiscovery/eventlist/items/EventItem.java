@@ -21,7 +21,7 @@ import android.view.View;
 
 import com.schedjoules.client.eventsdiscovery.Event;
 import com.schedjoules.client.insights.steps.Interaction;
-import com.schedjoules.eventdiscovery.BasicEventDetails;
+import com.schedjoules.eventdiscovery.eventdetails.BasicEventDetails;
 import com.schedjoules.eventdiscovery.R;
 import com.schedjoules.eventdiscovery.common.BaseActivity;
 import com.schedjoules.eventdiscovery.datetime.FormattedDateTime;

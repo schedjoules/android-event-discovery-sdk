@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 SchedJoules
+ * Copyright 2017 SchedJoules
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery.eventdetails;
+package com.schedjoules.eventdiscovery.microfragments.eventdetails.fragments.views;
 
 import android.app.Activity;
 import android.content.Context;

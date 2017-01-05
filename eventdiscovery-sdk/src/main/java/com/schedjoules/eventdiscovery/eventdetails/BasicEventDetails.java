@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 SchedJoules
+ * Copyright 2017 SchedJoules
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery;
+package com.schedjoules.eventdiscovery.eventdetails;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -23,9 +23,9 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 
 import com.schedjoules.client.eventsdiscovery.Event;
-import com.schedjoules.eventdiscovery.eventdetails.EventDetailActivity;
-import com.schedjoules.eventdiscovery.eventdetails.wizardsteps.ActionLoaderStep;
-import com.schedjoules.eventdiscovery.eventdetails.wizardsteps.ShowEventStep;
+import com.schedjoules.eventdiscovery.activities.MicroFragmentHostActivity;
+import com.schedjoules.eventdiscovery.microfragments.eventdetails.ActionLoaderMicroFragment;
+import com.schedjoules.eventdiscovery.microfragments.eventdetails.ShowEventMicroFragment;
 import com.schedjoules.eventdiscovery.service.ActionService;
 import com.schedjoules.eventdiscovery.utils.FutureServiceConnection;
 
@@ -78,7 +78,7 @@ public final class BasicEventDetails implements EventDetails
         @Override
         public void run()
         {
-            Intent intent = new Intent(mActivity, EventDetailActivity.class);
+            Intent intent = new Intent(mActivity, MicroFragmentHostActivity.class);
             Bundle nestedBundle = new Bundle();
 
             FutureServiceConnection<ActionService> actionService = new ActionService.FutureConnection(mActivity);
@@ -86,12 +86,12 @@ public final class BasicEventDetails implements EventDetails
             {
                 List<Link> actions = actionService.service(40).cachedActions(mEvent.uid());
                 // Start the details with the actions from the cache.
-                nestedBundle.putParcelable("WizardStep", new ShowEventStep(mEvent, actions));
+                nestedBundle.putParcelable("MicroFragment", new ShowEventMicroFragment(mEvent, actions));
             }
             catch (InterruptedException | TimeoutException | NoSuchElementException e)
             {
                 // An error occurred or the actions are not in the cache yet, let the details activity load the actions.
-                nestedBundle.putParcelable("WizardStep", new ActionLoaderStep(mEvent));
+                nestedBundle.putParcelable("MicroFragment", new ActionLoaderMicroFragment(mEvent));
             }
             finally
             {

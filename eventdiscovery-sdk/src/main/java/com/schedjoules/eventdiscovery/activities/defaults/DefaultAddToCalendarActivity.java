@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 SchedJoules
+ * Copyright 2017 SchedJoules
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery.proxies;
+package com.schedjoules.eventdiscovery.activities.defaults;
 
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
@@ -25,13 +25,12 @@ import android.provider.CalendarContract;
 import android.support.annotation.Nullable;
 import android.widget.Toast;
 
-import com.schedjoules.eventdiscovery.EventIntents;
 import com.schedjoules.eventdiscovery.R;
 
 
 /**
- * Invisible default {@link Activity} to catch {@link EventIntents#ACTION_ADD_TO_CALENDAR} if the current app doesn't. It forwards the data to a general "insert
- * event" intent.
+ * Invisible default {@link Activity} to catch {@code schedjoules.event.intent.action.ADD_TO_CALENDAR} if the current app doesn't. It forwards the data to a
+ * general "insert event" intent.
  *
  * @author Marten Gajda
  */

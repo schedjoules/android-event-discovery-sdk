@@ -15,40 +15,36 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery.eventdetails;
+package com.schedjoules.eventdiscovery.activities;
 
 import android.os.Bundle;
 
 import com.schedjoules.eventdiscovery.R;
 import com.schedjoules.eventdiscovery.common.BaseActivity;
-import com.schedjoules.eventdiscovery.eventlist.EventListActivity;
 
-import org.dmfs.android.dumbledore.SimpleWizard;
-import org.dmfs.android.dumbledore.WizardStep;
+import org.dmfs.android.microfragments.MicroFragment;
+import org.dmfs.android.microfragments.SimpleMicroFragmentFlow;
 
 
 /**
- * An activity representing a single Event detail screen. This activity is only used on narrow width devices. On
- * tablet-size devices, Event details are presented side-by-side with a list of items in a {@link EventListActivity}
- * using a {@link EventDetailFragment}.
+ * An activity presenting the given {@link MicroFragment}.
  *
- * @author Gabor Keszthelyi
  * @author Marten Gajda
  */
-public final class EventDetailActivity extends BaseActivity
+public final class MicroFragmentHostActivity extends BaseActivity
 {
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.schedjoules_activity_event_detail);
+        setContentView(R.layout.schedjoules_activity_microfragment_host);
 
         if (savedInstanceState == null)
         {
-            // start the wizard with the initial step
+            // load the initial MicroFragment
             Bundle nestedExtras = getIntent().getBundleExtra("com.schedjoules.nestedExtras");
-            WizardStep initialStep = nestedExtras.getParcelable("WizardStep");
-            new SimpleWizard(initialStep, R.id.schedjoules_wizard_host).start(this);
+            MicroFragment initialMicroFragment = nestedExtras.getParcelable("MicroFragment");
+            new SimpleMicroFragmentFlow(initialMicroFragment, R.id.schedjoules_microfragment_host).start(this);
         }
     }
 }

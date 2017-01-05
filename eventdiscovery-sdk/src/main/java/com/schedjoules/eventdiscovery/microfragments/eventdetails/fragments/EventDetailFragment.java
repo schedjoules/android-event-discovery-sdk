@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 SchedJoules
+ * Copyright 2017 SchedJoules
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,12 +15,10 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery.eventdetails;
+package com.schedjoules.eventdiscovery.microfragments.eventdetails.fragments;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.os.Parcelable;
-import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,64 +36,50 @@ import com.schedjoules.eventdiscovery.common.BaseFragment;
 import com.schedjoules.eventdiscovery.databinding.SchedjoulesEventDetailContentBinding;
 import com.schedjoules.eventdiscovery.datetime.LongDate;
 import com.schedjoules.eventdiscovery.datetime.StartAndEndTime;
+import com.schedjoules.eventdiscovery.activities.MicroFragmentHostActivity;
 import com.schedjoules.eventdiscovery.eventlist.EventListActivity;
-import com.schedjoules.eventdiscovery.model.ParcelableEvent;
-import com.schedjoules.eventdiscovery.model.ParcelableLink;
+import com.schedjoules.eventdiscovery.microfragments.eventdetails.ShowEventMicroFragment;
+import com.schedjoules.eventdiscovery.microfragments.eventdetails.fragments.views.EventDetailsItemView;
+import com.schedjoules.eventdiscovery.microfragments.eventdetails.fragments.views.EventDetailsTwoLineItemView;
+import com.schedjoules.eventdiscovery.microfragments.eventdetails.fragments.views.HorizontalActionsView;
+import com.schedjoules.eventdiscovery.microfragments.eventdetails.fragments.views.SmallEventActionView;
 import com.schedjoules.eventdiscovery.model.SchedJoulesLinks;
 import com.schedjoules.eventdiscovery.utils.InsightsTask;
 import com.schedjoules.eventdiscovery.utils.Limiting;
 import com.schedjoules.eventdiscovery.utils.Skipping;
 
+import org.dmfs.android.microfragments.FragmentEnvironment;
+import org.dmfs.android.microfragments.MicroFragmentEnvironment;
 import org.dmfs.httpessentials.types.Link;
 import org.dmfs.httpessentials.types.StringToken;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static com.schedjoules.eventdiscovery.utils.LocationFormatter.longLocationFormat;
 
 
 /**
- * A fragment representing a single Event detail screen. This fragment is either contained in a {@link
- * EventListActivity} in two-pane mode (on tablets) or a {@link EventDetailActivity} on handsets.
+ * A fragment representing a single Event detail screen. This fragment is either contained in a {@link EventListActivity} in two-pane mode (on tablets) or a
+ * {@link MicroFragmentHostActivity} on handsets.
  *
  * @author Gabor Keszthelyi
  */
 public final class EventDetailFragment extends BaseFragment
 {
-    private static final String ARG_EVENT = "event";
-    private static final String ARG_ACTIONS = "actions";
-
     private Event mEvent;
-    private List<ParcelableLink> mActions;
+    private List<Link> mActions;
 
     private SchedjoulesEventDetailContentBinding mViews;
     private LinearLayout mVerticalItems;
     private HorizontalActionsView mHorizontalActions;
 
 
-    public static Fragment newInstance(Event event, List<Link> actionLinks)
-    {
-        Bundle arguments = new Bundle();
-        arguments.putParcelable(ARG_EVENT, new ParcelableEvent(event));
-
-        ArrayList<Parcelable> links = new ArrayList<>(actionLinks.size());
-        for (Link actionLink : actionLinks)
-        {
-            links.add(actionLink instanceof Parcelable ? (Parcelable) actionLink : new ParcelableLink(actionLink));
-        }
-        arguments.putParcelableArrayList(ARG_ACTIONS, links);
-        EventDetailFragment fragment = new EventDetailFragment();
-        fragment.setArguments(arguments);
-        return fragment;
-    }
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
-        mEvent = getArguments().getParcelable(ARG_EVENT);
-        mActions = getArguments().getParcelableArrayList(ARG_ACTIONS);
+        MicroFragmentEnvironment<ShowEventMicroFragment.EventParams> env = new FragmentEnvironment<>(this);
+        mEvent = env.microFragment().parameters().event();
+        mActions = env.microFragment().parameters().actions();
 
         if (savedInstanceState == null)
         {

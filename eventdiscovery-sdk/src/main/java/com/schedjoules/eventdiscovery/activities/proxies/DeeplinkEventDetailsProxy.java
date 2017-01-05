@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 SchedJoules
+ * Copyright 2017 SchedJoules
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,13 +15,13 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery.proxies;
+package com.schedjoules.eventdiscovery.activities.proxies;
 
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
-import com.schedjoules.eventdiscovery.UidEventDetails;
+import com.schedjoules.eventdiscovery.eventdetails.UidEventDetails;
 
 
 /**

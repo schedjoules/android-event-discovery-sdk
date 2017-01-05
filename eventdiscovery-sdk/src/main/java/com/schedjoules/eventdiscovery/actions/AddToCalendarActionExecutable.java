@@ -60,7 +60,7 @@ public final class AddToCalendarActionExecutable implements ActionExecutable
     {
         new InsightsTask(activity).execute(new ActionInteraction(mLink, mEvent));
 
-        Intent addIntent = new Intent(EventIntents.ACTION_ADD_TO_CALENDAR);
+        Intent addIntent = new Intent("schedjoules.event.intent.action.ADD_TO_CALENDAR");
         addIntent.putExtras(extrasForAddToCalendar());
         addIntent.setPackage(activity.getPackageName());
         activity.startActivity(addIntent);

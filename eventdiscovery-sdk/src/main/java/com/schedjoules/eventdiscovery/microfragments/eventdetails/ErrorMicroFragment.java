@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 SchedJoules
+ * Copyright 2017 SchedJoules
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery.eventdetails.wizardsteps;
+package com.schedjoules.eventdiscovery.microfragments.eventdetails;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -32,33 +32,44 @@ import com.schedjoules.eventdiscovery.R;
 
 import net.opacapp.multilinecollapsingtoolbar.CollapsingToolbarLayout;
 
-import org.dmfs.android.dumbledore.WizardStep;
+import org.dmfs.android.microfragments.BasicMicroFragmentEnvironment;
+import org.dmfs.android.microfragments.FragmentEnvironment;
+import org.dmfs.android.microfragments.MicroFragment;
+import org.dmfs.android.microfragments.MicroFragmentHost;
 
 
 /**
- * A {@link WizardStep} to present an error to the user.
+ * A {@link MicroFragment} to present an error to the user.
  *
  * @author Marten Gajda
  */
-public final class ErrorStep implements WizardStep
+public final class ErrorMicroFragment implements MicroFragment<ErrorMicroFragment.Error>
 {
+    interface Error
+    {
+        String title();
+
+        String message();
+    }
+
+
     private final String mTitle;
     private final String mErrorMessage;
 
 
-    public ErrorStep()
+    public ErrorMicroFragment()
     {
         this(null, null);
     }
 
 
-    public ErrorStep(String errorMessage)
+    public ErrorMicroFragment(String errorMessage)
     {
         this(null, errorMessage);
     }
 
 
-    public ErrorStep(String title, String errorMessage)
+    public ErrorMicroFragment(String title, String errorMessage)
     {
         mTitle = title;
         mErrorMessage = errorMessage;
@@ -75,15 +86,35 @@ public final class ErrorStep implements WizardStep
 
     @NonNull
     @Override
-    public Fragment fragment(@NonNull Context context)
+    public Fragment fragment(@NonNull Context context, @NonNull MicroFragmentHost microFragmentHost)
     {
         Fragment result = new ErrorFragment();
         Bundle args = new Bundle(1);
-        args.putParcelable(WizardStep.ARG_WIZARD_STEP, this);
-        args.putString("title", mTitle);
-        args.putString("message", mErrorMessage);
+        args.putParcelable(MicroFragment.ARG_ENVIRONMENT, new BasicMicroFragmentEnvironment<>(this, microFragmentHost));
         result.setArguments(args);
         return result;
+    }
+
+
+    @NonNull
+    @Override
+    public Error parameters()
+    {
+        return new Error()
+        {
+            @Override
+            public String title()
+            {
+                return mTitle;
+            }
+
+
+            @Override
+            public String message()
+            {
+                return mErrorMessage;
+            }
+        };
     }
 
 
@@ -109,19 +140,19 @@ public final class ErrorStep implements WizardStep
     }
 
 
-    public final static Creator<ErrorStep> CREATOR = new Creator<ErrorStep>()
+    public final static Creator<ErrorMicroFragment> CREATOR = new Creator<ErrorMicroFragment>()
     {
         @Override
-        public ErrorStep createFromParcel(Parcel source)
+        public ErrorMicroFragment createFromParcel(Parcel source)
         {
-            return new ErrorStep(source.readString(), source.readString());
+            return new ErrorMicroFragment(source.readString(), source.readString());
         }
 
 
         @Override
-        public ErrorStep[] newArray(int size)
+        public ErrorMicroFragment[] newArray(int size)
         {
-            return new ErrorStep[size];
+            return new ErrorMicroFragment[size];
         }
     };
 
@@ -133,9 +164,9 @@ public final class ErrorStep implements WizardStep
         public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
         {
             View view = inflater.inflate(R.layout.schedjoules_fragment_error, container, false);
-            Bundle args = getArguments();
-            String title = args.getString("title");
-            String message = args.getString("message");
+            Error error = new FragmentEnvironment<Error>(this).microFragment().parameters();
+            String title = error.title();
+            String message = error.message();
             if (message != null)
             {
                 ((TextView) view.findViewById(android.R.id.message)).setText(message);

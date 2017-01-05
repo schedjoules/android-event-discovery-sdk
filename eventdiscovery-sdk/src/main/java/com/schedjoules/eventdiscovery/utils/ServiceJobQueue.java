@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 SchedJoules
+ * Copyright 2017 SchedJoules
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,23 +15,14 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery;
-
-import android.app.Activity;
-import android.support.annotation.NonNull;
-
+package com.schedjoules.eventdiscovery.utils;
 
 /**
  * @author Marten Gajda
  */
-public interface EventDetails
+public interface ServiceJobQueue<S>
 {
-    /**
-     * Show these {@link EventDetails}.
-     *
-     * @param activity
-     *         An {@link Activity}.
-     */
-    void show(@NonNull Activity activity);
+    void post(ServiceJob<S> job, int executionTimeout);
 
+    void disconnect();
 }

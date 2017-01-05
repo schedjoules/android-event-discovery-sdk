@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 SchedJoules
+ * Copyright 2017 SchedJoules
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,9 +15,8 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery.eventdetails.wizardsteps;
+package com.schedjoules.eventdiscovery.microfragments.eventdetails;
 
-import android.app.Activity;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -33,16 +32,22 @@ import android.view.ViewGroup;
 import com.bumptech.glide.Glide;
 import com.schedjoules.client.eventsdiscovery.Event;
 import com.schedjoules.eventdiscovery.databinding.SchedjoulesEventDetailContentLoadingActionsBinding;
-import com.schedjoules.eventdiscovery.eventdetails.transitions.AutomaticWizardTransition;
 import com.schedjoules.eventdiscovery.model.ParcelableEvent;
 import com.schedjoules.eventdiscovery.model.SchedJoulesLinks;
 import com.schedjoules.eventdiscovery.service.ActionService;
-import com.schedjoules.eventdiscovery.service.ServiceJob;
-import com.schedjoules.eventdiscovery.service.ServiceJobQueue;
-import com.schedjoules.eventdiscovery.service.SimpleServiceJobQueue;
+import com.schedjoules.eventdiscovery.utils.ServiceJob;
+import com.schedjoules.eventdiscovery.utils.ServiceJobQueue;
+import com.schedjoules.eventdiscovery.utils.SimpleServiceJobQueue;
 
-import org.dmfs.android.dumbledore.WizardStep;
-import org.dmfs.android.dumbledore.transitions.WizardTransition;
+import org.dmfs.android.microfragments.BasicMicroFragmentEnvironment;
+import org.dmfs.android.microfragments.FragmentEnvironment;
+import org.dmfs.android.microfragments.MicroFragment;
+import org.dmfs.android.microfragments.MicroFragmentHost;
+import org.dmfs.android.microfragments.Timestamp;
+import org.dmfs.android.microfragments.UiTimestamp;
+import org.dmfs.android.microfragments.transitions.Faded;
+import org.dmfs.android.microfragments.transitions.ForwardTransition;
+import org.dmfs.android.microfragments.transitions.FragmentTransition;
 import org.dmfs.httpessentials.exceptions.ProtocolError;
 import org.dmfs.httpessentials.exceptions.ProtocolException;
 import org.dmfs.httpessentials.types.Link;
@@ -57,14 +62,14 @@ import static com.schedjoules.eventdiscovery.R.layout.schedjoules_event_detail_c
 
 
 /**
- * A {@link WizardStep} that loads the actions of a given event.
+ * A {@link MicroFragment} that loads the actions of a given event.
  */
-public final class ActionLoaderStep implements WizardStep
+public final class ActionLoaderMicroFragment implements MicroFragment<Event>
 {
     private final Event mEvent;
 
 
-    public ActionLoaderStep(Event event)
+    public ActionLoaderMicroFragment(Event event)
     {
         mEvent = event;
     }
@@ -80,14 +85,21 @@ public final class ActionLoaderStep implements WizardStep
 
     @NonNull
     @Override
-    public Fragment fragment(@NonNull Context context)
+    public Fragment fragment(@NonNull Context context, MicroFragmentHost host)
     {
         Fragment result = new LoaderFragment();
-        Bundle args = new Bundle(2);
-        args.putParcelable(WizardStep.ARG_WIZARD_STEP, this);
-        args.putParcelable("event", mEvent instanceof Parcelable ? (Parcelable) mEvent : new ParcelableEvent(mEvent));
+        Bundle args = new Bundle(1);
+        args.putParcelable(MicroFragment.ARG_ENVIRONMENT, new BasicMicroFragmentEnvironment<>(this, host));
         result.setArguments(args);
         return result;
+    }
+
+
+    @NonNull
+    @Override
+    public Event parameters()
+    {
+        return mEvent;
     }
 
 
@@ -112,19 +124,19 @@ public final class ActionLoaderStep implements WizardStep
     }
 
 
-    public final static Creator<ActionLoaderStep> CREATOR = new Creator<ActionLoaderStep>()
+    public final static Creator<ActionLoaderMicroFragment> CREATOR = new Creator<ActionLoaderMicroFragment>()
     {
         @Override
-        public ActionLoaderStep createFromParcel(Parcel source)
+        public ActionLoaderMicroFragment createFromParcel(Parcel source)
         {
-            return new ActionLoaderStep((Event) source.readParcelable(getClass().getClassLoader()));
+            return new ActionLoaderMicroFragment((Event) source.readParcelable(getClass().getClassLoader()));
         }
 
 
         @Override
-        public ActionLoaderStep[] newArray(int size)
+        public ActionLoaderMicroFragment[] newArray(int size)
         {
-            return new ActionLoaderStep[size];
+            return new ActionLoaderMicroFragment[size];
         }
     };
 
@@ -133,6 +145,7 @@ public final class ActionLoaderStep implements WizardStep
     {
         private ServiceJobQueue<ActionService> mActionServiceJobQueue;
         private Event mEvent;
+        private final Timestamp mTimestamp = new UiTimestamp();
 
 
         @Override
@@ -140,7 +153,7 @@ public final class ActionLoaderStep implements WizardStep
         {
             super.onCreate(savedInstanceState);
             mActionServiceJobQueue = new SimpleServiceJobQueue<>(new ActionService.FutureConnection(getActivity()));
-            mEvent = getArguments().getParcelable("event");
+            mEvent = new FragmentEnvironment<Event>(this).microFragment().parameters();
         }
 
 
@@ -162,9 +175,9 @@ public final class ActionLoaderStep implements WizardStep
 
 
         @Override
-        public void onActivityCreated(@Nullable Bundle savedInstanceState)
+        public void onResume()
         {
-            super.onActivityCreated(savedInstanceState);
+            super.onResume();
             mActionServiceJobQueue.post(new ServiceJob<ActionService>()
             {
                 @Override
@@ -173,12 +186,12 @@ public final class ActionLoaderStep implements WizardStep
                     try
                     {
                         List<Link> links = service.actions(mEvent.uid());
-                        advanceWizard(new AutomaticWizardTransition(new ShowEventStep(mEvent, links)));
+                        startTransition(new Faded(new ForwardTransition(new ShowEventMicroFragment(mEvent, links), mTimestamp)));
                     }
                     catch (TimeoutException | InterruptedException | ProtocolError | IOException | ProtocolException | URISyntaxException | RuntimeException e)
                     {
                         // for some reason we were unable to load the actions, move on without actions.
-                        advanceWizard(new AutomaticWizardTransition(new ShowEventStep(mEvent, Collections.<Link>emptyList())));
+                        startTransition(new Faded(new ForwardTransition(new ShowEventMicroFragment(mEvent, Collections.<Link>emptyList()), mTimestamp)));
                     }
                 }
 
@@ -186,7 +199,7 @@ public final class ActionLoaderStep implements WizardStep
                 @Override
                 public void onTimeOut()
                 {
-                    advanceWizard(new AutomaticWizardTransition(new ErrorStep()));
+                    startTransition(new Faded(new ForwardTransition(new ErrorMicroFragment(), mTimestamp)));
                 }
             }, 5000);
         }
@@ -200,12 +213,11 @@ public final class ActionLoaderStep implements WizardStep
         }
 
 
-        private void advanceWizard(WizardTransition wizardTransition)
+        private void startTransition(FragmentTransition fragmentTransition)
         {
-            Activity activity = getActivity();
-            if (activity != null && isAdded())
+            if (isResumed())
             {
-                wizardTransition.execute(activity);
+                new FragmentEnvironment<>(this).host().execute(getActivity(), fragmentTransition);
             }
         }
     }

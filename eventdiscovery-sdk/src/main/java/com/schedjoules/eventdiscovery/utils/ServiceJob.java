@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 SchedJoules
+ * Copyright 2017 SchedJoules
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,14 +15,22 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery.service;
+package com.schedjoules.eventdiscovery.utils;
 
 /**
  * @author Marten Gajda
  */
-public interface ServiceJobQueue<S>
+public interface ServiceJob<S>
 {
-    void post(ServiceJob<S> job, int executionTimeout);
+    /**
+     * Called to perform the actual work on the given service.
+     *
+     * @param service
+     */
+    void execute(S service);
 
-    void disconnect();
+    /**
+     * Called this job was not executed because the service connection was not established within the given time.
+     */
+    void onTimeOut();
 }
