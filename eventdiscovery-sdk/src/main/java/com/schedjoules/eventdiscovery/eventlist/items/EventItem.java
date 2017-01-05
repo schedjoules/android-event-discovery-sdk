@@ -24,10 +24,11 @@ import com.schedjoules.client.insights.steps.Interaction;
 import com.schedjoules.eventdiscovery.BasicEventDetails;
 import com.schedjoules.eventdiscovery.R;
 import com.schedjoules.eventdiscovery.common.BaseActivity;
+import com.schedjoules.eventdiscovery.datetime.FormattedDateTime;
+import com.schedjoules.eventdiscovery.datetime.ShortTime;
 import com.schedjoules.eventdiscovery.framework.adapter.ListItem;
 import com.schedjoules.eventdiscovery.framework.adapter.flexibleadapter.AbstractFlexibleSectionable;
 import com.schedjoules.eventdiscovery.model.SchedJoulesLinks;
-import com.schedjoules.eventdiscovery.utils.DateTimeFormatter;
 import com.schedjoules.eventdiscovery.utils.InsightsTask;
 
 import org.dmfs.httpessentials.types.StringToken;
@@ -41,11 +42,13 @@ import org.dmfs.httpessentials.types.StringToken;
 public final class EventItem extends AbstractFlexibleSectionable<EventItemView> implements ListItem<EventItemView>
 {
     private final Event mEvent;
+    private final FormattedDateTime mFormattedTime;
 
 
     public EventItem(Event event)
     {
         mEvent = event;
+        mFormattedTime = new ShortTime(event.start());
     }
 
 
@@ -60,7 +63,7 @@ public final class EventItem extends AbstractFlexibleSectionable<EventItemView> 
     public void bindDataTo(EventItemView view)
     {
         view.setTitle(mEvent.title());
-        view.setDateTimes(DateTimeFormatter.shortEventStartTime(view.getContext(), mEvent));
+        view.setTime(mFormattedTime.value(view.getContext()));
         if (mEvent.locations().iterator().hasNext())
         {
             // TODO What and how to display from location(s)?

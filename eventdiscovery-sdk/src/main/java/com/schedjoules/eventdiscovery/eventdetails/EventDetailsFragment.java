@@ -41,6 +41,8 @@ import com.schedjoules.eventdiscovery.common.BaseActivity;
 import com.schedjoules.eventdiscovery.common.BaseFragment;
 import com.schedjoules.eventdiscovery.common.ExternalUrlFeedbackForm;
 import com.schedjoules.eventdiscovery.databinding.SchedjoulesFragmentEventDetailsBinding;
+import com.schedjoules.eventdiscovery.datetime.LongDate;
+import com.schedjoules.eventdiscovery.datetime.StartAndEndTime;
 import com.schedjoules.eventdiscovery.eventlist.EventListActivity;
 import com.schedjoules.eventdiscovery.model.ParcelableEvent;
 import com.schedjoules.eventdiscovery.model.ParcelableLink;
@@ -55,8 +57,6 @@ import org.dmfs.httpessentials.types.StringToken;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.schedjoules.eventdiscovery.utils.DateTimeFormatter.longDateFormat;
-import static com.schedjoules.eventdiscovery.utils.DateTimeFormatter.longEventTimeFormat;
 import static com.schedjoules.eventdiscovery.utils.LocationFormatter.longLocationFormat;
 
 
@@ -147,8 +147,8 @@ public final class EventDetailsFragment extends BaseFragment implements EventDet
     {
         EventDetailsTwoLineItemView dateTimeItem = EventDetailsTwoLineItemView.inflate(mVerticalItems);
         dateTimeItem.setIcon(R.drawable.schedjoules_ic_time);
-        dateTimeItem.setTitle(longDateFormat(mEvent.start()));
-        dateTimeItem.setSubTitle(longEventTimeFormat(getContext(), mEvent));
+        dateTimeItem.setTitle(new LongDate(mEvent.start()).value(getContext()));
+        dateTimeItem.setSubTitle(new StartAndEndTime(mEvent).value(getContext()));
         mVerticalItems.addView(dateTimeItem);
 
         if (mEvent.locations().iterator().hasNext())
@@ -174,16 +174,19 @@ public final class EventDetailsFragment extends BaseFragment implements EventDet
     {
         if (mActions.size() > 0)
         {
-            int maxNumberOfItemsInTopBar = getResources().getInteger(R.integer.schedjoules_maxNumberOfHorizontalActions);
+            int maxNumberOfItemsInTopBar = getResources().getInteger(
+                    R.integer.schedjoules_maxNumberOfHorizontalActions);
 
             mHorizontalActions.showActionViews(
-                    new ActionViewIterable(new Limiting<>(new Actions(mActions, mEvent, new BaseActionFactory()), maxNumberOfItemsInTopBar),
+                    new ActionViewIterable(new Limiting<>(new Actions(mActions, mEvent, new BaseActionFactory()),
+                            maxNumberOfItemsInTopBar),
                             new SmallEventActionView.Factory(mHorizontalActions)));
 
             mViews.schedjoulesEventDetailsDivider.setVisibility(View.VISIBLE);
             mHorizontalActions.setVisibility(View.VISIBLE);
 
-            for (View view : new ActionViewIterable(new Skipping<>(new Actions(mActions, mEvent, new BaseActionFactory()), maxNumberOfItemsInTopBar),
+            for (View view : new ActionViewIterable(
+                    new Skipping<>(new Actions(mActions, mEvent, new BaseActionFactory()), maxNumberOfItemsInTopBar),
                     new EventDetailsItemView.Factory(mVerticalItems)))
             {
                 mVerticalItems.addView(view);
