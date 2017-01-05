@@ -36,6 +36,8 @@ import com.schedjoules.eventdiscovery.actions.Actions;
 import com.schedjoules.eventdiscovery.actions.BaseActionFactory;
 import com.schedjoules.eventdiscovery.common.BaseFragment;
 import com.schedjoules.eventdiscovery.databinding.SchedjoulesEventDetailContentBinding;
+import com.schedjoules.eventdiscovery.datetime.LongDate;
+import com.schedjoules.eventdiscovery.datetime.StartAndEndTime;
 import com.schedjoules.eventdiscovery.eventlist.EventListActivity;
 import com.schedjoules.eventdiscovery.model.ParcelableEvent;
 import com.schedjoules.eventdiscovery.model.ParcelableLink;
@@ -50,8 +52,6 @@ import org.dmfs.httpessentials.types.StringToken;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.schedjoules.eventdiscovery.utils.DateTimeFormatter.longDateFormat;
-import static com.schedjoules.eventdiscovery.utils.DateTimeFormatter.longEventTimeFormat;
 import static com.schedjoules.eventdiscovery.utils.LocationFormatter.longLocationFormat;
 
 
@@ -121,8 +121,8 @@ public final class EventDetailFragment extends BaseFragment
     {
         EventDetailsTwoLineItemView dateTimeItem = EventDetailsTwoLineItemView.inflate(mVerticalItems);
         dateTimeItem.setIcon(R.drawable.schedjoules_ic_time);
-        dateTimeItem.setTitle(longDateFormat(mEvent.start()));
-        dateTimeItem.setSubTitle(longEventTimeFormat(getContext(), mEvent));
+        dateTimeItem.setTitle(new LongDate(mEvent.start()).value(getContext()));
+        dateTimeItem.setSubTitle(new StartAndEndTime(mEvent).value(getContext()));
         mVerticalItems.addView(dateTimeItem);
 
         if (mEvent.locations().iterator().hasNext())

@@ -39,7 +39,7 @@ public enum ScrollDirection
                 @Override
                 public <T> boolean hasComingPageQuery(EnumMap<ScrollDirection, ResultPage<T>> lastResultPages)
                 {
-                    return !lastResultPages.get(this).isFirstPage();
+                    return lastResultPages.get(this) != null && !lastResultPages.get(this).isFirstPage();
                 }
 
 

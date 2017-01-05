@@ -15,23 +15,35 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery.actions;
+package com.schedjoules.eventdiscovery.datetime;
 
-import android.app.Activity;
+import android.content.Context;
 import android.support.annotation.NonNull;
+import android.text.format.DateUtils;
+
+import org.dmfs.rfc5545.DateTime;
 
 
 /**
- * An executable command that's returned by an {@link Action}. Usually this will be fired when the user clicks on the
- * action.
+ * {@link FormattedDateTime} for showing the time of the day, e.g.: 10:00
  *
  * @author Gabor Keszthelyi
  */
-public interface ActionExecutable
+public class ShortTime implements FormattedDateTime
 {
+    public final DateTime mDateTime;
 
-    /**
-     * Execute the command.
-     */
-    void execute(@NonNull Activity activity);
+
+    public ShortTime(DateTime dateTime)
+    {
+        mDateTime = dateTime;
+    }
+
+
+    @NonNull
+    @Override
+    public CharSequence value(@NonNull Context context)
+    {
+        return DateUtils.formatDateTime(context, mDateTime.getTimestamp(), DateUtils.FORMAT_SHOW_TIME);
+    }
 }

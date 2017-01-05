@@ -15,23 +15,34 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery.actions;
+package com.schedjoules.eventdiscovery.datetime;
 
-import android.app.Activity;
-import android.support.annotation.NonNull;
+import android.content.Context;
+import android.text.format.DateUtils;
+
+import org.dmfs.rfc5545.DateTime;
 
 
 /**
- * An executable command that's returned by an {@link Action}. Usually this will be fired when the user clicks on the
- * action.
+ * Long formatted date, e.g.: Friday, January 6, 2017
  *
  * @author Gabor Keszthelyi
  */
-public interface ActionExecutable
+public final class LongDate implements FormattedDateTime
 {
+    private final DateTime mDateTime;
 
-    /**
-     * Execute the command.
-     */
-    void execute(@NonNull Activity activity);
+
+    public LongDate(DateTime dateTime)
+    {
+        mDateTime = dateTime;
+    }
+
+
+    @Override
+    public CharSequence value(Context context)
+    {
+        return DateUtils.formatDateTime(context, mDateTime.getTimestamp(),
+                DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_WEEKDAY);
+    }
 }

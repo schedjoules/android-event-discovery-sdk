@@ -27,15 +27,17 @@ import com.schedjoules.client.eventsdiscovery.Event;
 import com.schedjoules.client.eventsdiscovery.ResultPage;
 import com.schedjoules.client.eventsdiscovery.queries.SimpleEventsDiscovery;
 import com.schedjoules.eventdiscovery.eventlist.itemsprovider.ScrollDirection;
-import com.schedjoules.eventdiscovery.utils.DateTimeFormatter;
 
 import org.dmfs.rfc5545.DateTime;
 import org.dmfs.rfc5545.Duration;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import static com.schedjoules.eventdiscovery.eventlist.itemsprovider.ScrollDirection.BOTTOM;
@@ -56,6 +58,8 @@ Use in EventListDownloadTask.doInBackgroundWithException():
 public final class DummyEvents
 {
     private static final String TAG = "Network";
+    private static final DateFormat MEDIUM_LONG_DATE_FORMAT = new SimpleDateFormat("EEE, dd MMM yyyy",
+            Locale.getDefault());
 
     static Map<ScrollDirection, Integer> pageLimits = new HashMap<>();
     static Map<ScrollDirection, Integer> eventCounters = new HashMap<>();
@@ -151,7 +155,7 @@ public final class DummyEvents
 
     private static Envelope<Event> dummy(DateTime start)
     {
-        return new DummyEnvelope(new DummyEvent(DateTimeFormatter.mediumLongDateFormat(start), start));
+        return new DummyEnvelope(new DummyEvent(MEDIUM_LONG_DATE_FORMAT.format(start.getTimestamp()), start));
     }
 
 

@@ -17,6 +17,7 @@
 
 package com.schedjoules.eventdiscovery.eventdetails;
 
+import android.app.Activity;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.util.AttributeSet;
@@ -99,7 +100,7 @@ public final class SmallEventActionView extends LinearLayout
             @Override
             public void onClick(View v)
             {
-                action.actionExecutable().execute(getContext());
+                action.actionExecutable().execute((Activity) getContext());
             }
         });
     }

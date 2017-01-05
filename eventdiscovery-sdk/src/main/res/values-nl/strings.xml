@@ -7,14 +7,6 @@
     <string name="schedjoules_event_list_no_future_events">Geen toekomstige events bekend</string>
     <string name="schedjoules_event_list_error_item">Er is een fout opgetreden\nKan niet alle resultaten tonen\n\nPull om opnieuw te proberen</string>
     <string name="schedjoules_event_list_error_bg_msg">Er is een fout opgetreden\nKan resultaten niet tonen\n\nTap om opnieuw te proberen</string>
-    <plurals name="schedjoules_hours">
-        <item quantity="one">%d uur</item>
-        <item quantity="other">%d uren</item>
-    </plurals>
-    <plurals name="schedjoules_minutes">
-        <item quantity="one">%d minuut</item>
-        <item quantity="other">%d minuten</item>
-    </plurals>
     <string name="schedjoules_location_search_hint">Lokatie…</string>
     <string name="schedjoules_default_location_placeholder_name">Alle lokaties</string>
 
