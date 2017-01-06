@@ -158,9 +158,9 @@ public final class EventLoaderStep implements WizardStep
 
 
         @Override
-        public void onActivityCreated(@Nullable Bundle savedInstanceState)
+        public void onStart()
         {
-            super.onActivityCreated(savedInstanceState);
+            super.onStart();
             mApiServiceJobQueue.post(
                     new ServiceJob<ApiService>()
                     {
@@ -236,7 +236,7 @@ public final class EventLoaderStep implements WizardStep
         private void advanceWizard(WizardTransition wizardTransition)
         {
             Activity activity = getActivity();
-            if (activity != null && isAdded())
+            if (activity != null && isResumed())
             {
                 wizardTransition.execute(activity);
             }

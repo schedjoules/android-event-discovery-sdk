@@ -162,9 +162,9 @@ public final class ActionLoaderStep implements WizardStep
 
 
         @Override
-        public void onActivityCreated(@Nullable Bundle savedInstanceState)
+        public void onStart()
         {
-            super.onActivityCreated(savedInstanceState);
+            super.onStart();
             mActionServiceJobQueue.post(new ServiceJob<ActionService>()
             {
                 @Override
@@ -203,7 +203,7 @@ public final class ActionLoaderStep implements WizardStep
         private void advanceWizard(WizardTransition wizardTransition)
         {
             Activity activity = getActivity();
-            if (activity != null && isAdded())
+            if (activity != null && isResumed())
             {
                 wizardTransition.execute(activity);
             }
