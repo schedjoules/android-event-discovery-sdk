@@ -7,7 +7,7 @@
             android:layout_height="match_parent"
             android:fitsSystemWindows="true"
             android:background="@android:color/white"
-            tools:context=".eventdetails.EventDetailsActivity"
+            tools:context=".framework.activities.MicroFragmentHostActivity"
             tools:ignore="MergeRootFrame">
 
         <include
@@ -26,7 +26,7 @@
                     android:layout_height="match_parent"
                     android:orientation="vertical">
 
-                <com.schedjoules.eventdiscovery.eventdetails.HorizontalActionsView
+                <com.schedjoules.eventdiscovery.framework.microfragments.eventdetails.fragments.views.HorizontalActionsView
                         android:id="@+id/schedjoules_event_horizontal_actions"
                         android:orientation="vertical"
                         android:background="@android:color/white"
@@ -48,7 +48,7 @@
                             android:layout_height="1dp"
                             android:layout_alignParentBottom="true"
                             android:background="@color/schedjoules_divider"/>
-                </com.schedjoules.eventdiscovery.eventdetails.HorizontalActionsView>
+                </com.schedjoules.eventdiscovery.framework.microfragments.eventdetails.fragments.views.HorizontalActionsView>
 
 
                 <LinearLayout
@@ -58,7 +58,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"/>
 
-                <com.schedjoules.eventdiscovery.eventdetails.SchedJoulesFooterView
+                <com.schedjoules.eventdiscovery.framework.microfragments.eventdetails.fragments.views.SchedJoulesFooterView
                         android:id="@+id/schedjoules_event_detail_schedjoules_footer"
                         android:layout_height="wrap_content"
                         android:layout_width="match_parent"

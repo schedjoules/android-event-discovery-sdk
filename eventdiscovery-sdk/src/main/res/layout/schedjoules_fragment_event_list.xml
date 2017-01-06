@@ -8,7 +8,7 @@
             android:background="@android:color/white"
             android:layout_height="match_parent"
             android:fitsSystemWindows="true"
-            tools:context=".eventlist.EventListActivity">
+            tools:context=".framework.eventlist.EventListActivity">
 
         <android.support.design.widget.AppBarLayout
                 android:id="@+id/schedjoules_event_list_app_bar"
@@ -35,7 +35,7 @@
                     android:id="@+id/schedjoules_event_list_include"
                     layout="@layout/schedjoules_event_list"/>
 
-            <com.schedjoules.eventdiscovery.widgets.StateSavingTextView
+            <com.schedjoules.eventdiscovery.framework.widgets.StateSavingTextView
                     android:id="@+id/schedjoules_event_list_background_message"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"

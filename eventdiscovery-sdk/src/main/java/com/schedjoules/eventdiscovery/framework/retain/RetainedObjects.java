@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 SchedJoules
+ * Copyright 2017 SchedJoules
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -47,9 +47,8 @@ public interface RetainedObjects
     /**
      * Tells whether there is any retained objects.
      * <p>
-     * Can be used in onCreate() to determine if Activity is being recreated after configuration change, in which case
-     * the result is true, or being recreated by system because it had been killed while being idle, in which case the
-     * result is false.
+     * Can be used in onCreate() to determine if Activity is being recreated after configuration change, in which case the result is true, or being recreated by
+     * system because it had been killed while being idle, in which case the result is false.
      */
     boolean hasAny();
 }

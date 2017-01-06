@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 SchedJoules
+ * Copyright 2017 SchedJoules
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,8 +18,7 @@
 package com.schedjoules.eventdiscovery.framework.adapter;
 
 /**
- * Provides the list items for {@link GeneralMultiTypeAdapter}. Implementation can handle data loading and binding any
- * sort.
+ * Provides the list items for {@link GeneralMultiTypeAdapter}. Implementation can handle data loading and binding any sort.
  *
  * @author Gabor Keszthelyi
  */

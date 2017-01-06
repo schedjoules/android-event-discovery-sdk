@@ -7,7 +7,7 @@
             android:layout_height="match_parent"
             android:fitsSystemWindows="true"
             android:background="@android:color/white"
-            tools:context=".eventdetails.EventDetailsActivity"
+            tools:context=".framework.activities.MicroFragmentHostActivity"
             tools:ignore="MergeRootFrame">
 
         <include
