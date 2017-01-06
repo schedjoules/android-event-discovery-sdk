@@ -24,7 +24,7 @@
             android:layout_height="match_parent"
             android:fitsSystemWindows="true"
             android:background="@android:color/white"
-            tools:context=".eventdetails.EventDetailActivity"
+            tools:context=".eventdetails.EventDetailsActivity"
             tools:ignore="MergeRootFrame">
 
         <include
@@ -85,11 +85,5 @@
 
         </LinearLayout>
 
-        <fragment
-                android:id="@+id/feedback_fragment"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_behavior="@string/bottom_sheet_behavior"
-                class="com.schedjoules.eventdiscovery.common.FeedbackFragment"/>
     </android.support.design.widget.CoordinatorLayout>
 </layout>

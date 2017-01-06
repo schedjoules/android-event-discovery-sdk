@@ -23,6 +23,9 @@ import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -34,8 +37,10 @@ import com.schedjoules.eventdiscovery.R;
 import com.schedjoules.eventdiscovery.actions.ActionViewIterable;
 import com.schedjoules.eventdiscovery.actions.Actions;
 import com.schedjoules.eventdiscovery.actions.BaseActionFactory;
+import com.schedjoules.eventdiscovery.common.BaseActivity;
 import com.schedjoules.eventdiscovery.common.BaseFragment;
-import com.schedjoules.eventdiscovery.databinding.SchedjoulesEventDetailContentBinding;
+import com.schedjoules.eventdiscovery.common.ExternalUrlFeedbackForm;
+import com.schedjoules.eventdiscovery.databinding.SchedjoulesFragmentEventDetailsBinding;
 import com.schedjoules.eventdiscovery.datetime.LongDate;
 import com.schedjoules.eventdiscovery.datetime.StartAndEndTime;
 import com.schedjoules.eventdiscovery.eventlist.EventListActivity;
@@ -57,11 +62,11 @@ import static com.schedjoules.eventdiscovery.utils.LocationFormatter.longLocatio
 
 /**
  * A fragment representing a single Event detail screen. This fragment is either contained in a {@link
- * EventListActivity} in two-pane mode (on tablets) or a {@link EventDetailActivity} on handsets.
+ * EventListActivity} in two-pane mode (on tablets) or a {@link EventDetailsActivity} on handsets.
  *
  * @author Gabor Keszthelyi
  */
-public final class EventDetailFragment extends BaseFragment
+public final class EventDetailsFragment extends BaseFragment implements EventDetailsMenu.Listener
 {
     private static final String ARG_EVENT = "event";
     private static final String ARG_ACTIONS = "actions";
@@ -69,9 +74,10 @@ public final class EventDetailFragment extends BaseFragment
     private Event mEvent;
     private List<ParcelableLink> mActions;
 
-    private SchedjoulesEventDetailContentBinding mViews;
+    private SchedjoulesFragmentEventDetailsBinding mViews;
     private LinearLayout mVerticalItems;
     private HorizontalActionsView mHorizontalActions;
+    private EventDetailsMenu mMenu;
 
 
     public static Fragment newInstance(Event event, List<Link> actionLinks)
@@ -85,7 +91,7 @@ public final class EventDetailFragment extends BaseFragment
             links.add(actionLink instanceof Parcelable ? (Parcelable) actionLink : new ParcelableLink(actionLink));
         }
         arguments.putParcelableArrayList(ARG_ACTIONS, links);
-        EventDetailFragment fragment = new EventDetailFragment();
+        EventDetailsFragment fragment = new EventDetailsFragment();
         fragment.setArguments(arguments);
         return fragment;
     }
@@ -102,7 +108,13 @@ public final class EventDetailFragment extends BaseFragment
             new InsightsTask(getActivity()).execute(new Screen(new StringToken("details"), mEvent));
         }
 
-        mViews = DataBindingUtil.inflate(inflater, R.layout.schedjoules_event_detail_content, container, false);
+        mViews = DataBindingUtil.inflate(inflater, R.layout.schedjoules_fragment_event_details, container, false);
+
+        ((BaseActivity) getActivity()).setSupportActionBar(
+                mViews.schedjoulesDetailsHeader.schedjoulesEventDetailToolbar);
+        setHasOptionsMenu(true);
+        mMenu = new EventDetailsMenu(this);
+
         mVerticalItems = mViews.schedjoulesEventDetailVerticalItems;
         mHorizontalActions = mViews.schedjoulesEventHorizontalActions;
         mViews.schedjoulesDetailsHeader.schedjoulesEventDetailToolbarLayout.setTitle(mEvent.title());
@@ -112,6 +124,20 @@ public final class EventDetailFragment extends BaseFragment
                 .load(new SchedJoulesLinks(mEvent.links()).bannerUri())
                 .into(mViews.schedjoulesDetailsHeader.schedjoulesEventDetailBanner);
         return mViews.getRoot();
+    }
+
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
+    {
+        mMenu.onCreateOptionsMenu(menu, inflater);
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        return mMenu.onOptionsItemSelected(item);
     }
 
 
@@ -148,16 +174,19 @@ public final class EventDetailFragment extends BaseFragment
     {
         if (mActions.size() > 0)
         {
-            int maxNumberOfItemsInTopBar = getResources().getInteger(R.integer.schedjoules_maxNumberOfHorizontalActions);
+            int maxNumberOfItemsInTopBar = getResources().getInteger(
+                    R.integer.schedjoules_maxNumberOfHorizontalActions);
 
             mHorizontalActions.showActionViews(
-                    new ActionViewIterable(new Limiting<>(new Actions(mActions, mEvent, new BaseActionFactory()), maxNumberOfItemsInTopBar),
+                    new ActionViewIterable(new Limiting<>(new Actions(mActions, mEvent, new BaseActionFactory()),
+                            maxNumberOfItemsInTopBar),
                             new SmallEventActionView.Factory(mHorizontalActions)));
 
             mViews.schedjoulesEventDetailsDivider.setVisibility(View.VISIBLE);
             mHorizontalActions.setVisibility(View.VISIBLE);
 
-            for (View view : new ActionViewIterable(new Skipping<>(new Actions(mActions, mEvent, new BaseActionFactory()), maxNumberOfItemsInTopBar),
+            for (View view : new ActionViewIterable(
+                    new Skipping<>(new Actions(mActions, mEvent, new BaseActionFactory()), maxNumberOfItemsInTopBar),
                     new EventDetailsItemView.Factory(mVerticalItems)))
             {
                 mVerticalItems.addView(view);
@@ -168,5 +197,12 @@ public final class EventDetailFragment extends BaseFragment
             // hide actions bar
             mViews.schedjoulesEventHorizontalActions.setVisibility(View.GONE);
         }
+    }
+
+
+    @Override
+    public void onFeedbackMenuClick()
+    {
+        new ExternalUrlFeedbackForm().show(getActivity());
     }
 }

@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery.eventlist.view;
+package com.schedjoules.eventdiscovery.eventdetails;
 
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -27,17 +27,17 @@ import com.schedjoules.eventdiscovery.framework.listen.OnOptionsItemSelected;
 
 
 /**
- * Menu of the Event list screen.
+ * Options menu for the Event details screen.
  *
  * @author Gabor Keszthelyi
  */
-public final class EventListMenu implements OnCreateOptionsMenuFragment, OnOptionsItemSelected
+public final class EventDetailsMenu implements OnCreateOptionsMenuFragment, OnOptionsItemSelected
 {
 
-    private final Listener mListener;
+    private final EventDetailsMenu.Listener mListener;
 
 
-    public EventListMenu(Listener listener)
+    public EventDetailsMenu(EventDetailsMenu.Listener listener)
     {
         mListener = listener;
     }
@@ -46,24 +46,14 @@ public final class EventListMenu implements OnCreateOptionsMenuFragment, OnOptio
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
     {
-        inflater.inflate(R.menu.schedjoules_event_list_menu, menu);
+        inflater.inflate(R.menu.schedjoules_event_details_menu, menu);
     }
 
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
-        if (item.getItemId() == android.R.id.home)
-        {
-            mListener.onUpButtonClick();
-            return true;
-        }
-        else if (item.getItemId() == R.id.schedjoules_event_list_menu_location)
-        {
-            mListener.onLocationMenuIconClick();
-            return true;
-        }
-        else if (item.getItemId() == R.id.schedjoules_event_list_menu_feedback)
+        if (item.getItemId() == R.id.schedjoules_event_details_menu_feedback)
         {
             mListener.onFeedbackMenuClick();
             return true;
@@ -74,10 +64,6 @@ public final class EventListMenu implements OnCreateOptionsMenuFragment, OnOptio
 
     public interface Listener
     {
-        void onUpButtonClick();
-
-        void onLocationMenuIconClick();
-
         void onFeedbackMenuClick();
     }
 }

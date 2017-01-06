@@ -25,50 +25,36 @@
 
         </android.support.design.widget.AppBarLayout>
 
-        <LinearLayout
+        <FrameLayout
                 android:id="@+id/schedjoules_event_list_container"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-            <FrameLayout
+            <include
+                    android:id="@+id/schedjoules_event_list_include"
+                    layout="@layout/schedjoules_event_list"/>
+
+            <com.schedjoules.eventdiscovery.widgets.StateSavingTextView
+                    android:id="@+id/schedjoules_event_list_background_message"
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1">
+                    android:layout_height="match_parent"
+                    android:layout_margin="@dimen/schedjoules_activity_horizontal_margin"
+                    android:paddingBottom="30dp"
+                    android:textSize="16sp"
+                    android:visibility="gone"
+                    android:gravity="center"
+                    android:layout_gravity="center"/>
 
-                <include
-                        android:id="@+id/schedjoules_event_list_include"
-                        layout="@layout/schedjoules_event_list"/>
+            <ProgressBar
+                    android:id="@+id/schedjoules_event_list_progress_bar"
+                    android:layout_gravity="center"
+                    android:visibility="gone"
+                    android:indeterminateTint="@color/schedjoules_colorPrimary"
+                    android:layout_width="@dimen/schedjoules_event_list_progress_bar"
+                    android:layout_height="@dimen/schedjoules_event_list_progress_bar"/>
 
-                <com.schedjoules.eventdiscovery.widgets.StateSavingTextView
-                        android:id="@+id/schedjoules_event_list_background_message"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_margin="@dimen/schedjoules_activity_horizontal_margin"
-                        android:paddingBottom="30dp"
-                        android:textSize="16sp"
-                        android:visibility="gone"
-                        android:gravity="center"
-                        android:layout_gravity="center"/>
-
-                <ProgressBar
-                        android:id="@+id/schedjoules_event_list_progress_bar"
-                        android:layout_gravity="center"
-                        android:visibility="gone"
-                        android:indeterminateTint="@color/schedjoules_colorPrimary"
-                        android:layout_width="@dimen/schedjoules_event_list_progress_bar"
-                        android:layout_height="@dimen/schedjoules_event_list_progress_bar"/>
-
-            </FrameLayout>
-
-            <fragment
-                    android:id="@+id/feedback_fragment"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    class="com.schedjoules.eventdiscovery.common.FeedbackFragment"/>
-        </LinearLayout>
-
+        </FrameLayout>
 
     </android.support.design.widget.CoordinatorLayout>
 </layout>

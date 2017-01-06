@@ -24,7 +24,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 
 import com.schedjoules.client.eventsdiscovery.Event;
-import com.schedjoules.eventdiscovery.eventdetails.EventDetailFragment;
+import com.schedjoules.eventdiscovery.eventdetails.EventDetailsFragment;
 import com.schedjoules.eventdiscovery.model.ParcelableEvent;
 import com.schedjoules.eventdiscovery.model.ParcelableLink;
 
@@ -65,7 +65,7 @@ public final class ShowEventStep implements WizardStep
     @Override
     public Fragment fragment(@NonNull Context context)
     {
-        return EventDetailFragment.newInstance(mEvent, mActionLinks);
+        return EventDetailsFragment.newInstance(mEvent, mActionLinks);
     }
 
 

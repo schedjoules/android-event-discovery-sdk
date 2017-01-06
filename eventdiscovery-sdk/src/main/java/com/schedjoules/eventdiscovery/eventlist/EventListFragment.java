@@ -37,6 +37,7 @@ import com.schedjoules.client.insights.steps.Screen;
 import com.schedjoules.eventdiscovery.R;
 import com.schedjoules.eventdiscovery.common.BaseActivity;
 import com.schedjoules.eventdiscovery.common.BaseFragment;
+import com.schedjoules.eventdiscovery.common.ExternalUrlFeedbackForm;
 import com.schedjoules.eventdiscovery.databinding.SchedjoulesFragmentEventListBinding;
 import com.schedjoules.eventdiscovery.eventlist.itemsprovider.EventListItemsImpl;
 import com.schedjoules.eventdiscovery.eventlist.itemsprovider.EventListItemsProvider;
@@ -204,7 +205,7 @@ public final class EventListFragment extends BaseFragment implements LocationSel
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
-        return mMenu.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
+        return mMenu.onOptionsItemSelected(item);
     }
 
 
@@ -229,6 +230,13 @@ public final class EventListFragment extends BaseFragment implements LocationSel
     public void onLocationMenuIconClick()
     {
         mLocationSelection.initiateSelection();
+    }
+
+
+    @Override
+    public void onFeedbackMenuClick()
+    {
+        new ExternalUrlFeedbackForm().show(getActivity());
     }
 
 
