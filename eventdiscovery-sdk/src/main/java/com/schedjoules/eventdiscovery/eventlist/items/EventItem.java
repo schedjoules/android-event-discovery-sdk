@@ -101,7 +101,7 @@ public final class EventItem extends AbstractFlexibleSectionable<EventItemView> 
             // currently not supported
 //            new Fragments(activity).replace(
 //                    R.id.schedjoules_event_detail_container,
-//                    EventDetailFragment.newInstance(mEvent));
+//                    EventDetailsFragment.newInstance(mEvent));
         }
         else
         {

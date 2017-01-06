@@ -21,6 +21,9 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -32,11 +35,14 @@ import com.schedjoules.eventdiscovery.R;
 import com.schedjoules.eventdiscovery.actions.ActionViewIterable;
 import com.schedjoules.eventdiscovery.actions.Actions;
 import com.schedjoules.eventdiscovery.actions.BaseActionFactory;
+import com.schedjoules.eventdiscovery.activities.MicroFragmentHostActivity;
+import com.schedjoules.eventdiscovery.common.BaseActivity;
 import com.schedjoules.eventdiscovery.common.BaseFragment;
-import com.schedjoules.eventdiscovery.databinding.SchedjoulesEventDetailContentBinding;
+import com.schedjoules.eventdiscovery.common.ExternalUrlFeedbackForm;
+import com.schedjoules.eventdiscovery.databinding.SchedjoulesFragmentEventDetailsBinding;
 import com.schedjoules.eventdiscovery.datetime.LongDate;
 import com.schedjoules.eventdiscovery.datetime.StartAndEndTime;
-import com.schedjoules.eventdiscovery.activities.MicroFragmentHostActivity;
+import com.schedjoules.eventdiscovery.eventdetails.EventDetailsMenu;
 import com.schedjoules.eventdiscovery.eventlist.EventListActivity;
 import com.schedjoules.eventdiscovery.microfragments.eventdetails.ShowEventMicroFragment;
 import com.schedjoules.eventdiscovery.microfragments.eventdetails.fragments.views.EventDetailsItemView;
@@ -64,14 +70,15 @@ import static com.schedjoules.eventdiscovery.utils.LocationFormatter.longLocatio
  *
  * @author Gabor Keszthelyi
  */
-public final class EventDetailFragment extends BaseFragment
+public final class EventDetailFragment extends BaseFragment implements EventDetailsMenu.Listener
 {
     private Event mEvent;
     private List<Link> mActions;
 
-    private SchedjoulesEventDetailContentBinding mViews;
+    private SchedjoulesFragmentEventDetailsBinding mViews;
     private LinearLayout mVerticalItems;
     private HorizontalActionsView mHorizontalActions;
+    private EventDetailsMenu mMenu;
 
 
     @Override
@@ -86,7 +93,12 @@ public final class EventDetailFragment extends BaseFragment
             new InsightsTask(getActivity()).execute(new Screen(new StringToken("details"), mEvent));
         }
 
-        mViews = DataBindingUtil.inflate(inflater, R.layout.schedjoules_event_detail_content, container, false);
+        mViews = DataBindingUtil.inflate(inflater, R.layout.schedjoules_fragment_event_details, container, false);
+
+        ((BaseActivity) getActivity()).setSupportActionBar(
+                mViews.schedjoulesDetailsHeader.schedjoulesEventDetailToolbar);
+        setHasOptionsMenu(true);
+        mMenu = new EventDetailsMenu(this);
         mVerticalItems = mViews.schedjoulesEventDetailVerticalItems;
         mHorizontalActions = mViews.schedjoulesEventHorizontalActions;
         mViews.schedjoulesDetailsHeader.schedjoulesEventDetailToolbarLayout.setTitle(mEvent.title());
@@ -96,6 +108,20 @@ public final class EventDetailFragment extends BaseFragment
                 .load(new SchedJoulesLinks(mEvent.links()).bannerUri())
                 .into(mViews.schedjoulesDetailsHeader.schedjoulesEventDetailBanner);
         return mViews.getRoot();
+    }
+
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
+    {
+        mMenu.onCreateOptionsMenu(menu, inflater);
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        return mMenu.onOptionsItemSelected(item);
     }
 
 
@@ -152,5 +178,12 @@ public final class EventDetailFragment extends BaseFragment
             // hide actions bar
             mViews.schedjoulesEventHorizontalActions.setVisibility(View.GONE);
         }
+    }
+
+
+    @Override
+    public void onFeedbackMenuClick()
+    {
+        new ExternalUrlFeedbackForm().show(getActivity());
     }
 }

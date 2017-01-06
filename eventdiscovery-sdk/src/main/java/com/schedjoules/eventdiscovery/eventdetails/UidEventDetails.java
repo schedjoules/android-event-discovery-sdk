@@ -47,7 +47,7 @@ public final class UidEventDetails implements EventDetails
     public void show(@NonNull Activity activity)
     {
         Intent intent = new Intent(activity, MicroFragmentHostActivity.class);
-        Bundle nestedBundle = new Bundle();
+        Bundle nestedBundle = new Bundle(1);
         nestedBundle.putParcelable("MicroFragment", new EventLoaderMicroFragment(mEventUid));
         intent.putExtra("com.schedjoules.nestedExtras", nestedBundle);
         activity.startActivity(intent);

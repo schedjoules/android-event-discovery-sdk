@@ -85,11 +85,5 @@
 
         </LinearLayout>
 
-        <fragment
-                android:id="@+id/feedback_fragment"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_behavior="@string/bottom_sheet_behavior"
-                class="com.schedjoules.eventdiscovery.common.FeedbackFragment"/>
     </android.support.design.widget.CoordinatorLayout>
 </layout>
