@@ -23,11 +23,11 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 
 import com.schedjoules.client.eventsdiscovery.Event;
-import com.schedjoules.eventdiscovery.activities.MicroFragmentHostActivity;
-import com.schedjoules.eventdiscovery.microfragments.eventdetails.ActionLoaderMicroFragment;
-import com.schedjoules.eventdiscovery.microfragments.eventdetails.ShowEventMicroFragment;
-import com.schedjoules.eventdiscovery.service.ActionService;
-import com.schedjoules.eventdiscovery.utils.FutureServiceConnection;
+import com.schedjoules.eventdiscovery.framework.activities.MicroFragmentHostActivity;
+import com.schedjoules.eventdiscovery.framework.microfragments.eventdetails.ActionLoaderMicroFragment;
+import com.schedjoules.eventdiscovery.framework.microfragments.eventdetails.ShowEventMicroFragment;
+import com.schedjoules.eventdiscovery.framework.services.ActionService;
+import com.schedjoules.eventdiscovery.framework.utils.FutureServiceConnection;
 
 import org.dmfs.httpessentials.types.Link;
 

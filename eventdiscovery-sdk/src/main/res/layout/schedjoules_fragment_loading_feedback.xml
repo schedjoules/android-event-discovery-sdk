@@ -37,7 +37,7 @@
                     android:mirrorForRtl="true"/>
 
 
-            <com.schedjoules.eventdiscovery.widgets.StateSavingTextView
+            <com.schedjoules.eventdiscovery.framework.widgets.StateSavingTextView
                     android:id="@+id/schedjoules_loader_message"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

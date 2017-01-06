@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 SchedJoules
+ * Copyright 2017 SchedJoules
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,8 +36,7 @@ public interface ListItem<V extends View>
     int layoutResId();
 
     /**
-     * If applicable, this method binds the data that belongs to this item to the item View, i.e. sets values and
-     * registers listeners on the View.
+     * If applicable, this method binds the data that belongs to this item to the item View, i.e. sets values and registers listeners on the View.
      *
      * @param view
      *         the item view

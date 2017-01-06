@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 SchedJoules
+ * Copyright 2017 SchedJoules
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,8 +18,7 @@
 package com.schedjoules.eventdiscovery.framework.retain;
 
 /**
- * {@link RetainedObjects} that simply uses an Object array to store the objects in the order of insertion through the
- * constructor.
+ * {@link RetainedObjects} that simply uses an Object array to store the objects in the order of insertion through the constructor.
  *
  * @author Gabor Keszthelyi
  */

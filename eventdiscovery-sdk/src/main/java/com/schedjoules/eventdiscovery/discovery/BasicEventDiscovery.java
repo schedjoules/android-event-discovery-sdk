@@ -22,13 +22,13 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 
 import com.schedjoules.client.eventsdiscovery.GeoLocation;
-import com.schedjoules.eventdiscovery.model.ParcelableGeoLocation;
+import com.schedjoules.eventdiscovery.framework.model.ParcelableGeoLocation;
 
 import org.dmfs.rfc5545.DateTime;
 
-import static com.schedjoules.eventdiscovery.EventIntents.EXTRA_GEOLOCATION;
-import static com.schedjoules.eventdiscovery.EventIntents.EXTRA_RADIUS;
-import static com.schedjoules.eventdiscovery.EventIntents.EXTRA_START_AFTER_TIMESTAMP;
+import static com.schedjoules.eventdiscovery.framework.EventIntents.EXTRA_GEOLOCATION;
+import static com.schedjoules.eventdiscovery.framework.EventIntents.EXTRA_RADIUS;
+import static com.schedjoules.eventdiscovery.framework.EventIntents.EXTRA_START_AFTER_TIMESTAMP;
 
 
 /**

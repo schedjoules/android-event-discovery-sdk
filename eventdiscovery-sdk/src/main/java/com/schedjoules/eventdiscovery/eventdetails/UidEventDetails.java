@@ -23,8 +23,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 
 import com.schedjoules.client.eventsdiscovery.Event;
-import com.schedjoules.eventdiscovery.activities.MicroFragmentHostActivity;
-import com.schedjoules.eventdiscovery.microfragments.eventdetails.EventLoaderMicroFragment;
+import com.schedjoules.eventdiscovery.framework.activities.MicroFragmentHostActivity;
+import com.schedjoules.eventdiscovery.framework.microfragments.eventdetails.EventLoaderMicroFragment;
 
 
 /**

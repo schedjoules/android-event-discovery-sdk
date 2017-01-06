@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 SchedJoules
+ * Copyright 2017 SchedJoules
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -25,8 +25,7 @@ import java.lang.ref.WeakReference;
 
 
 /**
- * Improved {@link AsyncTask} with a callback (kept with WeakReference) that delivers both success and failed results
- * along with the input params of the task.
+ * Improved {@link AsyncTask} with a callback (kept with WeakReference) that delivers both success and failed results along with the input params of the task.
  *
  * @author Gabor Keszthelyi
  */

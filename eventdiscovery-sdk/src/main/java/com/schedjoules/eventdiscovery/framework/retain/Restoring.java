@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 SchedJoules
+ * Copyright 2017 SchedJoules
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,9 +18,8 @@
 package com.schedjoules.eventdiscovery.framework.retain;
 
 /**
- * A {@link RetainedObjects} proxy that can be used to treat the first time load and configuration change
- * reload of the Activity the same way transparently. It delegates to either {@link RealRetainedObjects} or {@link
- * EmptyRetainedObjects}.
+ * A {@link RetainedObjects} proxy that can be used to treat the first time load and configuration change reload of the Activity the same way transparently. It
+ * delegates to either {@link RealRetainedObjects} or {@link EmptyRetainedObjects}.
  *
  * @author Gabor Keszthelyi
  */

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.schedjoules.eventdiscovery.microfragments.eventdetails.fragments.views.EventDetailsItemView
+<com.schedjoules.eventdiscovery.framework.microfragments.eventdetails.fragments.views.EventDetailsItemView
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:background="?android:attr/selectableItemBackground"
@@ -28,4 +28,4 @@
             tools:text="Moda Center, Portland, OR, USA and bla blea bla ble "/>
 
 
-</com.schedjoules.eventdiscovery.microfragments.eventdetails.fragments.views.EventDetailsItemView>
+</com.schedjoules.eventdiscovery.framework.microfragments.eventdetails.fragments.views.EventDetailsItemView>
