@@ -19,6 +19,7 @@ package com.schedjoules.eventdiscovery.microfragments.webview;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -30,9 +31,12 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.CookieManager;
+import android.webkit.CookieSyncManager;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.ProgressBar;
 
 import com.schedjoules.eventdiscovery.R;
 
@@ -137,6 +141,7 @@ public final class WebviewMicroFragment implements MicroFragment<URI>
     public static final class WebviewFragment extends Fragment implements View.OnKeyListener
     {
         private WebView mWebView;
+        private ProgressBar mProgress;
         private MicroFragmentEnvironment<URI> mEnvironment;
 
 
@@ -149,12 +154,33 @@ public final class WebviewMicroFragment implements MicroFragment<URI>
             mEnvironment = new FragmentEnvironment<>(this);
             // create and configure the WebView
             mWebView = (WebView) root.findViewById(R.id.schedjoules_webview);
+            mWebView.setWebViewClient(mWebViewClient);
             mWebView.setWebChromeClient(new WebChromeClient());
             mWebView.getSettings().setJavaScriptEnabled(true);
             mWebView.getSettings().setDomStorageEnabled(true);
             mWebView.setOnKeyListener(this);
-            mWebView.setWebViewClient(new WebViewClient());
             mWebView.loadUrl(mEnvironment.microFragment().parameters().toASCIIString());
+
+            if (savedInstanceState == null)
+            {
+                // TODO: make this optional
+                // wipe cookies to enforce a new login
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1)
+                {
+                    CookieManager.getInstance().removeAllCookies(null);
+                    CookieManager.getInstance().flush();
+                }
+                else
+                {
+                    CookieSyncManager cookieSyncMngr = CookieSyncManager.createInstance(getActivity());
+                    cookieSyncMngr.startSync();
+                    CookieManager cookieManager = CookieManager.getInstance();
+                    cookieManager.removeAllCookie();
+                    cookieManager.removeSessionCookie();
+                    cookieSyncMngr.stopSync();
+                    cookieSyncMngr.sync();
+                }
+            }
 
             Toolbar toolbar = (Toolbar) root.findViewById(R.id.toolbar);
             toolbar.setTitle(mEnvironment.microFragment().title(getActivity()));
@@ -168,6 +194,7 @@ public final class WebviewMicroFragment implements MicroFragment<URI>
                     mEnvironment.host().execute(getActivity(), new BackTransition());
                 }
             });
+            mProgress = (ProgressBar) root.findViewById(android.R.id.progress);
             return root;
         }
 
@@ -196,5 +223,16 @@ public final class WebviewMicroFragment implements MicroFragment<URI>
             }
             return false;
         }
+
+
+        private final WebViewClient mWebViewClient = new WebViewClient()
+        {
+            @Override
+            public void onPageFinished(WebView view, String url)
+            {
+                mProgress.animate().alpha(0).start();
+                super.onPageFinished(view, url);
+            }
+        };
     }
 }

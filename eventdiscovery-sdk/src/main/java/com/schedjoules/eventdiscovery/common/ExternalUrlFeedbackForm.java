@@ -18,8 +18,16 @@
 package com.schedjoules.eventdiscovery.common;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
+import android.os.Bundle;
+
+import com.schedjoules.eventdiscovery.activities.MicroFragmentHostActivity;
+import com.schedjoules.eventdiscovery.microfragments.feedback.FeedbackMicroFragment;
+
+import org.dmfs.android.microfragments.MicroFragmentHost;
+import org.dmfs.android.microfragments.transitions.ForwardTransition;
+import org.dmfs.android.microfragments.transitions.Swiped;
 
 
 /**
@@ -27,13 +35,21 @@ import android.net.Uri;
  */
 public final class ExternalUrlFeedbackForm implements FeedbackForm
 {
+
     @Override
     public void show(Activity activity)
     {
-        if (activity != null)
-        {
-            Intent feedbackIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://goo.gl/forms/IcGLVceoRvG2F1Fe2"));
-            activity.startActivity(feedbackIntent);
-        }
+        Intent intent = new Intent(activity, MicroFragmentHostActivity.class);
+        Bundle nestedBundle = new Bundle(1);
+        nestedBundle.putParcelable("MicroFragment", new FeedbackMicroFragment());
+        intent.putExtra("com.schedjoules.nestedExtras", nestedBundle);
+        activity.startActivity(intent);
+    }
+
+
+    @Override
+    public void show(Context context, MicroFragmentHost host)
+    {
+        host.execute(context, new Swiped(new ForwardTransition(new FeedbackMicroFragment())));
     }
 }

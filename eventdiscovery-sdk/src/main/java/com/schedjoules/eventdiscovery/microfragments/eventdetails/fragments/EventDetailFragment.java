@@ -184,6 +184,13 @@ public final class EventDetailFragment extends BaseFragment implements EventDeta
     @Override
     public void onFeedbackMenuClick()
     {
-        new ExternalUrlFeedbackForm().show(getActivity());
+        getView().post(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                new ExternalUrlFeedbackForm().show(getActivity(), new FragmentEnvironment<>(EventDetailFragment.this).host());
+            }
+        });
     }
 }

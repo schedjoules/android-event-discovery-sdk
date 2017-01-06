@@ -36,6 +36,7 @@ import android.widget.TextView;
 public final class StateSavingTextView extends TextView
 {
     private static final String SUPER_STATE = "super_state";
+    private static final String ALPHA = "alpha";
     private static final String VISIBILITY = "visibility";
 
 
@@ -86,6 +87,7 @@ public final class StateSavingTextView extends TextView
 
         //Store the current visibility of the View in the saved state
         state.putInt(VISIBILITY, getVisibility());
+        state.putFloat(ALPHA, getAlpha());
         return state;
     }
 
@@ -105,6 +107,7 @@ public final class StateSavingTextView extends TextView
             //noinspection WrongConstant
             setVisibility(savedState.getInt(VISIBILITY, getVisibility()));
 
+            setAlpha(savedState.getFloat(ALPHA, getAlpha()));
             //Pull out the superclass state we saved, and let the superclass
             //handle restoring all of the other state
             Parcelable superState = savedState.getParcelable(SUPER_STATE);
