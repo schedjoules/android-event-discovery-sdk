@@ -137,6 +137,7 @@ public final class FeedbackMicroFragment implements MicroFragment<Void>
         private final Timestamp mTimestamp = new UiTimestamp();
         private ServiceJobQueue<ApiService> mApiServiceJobQueue;
         private MicroFragmentEnvironment<Void> mEnvironment;
+        private long mFragmentStartTime;
 
 
         @Override
@@ -167,6 +168,7 @@ public final class FeedbackMicroFragment implements MicroFragment<Void>
                     mEnvironment.host().execute(getActivity(), new BackTransition());
                 }
             });
+            mFragmentStartTime = System.currentTimeMillis();
             return root;
         }
 
@@ -183,6 +185,14 @@ public final class FeedbackMicroFragment implements MicroFragment<Void>
                     try
                     {
                         URI url = service.apiResponse(new FeedbackUrl());
+                        long duration = System.currentTimeMillis() - mFragmentStartTime;
+                        int animationTime = getResources().getInteger(android.R.integer.config_mediumAnimTime);
+                        if (duration < animationTime)
+                        {
+                            // wait until the transition animation finishes before staring the new one
+                            Thread.sleep(animationTime - duration);
+                        }
+
                         startTransition(
                                 new Faded(
                                         new ForwardTransition(
@@ -193,6 +203,11 @@ public final class FeedbackMicroFragment implements MicroFragment<Void>
                     catch (ProtocolError | IOException | ProtocolException | URISyntaxException | RuntimeException e)
                     {
                         startTransition(new Faded(new ForwardTransition(new ErrorMicroFragment(), mTimestamp)));
+                    }
+                    catch (InterruptedException e)
+                    {
+                        // this thread has been interrupted, so ignore any result and don't do anything
+                        Thread.interrupted();
                     }
                 }
 
