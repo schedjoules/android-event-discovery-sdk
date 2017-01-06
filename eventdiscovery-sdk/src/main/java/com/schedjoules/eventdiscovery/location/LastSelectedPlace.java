@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 SchedJoules
+ * Copyright 2016 SchedJoules
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,27 +17,19 @@
 
 package com.schedjoules.eventdiscovery.location;
 
-import com.schedjoules.eventdiscovery.eventlist.itemsprovider.AdapterNotifier;
-import com.schedjoules.eventdiscovery.framework.adapter.ListItemsProvider;
 import com.schedjoules.eventdiscovery.location.model.GeoPlace;
 
 
 /**
- * TODO
+ * Represents the last selected location.
  *
  * @author Gabor Keszthelyi
  */
-public interface LocationItemsProvider extends ListItemsProvider
+public interface LastSelectedPlace
 {
+    void update(GeoPlace selectedPlace);
 
-    // TODO
-    void query(String queryText);
+    GeoPlace get();
 
-    void setAdapterNotifier(AdapterNotifier adapterNotifier);
-
-    interface PlaceSelectedListener
-    {
-        void onPlaceSelected(GeoPlace geoPlace);
-    }
-
+    void clear();
 }

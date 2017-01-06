@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 SchedJoules
+ * Copyright 2017 SchedJoules
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,26 +15,30 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery.location;
-
-import com.schedjoules.client.eventsdiscovery.GeoLocation;
-
+package com.schedjoules.eventdiscovery.location.model;
 
 /**
- * {@link NamedLocation} that simply takes the properties as constructor parameters.
- *
  * @author Gabor Keszthelyi
  */
-public final class StructuredNamedLocation implements NamedLocation
+public final class StructuredNamedPlace implements NamedPlace
 {
+    private final String mId;
     private final CharSequence mName;
-    private final GeoLocation mGeoLocation;
+    private final CharSequence mExtraContext;
 
 
-    public StructuredNamedLocation(CharSequence name, GeoLocation geoLocation)
+    public StructuredNamedPlace(String id, CharSequence name, CharSequence extraContext)
     {
+        mId = id;
         mName = name;
-        mGeoLocation = geoLocation;
+        mExtraContext = extraContext;
+    }
+
+
+    @Override
+    public String id()
+    {
+        return mId;
     }
 
 
@@ -46,8 +50,8 @@ public final class StructuredNamedLocation implements NamedLocation
 
 
     @Override
-    public GeoLocation geoLocation()
+    public CharSequence extraContext()
     {
-        return mGeoLocation;
+        return mExtraContext;
     }
 }

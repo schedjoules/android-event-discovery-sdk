@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 SchedJoules
+ * Copyright 2017 SchedJoules
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,19 +15,22 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery.location;
+package com.schedjoules.eventdiscovery.location.model;
 
 import com.schedjoules.client.eventsdiscovery.GeoLocation;
 
 
 /**
- * Result of a location selection.
+ * TODO
+ * Represents a place (city, venue, place).
  *
  * @author Gabor Keszthelyi
  */
-public interface NamedLocation
+public interface GeoPlace
 {
-    CharSequence name();
+    // TODO extend them instead?
+
+    NamedPlace namedPlace();
 
     GeoLocation geoLocation();
 }

@@ -17,25 +17,30 @@
 
 package com.schedjoules.eventdiscovery.location;
 
-import android.widget.TextView;
+import android.view.View;
 
 import com.schedjoules.eventdiscovery.R;
 import com.schedjoules.eventdiscovery.framework.adapter.ListItem;
+import com.schedjoules.eventdiscovery.location.model.NamedPlace;
 
 
 /**
+ * TODO rename to Place
+ *
  * List item for the location suggestion.
  *
  * @author Gabor Keszthelyi
  */
-public class LocationSuggestionItem implements ListItem<TextView>
+public class LocationSuggestionItem implements ListItem<LocationSuggestionItemView>
 {
-    private final CharSequence mText;
+    private final NamedPlace mNamedPlace;
+
+    private OnClickListener mOnClickListener;
 
 
-    public LocationSuggestionItem(CharSequence text)
+    public LocationSuggestionItem(NamedPlace namedPlace)
     {
-        mText = text;
+        mNamedPlace = namedPlace;
     }
 
 
@@ -47,8 +52,32 @@ public class LocationSuggestionItem implements ListItem<TextView>
 
 
     @Override
-    public void bindDataTo(TextView view)
+    public void bindDataTo(LocationSuggestionItemView view)
     {
-        view.setText(mText);
+        // TODO use match style
+        view.setTitle(mNamedPlace.name());
+        view.setSubTitle(mNamedPlace.extraContext());
+        view.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(final View v)
+            {
+                mOnClickListener.onPlaceSuggestionSelected(mNamedPlace);
+
+
+
+            }
+        });
+    }
+
+    // TODO consider other design, loader microfragment will solve this probably
+    public void setListener(OnClickListener listener)
+    {
+        mOnClickListener = listener;
+    }
+
+    interface OnClickListener
+    {
+        void onPlaceSuggestionSelected(NamedPlace namedPlace);
     }
 }

@@ -28,6 +28,7 @@ import com.schedjoules.eventdiscovery.framework.adapter.ListItem;
 import com.schedjoules.eventdiscovery.framework.async.DiscardCheck;
 import com.schedjoules.eventdiscovery.framework.async.DiscardingSafeAsyncTask;
 import com.schedjoules.eventdiscovery.framework.async.SafeAsyncTaskCallback;
+import com.schedjoules.eventdiscovery.location.model.StructuredNamedPlace;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,8 +66,11 @@ public final class PlaceSuggestionQueryTask extends DiscardingSafeAsyncTask<Stri
         List<ListItem> newItems = new ArrayList<>();
         for (AutocompletePrediction prediction : predictions)
         {
-            CharSequence fullText = prediction.getFullText(null);
-            newItems.add(new LocationSuggestionItem(fullText));
+
+            // TODO GooglePredictionNamedPlace
+            newItems.add(new LocationSuggestionItem(
+                    new StructuredNamedPlace(prediction.getPlaceId(), prediction.getPrimaryText(null),
+                            prediction.getSecondaryText(null))));
             newItems.add(new DividerItem());
         }
 

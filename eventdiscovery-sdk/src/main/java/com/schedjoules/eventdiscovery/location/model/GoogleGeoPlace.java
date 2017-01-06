@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 SchedJoules
+ * Copyright 2017 SchedJoules
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,39 +15,40 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery.location;
+package com.schedjoules.eventdiscovery.location.model;
 
-import com.google.android.gms.location.places.Place;
 import com.schedjoules.client.eventsdiscovery.GeoLocation;
 import com.schedjoules.client.eventsdiscovery.locations.StructuredGeoLocation;
 
 
 /**
- * {@link NamedLocation} adapting a {@link Place}.
+ * {@link GeoPlace} adapting a {@link com.google.android.gms.location.places.Place}.
  *
  * @author Gabor Keszthelyi
  */
-public final class GoogleApiNamedLocation implements NamedLocation
+public final class GoogleGeoPlace implements GeoPlace
 {
-    private final Place mPlace;
+    private final com.google.android.gms.location.places.Place mPlace;
 
 
-    public GoogleApiNamedLocation(Place place)
+    public GoogleGeoPlace(com.google.android.gms.location.places.Place place)
     {
         mPlace = place;
     }
 
 
     @Override
-    public CharSequence name()
+    public NamedPlace namedPlace()
     {
-        return mPlace.getName();
+        // TODO address is the full name, not good
+        return new StructuredNamedPlace(mPlace.getId(), mPlace.getName(), mPlace.getAddress());
     }
 
 
     @Override
     public GeoLocation geoLocation()
     {
+        // TODO GoogleGeoLocation
         return new StructuredGeoLocation((float) mPlace.getLatLng().latitude, (float) mPlace.getLatLng().longitude);
     }
 }

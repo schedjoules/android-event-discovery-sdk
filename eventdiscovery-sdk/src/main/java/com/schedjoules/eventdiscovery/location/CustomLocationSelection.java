@@ -23,9 +23,12 @@ import android.support.v4.app.Fragment;
 
 import com.schedjoules.eventdiscovery.EventIntents;
 import com.schedjoules.eventdiscovery.framework.listen.OnActivityResult;
+import com.schedjoules.eventdiscovery.location.model.ParcelableGeoPlace;
 
 
 /**
+ * TODO better name, think about design
+ *
  * {@link LocationSelection} that uses the Google Places API.
  *
  * @author Gabor Keszthelyi
@@ -71,10 +74,11 @@ public final class CustomLocationSelection implements LocationSelection, OnActiv
     {
         if (requestCode == REQUEST_CODE && resultCode == Activity.RESULT_OK && mFragment.isAdded())
         {
-            ParcelableNamedLocation namedLocation = data.getParcelableExtra(EventIntents.EXTRA_NAMED_LOCATION);
+            // TODO rename extra
+            ParcelableGeoPlace geoPlace = data.getParcelableExtra(EventIntents.EXTRA_NAMED_LOCATION);
             if (mListener != null)
             {
-                mListener.onLocationSelected(namedLocation);
+                mListener.onPlaceSelected(geoPlace);
             }
         }
         // Activity.RESULT_CANCELED -> user canceled the operation, we do nothing

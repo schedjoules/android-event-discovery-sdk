@@ -20,9 +20,12 @@ package com.schedjoules.eventdiscovery.location;
 import android.util.Log;
 
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.places.Place;
 import com.schedjoules.eventdiscovery.eventlist.itemsprovider.AdapterNotifier;
 import com.schedjoules.eventdiscovery.framework.adapter.ListItem;
 import com.schedjoules.eventdiscovery.framework.async.SafeAsyncTaskResult;
+import com.schedjoules.eventdiscovery.location.model.GoogleGeoPlace;
+import com.schedjoules.eventdiscovery.location.model.NamedPlace;
 import com.schedjoules.eventdiscovery.utils.Objects;
 
 import java.util.ArrayList;
@@ -36,11 +39,12 @@ import java.util.concurrent.Executors;
  *
  * @author Gabor Keszthelyi
  */
-public final class LocationItemsProviderImpl implements LocationItemsProvider
+public final class LocationItemsProviderImpl implements LocationItemsProvider, LocationSuggestionItem.OnClickListener
 {
     private static final String TAG = LocationItemsProviderImpl.class.getSimpleName();
 
     private final GoogleApiClient mApiClient;
+    private final PlaceSelectedListener mPlaceSelectedListener;
     private final ExecutorService mExecutorService;
     private final PlaceSuggestionQueryTask.Client mTaskClient;
 
@@ -49,9 +53,10 @@ public final class LocationItemsProviderImpl implements LocationItemsProvider
     private String mLastQuery;
 
 
-    public LocationItemsProviderImpl(GoogleApiClient apiClient)
+    public LocationItemsProviderImpl(GoogleApiClient apiClient, PlaceSelectedListener placeSelectedListener)
     {
         mApiClient = apiClient;
+        mPlaceSelectedListener = placeSelectedListener;
         mExecutorService = Executors.newSingleThreadExecutor();
         mTaskClient = new PlaceSuggestionQueryTaskClient();
     }
@@ -86,6 +91,13 @@ public final class LocationItemsProviderImpl implements LocationItemsProvider
     }
 
 
+    @Override
+    public void onPlaceSuggestionSelected(NamedPlace namedPlace)
+    {
+        new PlaceByIdTask(namedPlace.id(), new PlaceByIdTaskClient()).executeOnExecutor(mExecutorService, mApiClient);
+    }
+
+
     private class PlaceSuggestionQueryTaskClient implements PlaceSuggestionQueryTask.Client
     {
 
@@ -112,6 +124,14 @@ public final class LocationItemsProviderImpl implements LocationItemsProvider
 
         private void onTaskSuccess(List<ListItem> newItems)
         {
+            for (ListItem newItem : newItems)
+            {
+                if (newItem instanceof LocationSuggestionItem)
+                {
+                    ((LocationSuggestionItem) newItem).setListener(LocationItemsProviderImpl.this);
+                }
+            }
+
             int sizeBefore = mListItems.size();
             mListItems = newItems;
             mAdapterNotifier.notifyItemsCleared(sizeBefore);
@@ -123,6 +143,25 @@ public final class LocationItemsProviderImpl implements LocationItemsProvider
         {
             Log.e(TAG, "Error during places suggestion query task.", e);
             // TODO UI
+        }
+    }
+
+
+    private class PlaceByIdTaskClient implements PlaceByIdTask.Client
+    {
+
+        @Override
+        public void onTaskFinish(SafeAsyncTaskResult<Place> result, String s)
+        {
+
+            try
+            {
+                mPlaceSelectedListener.onPlaceSelected(new GoogleGeoPlace(result.value()));
+            }
+            catch (Exception e)
+            {
+                e.getStackTrace();
+            }
         }
     }
 }

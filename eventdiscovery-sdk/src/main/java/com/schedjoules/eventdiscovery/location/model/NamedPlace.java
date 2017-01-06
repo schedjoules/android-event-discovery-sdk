@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 SchedJoules
+ * Copyright 2017 SchedJoules
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,18 +15,16 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery.location;
+package com.schedjoules.eventdiscovery.location.model;
 
 /**
- * Represents the last selected location.
- *
  * @author Gabor Keszthelyi
  */
-public interface LastSelectedLocation
+public interface NamedPlace
 {
-    void update(NamedLocation selectedLocation);
+    String id();
 
-    NamedLocation get();
+    CharSequence name();
 
-    void clear();
+    CharSequence extraContext();
 }

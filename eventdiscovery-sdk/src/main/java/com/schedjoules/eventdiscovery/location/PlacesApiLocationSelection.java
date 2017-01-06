@@ -30,9 +30,12 @@ import com.google.android.gms.location.places.AutocompleteFilter;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 import com.schedjoules.eventdiscovery.framework.listen.OnActivityResult;
+import com.schedjoules.eventdiscovery.location.model.GoogleGeoPlace;
 
 
 /**
+ * TODO delete if not needed
+ *
  * {@link LocationSelection} that uses the Google Places API.
  *
  * @author Gabor Keszthelyi
@@ -102,7 +105,7 @@ public final class PlacesApiLocationSelection implements LocationSelection, OnAc
                 Place place = PlaceAutocomplete.getPlace(mFragment.getActivity(), data);
                 if (mListener != null)
                 {
-                    mListener.onLocationSelected(new GoogleApiNamedLocation(place));
+                    mListener.onPlaceSelected(new GoogleGeoPlace(place));
                 }
             }
             else if (resultCode == PlaceAutocomplete.RESULT_ERROR)

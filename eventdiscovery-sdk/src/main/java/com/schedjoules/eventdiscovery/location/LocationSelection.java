@@ -17,6 +17,9 @@
 
 package com.schedjoules.eventdiscovery.location;
 
+import com.schedjoules.eventdiscovery.location.model.GeoPlace;
+
+
 /**
  * Location selection controller.
  *
@@ -38,7 +41,7 @@ public interface LocationSelection
         /**
          * Called when the user has selected a location.
          */
-        void onLocationSelected(NamedLocation result);
+        void onPlaceSelected(GeoPlace result);
     }
 
 }

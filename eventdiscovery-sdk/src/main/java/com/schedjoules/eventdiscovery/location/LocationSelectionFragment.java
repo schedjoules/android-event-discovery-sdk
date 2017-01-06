@@ -18,6 +18,7 @@
 package com.schedjoules.eventdiscovery.location;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -34,12 +35,15 @@ import android.view.ViewGroup;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.places.Places;
+import com.schedjoules.eventdiscovery.EventIntents;
 import com.schedjoules.eventdiscovery.R;
 import com.schedjoules.eventdiscovery.common.BaseActivity;
 import com.schedjoules.eventdiscovery.common.BaseFragment;
 import com.schedjoules.eventdiscovery.databinding.SchedjoulesFragmentLocationSelectionBinding;
 import com.schedjoules.eventdiscovery.eventlist.itemsprovider.StandardAdapterNotifier;
 import com.schedjoules.eventdiscovery.framework.adapter.GeneralMultiTypeAdapter;
+import com.schedjoules.eventdiscovery.location.model.GeoPlace;
+import com.schedjoules.eventdiscovery.location.model.ParcelableGeoPlace;
 import com.schedjoules.eventdiscovery.widgets.SimpleTextWatcher;
 
 
@@ -48,9 +52,10 @@ import com.schedjoules.eventdiscovery.widgets.SimpleTextWatcher;
  *
  * @author Gabor Keszthelyi
  */
-public final class LocationSelectionFragment extends BaseFragment
+public final class LocationSelectionFragment extends BaseFragment implements LocationItemsProvider.PlaceSelectedListener
 {
-    private GoogleApiClient mGoogleApiClient;
+    // TODO change back
+    public static GoogleApiClient mGoogleApiClient;
     private LocationItemsProviderImpl mLocationItemsProvider;
 
 
@@ -116,7 +121,7 @@ public final class LocationSelectionFragment extends BaseFragment
 
     private void initList(RecyclerView recyclerView)
     {
-        mLocationItemsProvider = new LocationItemsProviderImpl(mGoogleApiClient);
+        mLocationItemsProvider = new LocationItemsProviderImpl(mGoogleApiClient, this);
         GeneralMultiTypeAdapter adapter = new GeneralMultiTypeAdapter(mLocationItemsProvider);
         mLocationItemsProvider.setAdapterNotifier(new StandardAdapterNotifier(adapter));
         recyclerView.setAdapter(adapter);
@@ -167,4 +172,17 @@ public final class LocationSelectionFragment extends BaseFragment
         return super.onOptionsItemSelected(item);
     }
 
+
+    @Override
+    public void onPlaceSelected(GeoPlace geoPlace)
+    {
+        Intent data = new Intent();
+
+        ParcelableGeoPlace value = new ParcelableGeoPlace(geoPlace);
+        data.putExtra(EventIntents.EXTRA_NAMED_LOCATION,
+                value);
+        // TODO null checks
+        getActivity().setResult(Activity.RESULT_OK, data);
+        getActivity().finish();
+    }
 }

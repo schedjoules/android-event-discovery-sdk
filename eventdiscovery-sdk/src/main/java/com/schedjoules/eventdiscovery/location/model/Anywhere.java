@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 SchedJoules
+ * Copyright 2017 SchedJoules
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery.location;
+package com.schedjoules.eventdiscovery.location.model;
 
 import android.content.Context;
 
@@ -24,11 +24,12 @@ import com.schedjoules.eventdiscovery.R;
 
 
 /**
- * A {@link NamedLocation} that indicates that no location has been selected yet or it has been cleared.
+ * TODO
+ * A {@link GeoPlace} that indicates that no location has been selected yet or it has been cleared.
  *
  * @author Gabor Keszthelyi
  */
-public final class Anywhere implements NamedLocation
+public final class Anywhere implements GeoPlace
 {
     private String mDefaultNameToDisplay;
 
@@ -40,9 +41,10 @@ public final class Anywhere implements NamedLocation
 
 
     @Override
-    public CharSequence name()
+    public NamedPlace namedPlace()
     {
-        return mDefaultNameToDisplay;
+        // TODO can it cause problem?
+        return new StructuredNamedPlace("id-for-anywhere", mDefaultNameToDisplay, null);
     }
 
 

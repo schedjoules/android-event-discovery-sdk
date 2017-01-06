@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery.location;
+package com.schedjoules.eventdiscovery.location.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -25,25 +25,25 @@ import com.schedjoules.eventdiscovery.model.ParcelableGeoLocation;
 
 
 /**
- * {@link Parcelable} decorator for {@link NamedLocation}
+ * {@link Parcelable} decorator for {@link GeoPlace}
  *
  * @author Gabor Keszthelyi
  */
-public final class ParcelableNamedLocation implements NamedLocation, Parcelable
+public final class ParcelableGeoPlace implements GeoPlace, Parcelable
 {
-    private final NamedLocation mDelegate;
+    private final GeoPlace mDelegate;
 
 
-    public ParcelableNamedLocation(NamedLocation delegate)
+    public ParcelableGeoPlace(GeoPlace delegate)
     {
         mDelegate = delegate;
     }
 
 
     @Override
-    public CharSequence name()
+    public NamedPlace namedPlace()
     {
-        return mDelegate.name();
+        return mDelegate.namedPlace();
     }
 
 
@@ -64,27 +64,33 @@ public final class ParcelableNamedLocation implements NamedLocation, Parcelable
     @Override
     public void writeToParcel(Parcel dest, int flags)
     {
-        dest.writeString(name().toString());
-        dest.writeParcelable(geoLocation() instanceof ParcelableGeoLocation ?
-                        (Parcelable) geoLocation() : new ParcelableGeoLocation(geoLocation())
+        NamedPlace namedPlace = namedPlace();
+        dest.writeString(namedPlace.id());
+        dest.writeString(namedPlace.name().toString());
+        dest.writeString(namedPlace.extraContext().toString());
+
+        GeoLocation geoLocation = geoLocation();
+        dest.writeParcelable(geoLocation instanceof ParcelableGeoLocation ?
+                        (Parcelable) geoLocation : new ParcelableGeoLocation(geoLocation)
                 , 0);
     }
 
 
-    public static final Creator<ParcelableNamedLocation> CREATOR = new Creator<ParcelableNamedLocation>()
+    public static final Creator<ParcelableGeoPlace> CREATOR = new Creator<ParcelableGeoPlace>()
     {
         @Override
-        public ParcelableNamedLocation createFromParcel(Parcel in)
+        public ParcelableGeoPlace createFromParcel(Parcel in)
         {
-            return new ParcelableNamedLocation(new StructuredNamedLocation(in.readString(),
-                    (GeoLocation) in.readParcelable(null)));
+            return new ParcelableGeoPlace(new StructuredGeoPlace(
+                    new StructuredNamedPlace(in.readString(), in.readString(), in.readString()),
+                    (GeoLocation) in.readParcelable(getClass().getClassLoader())));
         }
 
 
         @Override
-        public ParcelableNamedLocation[] newArray(int size)
+        public ParcelableGeoPlace[] newArray(int size)
         {
-            return new ParcelableNamedLocation[size];
+            return new ParcelableGeoPlace[size];
         }
     };
 }
