@@ -17,40 +17,38 @@
 
 package com.schedjoules.eventdiscovery.location.model;
 
-import android.content.Context;
-
+import com.google.android.gms.location.places.Place;
 import com.schedjoules.client.eventsdiscovery.GeoLocation;
-import com.schedjoules.eventdiscovery.R;
-import com.schedjoules.eventdiscovery.model.UndefinedGeoLocation;
 
 
 /**
- * {@link GeoPlace} that indicates that no location has been selected yet or it has been cleared.
+ * {@link GeoLocation} that adapts Google's {@link Place}.
  *
  * @author Gabor Keszthelyi
  */
-public final class Anywhere implements GeoPlace
+// TODO check equals for all GeoLocation-s, we need to have them so the list works correct. Do we?
+public final class GoogleGeoLocation implements GeoLocation
 {
-    private String mDefaultNameToDisplay;
+
+    private final Place mPlace;
 
 
-    public Anywhere(Context context)
+    public GoogleGeoLocation(Place place)
     {
-        mDefaultNameToDisplay = context.getString(R.string.schedjoules_default_location_placeholder_name);
+        mPlace = place;
     }
 
 
     @Override
-    public NamedPlace namedPlace()
+    public float latitude()
     {
-        // TODO can it cause problem?
-        return new StructuredNamedPlace("id-for-anywhere", mDefaultNameToDisplay, null);
+        return (float) mPlace.getLatLng().latitude;
     }
 
 
     @Override
-    public GeoLocation geoLocation()
+    public float longitude()
     {
-        return UndefinedGeoLocation.INSTANCE;
+        return (float) mPlace.getLatLng().longitude;
     }
 }

@@ -20,11 +20,10 @@ package com.schedjoules.eventdiscovery.location;
 import android.util.Log;
 
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.places.Place;
 import com.schedjoules.eventdiscovery.eventlist.itemsprovider.AdapterNotifier;
 import com.schedjoules.eventdiscovery.framework.adapter.ListItem;
 import com.schedjoules.eventdiscovery.framework.async.SafeAsyncTaskResult;
-import com.schedjoules.eventdiscovery.location.model.GoogleGeoPlace;
+import com.schedjoules.eventdiscovery.location.model.GeoPlace;
 import com.schedjoules.eventdiscovery.location.model.NamedPlace;
 import com.schedjoules.eventdiscovery.utils.Objects;
 
@@ -94,7 +93,7 @@ public final class LocationItemsProviderImpl implements LocationItemsProvider, L
     @Override
     public void onPlaceSuggestionSelected(NamedPlace namedPlace)
     {
-        new PlaceByIdTask(namedPlace.id(), new PlaceByIdTaskClient()).executeOnExecutor(mExecutorService, mApiClient);
+        new PlaceByIdTask(namedPlace, new PlaceByIdTaskClient()).executeOnExecutor(mExecutorService, mApiClient);
     }
 
 
@@ -151,15 +150,16 @@ public final class LocationItemsProviderImpl implements LocationItemsProvider, L
     {
 
         @Override
-        public void onTaskFinish(SafeAsyncTaskResult<Place> result, String s)
+        public void onTaskFinish(SafeAsyncTaskResult<GeoPlace> result, NamedPlace namedPlace)
         {
 
             try
             {
-                mPlaceSelectedListener.onPlaceSelected(new GoogleGeoPlace(result.value()));
+                mPlaceSelectedListener.onPlaceSelected(result.value());
             }
             catch (Exception e)
             {
+                // TODO
                 e.getStackTrace();
             }
         }
