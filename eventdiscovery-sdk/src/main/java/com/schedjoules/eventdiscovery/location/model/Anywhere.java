@@ -31,20 +31,20 @@ import com.schedjoules.eventdiscovery.model.UndefinedGeoLocation;
  */
 public final class Anywhere implements GeoPlace
 {
-    private String mDefaultNameToDisplay;
+    private final NamedPlace mAnywhereNamedPlace;
 
 
     public Anywhere(Context context)
     {
-        mDefaultNameToDisplay = context.getString(R.string.schedjoules_default_location_placeholder_name);
+        mAnywhereNamedPlace = new AnywhereNamedPlace(
+                context.getString(R.string.schedjoules_default_location_placeholder_name));
     }
 
 
     @Override
     public NamedPlace namedPlace()
     {
-        // TODO can it cause problem?
-        return new StructuredNamedPlace("id-for-anywhere", mDefaultNameToDisplay, null);
+        return mAnywhereNamedPlace;
     }
 
 
@@ -52,5 +52,40 @@ public final class Anywhere implements GeoPlace
     public GeoLocation geoLocation()
     {
         return UndefinedGeoLocation.INSTANCE;
+    }
+
+
+    private static class AnywhereNamedPlace implements NamedPlace
+    {
+        private final CharSequence mName;
+
+
+        private AnywhereNamedPlace(CharSequence name)
+        {
+            mName = name;
+        }
+
+
+        @Override
+        public String id()
+        {
+            throw new UnsupportedOperationException(
+                    String.format("%s doesn't have id, just name", Anywhere.class.getName()));
+        }
+
+
+        @Override
+        public CharSequence name()
+        {
+            return mName;
+        }
+
+
+        @Override
+        public CharSequence extraContext()
+        {
+            throw new UnsupportedOperationException(
+                    String.format("%s doesn't have extraContext, just name", Anywhere.class.getName()));
+        }
     }
 }
