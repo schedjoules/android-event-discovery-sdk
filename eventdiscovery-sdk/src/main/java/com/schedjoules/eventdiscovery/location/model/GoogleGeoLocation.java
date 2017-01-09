@@ -26,7 +26,6 @@ import com.schedjoules.client.eventsdiscovery.GeoLocation;
  *
  * @author Gabor Keszthelyi
  */
-// TODO check equals for all GeoLocation-s, we need to have them so the list works correct. Do we?
 public final class GoogleGeoLocation implements GeoLocation
 {
 
@@ -50,5 +49,40 @@ public final class GoogleGeoLocation implements GeoLocation
     public float longitude()
     {
         return (float) mPlace.getLatLng().longitude;
+    }
+
+
+    @Override
+    public boolean equals(Object o)
+    {
+        if (this == o)
+        {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass())
+        {
+            return false;
+        }
+
+        GoogleGeoLocation that = (GoogleGeoLocation) o;
+
+        if (Float.compare(that.latitude(), latitude()) != 0)
+        {
+            return false;
+        }
+        return Float.compare(that.longitude(), longitude()) == 0;
+
+    }
+
+
+    @Override
+    public int hashCode()
+    {
+        float latitude = latitude();
+        float longitude = longitude();
+
+        int result = (latitude != +0.0f ? Float.floatToIntBits(latitude) : 0);
+        result = 31 * result + (longitude != +0.0f ? Float.floatToIntBits(longitude) : 0);
+        return result;
     }
 }

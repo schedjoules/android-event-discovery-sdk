@@ -30,7 +30,6 @@ import com.schedjoules.eventdiscovery.eventlist.view.EventListBackgroundMessage;
 import com.schedjoules.eventdiscovery.eventlist.view.EventListLoadingIndicatorOverlay;
 import com.schedjoules.eventdiscovery.framework.adapter.ListItemsProvider;
 import com.schedjoules.eventdiscovery.framework.async.SafeAsyncTaskResult;
-import com.schedjoules.eventdiscovery.model.UndefinedGeoLocation;
 import com.schedjoules.eventdiscovery.service.ApiService;
 import com.schedjoules.eventdiscovery.utils.FutureServiceConnection;
 import com.schedjoules.eventdiscovery.utils.Objects;
@@ -102,8 +101,7 @@ public class EventListItemsProviderImpl implements EventListItemsProvider, Event
     {
         clearEverything();
 
-        // TODO maybe use a transparent GeoLocation proxy object, or use Anywhere, or ...
-        mLocation = geoLocation == null ? UndefinedGeoLocation.INSTANCE : geoLocation;
+        mLocation = geoLocation;
 
         queueDownloadTask(new InitialEventsDiscovery(dateTime, mLocation), BOTTOM);
     }
