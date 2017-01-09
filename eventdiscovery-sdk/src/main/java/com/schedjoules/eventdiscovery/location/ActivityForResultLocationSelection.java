@@ -27,13 +27,11 @@ import com.schedjoules.eventdiscovery.location.model.ParcelableGeoPlace;
 
 
 /**
- * TODO better name, think about design
- * <p>
- * {@link LocationSelection} that uses the Google Places API.
+ * {@link LocationSelection} that starts {@link LocationSelectionActivity} to get the result.
  *
  * @author Gabor Keszthelyi
  */
-public final class CustomLocationSelection implements LocationSelection, OnActivityResult
+public final class ActivityForResultLocationSelection implements LocationSelection, OnActivityResult
 {
     private static final int REQUEST_CODE = 4731;
 
@@ -41,7 +39,7 @@ public final class CustomLocationSelection implements LocationSelection, OnActiv
     private Listener mListener;
 
 
-    public CustomLocationSelection(Fragment fragment)
+    public ActivityForResultLocationSelection(Fragment fragment)
     {
         mFragment = fragment;
     }
@@ -64,8 +62,11 @@ public final class CustomLocationSelection implements LocationSelection, OnActiv
     @Override
     public void initiateSelection()
     {
-        Intent intent = new Intent(mFragment.getActivity(), LocationSelectionActivity.class);
-        mFragment.startActivityForResult(intent, REQUEST_CODE);
+        if (mFragment.getActivity() != null)
+        {
+            Intent intent = new Intent(mFragment.getActivity(), LocationSelectionActivity.class);
+            mFragment.startActivityForResult(intent, REQUEST_CODE);
+        }
     }
 
 

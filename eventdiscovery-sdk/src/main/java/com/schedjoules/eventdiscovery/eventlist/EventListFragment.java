@@ -43,7 +43,7 @@ import com.schedjoules.eventdiscovery.eventlist.view.EventListLoadingIndicatorOv
 import com.schedjoules.eventdiscovery.eventlist.view.EventListMenu;
 import com.schedjoules.eventdiscovery.eventlist.view.EventListToolbar;
 import com.schedjoules.eventdiscovery.eventlist.view.EventListView;
-import com.schedjoules.eventdiscovery.location.CustomLocationSelection;
+import com.schedjoules.eventdiscovery.location.ActivityForResultLocationSelection;
 import com.schedjoules.eventdiscovery.location.LastSelectedPlace;
 import com.schedjoules.eventdiscovery.location.LocationSelection;
 import com.schedjoules.eventdiscovery.location.SharedPrefLastSelectedPlace;
@@ -69,7 +69,7 @@ public final class EventListFragment extends BaseFragment implements LocationSel
 {
     private FutureServiceConnection<ApiService> mApiService;
     private EventListItemsProvider mListItemsProvider;
-    private CustomLocationSelection mLocationSelection;
+    private ActivityForResultLocationSelection mLocationSelection;
     private LastSelectedPlace mLastSelectedPlace;
 
     private EventListToolbar mToolbar;
@@ -99,7 +99,7 @@ public final class EventListFragment extends BaseFragment implements LocationSel
 
         mListItemsProvider = new EventListItemsProviderImpl(mApiService, new EventListItemsImpl());
 
-        mLocationSelection = new CustomLocationSelection(this);
+        mLocationSelection = new ActivityForResultLocationSelection(this);
         mLocationSelection.registerListener(this);
 
         mLastSelectedPlace = new SharedPrefLastSelectedPlace(getContext());

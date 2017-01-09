@@ -34,7 +34,7 @@ import java.util.concurrent.Executors;
 
 
 /**
- * TODO
+ * The implementation for {@link LocationListController}.
  *
  * @author Gabor Keszthelyi
  */
@@ -147,8 +147,8 @@ public final class LocationListControllerImpl implements LocationListController,
 
         private void onTaskFailed(Exception e)
         {
-            Log.e(TAG, "Error during places suggestion query task.", e);
             // TODO UI
+            Log.e(TAG, "Error returned by places suggestion query task.", e);
         }
     }
 
@@ -159,15 +159,14 @@ public final class LocationListControllerImpl implements LocationListController,
         @Override
         public void onTaskFinish(SafeAsyncTaskResult<GeoPlace> result, NamedPlace namedPlace)
         {
-
             try
             {
                 mPlaceSelectedListener.onPlaceSelected(result.value());
             }
             catch (Exception e)
             {
-                // TODO
-                e.getStackTrace();
+                // TODO UI
+                Log.e(TAG, "Error returned by place by id task.", e);
             }
         }
     }

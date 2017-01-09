@@ -23,7 +23,7 @@ import com.schedjoules.eventdiscovery.location.model.GeoPlace;
 
 
 /**
- * The controller for the location list, it carries out the network queries and updates the list items.
+ * The controller for the location list, it initiates the network queries and updates the list items.
  *
  * @author Gabor Keszthelyi
  */
