@@ -83,6 +83,8 @@ public final class LocationSelectionFragment extends BaseFragment implements Loc
                     }
                 })
                 .build();
+
+        // TODO No Play Services error handling? Seems to be handled by default, but look into it. 
     }
 
 

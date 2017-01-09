@@ -21,15 +21,12 @@ import com.schedjoules.client.eventsdiscovery.GeoLocation;
 
 
 /**
- * TODO
- * Represents a place (city, venue, place).
+ * Represents a place (city, venue, place) with geo location.
  *
  * @author Gabor Keszthelyi
  */
 public interface GeoPlace
 {
-    // TODO extend them instead?
-
     NamedPlace namedPlace();
 
     GeoLocation geoLocation();
