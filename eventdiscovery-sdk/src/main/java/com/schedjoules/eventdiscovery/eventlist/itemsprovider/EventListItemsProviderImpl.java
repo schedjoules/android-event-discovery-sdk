@@ -28,7 +28,7 @@ import com.schedjoules.eventdiscovery.eventlist.itemsprovider.EventListDownloadT
 import com.schedjoules.eventdiscovery.eventlist.itemsprovider.EventListDownloadTask.TaskResult;
 import com.schedjoules.eventdiscovery.eventlist.view.EventListBackgroundMessage;
 import com.schedjoules.eventdiscovery.eventlist.view.EventListLoadingIndicatorOverlay;
-import com.schedjoules.eventdiscovery.framework.adapter.ListItemsProvider;
+import com.schedjoules.eventdiscovery.framework.adapter.ListItems;
 import com.schedjoules.eventdiscovery.framework.async.SafeAsyncTaskResult;
 import com.schedjoules.eventdiscovery.service.ApiService;
 import com.schedjoules.eventdiscovery.utils.FutureServiceConnection;
@@ -46,7 +46,7 @@ import static com.schedjoules.eventdiscovery.eventlist.itemsprovider.ScrollDirec
 
 
 /**
- * {@link ListItemsProvider} for the Event list.
+ * {@link ListItems} for the Event list.
  *
  * @author Gabor Keszthelyi
  */

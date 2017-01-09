@@ -28,7 +28,7 @@ import com.schedjoules.eventdiscovery.location.model.ParcelableGeoPlace;
 
 /**
  * TODO better name, think about design
- *
+ * <p>
  * {@link LocationSelection} that uses the Google Places API.
  *
  * @author Gabor Keszthelyi
@@ -74,8 +74,7 @@ public final class CustomLocationSelection implements LocationSelection, OnActiv
     {
         if (requestCode == REQUEST_CODE && resultCode == Activity.RESULT_OK && mFragment.isAdded())
         {
-            // TODO rename extra
-            ParcelableGeoPlace geoPlace = data.getParcelableExtra(EventIntents.EXTRA_NAMED_LOCATION);
+            ParcelableGeoPlace geoPlace = data.getParcelableExtra(EventIntents.EXTRA_GEO_PLACE);
             if (mListener != null)
             {
                 mListener.onPlaceSelected(geoPlace);

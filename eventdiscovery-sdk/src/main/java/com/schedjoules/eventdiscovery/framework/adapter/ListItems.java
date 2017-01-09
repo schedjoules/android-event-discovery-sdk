@@ -17,13 +17,15 @@
 
 package com.schedjoules.eventdiscovery.framework.adapter;
 
+import android.support.v7.widget.RecyclerView;
+
+
 /**
- * Provides the list items for {@link GeneralMultiTypeAdapter}. Implementation can handle data loading and binding any
- * sort.
+ * Represents the list items for a {@link RecyclerView}, used by {@link GeneralMultiTypeAdapter}.
  *
  * @author Gabor Keszthelyi
  */
-public interface ListItemsProvider
+public interface ListItems
 {
     /**
      * Returns the item for the given position in the list

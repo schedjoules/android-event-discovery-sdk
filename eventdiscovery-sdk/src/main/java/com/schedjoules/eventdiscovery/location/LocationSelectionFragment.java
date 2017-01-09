@@ -52,11 +52,11 @@ import com.schedjoules.eventdiscovery.widgets.SimpleTextWatcher;
  *
  * @author Gabor Keszthelyi
  */
-public final class LocationSelectionFragment extends BaseFragment implements LocationItemsProvider.PlaceSelectedListener
+public final class LocationSelectionFragment extends BaseFragment implements LocationListController.PlaceSelectedListener
 {
     // TODO change back
     public static GoogleApiClient mGoogleApiClient;
-    private LocationItemsProviderImpl mLocationItemsProvider;
+    private LocationListController mLocationItemsProvider;
 
 
     public static Fragment newInstance()
@@ -84,7 +84,9 @@ public final class LocationSelectionFragment extends BaseFragment implements Loc
                 })
                 .build();
 
-        // TODO No Play Services error handling? Seems to be handled by default, but look into it. 
+        // TODO No Play Services error handling? Seems to be handled by default, but look into it.
+
+        // TODO retain fragment
     }
 
 
@@ -123,43 +125,12 @@ public final class LocationSelectionFragment extends BaseFragment implements Loc
 
     private void initList(RecyclerView recyclerView)
     {
-        mLocationItemsProvider = new LocationItemsProviderImpl(mGoogleApiClient, this);
+        mLocationItemsProvider = new LocationListControllerImpl(mGoogleApiClient);
+        mLocationItemsProvider.setOnPlaceSelectedListener(this);
         GeneralMultiTypeAdapter adapter = new GeneralMultiTypeAdapter(mLocationItemsProvider);
         mLocationItemsProvider.setAdapterNotifier(new StandardAdapterNotifier(adapter));
         recyclerView.setAdapter(adapter);
     }
-
-    // TODO decide if SearchView or EditText is better
-/*
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
-    {
-        inflater.inflate(R.menu.schedjoules_location_selection, menu);
-
-        SearchView searchView = (SearchView) menu.findItem(R.id.schedjoules_location_search).getActionView();
-        searchView.requestFocus();
-        searchView.setIconifiedByDefault(false); // Expand by default
-
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener()
-        {
-            @Override
-            public boolean onQueryTextSubmit(String query)
-            {
-                // TODO review what we should do here
-                mLocationItemsProvider.query(query);
-                return true;
-            }
-
-
-            @Override
-            public boolean onQueryTextChange(String newText)
-            {
-                mLocationItemsProvider.query(newText);
-                return true;
-            }
-        });
-    }
-*/
 
 
     @Override
@@ -181,7 +152,7 @@ public final class LocationSelectionFragment extends BaseFragment implements Loc
         Intent data = new Intent();
 
         ParcelableGeoPlace value = new ParcelableGeoPlace(geoPlace);
-        data.putExtra(EventIntents.EXTRA_NAMED_LOCATION,
+        data.putExtra(EventIntents.EXTRA_GEO_PLACE,
                 value);
         // TODO null checks
         getActivity().setResult(Activity.RESULT_OK, data);

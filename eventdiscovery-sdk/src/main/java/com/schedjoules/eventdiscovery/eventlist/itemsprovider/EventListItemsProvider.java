@@ -21,13 +21,13 @@ import com.schedjoules.client.eventsdiscovery.GeoLocation;
 import com.schedjoules.eventdiscovery.eventlist.view.EdgeReachScrollListener;
 import com.schedjoules.eventdiscovery.eventlist.view.EventListBackgroundMessage;
 import com.schedjoules.eventdiscovery.eventlist.view.EventListLoadingIndicatorOverlay;
-import com.schedjoules.eventdiscovery.framework.adapter.ListItemsProvider;
+import com.schedjoules.eventdiscovery.framework.adapter.ListItems;
 
 import org.dmfs.rfc5545.DateTime;
 
 
 /**
- * {@link ListItemsProvider} for Event list adapter which also listens to scrolled to bottom events to be able to load
+ * {@link ListItems} for Event list adapter which also listens to scrolled to bottom events to be able to load
  * more events.
  *
  * @author Gabor Keszthelyi

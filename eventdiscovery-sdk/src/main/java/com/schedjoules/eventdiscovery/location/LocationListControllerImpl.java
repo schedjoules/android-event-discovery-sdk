@@ -38,34 +38,34 @@ import java.util.concurrent.Executors;
  *
  * @author Gabor Keszthelyi
  */
-public final class LocationItemsProviderImpl implements LocationItemsProvider, LocationSuggestionItem.OnClickListener
+public final class LocationListControllerImpl implements LocationListController, LocationSuggestionItem.OnClickListener
 {
-    private static final String TAG = LocationItemsProviderImpl.class.getSimpleName();
+    private static final String TAG = LocationListControllerImpl.class.getSimpleName();
 
     private final GoogleApiClient mApiClient;
-    private final PlaceSelectedListener mPlaceSelectedListener;
     private final ExecutorService mExecutorService;
     private final PlaceSuggestionQueryTask.Client mTaskClient;
 
     private AdapterNotifier mAdapterNotifier;
+    private PlaceSelectedListener mPlaceSelectedListener;
+
     private List<ListItem> mListItems = new ArrayList<>();
     private String mLastQuery;
 
 
-    public LocationItemsProviderImpl(GoogleApiClient apiClient, PlaceSelectedListener placeSelectedListener)
+    public LocationListControllerImpl(GoogleApiClient apiClient)
     {
         mApiClient = apiClient;
-        mPlaceSelectedListener = placeSelectedListener;
         mExecutorService = Executors.newSingleThreadExecutor();
         mTaskClient = new PlaceSuggestionQueryTaskClient();
     }
 
 
     @Override
-    public void query(String queryText)
+    public void query(String query)
     {
-        mLastQuery = queryText;
-        new PlaceSuggestionQueryTask(queryText, mTaskClient).executeOnExecutor(mExecutorService, mApiClient);
+        mLastQuery = query;
+        new PlaceSuggestionQueryTask(query, mTaskClient).executeOnExecutor(mExecutorService, mApiClient);
     }
 
 
@@ -73,6 +73,13 @@ public final class LocationItemsProviderImpl implements LocationItemsProvider, L
     public void setAdapterNotifier(AdapterNotifier adapterNotifier)
     {
         mAdapterNotifier = adapterNotifier;
+    }
+
+
+    @Override
+    public void setOnPlaceSelectedListener(PlaceSelectedListener listener)
+    {
+        mPlaceSelectedListener = listener;
     }
 
 
@@ -127,7 +134,7 @@ public final class LocationItemsProviderImpl implements LocationItemsProvider, L
             {
                 if (newItem instanceof LocationSuggestionItem)
                 {
-                    ((LocationSuggestionItem) newItem).setListener(LocationItemsProviderImpl.this);
+                    ((LocationSuggestionItem) newItem).setListener(LocationListControllerImpl.this);
                 }
             }
 

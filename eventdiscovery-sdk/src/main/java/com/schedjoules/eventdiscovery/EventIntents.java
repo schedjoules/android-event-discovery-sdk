@@ -49,5 +49,5 @@ public final class EventIntents
      */
     public static final String EXTRA_SCHEDJOULES_EVENT_UID = "schedjoules.event.intent.extra.UID";
 
-    public static final String EXTRA_NAMED_LOCATION = "schedjoules.event.intent.extra.NAMED_LOCATION";
+    public static final String EXTRA_GEO_PLACE = "schedjoules.event.intent.extra.GEO_PLACE";
 }

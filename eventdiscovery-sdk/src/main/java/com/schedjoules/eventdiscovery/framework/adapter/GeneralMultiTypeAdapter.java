@@ -30,19 +30,19 @@ import android.view.ViewGroup;
  */
 public final class GeneralMultiTypeAdapter extends RecyclerView.Adapter<GeneralMultiTypeAdapter.SimpleViewHolder>
 {
-    private final ListItemsProvider mItemsProvider;
+    private final ListItems mItems;
 
 
-    public GeneralMultiTypeAdapter(ListItemsProvider listItemsProvider)
+    public GeneralMultiTypeAdapter(ListItems listItems)
     {
-        mItemsProvider = listItemsProvider;
+        mItems = listItems;
     }
 
 
     @Override
     public int getItemViewType(int position)
     {
-        return mItemsProvider.get(position).layoutResId();
+        return mItems.get(position).layoutResId();
     }
 
 
@@ -58,7 +58,7 @@ public final class GeneralMultiTypeAdapter extends RecyclerView.Adapter<GeneralM
     @Override
     public int getItemCount()
     {
-        return mItemsProvider.itemCount();
+        return mItems.itemCount();
     }
 
 
@@ -66,7 +66,7 @@ public final class GeneralMultiTypeAdapter extends RecyclerView.Adapter<GeneralM
     public void onBindViewHolder(SimpleViewHolder holder, int position)
     {
         //noinspection unchecked
-        mItemsProvider.get(position).bindDataTo(holder.itemView);
+        mItems.get(position).bindDataTo(holder.itemView);
     }
 
 

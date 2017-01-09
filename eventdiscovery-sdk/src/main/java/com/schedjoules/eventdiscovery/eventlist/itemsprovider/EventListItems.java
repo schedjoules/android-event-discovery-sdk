@@ -18,7 +18,7 @@
 package com.schedjoules.eventdiscovery.eventlist.itemsprovider;
 
 import com.schedjoules.eventdiscovery.framework.adapter.ListItem;
-import com.schedjoules.eventdiscovery.framework.adapter.ListItemsProvider;
+import com.schedjoules.eventdiscovery.framework.adapter.ListItems;
 
 import java.util.List;
 
@@ -29,7 +29,7 @@ import java.util.List;
  *
  * @author Gabor Keszthelyi
  */
-public interface EventListItems extends ListItemsProvider
+public interface EventListItems extends ListItems
 {
     void setAdapterNotifier(AdapterNotifier adapterNotifier);
 
