@@ -54,8 +54,7 @@ import com.schedjoules.eventdiscovery.widgets.SimpleTextWatcher;
  */
 public final class LocationSelectionFragment extends BaseFragment implements LocationListController.PlaceSelectedListener
 {
-    // TODO change back
-    public static GoogleApiClient mGoogleApiClient;
+    private GoogleApiClient mGoogleApiClient;
     private LocationListController mLocationItemsProvider;
 
 
@@ -136,11 +135,11 @@ public final class LocationSelectionFragment extends BaseFragment implements Loc
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
-        if (item.getItemId() == android.R.id.home)
+        if (item.getItemId() == android.R.id.home && getActivity() != null)
         {
-            // TODO revisit
             getActivity().setResult(Activity.RESULT_CANCELED);
             getActivity().finish();
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -149,13 +148,12 @@ public final class LocationSelectionFragment extends BaseFragment implements Loc
     @Override
     public void onPlaceSelected(GeoPlace geoPlace)
     {
-        Intent data = new Intent();
-
-        ParcelableGeoPlace value = new ParcelableGeoPlace(geoPlace);
-        data.putExtra(EventIntents.EXTRA_GEO_PLACE,
-                value);
-        // TODO null checks
-        getActivity().setResult(Activity.RESULT_OK, data);
-        getActivity().finish();
+        if (getActivity() != null)
+        {
+            Intent data = new Intent();
+            data.putExtra(EventIntents.EXTRA_GEO_PLACE, new ParcelableGeoPlace(geoPlace));
+            getActivity().setResult(Activity.RESULT_OK, data);
+            getActivity().finish();
+        }
     }
 }
