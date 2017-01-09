@@ -25,20 +25,18 @@ import com.schedjoules.eventdiscovery.location.model.NamedPlace;
 
 
 /**
- * TODO rename to Place
- *
  * List item for the location suggestion.
  *
  * @author Gabor Keszthelyi
  */
-public class LocationSuggestionItem implements ListItem<LocationSuggestionItemView>
+public class PlaceSuggestionItem implements ListItem<LocationSuggestionItemView>
 {
     private final NamedPlace mNamedPlace;
 
     private OnClickListener mOnClickListener;
 
 
-    public LocationSuggestionItem(NamedPlace namedPlace)
+    public PlaceSuggestionItem(NamedPlace namedPlace)
     {
         mNamedPlace = namedPlace;
     }
@@ -54,7 +52,6 @@ public class LocationSuggestionItem implements ListItem<LocationSuggestionItemVi
     @Override
     public void bindDataTo(LocationSuggestionItemView view)
     {
-        // TODO use match style
         view.setTitle(mNamedPlace.name());
         view.setSubTitle(mNamedPlace.extraContext());
         view.setOnClickListener(new View.OnClickListener()
@@ -63,18 +60,16 @@ public class LocationSuggestionItem implements ListItem<LocationSuggestionItemVi
             public void onClick(final View v)
             {
                 mOnClickListener.onPlaceSuggestionSelected(mNamedPlace);
-
-
-
             }
         });
     }
 
-    // TODO consider other design, loader microfragment will solve this probably
+
     public void setListener(OnClickListener listener)
     {
         mOnClickListener = listener;
     }
+
 
     interface OnClickListener
     {

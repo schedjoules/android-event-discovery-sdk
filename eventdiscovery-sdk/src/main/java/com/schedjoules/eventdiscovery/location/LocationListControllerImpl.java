@@ -38,7 +38,7 @@ import java.util.concurrent.Executors;
  *
  * @author Gabor Keszthelyi
  */
-public final class LocationListControllerImpl implements LocationListController, LocationSuggestionItem.OnClickListener
+public final class LocationListControllerImpl implements LocationListController, PlaceSuggestionItem.OnClickListener
 {
     private static final String TAG = LocationListControllerImpl.class.getSimpleName();
 
@@ -132,9 +132,9 @@ public final class LocationListControllerImpl implements LocationListController,
         {
             for (ListItem newItem : newItems)
             {
-                if (newItem instanceof LocationSuggestionItem)
+                if (newItem instanceof PlaceSuggestionItem)
                 {
-                    ((LocationSuggestionItem) newItem).setListener(LocationListControllerImpl.this);
+                    ((PlaceSuggestionItem) newItem).setListener(LocationListControllerImpl.this);
                 }
             }
 
