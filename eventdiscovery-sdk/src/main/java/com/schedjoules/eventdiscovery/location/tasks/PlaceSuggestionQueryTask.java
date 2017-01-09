@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery.location;
+package com.schedjoules.eventdiscovery.location.tasks;
 
 import android.os.AsyncTask;
 
@@ -28,6 +28,7 @@ import com.schedjoules.eventdiscovery.framework.adapter.ListItem;
 import com.schedjoules.eventdiscovery.framework.async.DiscardCheck;
 import com.schedjoules.eventdiscovery.framework.async.DiscardingSafeAsyncTask;
 import com.schedjoules.eventdiscovery.framework.async.SafeAsyncTaskCallback;
+import com.schedjoules.eventdiscovery.location.PlaceSuggestionItem;
 import com.schedjoules.eventdiscovery.location.model.GooglePredictionNamedPlace;
 
 import java.util.ArrayList;

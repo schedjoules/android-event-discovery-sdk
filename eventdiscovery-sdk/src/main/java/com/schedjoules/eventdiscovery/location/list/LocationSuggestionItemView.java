@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery.location;
+package com.schedjoules.eventdiscovery.location.list;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -34,7 +34,7 @@ public final class LocationSuggestionItemView extends LinearLayout
 {
 
     private TextView mTitle;
-    private TextView mSubtTitle;
+    private TextView mSubTitle;
 
 
     public LocationSuggestionItemView(Context context, AttributeSet attrs)
@@ -48,7 +48,7 @@ public final class LocationSuggestionItemView extends LinearLayout
     {
         super.onFinishInflate();
         mTitle = (TextView) findViewById(R.id.schedjoules_location_suggestion_item_title);
-        mSubtTitle = (TextView) findViewById(R.id.schedjoules_location_suggestion_item_subtitle);
+        mSubTitle = (TextView) findViewById(R.id.schedjoules_location_suggestion_item_subtitle);
     }
 
 
@@ -60,6 +60,6 @@ public final class LocationSuggestionItemView extends LinearLayout
 
     public void setSubTitle(CharSequence subTitle)
     {
-        mSubtTitle.setText(subTitle);
+        mSubTitle.setText(subTitle);
     }
 }

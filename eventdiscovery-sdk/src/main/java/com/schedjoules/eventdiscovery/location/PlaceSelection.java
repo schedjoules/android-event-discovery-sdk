@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 SchedJoules
+ * Copyright 2016 SchedJoules
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,28 +17,31 @@
 
 package com.schedjoules.eventdiscovery.location;
 
-import com.schedjoules.eventdiscovery.eventlist.itemsprovider.AdapterNotifier;
-import com.schedjoules.eventdiscovery.framework.adapter.ListItems;
 import com.schedjoules.eventdiscovery.location.model.GeoPlace;
 
 
 /**
- * The controller for the location list, it initiates the network queries and updates the list items.
+ * Location selection controller.
  *
  * @author Gabor Keszthelyi
  */
-public interface LocationListController extends ListItems
+public interface PlaceSelection
 {
+    /**
+     * Prompt user to select a location.
+     */
+    void initiateSelection();
 
-    void query(String query);
+    void registerListener(Listener listener);
 
-    void setAdapterNotifier(AdapterNotifier adapterNotifier);
+    void unregisterListener();
 
-    void setOnPlaceSelectedListener(PlaceSelectedListener listener);
-
-    interface PlaceSelectedListener
+    interface Listener
     {
-        void onPlaceSelected(GeoPlace geoPlace);
+        /**
+         * Called when the user has selected a location.
+         */
+        void onPlaceSelected(GeoPlace result);
     }
 
 }

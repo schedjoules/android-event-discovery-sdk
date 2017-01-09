@@ -21,7 +21,7 @@ import com.schedjoules.eventdiscovery.location.model.GeoPlace;
 
 
 /**
- * Represents the last selected location.
+ * Represents the last selected place.
  *
  * @author Gabor Keszthelyi
  */

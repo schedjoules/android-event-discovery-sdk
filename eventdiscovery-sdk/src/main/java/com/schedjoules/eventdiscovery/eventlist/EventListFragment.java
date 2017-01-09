@@ -43,9 +43,9 @@ import com.schedjoules.eventdiscovery.eventlist.view.EventListLoadingIndicatorOv
 import com.schedjoules.eventdiscovery.eventlist.view.EventListMenu;
 import com.schedjoules.eventdiscovery.eventlist.view.EventListToolbar;
 import com.schedjoules.eventdiscovery.eventlist.view.EventListView;
-import com.schedjoules.eventdiscovery.location.ActivityForResultLocationSelection;
+import com.schedjoules.eventdiscovery.location.ActivityForResultPlaceSelection;
 import com.schedjoules.eventdiscovery.location.LastSelectedPlace;
-import com.schedjoules.eventdiscovery.location.LocationSelection;
+import com.schedjoules.eventdiscovery.location.PlaceSelection;
 import com.schedjoules.eventdiscovery.location.SharedPrefLastSelectedPlace;
 import com.schedjoules.eventdiscovery.location.model.GeoPlace;
 import com.schedjoules.eventdiscovery.service.ApiService;
@@ -65,11 +65,11 @@ import static com.schedjoules.eventdiscovery.EventIntents.EXTRA_START_AFTER_TIME
  *
  * @author Gabor Keszthelyi
  */
-public final class EventListFragment extends BaseFragment implements LocationSelection.Listener, EventListMenu.Listener, EventListToolbar.Listener
+public final class EventListFragment extends BaseFragment implements PlaceSelection.Listener, EventListMenu.Listener, EventListToolbar.Listener
 {
     private FutureServiceConnection<ApiService> mApiService;
     private EventListItemsProvider mListItemsProvider;
-    private ActivityForResultLocationSelection mLocationSelection;
+    private ActivityForResultPlaceSelection mLocationSelection;
     private LastSelectedPlace mLastSelectedPlace;
 
     private EventListToolbar mToolbar;
@@ -99,7 +99,7 @@ public final class EventListFragment extends BaseFragment implements LocationSel
 
         mListItemsProvider = new EventListItemsProviderImpl(mApiService, new EventListItemsImpl());
 
-        mLocationSelection = new ActivityForResultLocationSelection(this);
+        mLocationSelection = new ActivityForResultPlaceSelection(this);
         mLocationSelection.registerListener(this);
 
         mLastSelectedPlace = new SharedPrefLastSelectedPlace(getContext());

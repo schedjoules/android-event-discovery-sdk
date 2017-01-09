@@ -42,6 +42,8 @@ import com.schedjoules.eventdiscovery.common.BaseFragment;
 import com.schedjoules.eventdiscovery.databinding.SchedjoulesFragmentLocationSelectionBinding;
 import com.schedjoules.eventdiscovery.eventlist.itemsprovider.StandardAdapterNotifier;
 import com.schedjoules.eventdiscovery.framework.adapter.GeneralMultiTypeAdapter;
+import com.schedjoules.eventdiscovery.location.list.LocationListController;
+import com.schedjoules.eventdiscovery.location.list.LocationListControllerImpl;
 import com.schedjoules.eventdiscovery.location.model.GeoPlace;
 import com.schedjoules.eventdiscovery.location.model.ParcelableGeoPlace;
 import com.schedjoules.eventdiscovery.widgets.SimpleTextWatcher;

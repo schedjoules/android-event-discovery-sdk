@@ -27,11 +27,11 @@ import com.schedjoules.eventdiscovery.location.model.ParcelableGeoPlace;
 
 
 /**
- * {@link LocationSelection} that starts {@link LocationSelectionActivity} to get the result.
+ * {@link PlaceSelection} that starts {@link LocationSelectionActivity} to get the result.
  *
  * @author Gabor Keszthelyi
  */
-public final class ActivityForResultLocationSelection implements LocationSelection, OnActivityResult
+public final class ActivityForResultPlaceSelection implements PlaceSelection, OnActivityResult
 {
     private static final int REQUEST_CODE = 4731;
 
@@ -39,7 +39,7 @@ public final class ActivityForResultLocationSelection implements LocationSelecti
     private Listener mListener;
 
 
-    public ActivityForResultLocationSelection(Fragment fragment)
+    public ActivityForResultPlaceSelection(Fragment fragment)
     {
         mFragment = fragment;
     }
