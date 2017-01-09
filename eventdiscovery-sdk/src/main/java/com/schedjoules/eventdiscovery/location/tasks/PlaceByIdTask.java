@@ -17,6 +17,8 @@
 
 package com.schedjoules.eventdiscovery.location.tasks;
 
+import android.os.AsyncTask;
+
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.location.places.Place;
@@ -31,11 +33,10 @@ import com.schedjoules.eventdiscovery.location.model.StructuredGeoPlace;
 
 
 /**
- * TODO maybe generalize, and rename Google, but not sure if other services would have this workflow
+ * {@link AsyncTask} for getting the {@link Place} for an id.
  *
  * @author Gabor Keszthelyi
  */
-// TODO could be prefetched and cached, not sure if it's worth it, but could be done in a separate executor that has many threads
 public final class PlaceByIdTask extends SafeAsyncTask<NamedPlace, GoogleApiClient, Void, GeoPlace>
 {
     public PlaceByIdTask(NamedPlace namedPlace, Client client)
