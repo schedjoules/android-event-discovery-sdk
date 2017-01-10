@@ -15,10 +15,11 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery.framework.eventlist.itemsprovider;
+package com.schedjoules.eventdiscovery.framework.eventlist.controller;
 
 import com.schedjoules.eventdiscovery.framework.adapter.ListItem;
 import com.schedjoules.eventdiscovery.framework.adapter.ListItems;
+import com.schedjoules.eventdiscovery.framework.adapter.notifier.AdapterNotifier;
 
 import java.util.List;
 

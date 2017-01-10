@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery.framework.eventlist.itemsprovider;
+package com.schedjoules.eventdiscovery.framework.eventlist.controller;
 
 import com.schedjoules.client.Api;
 import com.schedjoules.client.ApiQuery;

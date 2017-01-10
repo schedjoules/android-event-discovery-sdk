@@ -15,64 +15,62 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery.framework.eventlist.itemsprovider;
+package com.schedjoules.eventdiscovery.framework.adapter.notifier;
+
+import android.support.v7.widget.RecyclerView;
+
+import com.schedjoules.eventdiscovery.framework.adapter.ListItem;
 
 import java.util.List;
 
-import eu.davidea.flexibleadapter.FlexibleAdapter;
-import eu.davidea.flexibleadapter.items.IFlexible;
-
 
 /**
- * {@link AdapterNotifier} adapting {@link FlexibleAdapter}.
+ * {@link AdapterNotifier} adapting standard {@link RecyclerView.Adapter}.
  *
  * @author Gabor Keszthelyi
  */
-public final class FlexibleAdapterNotifier implements AdapterNotifier<IFlexible>
+public final class StandardAdapterNotifier implements AdapterNotifier<ListItem>
 {
-    private final FlexibleAdapter mFlexibleAdapter;
+    private final RecyclerView.Adapter mAdapter;
 
 
-    public FlexibleAdapterNotifier(FlexibleAdapter flexibleAdapter)
+    public StandardAdapterNotifier(RecyclerView.Adapter adapter)
     {
-        mFlexibleAdapter = flexibleAdapter;
+        mAdapter = adapter;
     }
 
 
     @Override
     public void notifyInitialItemsAdded(List initialItems)
     {
-        //noinspection unchecked
-        mFlexibleAdapter.addItems(0, initialItems);
+        // do nothing, the standard adapter doesn't keep a reference of the items, it keeps state correctly on rotation
     }
 
 
     @Override
     public void notifyNewItemsAdded(List newItems, int positionStart)
     {
-        //noinspection unchecked
-        mFlexibleAdapter.addItems(positionStart, newItems);
+        mAdapter.notifyItemRangeInserted(positionStart, newItems.size());
     }
 
 
     @Override
-    public void notifyNewItemAdded(IFlexible item, int position)
+    public void notifyNewItemAdded(ListItem item, int position)
     {
-        //noinspection unchecked
-        mFlexibleAdapter.addItem(position, item);
+        mAdapter.notifyItemInserted(position);
     }
 
 
     @Override
     public void notifyItemsCleared(int totalSize)
     {
-        mFlexibleAdapter.removeRange(0, totalSize);
+        mAdapter.notifyItemRangeRemoved(0, totalSize);
     }
 
 
     @Override
     public void notifyItemRemoved(int position)
     {
-        mFlexibleAdapter.removeItem(position);
+        mAdapter.notifyItemRemoved(position);
     }
 }

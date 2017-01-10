@@ -27,7 +27,7 @@ import com.schedjoules.client.eventsdiscovery.Event;
 import com.schedjoules.client.eventsdiscovery.Location;
 import com.schedjoules.client.eventsdiscovery.ResultPage;
 import com.schedjoules.client.eventsdiscovery.queries.SimpleEventsDiscovery;
-import com.schedjoules.eventdiscovery.framework.eventlist.itemsprovider.ScrollDirection;
+import com.schedjoules.eventdiscovery.framework.eventlist.controller.ScrollDirection;
 
 import org.dmfs.httpessentials.types.Link;
 import org.dmfs.rfc5545.DateTime;
@@ -42,8 +42,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import static com.schedjoules.eventdiscovery.framework.eventlist.itemsprovider.ScrollDirection.BOTTOM;
-import static com.schedjoules.eventdiscovery.framework.eventlist.itemsprovider.ScrollDirection.TOP;
+import static com.schedjoules.eventdiscovery.framework.eventlist.controller.ScrollDirection.BOTTOM;
+import static com.schedjoules.eventdiscovery.framework.eventlist.controller.ScrollDirection.TOP;
 
 
 /**

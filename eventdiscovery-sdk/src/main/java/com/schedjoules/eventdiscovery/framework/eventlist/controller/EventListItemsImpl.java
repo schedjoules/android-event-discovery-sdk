@@ -15,12 +15,13 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery.framework.eventlist.itemsprovider;
+package com.schedjoules.eventdiscovery.framework.eventlist.controller;
 
 import android.os.Handler;
 import android.os.Looper;
 
 import com.schedjoules.eventdiscovery.framework.adapter.ListItem;
+import com.schedjoules.eventdiscovery.framework.adapter.notifier.AdapterNotifier;
 import com.schedjoules.eventdiscovery.framework.eventlist.items.DateHeaderItem;
 import com.schedjoules.eventdiscovery.framework.eventlist.items.EventItem;
 import com.schedjoules.eventdiscovery.framework.utils.Objects;
@@ -30,8 +31,8 @@ import org.dmfs.rfc5545.DateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.schedjoules.eventdiscovery.framework.eventlist.itemsprovider.ScrollDirection.BOTTOM;
-import static com.schedjoules.eventdiscovery.framework.eventlist.itemsprovider.ScrollDirection.TOP;
+import static com.schedjoules.eventdiscovery.framework.eventlist.controller.ScrollDirection.BOTTOM;
+import static com.schedjoules.eventdiscovery.framework.eventlist.controller.ScrollDirection.TOP;
 
 
 /**

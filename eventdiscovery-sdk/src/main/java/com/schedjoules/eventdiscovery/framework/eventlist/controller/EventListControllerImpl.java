@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery.framework.eventlist.itemsprovider;
+package com.schedjoules.eventdiscovery.framework.eventlist.controller;
 
 import android.util.Log;
 
@@ -24,15 +24,16 @@ import com.schedjoules.client.eventsdiscovery.Envelope;
 import com.schedjoules.client.eventsdiscovery.Event;
 import com.schedjoules.client.eventsdiscovery.GeoLocation;
 import com.schedjoules.client.eventsdiscovery.ResultPage;
-import com.schedjoules.eventdiscovery.framework.eventlist.itemsprovider.EventListDownloadTask.TaskParam;
-import com.schedjoules.eventdiscovery.framework.eventlist.itemsprovider.EventListDownloadTask.TaskResult;
+import com.schedjoules.eventdiscovery.framework.adapter.ListItems;
+import com.schedjoules.eventdiscovery.framework.adapter.notifier.AdapterNotifier;
+import com.schedjoules.eventdiscovery.framework.async.SafeAsyncTaskResult;
+import com.schedjoules.eventdiscovery.framework.eventlist.controller.EventListDownloadTask.TaskParam;
+import com.schedjoules.eventdiscovery.framework.eventlist.controller.EventListDownloadTask.TaskResult;
 import com.schedjoules.eventdiscovery.framework.eventlist.view.EventListBackgroundMessage;
 import com.schedjoules.eventdiscovery.framework.eventlist.view.EventListLoadingIndicatorOverlay;
-import com.schedjoules.eventdiscovery.framework.adapter.ListItems;
-import com.schedjoules.eventdiscovery.framework.async.SafeAsyncTaskResult;
-import com.schedjoules.eventdiscovery.service.ApiService;
 import com.schedjoules.eventdiscovery.framework.utils.FutureServiceConnection;
 import com.schedjoules.eventdiscovery.framework.utils.Objects;
+import com.schedjoules.eventdiscovery.service.ApiService;
 
 import org.dmfs.rfc5545.DateTime;
 
@@ -41,8 +42,8 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import static com.schedjoules.eventdiscovery.framework.eventlist.itemsprovider.ScrollDirection.BOTTOM;
-import static com.schedjoules.eventdiscovery.framework.eventlist.itemsprovider.ScrollDirection.TOP;
+import static com.schedjoules.eventdiscovery.framework.eventlist.controller.ScrollDirection.BOTTOM;
+import static com.schedjoules.eventdiscovery.framework.eventlist.controller.ScrollDirection.TOP;
 
 
 /**
