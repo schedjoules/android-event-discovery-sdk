@@ -20,7 +20,6 @@ package com.schedjoules.eventdiscovery.location.list;
 import android.util.Log;
 
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.schedjoules.eventdiscovery.eventlist.itemsprovider.AdapterNotifier;
 import com.schedjoules.eventdiscovery.framework.adapter.ListItem;
 import com.schedjoules.eventdiscovery.framework.async.SafeAsyncTaskResult;
 import com.schedjoules.eventdiscovery.location.PlaceSuggestionItem;
@@ -30,35 +29,34 @@ import com.schedjoules.eventdiscovery.location.tasks.PlaceByIdTask;
 import com.schedjoules.eventdiscovery.location.tasks.PlaceSuggestionQueryTask;
 import com.schedjoules.eventdiscovery.utils.Objects;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 
 /**
- * The implementation for {@link LocationListController}.
+ * The implementation for {@link PlaceListController}.
  *
  * @author Gabor Keszthelyi
  */
-public final class LocationListControllerImpl implements LocationListController, PlaceSuggestionItem.OnClickListener
+public final class PlaceListControllerImpl implements PlaceListController, PlaceSuggestionItem.OnClickListener
 {
-    private static final String TAG = LocationListControllerImpl.class.getSimpleName();
+    private static final String TAG = PlaceListControllerImpl.class.getSimpleName();
 
     private final GoogleApiClient mApiClient;
     private final ExecutorService mExecutorService;
     private final PlaceSuggestionQueryTask.Client mTaskClient;
+    private final PlaceSelectedListener mPlaceSelectedListener;
+    private final PlaceSuggestionListItems mItems;
 
-    private AdapterNotifier mAdapterNotifier;
-    private PlaceSelectedListener mPlaceSelectedListener;
-
-    private List<ListItem> mListItems = new ArrayList<>();
     private String mLastQuery;
 
 
-    public LocationListControllerImpl(GoogleApiClient apiClient)
+    public PlaceListControllerImpl(GoogleApiClient apiClient, PlaceSelectedListener listener, PlaceSuggestionListItems items)
     {
         mApiClient = apiClient;
+        mPlaceSelectedListener = listener;
+        mItems = items;
         mExecutorService = Executors.newSingleThreadExecutor();
         mTaskClient = new PlaceSuggestionQueryTaskClient();
     }
@@ -69,34 +67,6 @@ public final class LocationListControllerImpl implements LocationListController,
     {
         mLastQuery = query;
         new PlaceSuggestionQueryTask(query, mTaskClient).executeOnExecutor(mExecutorService, mApiClient);
-    }
-
-
-    @Override
-    public void setAdapterNotifier(AdapterNotifier adapterNotifier)
-    {
-        mAdapterNotifier = adapterNotifier;
-    }
-
-
-    @Override
-    public void setOnPlaceSelectedListener(PlaceSelectedListener listener)
-    {
-        mPlaceSelectedListener = listener;
-    }
-
-
-    @Override
-    public ListItem get(int position)
-    {
-        return mListItems.get(position);
-    }
-
-
-    @Override
-    public int itemCount()
-    {
-        return mListItems.size();
     }
 
 
@@ -137,14 +107,11 @@ public final class LocationListControllerImpl implements LocationListController,
             {
                 if (newItem instanceof PlaceSuggestionItem)
                 {
-                    ((PlaceSuggestionItem) newItem).setListener(LocationListControllerImpl.this);
+                    ((PlaceSuggestionItem) newItem).setListener(PlaceListControllerImpl.this);
                 }
             }
 
-            int sizeBefore = mListItems.size();
-            mListItems = newItems;
-            mAdapterNotifier.notifyItemsCleared(sizeBefore);
-            mAdapterNotifier.notifyNewItemsAdded(mListItems, 0);
+            mItems.replaceAllItems(newItems);
         }
 
 

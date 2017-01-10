@@ -21,10 +21,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.view.LayoutInflater;
@@ -32,7 +30,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.places.Places;
 import com.schedjoules.eventdiscovery.EventIntents;
@@ -42,8 +39,9 @@ import com.schedjoules.eventdiscovery.common.BaseFragment;
 import com.schedjoules.eventdiscovery.databinding.SchedjoulesFragmentLocationSelectionBinding;
 import com.schedjoules.eventdiscovery.eventlist.itemsprovider.StandardAdapterNotifier;
 import com.schedjoules.eventdiscovery.framework.adapter.GeneralMultiTypeAdapter;
-import com.schedjoules.eventdiscovery.location.list.LocationListController;
-import com.schedjoules.eventdiscovery.location.list.LocationListControllerImpl;
+import com.schedjoules.eventdiscovery.location.list.PlaceListController;
+import com.schedjoules.eventdiscovery.location.list.PlaceListControllerImpl;
+import com.schedjoules.eventdiscovery.location.list.PlaceSuggestionListItemsImpl;
 import com.schedjoules.eventdiscovery.location.model.GeoPlace;
 import com.schedjoules.eventdiscovery.location.model.ParcelableGeoPlace;
 import com.schedjoules.eventdiscovery.widgets.SimpleTextWatcher;
@@ -54,10 +52,11 @@ import com.schedjoules.eventdiscovery.widgets.SimpleTextWatcher;
  *
  * @author Gabor Keszthelyi
  */
-public final class LocationSelectionFragment extends BaseFragment implements LocationListController.PlaceSelectedListener
+public final class LocationSelectionFragment extends BaseFragment implements PlaceListController.PlaceSelectedListener
 {
     private GoogleApiClient mGoogleApiClient;
-    private LocationListController mLocationItemsProvider;
+    private PlaceListController mPlaceListController;
+    private PlaceSuggestionListItemsImpl mSuggestionItems;
 
 
     public static Fragment newInstance()
@@ -70,24 +69,21 @@ public final class LocationSelectionFragment extends BaseFragment implements Loc
     public void onCreate(@Nullable Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+        setRetainInstance(true);
 
         mGoogleApiClient = new GoogleApiClient
                 .Builder(getContext())
                 .addApi(Places.GEO_DATA_API)
                 .addApi(Places.PLACE_DETECTION_API)
-                .enableAutoManage(getActivity(), new GoogleApiClient.OnConnectionFailedListener()
-                {
-                    @Override
-                    public void onConnectionFailed(@NonNull ConnectionResult connectionResult)
-                    {
-                        // TODO
-                    }
-                })
                 .build();
+        mGoogleApiClient.connect();
+
+        mSuggestionItems = new PlaceSuggestionListItemsImpl();
+        mPlaceListController = new PlaceListControllerImpl(mGoogleApiClient, this, mSuggestionItems);
 
         // TODO No Play Services error handling? Seems to be handled by default, but look into it.
 
-        // TODO retain fragment
+        // TODO keep keyboard up after rotation
     }
 
 
@@ -100,14 +96,18 @@ public final class LocationSelectionFragment extends BaseFragment implements Loc
 
         initToolbar(views.schedjoulesLocationSelectionToolbar);
 
-        initList(views.schedjoulesLocationSelectionList);
+        // New Adapter is needed after configuration change, otherwise activity is leaked
+        GeneralMultiTypeAdapter adapter = new GeneralMultiTypeAdapter(mSuggestionItems);
+        mSuggestionItems.setAdapterNotifier(new StandardAdapterNotifier(adapter));
+
+        views.schedjoulesLocationSelectionList.setAdapter(adapter);
 
         views.schedjoulesLocationSelectionInput.addTextChangedListener(new SimpleTextWatcher()
         {
             @Override
             public void afterTextChanged(Editable s)
             {
-                mLocationItemsProvider.query(s.toString());
+                mPlaceListController.query(s.toString());
             }
         });
 
@@ -121,16 +121,6 @@ public final class LocationSelectionFragment extends BaseFragment implements Loc
         BaseActivity activity = (BaseActivity) getActivity();
         activity.setSupportActionBar(toolbar);
         activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-    }
-
-
-    private void initList(RecyclerView recyclerView)
-    {
-        mLocationItemsProvider = new LocationListControllerImpl(mGoogleApiClient);
-        mLocationItemsProvider.setOnPlaceSelectedListener(this);
-        GeneralMultiTypeAdapter adapter = new GeneralMultiTypeAdapter(mLocationItemsProvider);
-        mLocationItemsProvider.setAdapterNotifier(new StandardAdapterNotifier(adapter));
-        recyclerView.setAdapter(adapter);
     }
 
 
@@ -157,5 +147,13 @@ public final class LocationSelectionFragment extends BaseFragment implements Loc
             getActivity().setResult(Activity.RESULT_OK, data);
             getActivity().finish();
         }
+    }
+
+
+    @Override
+    public void onDestroy()
+    {
+        mGoogleApiClient.disconnect();
+        super.onDestroy();
     }
 }

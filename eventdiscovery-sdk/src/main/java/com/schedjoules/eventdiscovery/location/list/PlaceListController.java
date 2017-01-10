@@ -17,24 +17,19 @@
 
 package com.schedjoules.eventdiscovery.location.list;
 
-import com.schedjoules.eventdiscovery.eventlist.itemsprovider.AdapterNotifier;
-import com.schedjoules.eventdiscovery.framework.adapter.ListItems;
 import com.schedjoules.eventdiscovery.location.model.GeoPlace;
 
 
 /**
- * The controller for the location list, it initiates the network queries and updates the list items.
+ * The controller for the list of places, it initiates the network queries, updates the list items, and notifies when
+ * user selected a place.
  *
  * @author Gabor Keszthelyi
  */
-public interface LocationListController extends ListItems
+public interface PlaceListController
 {
 
     void query(String query);
-
-    void setAdapterNotifier(AdapterNotifier adapterNotifier);
-
-    void setOnPlaceSelectedListener(PlaceSelectedListener listener);
 
     interface PlaceSelectedListener
     {

@@ -33,6 +33,9 @@ import com.schedjoules.eventdiscovery.framework.access.Fragments;
 public final class LocationSelectionActivity extends BaseActivity
 {
 
+    // TODO nested parcelables..
+
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState)
     {
@@ -40,6 +43,10 @@ public final class LocationSelectionActivity extends BaseActivity
 
         setContentView(R.layout.schedjoules_activity_frame);
 
-        new Fragments(this).add(R.id.schedjoules_activity_content, LocationSelectionFragment.newInstance());
+        Fragments fragments = new Fragments(this);
+        if (fragments.hasNotBeenAddedYet(R.id.schedjoules_activity_content))
+        {
+            fragments.add(R.id.schedjoules_activity_content, LocationSelectionFragment.newInstance());
+        }
     }
 }
