@@ -21,8 +21,8 @@ import com.schedjoules.client.eventsdiscovery.Envelope;
 import com.schedjoules.client.eventsdiscovery.Event;
 import com.schedjoules.client.eventsdiscovery.ResultPage;
 import com.schedjoules.eventdiscovery.framework.adapter.ListItem;
+import com.schedjoules.eventdiscovery.framework.common.DividerItem;
 import com.schedjoules.eventdiscovery.framework.eventlist.items.DateHeaderItem;
-import com.schedjoules.eventdiscovery.framework.eventlist.items.DividerItem;
 import com.schedjoules.eventdiscovery.framework.eventlist.items.EventItem;
 
 import java.util.ArrayList;

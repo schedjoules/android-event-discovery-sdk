@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery.framework.eventlist.items;
+package com.schedjoules.eventdiscovery.framework.common;
 
 import android.view.View;
 
