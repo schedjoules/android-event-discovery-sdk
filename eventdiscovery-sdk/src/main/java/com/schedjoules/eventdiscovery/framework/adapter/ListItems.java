@@ -21,11 +21,7 @@ import android.support.v7.widget.RecyclerView;
 
 
 /**
-<<<<<<< HEAD:eventdiscovery-sdk/src/main/java/com/schedjoules/eventdiscovery/framework/adapter/ListItems.java
  * Represents the list items for a {@link RecyclerView}, used by {@link GeneralMultiTypeAdapter}.
-=======
- * Provides the list items for {@link GeneralMultiTypeAdapter}. Implementation can handle data loading and binding any sort.
->>>>>>> master:eventdiscovery-sdk/src/main/java/com/schedjoules/eventdiscovery/framework/adapter/ListItemsProvider.java
  *
  * @author Gabor Keszthelyi
  */
