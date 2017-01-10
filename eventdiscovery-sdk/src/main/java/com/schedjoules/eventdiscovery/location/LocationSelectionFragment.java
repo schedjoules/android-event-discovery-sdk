@@ -74,16 +74,22 @@ public final class LocationSelectionFragment extends BaseFragment implements Pla
         setRetainInstance(true);
 
         mGoogleApiClient = new GoogleApiClient
-                .Builder(getContext())
+                .Builder(getContext().getApplicationContext())
                 .addApi(Places.GEO_DATA_API)
                 .addApi(Places.PLACE_DETECTION_API)
                 .build();
+        /**
+         * TODO enableAutomanage OR manual error handling
+         * enableAutoManage() on the builder would enable automatic default error handling as well,
+         * but it's tricky to get initialization correctly with Activity and retained Fragment lifecycles.
+         * Either enable automanage or add 'manual' error handling with addOnConnectionFailedListener().
+         *
+         * See https://developers.google.com/android/reference/com/google/android/gms/common/api/GoogleApiClient.Builder.html#enableAutoManage(android.support.v4.app.FragmentActivity, com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener)
+         */
         mGoogleApiClient.connect();
 
         mSuggestionItems = new PlaceSuggestionListItemsImpl();
         mPlaceListController = new PlaceListControllerImpl(mGoogleApiClient, this, mSuggestionItems);
-
-        // TODO No Play Services error handling? Seems to be handled by default, but look into it.
     }
 
 
@@ -155,8 +161,7 @@ public final class LocationSelectionFragment extends BaseFragment implements Pla
     @Override
     public void onDestroy()
     {
-        mGoogleApiClient.disconnect();
         super.onDestroy();
+        mGoogleApiClient.disconnect();
     }
-
 }
