@@ -166,10 +166,10 @@ public final class WebviewMicroFragment implements MicroFragment<URI>
             mWebView.getSettings().setJavaScriptEnabled(true);
             mWebView.getSettings().setDomStorageEnabled(true);
             mWebView.setOnKeyListener(this);
-            mWebView.loadUrl(mEnvironment.microFragment().parameters().toASCIIString());
 
             if (savedInstanceState == null)
             {
+                mWebView.loadUrl(mEnvironment.microFragment().parameters().toASCIIString());
                 // TODO: make this optional
                 // wipe cookies to enforce a new login
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1)
@@ -188,6 +188,10 @@ public final class WebviewMicroFragment implements MicroFragment<URI>
                     cookieSyncMngr.sync();
                 }
             }
+            else
+            {
+                mWebView.restoreState(savedInstanceState);
+            }
 
             Toolbar toolbar = (Toolbar) root.findViewById(R.id.toolbar);
             toolbar.setTitle(mEnvironment.microFragment().title(getActivity()));
@@ -203,6 +207,33 @@ public final class WebviewMicroFragment implements MicroFragment<URI>
             });
             mProgress = (ProgressBar) root.findViewById(android.R.id.progress);
             return root;
+        }
+
+
+        @Override
+        public void onResume()
+        {
+            super.onResume();
+            mWebView.onResume();
+        }
+
+
+        @Override
+        public void onPause()
+        {
+            mWebView.onPause();
+            super.onPause();
+        }
+
+
+        @Override
+        public void onSaveInstanceState(Bundle outState)
+        {
+            if (mWebView != null)
+            {
+                mWebView.saveState(outState);
+            }
+            super.onSaveInstanceState(outState);
         }
 
 
