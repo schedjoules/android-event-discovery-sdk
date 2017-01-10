@@ -23,7 +23,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.places.AutocompletePrediction;
 import com.google.android.gms.location.places.AutocompletePredictionBuffer;
 import com.google.android.gms.location.places.Places;
-import com.schedjoules.eventdiscovery.eventlist.items.DividerItem;
+import com.schedjoules.eventdiscovery.framework.eventlist.items.DividerItem;
 import com.schedjoules.eventdiscovery.framework.adapter.ListItem;
 import com.schedjoules.eventdiscovery.framework.async.DiscardCheck;
 import com.schedjoules.eventdiscovery.framework.async.DiscardingSafeAsyncTask;

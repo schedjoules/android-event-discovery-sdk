@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 SchedJoules
+ * Copyright 2017 SchedJoules
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,9 +18,8 @@
 package com.schedjoules.eventdiscovery.framework.retain;
 
 /**
- * {@link RetainedObjects} that simply always returns the provided default values. It can be used transparently in place
- * of the real {@link RetainedObjects} when there hasn't been a configuration change, just loading the screen the first
- * time.
+ * {@link RetainedObjects} that simply always returns the provided default values. It can be used transparently in place of the real {@link RetainedObjects}
+ * when there hasn't been a configuration change, just loading the screen the first time.
  *
  * @author Gabor Keszthelyi
  */

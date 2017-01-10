@@ -4,8 +4,16 @@
     <uses-permission android:name="android.permission.INTERNET"/>
 
     <application>
+
         <activity
-                android:name=".eventlist.EventListActivity"
+                android:name=".framework.activities.MicroFragmentHostActivity"
+                android:exported="false"
+                android:enabled="true"
+                android:theme="@style/SchedJoules_AppTheme.NoActionBar">
+        </activity>
+
+        <activity
+                android:name=".framework.eventlist.EventListActivity"
                 android:theme="@style/SchedJoules_AppTheme.NoActionBar"
                 android:exported="false"
                 android:enabled="true"
@@ -16,9 +24,8 @@
             </intent-filter>
         </activity>
 
-
         <activity
-                android:name=".proxies.DeeplinkEventDetailsProxy"
+                android:name=".framework.activities.proxies.DeeplinkEventDetailsProxy"
                 android:label="Event details"
                 android:exported="true"
                 android:enabled="true"
@@ -36,16 +43,8 @@
             </intent-filter>
         </activity>
 
-
         <activity
-                android:name=".eventdetails.EventDetailActivity"
-                android:label=""
-                android:exported="false"
-                android:enabled="true"
-                android:theme="@style/SchedJoules_AppTheme.NoActionBar"/>
-
-        <activity
-                android:name=".proxies.DefaultAddToCalendarActivity"
+                android:name=".framework.activities.defaults.DefaultAddToCalendarActivity"
                 android:exported="false"
                 android:theme="@android:style/Theme.NoDisplay"
                 android:enabled="true">
@@ -64,13 +63,13 @@
                 android:theme="@style/SchedJoules_AppTheme.NoActionBar"/>
 
         <service
-                android:name=".service.BasicInsightsService"
+                android:name=".framework.services.BasicInsightsService"
                 android:exported="false"
                 android:stopWithTask="true"
                 android:enabled="true"/>
 
         <service
-                android:name=".service.BasicActionsService"
+                android:name=".framework.services.BasicActionsService"
                 android:exported="false"
                 android:stopWithTask="true"
                 android:enabled="true">
@@ -80,7 +79,7 @@
         </service>
 
         <meta-data
-                android:name="com.schedjoules.eventdiscovery.common.OurGlideModule"
+                android:name="com.schedjoules.eventdiscovery.framework.common.SchedJoulesGlideModule"
                 android:value="GlideModule"/>
 
     </application>

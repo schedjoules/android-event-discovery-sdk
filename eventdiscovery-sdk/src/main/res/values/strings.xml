@@ -7,14 +7,6 @@
     <string name="schedjoules_event_list_no_future_events">No future events available yet</string>
     <string name="schedjoules_event_list_error_item">An error occurred\nCan\'t load further results\n\nPull to retry</string>
     <string name="schedjoules_event_list_error_bg_msg">An error occurred\nCan\'t load results\n\nTap to retry</string>
-    <plurals name="schedjoules_hours">
-        <item quantity="one">%d hour</item>
-        <item quantity="other">%d hours</item>
-    </plurals>
-    <plurals name="schedjoules_minutes">
-        <item quantity="one">%d minute</item>
-        <item quantity="other">%d minutes</item>
-    </plurals>
     <string name="schedjoules_location_search_hint">Location…</string>
     <string name="schedjoules_default_location_placeholder_name">All locations</string>
 
@@ -41,5 +33,6 @@
     <string name="schedjoules_title_error">Error</string>
     <string name="schedjoules_generic_error">Something went wrong.\nPlease try again later.</string>
     <string name="schedjoules_location_selection_hint">Enter location</string>
+    <string name="schedjoules_menu_feedback">Feedback</string>
 
 </resources>

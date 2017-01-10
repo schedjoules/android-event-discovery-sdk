@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 SchedJoules
+ * Copyright 2017 SchedJoules
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -23,8 +23,7 @@ import android.view.MenuInflater;
 
 
 /**
- * Components that handle {@link Fragment#onCreateOptionsMenu(Menu, MenuInflater)} callbacks can implement this
- * interface.
+ * Components that handle {@link Fragment#onCreateOptionsMenu(Menu, MenuInflater)} callbacks can implement this interface.
  *
  * @author Gabor Keszthelyi
  */

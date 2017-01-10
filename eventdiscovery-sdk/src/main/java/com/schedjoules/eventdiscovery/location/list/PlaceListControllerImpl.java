@@ -27,7 +27,7 @@ import com.schedjoules.eventdiscovery.location.model.GeoPlace;
 import com.schedjoules.eventdiscovery.location.model.NamedPlace;
 import com.schedjoules.eventdiscovery.location.tasks.PlaceByIdTask;
 import com.schedjoules.eventdiscovery.location.tasks.PlaceSuggestionQueryTask;
-import com.schedjoules.eventdiscovery.utils.Objects;
+import com.schedjoules.eventdiscovery.framework.utils.Objects;
 
 import java.util.List;
 import java.util.concurrent.ExecutorService;

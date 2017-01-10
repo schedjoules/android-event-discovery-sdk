@@ -12,7 +12,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:layoutManager="LinearLayoutManager"
-                tools:context=".eventlist.EventListActivity"
+                tools:context=".framework.eventlist.EventListActivity"
                 tools:listitem="@layout/schedjoules_list_item_event"/>
 
         <include layout="@layout/sticky_header_layout"/>

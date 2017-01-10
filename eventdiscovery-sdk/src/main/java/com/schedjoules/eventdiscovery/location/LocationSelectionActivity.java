@@ -19,10 +19,11 @@ package com.schedjoules.eventdiscovery.location;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 
 import com.schedjoules.eventdiscovery.R;
-import com.schedjoules.eventdiscovery.common.BaseActivity;
-import com.schedjoules.eventdiscovery.framework.access.Fragments;
+import com.schedjoules.eventdiscovery.framework.common.BaseActivity;
 
 
 /**
@@ -40,10 +41,13 @@ public final class LocationSelectionActivity extends BaseActivity
 
         setContentView(R.layout.schedjoules_activity_frame);
 
-        Fragments fragments = new Fragments(this);
-        if (fragments.hasNotBeenAddedYet(R.id.schedjoules_activity_content))
+        FragmentManager fm = getSupportFragmentManager();
+        Fragment fragment = fm.findFragmentById(R.id.schedjoules_activity_content);
+        if (fragment == null)
         {
-            fragments.add(R.id.schedjoules_activity_content, LocationSelectionFragment.newInstance());
+            fm.beginTransaction()
+                    .add(R.id.schedjoules_activity_content, LocationSelectionFragment.newInstance())
+                    .commit();
         }
     }
 }

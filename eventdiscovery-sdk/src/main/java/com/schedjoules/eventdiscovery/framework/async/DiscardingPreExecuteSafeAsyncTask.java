@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 SchedJoules
+ * Copyright 2017 SchedJoules
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -25,9 +25,9 @@ import java.lang.ref.WeakReference;
 
 
 /**
- * Improved {@link AsyncTask} with a callback (kept with WeakReference) that delivers both success and failed results
- * along with the input params of the task, and with a {@link DiscardCheck} callback that is called from multiple points
- * in the execution to enable the client to discard/cancel the task. There is also a onPreExecute callback.
+ * Improved {@link AsyncTask} with a callback (kept with WeakReference) that delivers both success and failed results along with the input params of the task,
+ * and with a {@link DiscardCheck} callback that is called from multiple points in the execution to enable the client to discard/cancel the task. There is also
+ * a onPreExecute callback.
  *
  * @author Gabor Keszthelyi
  */

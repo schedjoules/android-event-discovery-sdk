@@ -21,7 +21,7 @@ import android.content.Context;
 
 import com.schedjoules.client.eventsdiscovery.GeoLocation;
 import com.schedjoules.eventdiscovery.R;
-import com.schedjoules.eventdiscovery.model.UndefinedGeoLocation;
+import com.schedjoules.eventdiscovery.framework.model.UndefinedGeoLocation;
 
 
 /**

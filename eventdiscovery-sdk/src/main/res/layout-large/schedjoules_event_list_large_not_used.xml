@@ -12,7 +12,7 @@
             android:divider="?android:attr/dividerHorizontal"
             android:orientation="horizontal"
             android:showDividers="middle"
-            tools:context=".eventlist.EventListActivity">
+            tools:context=".framework.eventlist.EventListActivity">
 
         <!--
         This layout is a two-pane layout for the Events
@@ -29,7 +29,7 @@
                                                 android:layout_marginLeft="16dp"
                                                 android:layout_marginRight="16dp"
                                                 app:layoutManager="LinearLayoutManager"
-                                                tools:context=".eventlist.EventListActivity"
+                                                tools:context=".framework.eventlist.EventListActivity"
                                                 tools:listitem="@layout/schedjoules_list_item_event"/>
 
         <FrameLayout

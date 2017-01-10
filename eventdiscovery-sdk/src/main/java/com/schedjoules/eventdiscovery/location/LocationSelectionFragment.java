@@ -33,12 +33,12 @@ import android.widget.EditText;
 
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.places.Places;
-import com.schedjoules.eventdiscovery.EventIntents;
+import com.schedjoules.eventdiscovery.framework.EventIntents;
 import com.schedjoules.eventdiscovery.R;
-import com.schedjoules.eventdiscovery.common.BaseActivity;
-import com.schedjoules.eventdiscovery.common.BaseFragment;
+import com.schedjoules.eventdiscovery.framework.common.BaseActivity;
+import com.schedjoules.eventdiscovery.framework.common.BaseFragment;
 import com.schedjoules.eventdiscovery.databinding.SchedjoulesFragmentLocationSelectionBinding;
-import com.schedjoules.eventdiscovery.eventlist.itemsprovider.StandardAdapterNotifier;
+import com.schedjoules.eventdiscovery.framework.eventlist.itemsprovider.StandardAdapterNotifier;
 import com.schedjoules.eventdiscovery.framework.adapter.GeneralMultiTypeAdapter;
 import com.schedjoules.eventdiscovery.location.list.PlaceListController;
 import com.schedjoules.eventdiscovery.location.list.PlaceListControllerImpl;
