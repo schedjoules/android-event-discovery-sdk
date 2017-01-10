@@ -17,6 +17,8 @@
 
 package com.schedjoules.eventdiscovery.eventlist.itemsprovider;
 
+import android.support.v7.widget.RecyclerView;
+
 import com.schedjoules.client.eventsdiscovery.GeoLocation;
 import com.schedjoules.eventdiscovery.eventlist.view.EdgeReachScrollListener;
 import com.schedjoules.eventdiscovery.eventlist.view.EventListBackgroundMessage;
@@ -27,12 +29,12 @@ import org.dmfs.rfc5545.DateTime;
 
 
 /**
- * {@link ListItems} for Event list adapter which also listens to scrolled to bottom events to be able to load
- * more events.
+ * Controller for the event list, it responsible to initiate API request, manage states and update the {@link ListItems}
+ * associated with the {@link RecyclerView}
  *
  * @author Gabor Keszthelyi
  */
-public interface EventListItemsProvider extends EdgeReachScrollListener.Listener
+public interface EventListController extends EdgeReachScrollListener.Listener
 {
 
     /**

@@ -34,9 +34,9 @@ import com.schedjoules.client.insights.steps.Screen;
 import com.schedjoules.eventdiscovery.R;
 import com.schedjoules.eventdiscovery.common.BaseFragment;
 import com.schedjoules.eventdiscovery.databinding.SchedjoulesFragmentEventListBinding;
+import com.schedjoules.eventdiscovery.eventlist.itemsprovider.EventListController;
+import com.schedjoules.eventdiscovery.eventlist.itemsprovider.EventListControllerImpl;
 import com.schedjoules.eventdiscovery.eventlist.itemsprovider.EventListItemsImpl;
-import com.schedjoules.eventdiscovery.eventlist.itemsprovider.EventListItemsProvider;
-import com.schedjoules.eventdiscovery.eventlist.itemsprovider.EventListItemsProviderImpl;
 import com.schedjoules.eventdiscovery.eventlist.itemsprovider.FlexibleAdapterNotifier;
 import com.schedjoules.eventdiscovery.eventlist.view.EventListBackgroundMessage;
 import com.schedjoules.eventdiscovery.eventlist.view.EventListLoadingIndicatorOverlay;
@@ -68,7 +68,7 @@ import static com.schedjoules.eventdiscovery.EventIntents.EXTRA_START_AFTER_TIME
 public final class EventListFragment extends BaseFragment implements PlaceSelection.Listener, EventListMenu.Listener, EventListToolbar.Listener
 {
     private FutureServiceConnection<ApiService> mApiService;
-    private EventListItemsProvider mListItemsProvider;
+    private EventListController mListItemsProvider;
     private ActivityForResultPlaceSelection mLocationSelection;
     private LastSelectedPlace mLastSelectedPlace;
 
@@ -97,7 +97,7 @@ public final class EventListFragment extends BaseFragment implements PlaceSelect
         mApiService = new FutureLocalServiceConnection<>(getContext().getApplicationContext(),
                 new Intent("com.schedjoules.API").setPackage(getContext().getPackageName()));
 
-        mListItemsProvider = new EventListItemsProviderImpl(mApiService, new EventListItemsImpl());
+        mListItemsProvider = new EventListControllerImpl(mApiService, new EventListItemsImpl());
 
         mLocationSelection = new ActivityForResultPlaceSelection(this);
         mLocationSelection.registerListener(this);

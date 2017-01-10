@@ -19,7 +19,7 @@ package com.schedjoules.eventdiscovery.eventlist.view;
 
 import android.support.v7.widget.RecyclerView;
 
-import com.schedjoules.eventdiscovery.eventlist.itemsprovider.EventListItemsProviderImpl;
+import com.schedjoules.eventdiscovery.eventlist.itemsprovider.EventListControllerImpl;
 
 import eu.davidea.flexibleadapter.FlexibleAdapter;
 import eu.davidea.flexibleadapter.items.IFlexible;
@@ -57,7 +57,7 @@ public final class EventListView
     public void setEdgeScrollListener(EdgeReachScrollListener.Listener edgeScrollListener)
     {
         EdgeReachScrollListener scrollListener = new EdgeReachScrollListener(mRecyclerView, edgeScrollListener,
-                EventListItemsProviderImpl.CLOSE_TO_TOP_OR_BOTTOM_THRESHOLD);
+                EventListControllerImpl.CLOSE_TO_TOP_OR_BOTTOM_THRESHOLD);
         mRecyclerView.addOnScrollListener(scrollListener);
     }
 }

@@ -3,10 +3,9 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="@dimen/schedjoules_activity_horizontal_margin"
-        android:paddingRight="@dimen/schedjoules_activity_horizontal_margin"
+        android:paddingLeft="24dp"
+        android:paddingRight="24dp"
         android:focusable="true"
-
         android:background="?attr/selectableItemBackground"
         android:orientation="vertical">
 

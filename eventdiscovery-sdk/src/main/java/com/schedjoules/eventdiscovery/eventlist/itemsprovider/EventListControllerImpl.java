@@ -50,11 +50,11 @@ import static com.schedjoules.eventdiscovery.eventlist.itemsprovider.ScrollDirec
  *
  * @author Gabor Keszthelyi
  */
-public class EventListItemsProviderImpl implements EventListItemsProvider, EventListBackgroundMessage.OnClickListener
+public class EventListControllerImpl implements EventListController, EventListBackgroundMessage.OnClickListener
 {
     public static final int CLOSE_TO_TOP_OR_BOTTOM_THRESHOLD = 30;
 
-    private static final String TAG = EventListItemsProviderImpl.class.getSimpleName();
+    private static final String TAG = EventListControllerImpl.class.getSimpleName();
 
     private final FutureServiceConnection<ApiService> mApiService;
 
@@ -76,7 +76,7 @@ public class EventListItemsProviderImpl implements EventListItemsProvider, Event
     private Map<ScrollDirection, TaskParam> mErrorTaskParam;
 
 
-    public EventListItemsProviderImpl(FutureServiceConnection<ApiService> apiService, EventListItems items)
+    public EventListControllerImpl(FutureServiceConnection<ApiService> apiService, EventListItems items)
     {
         mApiService = apiService;
         mItems = items;
