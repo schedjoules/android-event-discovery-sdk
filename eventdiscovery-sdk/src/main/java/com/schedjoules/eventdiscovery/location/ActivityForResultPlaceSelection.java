@@ -19,6 +19,7 @@ package com.schedjoules.eventdiscovery.location;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
 import com.schedjoules.eventdiscovery.EventIntents;
@@ -75,7 +76,8 @@ public final class ActivityForResultPlaceSelection implements PlaceSelection, On
     {
         if (requestCode == REQUEST_CODE && resultCode == Activity.RESULT_OK && mFragment.isAdded())
         {
-            ParcelableGeoPlace geoPlace = data.getParcelableExtra(EventIntents.EXTRA_GEO_PLACE);
+            Bundle nestedExtras = data.getBundleExtra("com.schedjoules.nestedExtras");
+            ParcelableGeoPlace geoPlace = nestedExtras.getParcelable(EventIntents.EXTRA_GEO_PLACE);
             if (mListener != null)
             {
                 mListener.onPlaceSelected(geoPlace);

@@ -150,8 +150,10 @@ public final class LocationSelectionFragment extends BaseFragment implements Pla
     {
         if (getActivity() != null)
         {
+            Bundle nestedExtras = new Bundle();
+            nestedExtras.putParcelable(EventIntents.EXTRA_GEO_PLACE, new ParcelableGeoPlace(geoPlace));
             Intent data = new Intent();
-            data.putExtra(EventIntents.EXTRA_GEO_PLACE, new ParcelableGeoPlace(geoPlace));
+            data.putExtra("com.schedjoules.nestedExtras", nestedExtras);
             getActivity().setResult(Activity.RESULT_OK, data);
             getActivity().finish();
         }

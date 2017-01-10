@@ -33,9 +33,6 @@ import com.schedjoules.eventdiscovery.framework.access.Fragments;
 public final class LocationSelectionActivity extends BaseActivity
 {
 
-    // TODO nested parcelables..
-
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState)
     {
