@@ -18,6 +18,8 @@
 package com.schedjoules.eventdiscovery.framework.location.model;
 
 /**
+ * Represents a place (city, venue, place) with a name and identifier.
+ *
  * @author Gabor Keszthelyi
  */
 public interface NamedPlace

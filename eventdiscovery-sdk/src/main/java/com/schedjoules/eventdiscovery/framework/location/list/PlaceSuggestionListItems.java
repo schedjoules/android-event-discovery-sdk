@@ -34,7 +34,10 @@ public interface PlaceSuggestionListItems extends ListItems
 
     void replaceAllItems(List<ListItem> newItems);
 
-    // TODO ListItems impls and GeneralMultitypeAdapter have circular reference, that's why setter needed here. Think if there is better way.
+    /*
+        TODO ListItems impls and GeneralMultitypeAdapter have circular reference, that's why setter needed here.
+        It would probably be better the other way around, so that GeneralMultitypeAdapter has the setter.
+      */
     void setAdapterNotifier(AdapterNotifier adapterNotifier);
 
 }

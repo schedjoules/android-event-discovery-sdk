@@ -24,7 +24,6 @@ import com.schedjoules.client.eventsdiscovery.Envelope;
 import com.schedjoules.client.eventsdiscovery.Event;
 import com.schedjoules.client.eventsdiscovery.GeoLocation;
 import com.schedjoules.client.eventsdiscovery.ResultPage;
-import com.schedjoules.eventdiscovery.framework.adapter.ListItems;
 import com.schedjoules.eventdiscovery.framework.adapter.notifier.AdapterNotifier;
 import com.schedjoules.eventdiscovery.framework.async.SafeAsyncTaskResult;
 import com.schedjoules.eventdiscovery.framework.eventlist.controller.EventListDownloadTask.TaskParam;
@@ -47,7 +46,7 @@ import static com.schedjoules.eventdiscovery.framework.eventlist.controller.Scro
 
 
 /**
- * {@link ListItems} for the Event list.
+ * The implementation of {@link EventListController}.
  *
  * @author Gabor Keszthelyi
  */
