@@ -37,14 +37,12 @@ public final class MicroFragmentHostActivity extends BaseActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.schedjoules_activity_frame);
 
         if (savedInstanceState == null)
         {
             // load the initial MicroFragment
             Bundle nestedExtras = getIntent().getBundleExtra("com.schedjoules.nestedExtras");
-
             MicroFragment initialMicroFragment = nestedExtras.getParcelable("MicroFragment");
             new SimpleMicroFragmentFlow(initialMicroFragment, R.id.schedjoules_activity_content).start(this);
         }
