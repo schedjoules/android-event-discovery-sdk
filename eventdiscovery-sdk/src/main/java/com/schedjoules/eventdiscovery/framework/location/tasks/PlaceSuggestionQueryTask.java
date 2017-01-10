@@ -20,6 +20,7 @@ package com.schedjoules.eventdiscovery.framework.location.tasks;
 import android.os.AsyncTask;
 
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.places.AutocompleteFilter;
 import com.google.android.gms.location.places.AutocompletePrediction;
 import com.google.android.gms.location.places.AutocompletePredictionBuffer;
 import com.google.android.gms.location.places.Places;
@@ -43,6 +44,11 @@ import java.util.List;
 public final class PlaceSuggestionQueryTask extends DiscardingSafeAsyncTask<String, GoogleApiClient, Void, List<ListItem>>
 {
 
+    private static final AutocompleteFilter CITIES_FILTER = new AutocompleteFilter.Builder()
+            .setTypeFilter(AutocompleteFilter.TYPE_FILTER_CITIES)
+            .build();
+
+
     public PlaceSuggestionQueryTask(String query, Client client)
     {
         super(query, client, client);
@@ -55,7 +61,7 @@ public final class PlaceSuggestionQueryTask extends DiscardingSafeAsyncTask<Stri
         GoogleApiClient googleApiClient = googleApiClients[0];
 
         AutocompletePredictionBuffer predictions =
-                Places.GeoDataApi.getAutocompletePredictions(googleApiClient, query, null, null).await();
+                Places.GeoDataApi.getAutocompletePredictions(googleApiClient, query, null, CITIES_FILTER).await();
 
         List<ListItem> newItems = new ArrayList<>();
         for (AutocompletePrediction prediction : predictions)
