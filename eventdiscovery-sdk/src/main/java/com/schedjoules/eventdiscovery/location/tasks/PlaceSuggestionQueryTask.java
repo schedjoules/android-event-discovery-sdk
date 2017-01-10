@@ -20,7 +20,6 @@ package com.schedjoules.eventdiscovery.location.tasks;
 import android.os.AsyncTask;
 
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.places.AutocompleteFilter;
 import com.google.android.gms.location.places.AutocompletePrediction;
 import com.google.android.gms.location.places.AutocompletePredictionBuffer;
 import com.google.android.gms.location.places.Places;
@@ -41,23 +40,22 @@ import java.util.List;
  *
  * @author Gabor Keszthelyi
  */
-public final class PlaceSuggestionQueryTask extends DiscardingSafeAsyncTask<PlaceSuggestionQueryTask.TaskParam, GoogleApiClient, Void, List<ListItem>>
+public final class PlaceSuggestionQueryTask extends DiscardingSafeAsyncTask<String, GoogleApiClient, Void, List<ListItem>>
 {
 
-    public PlaceSuggestionQueryTask(String query, AutocompleteFilter filter, Client client)
+    public PlaceSuggestionQueryTask(String query, Client client)
     {
-        super(new TaskParam(query, filter), client, client);
+        super(query, client, client);
     }
 
 
     @Override
-    protected List<ListItem> doInBackgroundWithException(TaskParam taskParam, GoogleApiClient... googleApiClients) throws Exception
+    protected List<ListItem> doInBackgroundWithException(String query, GoogleApiClient... googleApiClients) throws Exception
     {
         GoogleApiClient googleApiClient = googleApiClients[0];
 
         AutocompletePredictionBuffer predictions =
-                Places.GeoDataApi.getAutocompletePredictions(googleApiClient, taskParam.mQuery, null, taskParam.mFilter)
-                        .await();
+                Places.GeoDataApi.getAutocompletePredictions(googleApiClient, query, null, null).await();
 
         List<ListItem> newItems = new ArrayList<>();
         for (AutocompletePrediction prediction : predictions)
@@ -70,21 +68,7 @@ public final class PlaceSuggestionQueryTask extends DiscardingSafeAsyncTask<Plac
     }
 
 
-    public static class TaskParam
-    {
-        public final String mQuery;
-        public final AutocompleteFilter mFilter;
-
-
-        public TaskParam(String query, AutocompleteFilter filter)
-        {
-            mQuery = query;
-            mFilter = filter;
-        }
-    }
-
-
-    public interface Client extends SafeAsyncTaskCallback<TaskParam, List<ListItem>>, DiscardCheck<TaskParam>
+    public interface Client extends SafeAsyncTaskCallback<String, List<ListItem>>, DiscardCheck<String>
     {
 
     }

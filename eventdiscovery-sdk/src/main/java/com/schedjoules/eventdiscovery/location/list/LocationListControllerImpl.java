@@ -20,7 +20,6 @@ package com.schedjoules.eventdiscovery.location.list;
 import android.util.Log;
 
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.places.AutocompleteFilter;
 import com.schedjoules.eventdiscovery.eventlist.itemsprovider.AdapterNotifier;
 import com.schedjoules.eventdiscovery.framework.adapter.ListItem;
 import com.schedjoules.eventdiscovery.framework.async.SafeAsyncTaskResult;
@@ -29,7 +28,6 @@ import com.schedjoules.eventdiscovery.location.model.GeoPlace;
 import com.schedjoules.eventdiscovery.location.model.NamedPlace;
 import com.schedjoules.eventdiscovery.location.tasks.PlaceByIdTask;
 import com.schedjoules.eventdiscovery.location.tasks.PlaceSuggestionQueryTask;
-import com.schedjoules.eventdiscovery.location.tasks.PlaceSuggestionQueryTask.TaskParam;
 import com.schedjoules.eventdiscovery.utils.Objects;
 
 import java.util.ArrayList;
@@ -50,7 +48,6 @@ public final class LocationListControllerImpl implements LocationListController,
     private final GoogleApiClient mApiClient;
     private final ExecutorService mExecutorService;
     private final PlaceSuggestionQueryTask.Client mTaskClient;
-    private final AutocompleteFilter mAutocompleteFilter;
 
     private AdapterNotifier mAdapterNotifier;
     private PlaceSelectedListener mPlaceSelectedListener;
@@ -62,13 +59,8 @@ public final class LocationListControllerImpl implements LocationListController,
     public LocationListControllerImpl(GoogleApiClient apiClient)
     {
         mApiClient = apiClient;
-
         mExecutorService = Executors.newSingleThreadExecutor();
         mTaskClient = new PlaceSuggestionQueryTaskClient();
-        mAutocompleteFilter = new AutocompleteFilter.Builder()
-                .setCountry("nl") // TODO from some kind of configuration? or just remove it?
-                .setTypeFilter(AutocompleteFilter.TYPE_FILTER_CITIES)
-                .build();
     }
 
 
@@ -76,8 +68,7 @@ public final class LocationListControllerImpl implements LocationListController,
     public void query(String query)
     {
         mLastQuery = query;
-        new PlaceSuggestionQueryTask(query, mAutocompleteFilter, mTaskClient).executeOnExecutor(mExecutorService,
-                mApiClient);
+        new PlaceSuggestionQueryTask(query, mTaskClient).executeOnExecutor(mExecutorService, mApiClient);
     }
 
 
@@ -120,14 +111,14 @@ public final class LocationListControllerImpl implements LocationListController,
     {
 
         @Override
-        public boolean shouldDiscard(TaskParam taskParam)
+        public boolean shouldDiscard(String query)
         {
-            return !Objects.equals(taskParam.mQuery, mLastQuery);
+            return !Objects.equals(query, mLastQuery);
         }
 
 
         @Override
-        public void onTaskFinish(SafeAsyncTaskResult<List<ListItem>> taskResult, TaskParam taskParam)
+        public void onTaskFinish(SafeAsyncTaskResult<List<ListItem>> taskResult, String query)
         {
             try
             {
