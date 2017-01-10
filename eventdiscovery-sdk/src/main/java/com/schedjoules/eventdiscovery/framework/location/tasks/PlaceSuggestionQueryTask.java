@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery.location.tasks;
+package com.schedjoules.eventdiscovery.framework.location.tasks;
 
 import android.os.AsyncTask;
 
@@ -23,13 +23,13 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.places.AutocompletePrediction;
 import com.google.android.gms.location.places.AutocompletePredictionBuffer;
 import com.google.android.gms.location.places.Places;
-import com.schedjoules.eventdiscovery.framework.eventlist.items.DividerItem;
 import com.schedjoules.eventdiscovery.framework.adapter.ListItem;
 import com.schedjoules.eventdiscovery.framework.async.DiscardCheck;
 import com.schedjoules.eventdiscovery.framework.async.DiscardingSafeAsyncTask;
 import com.schedjoules.eventdiscovery.framework.async.SafeAsyncTaskCallback;
-import com.schedjoules.eventdiscovery.location.PlaceSuggestionItem;
-import com.schedjoules.eventdiscovery.location.model.GooglePredictionNamedPlace;
+import com.schedjoules.eventdiscovery.framework.eventlist.items.DividerItem;
+import com.schedjoules.eventdiscovery.framework.location.PlaceSuggestionItem;
+import com.schedjoules.eventdiscovery.framework.location.model.GooglePredictionNamedPlace;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -8,7 +8,7 @@
             android:background="@android:color/white"
             android:layout_height="match_parent"
             android:fitsSystemWindows="true"
-            tools:context=".location.LocationSelectionActivity">
+            tools:context=".framework.location.LocationSelectionActivity">
 
         <android.support.design.widget.AppBarLayout
                 android:id="@+id/schedjoules_event_list_app_bar"

@@ -15,16 +15,16 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery.location;
+package com.schedjoules.eventdiscovery.framework.location;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.schedjoules.client.eventsdiscovery.locations.StructuredGeoLocation;
-import com.schedjoules.eventdiscovery.location.model.Anywhere;
-import com.schedjoules.eventdiscovery.location.model.GeoPlace;
-import com.schedjoules.eventdiscovery.location.model.StructuredGeoPlace;
-import com.schedjoules.eventdiscovery.location.model.StructuredNamedPlace;
+import com.schedjoules.eventdiscovery.framework.location.model.Anywhere;
+import com.schedjoules.eventdiscovery.framework.location.model.GeoPlace;
+import com.schedjoules.eventdiscovery.framework.location.model.StructuredGeoPlace;
+import com.schedjoules.eventdiscovery.framework.location.model.StructuredNamedPlace;
 
 
 /**

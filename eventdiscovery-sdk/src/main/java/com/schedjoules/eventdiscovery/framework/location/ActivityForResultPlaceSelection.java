@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery.location;
+package com.schedjoules.eventdiscovery.framework.location;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -24,7 +24,7 @@ import android.support.v4.app.Fragment;
 
 import com.schedjoules.eventdiscovery.framework.EventIntents;
 import com.schedjoules.eventdiscovery.framework.listen.OnActivityResult;
-import com.schedjoules.eventdiscovery.location.model.ParcelableGeoPlace;
+import com.schedjoules.eventdiscovery.framework.location.model.ParcelableGeoPlace;
 
 
 /**

@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery.location;
+package com.schedjoules.eventdiscovery.framework.location;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;

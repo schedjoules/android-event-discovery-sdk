@@ -36,28 +36,24 @@ import com.schedjoules.client.eventsdiscovery.GeoLocation;
 import com.schedjoules.client.insights.steps.Screen;
 import com.schedjoules.eventdiscovery.R;
 import com.schedjoules.eventdiscovery.databinding.SchedjoulesFragmentEventListBinding;
-
-import com.schedjoules.eventdiscovery.framework.eventlist.itemsprovider.EventListController;
-import com.schedjoules.eventdiscovery.framework.eventlist.itemsprovider.EventListControllerImpl;
-
-import com.schedjoules.eventdiscovery.location.ActivityForResultPlaceSelection;
-import com.schedjoules.eventdiscovery.location.LastSelectedPlace;
-import com.schedjoules.eventdiscovery.location.PlaceSelection;
-import com.schedjoules.eventdiscovery.location.SharedPrefLastSelectedPlace;
-import com.schedjoules.eventdiscovery.location.model.GeoPlace;
-
 import com.schedjoules.eventdiscovery.framework.common.BaseActivity;
 import com.schedjoules.eventdiscovery.framework.common.BaseFragment;
 import com.schedjoules.eventdiscovery.framework.common.ExternalUrlFeedbackForm;
+import com.schedjoules.eventdiscovery.framework.eventlist.itemsprovider.EventListController;
+import com.schedjoules.eventdiscovery.framework.eventlist.itemsprovider.EventListControllerImpl;
 import com.schedjoules.eventdiscovery.framework.eventlist.itemsprovider.EventListItemsImpl;
 import com.schedjoules.eventdiscovery.framework.eventlist.itemsprovider.FlexibleAdapterNotifier;
 import com.schedjoules.eventdiscovery.framework.eventlist.view.EdgeReachScrollListener;
 import com.schedjoules.eventdiscovery.framework.eventlist.view.EventListBackgroundMessage;
 import com.schedjoules.eventdiscovery.framework.eventlist.view.EventListLoadingIndicatorOverlay;
 import com.schedjoules.eventdiscovery.framework.eventlist.view.EventListMenu;
+import com.schedjoules.eventdiscovery.framework.location.ActivityForResultPlaceSelection;
+import com.schedjoules.eventdiscovery.framework.location.LastSelectedPlace;
+import com.schedjoules.eventdiscovery.framework.location.PlaceSelection;
+import com.schedjoules.eventdiscovery.framework.location.SharedPrefLastSelectedPlace;
+import com.schedjoules.eventdiscovery.framework.location.model.GeoPlace;
 import com.schedjoules.eventdiscovery.framework.utils.FutureServiceConnection;
 import com.schedjoules.eventdiscovery.framework.utils.InsightsTask;
-
 import com.schedjoules.eventdiscovery.service.ApiService;
 
 import org.dmfs.httpessentials.types.StringToken;

@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery.location.tasks;
+package com.schedjoules.eventdiscovery.framework.location.tasks;
 
 import android.os.AsyncTask;
 
@@ -26,10 +26,10 @@ import com.google.android.gms.location.places.PlaceBuffer;
 import com.google.android.gms.location.places.Places;
 import com.schedjoules.eventdiscovery.framework.async.SafeAsyncTask;
 import com.schedjoules.eventdiscovery.framework.async.SafeAsyncTaskCallback;
-import com.schedjoules.eventdiscovery.location.model.GeoPlace;
-import com.schedjoules.eventdiscovery.location.model.GoogleGeoLocation;
-import com.schedjoules.eventdiscovery.location.model.NamedPlace;
-import com.schedjoules.eventdiscovery.location.model.StructuredGeoPlace;
+import com.schedjoules.eventdiscovery.framework.location.model.GeoPlace;
+import com.schedjoules.eventdiscovery.framework.location.model.GoogleGeoLocation;
+import com.schedjoules.eventdiscovery.framework.location.model.NamedPlace;
+import com.schedjoules.eventdiscovery.framework.location.model.StructuredGeoPlace;
 
 
 /**

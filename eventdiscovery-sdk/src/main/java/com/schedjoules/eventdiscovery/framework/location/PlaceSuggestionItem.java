@@ -15,14 +15,14 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery.location;
+package com.schedjoules.eventdiscovery.framework.location;
 
 import android.view.View;
 
 import com.schedjoules.eventdiscovery.R;
 import com.schedjoules.eventdiscovery.framework.adapter.ListItem;
-import com.schedjoules.eventdiscovery.location.list.LocationSuggestionItemView;
-import com.schedjoules.eventdiscovery.location.model.NamedPlace;
+import com.schedjoules.eventdiscovery.framework.location.list.LocationSuggestionItemView;
+import com.schedjoules.eventdiscovery.framework.location.model.NamedPlace;
 
 
 /**

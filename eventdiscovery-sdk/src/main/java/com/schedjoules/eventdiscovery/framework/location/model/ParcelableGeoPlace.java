@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery.location.model;
+package com.schedjoules.eventdiscovery.framework.location.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;

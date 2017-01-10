@@ -15,25 +15,19 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery.location.list;
+package com.schedjoules.eventdiscovery.framework.location.model;
 
-import com.schedjoules.eventdiscovery.location.model.GeoPlace;
+import com.schedjoules.client.eventsdiscovery.GeoLocation;
 
 
 /**
- * The controller for the list of places, it initiates the network queries, updates the list items, and notifies when
- * user selected a place.
+ * Represents a place (city, venue, place) with geo location.
  *
  * @author Gabor Keszthelyi
  */
-public interface PlaceListController
+public interface GeoPlace
 {
+    NamedPlace namedPlace();
 
-    void query(String query);
-
-    interface PlaceSelectedListener
-    {
-        void onPlaceSelected(GeoPlace geoPlace);
-    }
-
+    GeoLocation geoLocation();
 }

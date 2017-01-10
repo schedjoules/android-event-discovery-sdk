@@ -15,18 +15,18 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery.location.list;
+package com.schedjoules.eventdiscovery.framework.location.list;
 
 import android.util.Log;
 
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.schedjoules.eventdiscovery.framework.adapter.ListItem;
 import com.schedjoules.eventdiscovery.framework.async.SafeAsyncTaskResult;
-import com.schedjoules.eventdiscovery.location.PlaceSuggestionItem;
-import com.schedjoules.eventdiscovery.location.model.GeoPlace;
-import com.schedjoules.eventdiscovery.location.model.NamedPlace;
-import com.schedjoules.eventdiscovery.location.tasks.PlaceByIdTask;
-import com.schedjoules.eventdiscovery.location.tasks.PlaceSuggestionQueryTask;
+import com.schedjoules.eventdiscovery.framework.location.PlaceSuggestionItem;
+import com.schedjoules.eventdiscovery.framework.location.model.GeoPlace;
+import com.schedjoules.eventdiscovery.framework.location.model.NamedPlace;
+import com.schedjoules.eventdiscovery.framework.location.tasks.PlaceByIdTask;
+import com.schedjoules.eventdiscovery.framework.location.tasks.PlaceSuggestionQueryTask;
 import com.schedjoules.eventdiscovery.framework.utils.Objects;
 
 import java.util.List;

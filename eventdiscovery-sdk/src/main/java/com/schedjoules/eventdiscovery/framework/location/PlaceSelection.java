@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 SchedJoules
+ * Copyright 2016 SchedJoules
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,19 +15,33 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery.location.model;
+package com.schedjoules.eventdiscovery.framework.location;
 
-import com.schedjoules.client.eventsdiscovery.GeoLocation;
+import com.schedjoules.eventdiscovery.framework.location.model.GeoPlace;
 
 
 /**
- * Represents a place (city, venue, place) with geo location.
+ * Location selection controller.
  *
  * @author Gabor Keszthelyi
  */
-public interface GeoPlace
+public interface PlaceSelection
 {
-    NamedPlace namedPlace();
+    /**
+     * Prompt user to select a location.
+     */
+    void initiateSelection();
 
-    GeoLocation geoLocation();
+    void registerListener(Listener listener);
+
+    void unregisterListener();
+
+    interface Listener
+    {
+        /**
+         * Called when the user has selected a location.
+         */
+        void onPlaceSelected(GeoPlace result);
+    }
+
 }

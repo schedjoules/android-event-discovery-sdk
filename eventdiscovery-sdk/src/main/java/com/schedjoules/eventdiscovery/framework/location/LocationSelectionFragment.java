@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery.location;
+package com.schedjoules.eventdiscovery.framework.location;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -40,13 +40,13 @@ import com.schedjoules.eventdiscovery.framework.adapter.GeneralMultiTypeAdapter;
 import com.schedjoules.eventdiscovery.framework.common.BaseActivity;
 import com.schedjoules.eventdiscovery.framework.common.BaseFragment;
 import com.schedjoules.eventdiscovery.framework.eventlist.itemsprovider.StandardAdapterNotifier;
+import com.schedjoules.eventdiscovery.framework.location.list.PlaceListController;
+import com.schedjoules.eventdiscovery.framework.location.list.PlaceListControllerImpl;
+import com.schedjoules.eventdiscovery.framework.location.list.PlaceSuggestionListItemsImpl;
+import com.schedjoules.eventdiscovery.framework.location.model.GeoPlace;
+import com.schedjoules.eventdiscovery.framework.location.model.ParcelableGeoPlace;
 import com.schedjoules.eventdiscovery.framework.widgets.HideKeyboardActionListener;
 import com.schedjoules.eventdiscovery.framework.widgets.SimpleTextWatcher;
-import com.schedjoules.eventdiscovery.location.list.PlaceListController;
-import com.schedjoules.eventdiscovery.location.list.PlaceListControllerImpl;
-import com.schedjoules.eventdiscovery.location.list.PlaceSuggestionListItemsImpl;
-import com.schedjoules.eventdiscovery.location.model.GeoPlace;
-import com.schedjoules.eventdiscovery.location.model.ParcelableGeoPlace;
 
 
 /**

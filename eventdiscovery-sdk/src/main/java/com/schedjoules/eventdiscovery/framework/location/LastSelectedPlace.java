@@ -15,33 +15,21 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery.location;
+package com.schedjoules.eventdiscovery.framework.location;
 
-import com.schedjoules.eventdiscovery.location.model.GeoPlace;
+import com.schedjoules.eventdiscovery.framework.location.model.GeoPlace;
 
 
 /**
- * Location selection controller.
+ * Represents the last selected place.
  *
  * @author Gabor Keszthelyi
  */
-public interface PlaceSelection
+public interface LastSelectedPlace
 {
-    /**
-     * Prompt user to select a location.
-     */
-    void initiateSelection();
+    void update(GeoPlace selectedPlace);
 
-    void registerListener(Listener listener);
+    GeoPlace get();
 
-    void unregisterListener();
-
-    interface Listener
-    {
-        /**
-         * Called when the user has selected a location.
-         */
-        void onPlaceSelected(GeoPlace result);
-    }
-
+    void clear();
 }
