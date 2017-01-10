@@ -29,6 +29,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.places.Places;
@@ -44,6 +45,7 @@ import com.schedjoules.eventdiscovery.location.list.PlaceListControllerImpl;
 import com.schedjoules.eventdiscovery.location.list.PlaceSuggestionListItemsImpl;
 import com.schedjoules.eventdiscovery.location.model.GeoPlace;
 import com.schedjoules.eventdiscovery.location.model.ParcelableGeoPlace;
+import com.schedjoules.eventdiscovery.widgets.HideKeyboardActionListener;
 import com.schedjoules.eventdiscovery.widgets.SimpleTextWatcher;
 
 
@@ -82,8 +84,6 @@ public final class LocationSelectionFragment extends BaseFragment implements Pla
         mPlaceListController = new PlaceListControllerImpl(mGoogleApiClient, this, mSuggestionItems);
 
         // TODO No Play Services error handling? Seems to be handled by default, but look into it.
-
-        // TODO keep keyboard up after rotation
     }
 
 
@@ -102,7 +102,8 @@ public final class LocationSelectionFragment extends BaseFragment implements Pla
 
         views.schedjoulesLocationSelectionList.setAdapter(adapter);
 
-        views.schedjoulesLocationSelectionInput.addTextChangedListener(new SimpleTextWatcher()
+        EditText editText = views.schedjoulesLocationSelectionInput;
+        editText.addTextChangedListener(new SimpleTextWatcher()
         {
             @Override
             public void afterTextChanged(Editable s)
@@ -110,6 +111,7 @@ public final class LocationSelectionFragment extends BaseFragment implements Pla
                 mPlaceListController.query(s.toString());
             }
         });
+        editText.setOnEditorActionListener(new HideKeyboardActionListener());
 
         return views.getRoot();
     }
@@ -156,4 +158,5 @@ public final class LocationSelectionFragment extends BaseFragment implements Pla
         mGoogleApiClient.disconnect();
         super.onDestroy();
     }
+
 }
