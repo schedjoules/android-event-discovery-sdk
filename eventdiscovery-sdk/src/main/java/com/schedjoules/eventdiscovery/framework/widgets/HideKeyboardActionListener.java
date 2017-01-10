@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery.widgets;
+package com.schedjoules.eventdiscovery.framework.widgets;
 
 import android.content.Context;
 import android.view.KeyEvent;
