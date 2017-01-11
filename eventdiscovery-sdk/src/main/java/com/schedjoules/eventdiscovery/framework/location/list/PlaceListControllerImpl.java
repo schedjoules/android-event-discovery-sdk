@@ -23,7 +23,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.schedjoules.eventdiscovery.framework.async.SafeAsyncTaskResult;
 import com.schedjoules.eventdiscovery.framework.list.ChangeableListItems;
 import com.schedjoules.eventdiscovery.framework.list.ListItem;
-import com.schedjoules.eventdiscovery.framework.list.changes.ReplaceAll;
+import com.schedjoules.eventdiscovery.framework.list.changes.AnimatedReplaceAll;
 import com.schedjoules.eventdiscovery.framework.location.PlaceSuggestionItem;
 import com.schedjoules.eventdiscovery.framework.location.model.GeoPlace;
 import com.schedjoules.eventdiscovery.framework.location.model.NamedPlace;
@@ -113,7 +113,7 @@ public final class PlaceListControllerImpl implements PlaceListController, Place
                 }
             }
 
-            mItems.apply(new ReplaceAll(newItems));
+            mItems.apply(new AnimatedReplaceAll(newItems));
         }
 
 

@@ -66,6 +66,32 @@ public class PlaceSuggestionItem implements ListItem<LocationSuggestionItemView>
     }
 
 
+    @Override
+    public boolean equals(Object o)
+    {
+        if (this == o)
+        {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass())
+        {
+            return false;
+        }
+
+        PlaceSuggestionItem that = (PlaceSuggestionItem) o;
+
+        return mNamedPlace.id().equals(that.mNamedPlace.id());
+
+    }
+
+
+    @Override
+    public int hashCode()
+    {
+        return mNamedPlace.id().hashCode();
+    }
+
+
     public void setListener(OnClickListener listener)
     {
         mOnClickListener = listener;

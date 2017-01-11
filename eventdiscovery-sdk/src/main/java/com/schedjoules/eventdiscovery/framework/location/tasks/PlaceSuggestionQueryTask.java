@@ -27,7 +27,6 @@ import com.google.android.gms.location.places.Places;
 import com.schedjoules.eventdiscovery.framework.async.DiscardCheck;
 import com.schedjoules.eventdiscovery.framework.async.DiscardingSafeAsyncTask;
 import com.schedjoules.eventdiscovery.framework.async.SafeAsyncTaskCallback;
-import com.schedjoules.eventdiscovery.framework.common.DividerItem;
 import com.schedjoules.eventdiscovery.framework.list.ListItem;
 import com.schedjoules.eventdiscovery.framework.location.PlaceSuggestionItem;
 import com.schedjoules.eventdiscovery.framework.location.model.GooglePredictionNamedPlace;
@@ -67,7 +66,6 @@ public final class PlaceSuggestionQueryTask extends DiscardingSafeAsyncTask<Stri
         for (AutocompletePrediction prediction : predictions)
         {
             newItems.add(new PlaceSuggestionItem(new GooglePredictionNamedPlace(prediction)));
-            newItems.add(new DividerItem());
         }
 
         return newItems;
