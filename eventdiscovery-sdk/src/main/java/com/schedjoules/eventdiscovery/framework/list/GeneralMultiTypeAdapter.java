@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery.framework.adapter;
+package com.schedjoules.eventdiscovery.framework.list;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;

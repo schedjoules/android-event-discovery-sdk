@@ -36,7 +36,6 @@ import com.schedjoules.client.eventsdiscovery.GeoLocation;
 import com.schedjoules.client.insights.steps.Screen;
 import com.schedjoules.eventdiscovery.R;
 import com.schedjoules.eventdiscovery.databinding.SchedjoulesFragmentEventListBinding;
-import com.schedjoules.eventdiscovery.framework.adapter.flexibleadapter.FlexibleAdapterNotifier;
 import com.schedjoules.eventdiscovery.framework.common.BaseActivity;
 import com.schedjoules.eventdiscovery.framework.common.BaseFragment;
 import com.schedjoules.eventdiscovery.framework.common.ExternalUrlFeedbackForm;
@@ -47,6 +46,7 @@ import com.schedjoules.eventdiscovery.framework.eventlist.view.EdgeReachScrollLi
 import com.schedjoules.eventdiscovery.framework.eventlist.view.EventListBackgroundMessage;
 import com.schedjoules.eventdiscovery.framework.eventlist.view.EventListLoadingIndicatorOverlay;
 import com.schedjoules.eventdiscovery.framework.eventlist.view.EventListMenu;
+import com.schedjoules.eventdiscovery.framework.list.flexibleadapter.FlexibleAdapterNotifier;
 import com.schedjoules.eventdiscovery.framework.location.ActivityForResultPlaceSelection;
 import com.schedjoules.eventdiscovery.framework.location.LastSelectedPlace;
 import com.schedjoules.eventdiscovery.framework.location.PlaceSelection;

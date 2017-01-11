@@ -20,10 +20,10 @@ package com.schedjoules.eventdiscovery.framework.eventlist.controller;
 import android.os.Handler;
 import android.os.Looper;
 
-import com.schedjoules.eventdiscovery.framework.adapter.ListItem;
-import com.schedjoules.eventdiscovery.framework.adapter.notifier.AdapterNotifier;
 import com.schedjoules.eventdiscovery.framework.eventlist.items.DateHeaderItem;
 import com.schedjoules.eventdiscovery.framework.eventlist.items.EventItem;
+import com.schedjoules.eventdiscovery.framework.list.ListItem;
+import com.schedjoules.eventdiscovery.framework.list.flexibleadapter.ThirdPartyAdapterNotifier;
 import com.schedjoules.eventdiscovery.framework.utils.Objects;
 
 import org.dmfs.rfc5545.DateTime;
@@ -46,7 +46,7 @@ public final class EventListItemsImpl implements EventListItems
 
     private final Handler mainHandler;
 
-    private AdapterNotifier mAdapterNotifier;
+    private ThirdPartyAdapterNotifier mAdapterNotifier;
 
 
     public EventListItemsImpl()
@@ -56,7 +56,7 @@ public final class EventListItemsImpl implements EventListItems
 
 
     @Override
-    public void setAdapterNotifier(AdapterNotifier adapterNotifier)
+    public void setAdapterNotifier(ThirdPartyAdapterNotifier adapterNotifier)
     {
         mAdapterNotifier = adapterNotifier;
         // Needed after rotation for FlexibleAdapter

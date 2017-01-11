@@ -15,13 +15,13 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery.framework.adapter.flexibleadapter;
+package com.schedjoules.eventdiscovery.framework.list.flexibleadapter;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.schedjoules.eventdiscovery.framework.adapter.ListItem;
+import com.schedjoules.eventdiscovery.framework.list.ListItem;
 
 import java.util.List;
 

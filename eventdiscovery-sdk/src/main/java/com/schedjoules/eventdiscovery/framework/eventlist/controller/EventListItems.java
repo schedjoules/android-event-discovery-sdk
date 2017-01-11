@@ -17,9 +17,9 @@
 
 package com.schedjoules.eventdiscovery.framework.eventlist.controller;
 
-import com.schedjoules.eventdiscovery.framework.adapter.ListItem;
-import com.schedjoules.eventdiscovery.framework.adapter.ListItems;
-import com.schedjoules.eventdiscovery.framework.adapter.notifier.AdapterNotifier;
+import com.schedjoules.eventdiscovery.framework.list.ListItem;
+import com.schedjoules.eventdiscovery.framework.list.ListItems;
+import com.schedjoules.eventdiscovery.framework.list.flexibleadapter.ThirdPartyAdapterNotifier;
 
 import java.util.List;
 
@@ -31,7 +31,7 @@ import java.util.List;
  */
 public interface EventListItems extends ListItems
 {
-    void setAdapterNotifier(AdapterNotifier adapterNotifier);
+    void setAdapterNotifier(ThirdPartyAdapterNotifier adapterNotifier);
 
     void mergeNewItems(List<ListItem> newItems, ScrollDirection direction);
 

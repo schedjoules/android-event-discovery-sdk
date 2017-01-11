@@ -15,28 +15,30 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery.framework.adapter.notifier;
+package com.schedjoules.eventdiscovery.framework.list.flexibleadapter;
 
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 
-import java.util.List;
+import eu.davidea.flexibleadapter.FlexibleAdapter;
+import eu.davidea.flexibleadapter.items.IFlexible;
+import eu.davidea.viewholders.FlexibleViewHolder;
 
 
 /**
- * Interface for notifying the used {@link RecyclerView.Adapter} about the changes in the data set. Abstraction created to be able to handle multiple types of
- * adapters that have different notifying mechanisms.
+ * {@link RecyclerView.ViewHolder} for {@link IFlexible}.
  *
  * @author Gabor Keszthelyi
  */
-public interface AdapterNotifier<ITEM>
+public final class SimpleFlexibleViewHolder extends FlexibleViewHolder
 {
-    void notifyInitialItemsAdded(List initialItems); // used after rotation for adapter that needs reference to the items
 
-    void notifyNewItemsAdded(List newItems, int positionStart);
+    public final View mView;
 
-    void notifyNewItemAdded(ITEM item, int position);
 
-    void notifyItemsCleared(int totalSize);
-
-    void notifyItemRemoved(int position);
+    public SimpleFlexibleViewHolder(View view, FlexibleAdapter adapter)
+    {
+        super(view, adapter);
+        mView = view;
+    }
 }

@@ -15,30 +15,24 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery.framework.adapter.flexibleadapter;
+package com.schedjoules.eventdiscovery.framework.list;
 
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
 
-import eu.davidea.flexibleadapter.FlexibleAdapter;
-import eu.davidea.flexibleadapter.items.IHeader;
-import eu.davidea.viewholders.FlexibleViewHolder;
+import java.util.List;
 
 
 /**
- * {@link RecyclerView.ViewHolder} for {@link IHeader}.
+ * Represents a change or change set for a list displayed in a {@link RecyclerView}.
  *
  * @author Gabor Keszthelyi
  */
-public final class HeaderFlexibleViewHolder extends FlexibleViewHolder
+public interface ListChange
 {
 
-    public final View mView;
-
-
-    public HeaderFlexibleViewHolder(View view, FlexibleAdapter adapter)
-    {
-        super(view, adapter, true);
-        mView = view;
-    }
+    /**
+     * Apply the change to the given items, i.e. update this mutable list that holds the {@link ListItem}s of the whole
+     * list, and call the appropriate notifications for the adapter.
+     */
+    void apply(List<ListItem> items, AdapterNotifier adapterNotifier);
 }

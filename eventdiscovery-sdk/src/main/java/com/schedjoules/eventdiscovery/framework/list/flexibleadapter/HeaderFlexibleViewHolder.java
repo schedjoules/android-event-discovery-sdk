@@ -15,32 +15,30 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery.framework.adapter;
+package com.schedjoules.eventdiscovery.framework.list.flexibleadapter;
 
-import android.support.annotation.LayoutRes;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import eu.davidea.flexibleadapter.FlexibleAdapter;
+import eu.davidea.flexibleadapter.items.IHeader;
+import eu.davidea.viewholders.FlexibleViewHolder;
+
 
 /**
- * Represents an item in an {@link RecyclerView}, used by {@link GeneralMultiTypeAdapter}.
+ * {@link RecyclerView.ViewHolder} for {@link IHeader}.
  *
  * @author Gabor Keszthelyi
  */
-public interface ListItem<V extends View>
+public final class HeaderFlexibleViewHolder extends FlexibleViewHolder
 {
-    /**
-     * The layout for the View corresponding to this list item. Root of the layout must match &lt;V&gt; type
-     */
-    @LayoutRes
-    int layoutResId();
 
-    /**
-     * If applicable, this method binds the data that belongs to this item to the item View, i.e. sets values and registers listeners on the View.
-     *
-     * @param view
-     *         the item view
-     */
-    void bindDataTo(V view);
+    public final View mView;
 
+
+    public HeaderFlexibleViewHolder(View view, FlexibleAdapter adapter)
+    {
+        super(view, adapter, true);
+        mView = view;
+    }
 }

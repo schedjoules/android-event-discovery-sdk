@@ -15,32 +15,26 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery.framework.eventlist.items;
+package com.schedjoules.eventdiscovery.framework.list;
 
-import android.view.View;
-
-import com.schedjoules.eventdiscovery.R;
-import com.schedjoules.eventdiscovery.framework.list.ListItem;
-import com.schedjoules.eventdiscovery.framework.list.flexibleadapter.AbstractFlexible;
+import android.support.v7.widget.RecyclerView;
 
 
 /**
- * Event list UI item for loading indicator.
+ * Represents the list items for a {@link RecyclerView}, used by {@link GeneralMultiTypeAdapter}.
  *
  * @author Gabor Keszthelyi
  */
-public final class LoadingIndicatorItem extends AbstractFlexible<View> implements ListItem<View>
+public interface ListItems
 {
-    @Override
-    public int layoutResId()
-    {
-        return R.layout.schedjoules_list_item_loading;
-    }
+    /**
+     * Returns the item for the given position in the list
+     */
+    ListItem get(int position);
 
+    /**
+     * Returns the total number of list items.
+     */
+    int itemCount();
 
-    @Override
-    public void bindDataTo(View view)
-    {
-
-    }
 }

@@ -20,7 +20,7 @@ package com.schedjoules.eventdiscovery.framework.location;
 import android.view.View;
 
 import com.schedjoules.eventdiscovery.R;
-import com.schedjoules.eventdiscovery.framework.adapter.ListItem;
+import com.schedjoules.eventdiscovery.framework.list.ListItem;
 import com.schedjoules.eventdiscovery.framework.location.list.LocationSuggestionItemView;
 import com.schedjoules.eventdiscovery.framework.location.model.NamedPlace;
 

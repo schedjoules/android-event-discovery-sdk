@@ -20,10 +20,10 @@ package com.schedjoules.eventdiscovery.framework.eventlist.controller;
 import com.schedjoules.client.eventsdiscovery.Envelope;
 import com.schedjoules.client.eventsdiscovery.Event;
 import com.schedjoules.client.eventsdiscovery.ResultPage;
-import com.schedjoules.eventdiscovery.framework.adapter.ListItem;
 import com.schedjoules.eventdiscovery.framework.common.DividerItem;
 import com.schedjoules.eventdiscovery.framework.eventlist.items.DateHeaderItem;
 import com.schedjoules.eventdiscovery.framework.eventlist.items.EventItem;
+import com.schedjoules.eventdiscovery.framework.list.ListItem;
 
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -17,8 +17,11 @@
 
 package com.schedjoules.eventdiscovery.framework.location.list;
 
-import com.schedjoules.eventdiscovery.framework.adapter.ListItem;
-import com.schedjoules.eventdiscovery.framework.adapter.notifier.AdapterNotifier;
+import android.support.v7.widget.RecyclerView;
+
+import com.schedjoules.eventdiscovery.framework.list.BasicAdapterNotifier;
+import com.schedjoules.eventdiscovery.framework.list.ListItem;
+import com.schedjoules.eventdiscovery.framework.list.changes.ReplaceAll;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,25 +34,22 @@ import java.util.List;
  */
 public final class PlaceSuggestionListItemsImpl implements PlaceSuggestionListItems
 {
-    private AdapterNotifier mAdapterNotifier;
-
     private List<ListItem> mItems = new ArrayList<>();
+    private RecyclerView.Adapter mAdapter;
 
 
     @Override
     public void replaceAllItems(List<ListItem> newItems)
     {
-        int sizeBefore = mItems.size();
-        mItems = newItems;
-        mAdapterNotifier.notifyItemsCleared(sizeBefore);
-        mAdapterNotifier.notifyNewItemsAdded(mItems, 0);
+        // TODO make the background task return a ListChange
+        new ReplaceAll(newItems).apply(mItems, new BasicAdapterNotifier(mAdapter));
     }
 
 
     @Override
-    public void setAdapterNotifier(AdapterNotifier adapterNotifier)
+    public void setAdapter(RecyclerView.Adapter adapter)
     {
-        mAdapterNotifier = adapterNotifier;
+        mAdapter = adapter;
     }
 
 

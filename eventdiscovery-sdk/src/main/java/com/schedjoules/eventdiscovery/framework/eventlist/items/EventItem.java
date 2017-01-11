@@ -23,11 +23,11 @@ import com.schedjoules.client.eventsdiscovery.Event;
 import com.schedjoules.client.insights.steps.Interaction;
 import com.schedjoules.eventdiscovery.R;
 import com.schedjoules.eventdiscovery.eventdetails.BasicEventDetails;
-import com.schedjoules.eventdiscovery.framework.adapter.ListItem;
-import com.schedjoules.eventdiscovery.framework.adapter.flexibleadapter.AbstractFlexibleSectionable;
 import com.schedjoules.eventdiscovery.framework.common.BaseActivity;
 import com.schedjoules.eventdiscovery.framework.datetime.FormattedDateTime;
 import com.schedjoules.eventdiscovery.framework.datetime.ShortTime;
+import com.schedjoules.eventdiscovery.framework.list.ListItem;
+import com.schedjoules.eventdiscovery.framework.list.flexibleadapter.AbstractFlexibleSectionable;
 import com.schedjoules.eventdiscovery.framework.model.SchedJoulesLinks;
 import com.schedjoules.eventdiscovery.framework.utils.InsightsTask;
 

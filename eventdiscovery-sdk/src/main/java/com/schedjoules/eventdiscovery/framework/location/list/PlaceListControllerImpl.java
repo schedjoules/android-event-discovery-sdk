@@ -20,8 +20,8 @@ package com.schedjoules.eventdiscovery.framework.location.list;
 import android.util.Log;
 
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.schedjoules.eventdiscovery.framework.adapter.ListItem;
 import com.schedjoules.eventdiscovery.framework.async.SafeAsyncTaskResult;
+import com.schedjoules.eventdiscovery.framework.list.ListItem;
 import com.schedjoules.eventdiscovery.framework.location.PlaceSuggestionItem;
 import com.schedjoules.eventdiscovery.framework.location.model.GeoPlace;
 import com.schedjoules.eventdiscovery.framework.location.model.NamedPlace;

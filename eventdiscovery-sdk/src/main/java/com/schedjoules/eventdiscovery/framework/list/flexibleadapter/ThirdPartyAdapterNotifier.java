@@ -15,26 +15,28 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery.framework.adapter;
+package com.schedjoules.eventdiscovery.framework.list.flexibleadapter;
 
 import android.support.v7.widget.RecyclerView;
 
+import java.util.List;
+
 
 /**
- * Represents the list items for a {@link RecyclerView}, used by {@link GeneralMultiTypeAdapter}.
+ * Interface for notifying the used {@link RecyclerView.Adapter} about the changes in the data set. Abstraction created
+ * to be able to handle multiple types of adapters that have different notifying mechanisms.
  *
  * @author Gabor Keszthelyi
  */
-public interface ListItems
+public interface ThirdPartyAdapterNotifier<ITEM>
 {
-    /**
-     * Returns the item for the given position in the list
-     */
-    ListItem get(int position);
+    void notifyInitialItemsAdded(List initialItems); // used after rotation for adapter that needs reference to the items
 
-    /**
-     * Returns the total number of list items.
-     */
-    int itemCount();
+    void notifyNewItemsAdded(List newItems, int positionStart);
 
+    void notifyNewItemAdded(ITEM item, int position);
+
+    void notifyItemsCleared(int totalSize);
+
+    void notifyItemRemoved(int position);
 }

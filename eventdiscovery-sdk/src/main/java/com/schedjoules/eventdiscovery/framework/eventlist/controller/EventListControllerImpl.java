@@ -24,12 +24,12 @@ import com.schedjoules.client.eventsdiscovery.Envelope;
 import com.schedjoules.client.eventsdiscovery.Event;
 import com.schedjoules.client.eventsdiscovery.GeoLocation;
 import com.schedjoules.client.eventsdiscovery.ResultPage;
-import com.schedjoules.eventdiscovery.framework.adapter.notifier.AdapterNotifier;
 import com.schedjoules.eventdiscovery.framework.async.SafeAsyncTaskResult;
 import com.schedjoules.eventdiscovery.framework.eventlist.controller.EventListDownloadTask.TaskParam;
 import com.schedjoules.eventdiscovery.framework.eventlist.controller.EventListDownloadTask.TaskResult;
 import com.schedjoules.eventdiscovery.framework.eventlist.view.EventListBackgroundMessage;
 import com.schedjoules.eventdiscovery.framework.eventlist.view.EventListLoadingIndicatorOverlay;
+import com.schedjoules.eventdiscovery.framework.list.flexibleadapter.ThirdPartyAdapterNotifier;
 import com.schedjoules.eventdiscovery.framework.utils.FutureServiceConnection;
 import com.schedjoules.eventdiscovery.framework.utils.Objects;
 import com.schedjoules.eventdiscovery.service.ApiService;
@@ -108,7 +108,7 @@ public class EventListControllerImpl implements EventListController, EventListBa
 
 
     @Override
-    public void setAdapterNotifier(AdapterNotifier adapterNotifier)
+    public void setAdapterNotifier(ThirdPartyAdapterNotifier adapterNotifier)
     {
         mItems.setAdapterNotifier(adapterNotifier);
     }

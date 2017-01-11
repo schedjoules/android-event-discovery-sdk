@@ -15,30 +15,33 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery.framework.location.list;
+package com.schedjoules.eventdiscovery.framework.list;
 
 import android.support.v7.widget.RecyclerView;
 
-import com.schedjoules.eventdiscovery.framework.list.ListItem;
-import com.schedjoules.eventdiscovery.framework.list.ListItems;
-
-import java.util.List;
-
 
 /**
- * Holds the list items for the place suggestions.
+ * Interface for the {@link RecyclerView.Adapter} notify methods.
  *
  * @author Gabor Keszthelyi
  */
-public interface PlaceSuggestionListItems extends ListItems
+public interface AdapterNotifier
 {
+    void notifyDataSetChanged();
 
-    void replaceAllItems(List<ListItem> newItems);
+    void notifyItemChanged(int position);
 
-    /*
-        TODO ListItems impls and GeneralMultitypeAdapter have circular reference, that's why setter needed here.
-        It would probably be better the other way around, so that GeneralMultitypeAdapter has the setter.
-      */
-    void setAdapter(RecyclerView.Adapter adapter);
+    void notifyItemChanged(int position, Object payload);
 
+    void notifyItemRangeChanged(int positionStart, int itemCount);
+
+    void notifyItemInserted(int position);
+
+    void notifyItemMoved(int fromPosition, int toPosition);
+
+    void notifyItemRangeInserted(int positionStart, int itemCount);
+
+    void notifyItemRemoved(int position);
+
+    void notifyItemRangeRemoved(int positionStart, int itemCount);
 }
