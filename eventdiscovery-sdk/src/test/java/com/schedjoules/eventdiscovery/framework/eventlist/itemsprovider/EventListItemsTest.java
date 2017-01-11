@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 SchedJoules
+ * Copyright 2017 SchedJoules
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,31 +15,29 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery.eventlist.itemsprovider;
+package com.schedjoules.eventdiscovery.framework.eventlist.itemsprovider;
 
 import android.os.Handler;
 
-import com.schedjoules.eventdiscovery.eventlist.items.DateHeaderItem;
-import com.schedjoules.eventdiscovery.eventlist.items.EventItem;
 import com.schedjoules.eventdiscovery.framework.adapter.ListItem;
+import com.schedjoules.eventdiscovery.framework.eventlist.items.DateHeaderItem;
+import com.schedjoules.eventdiscovery.framework.eventlist.items.EventItem;
 import com.schedjoules.eventdiscovery.model.DummyEvent;
 
 import org.dmfs.rfc5545.DateTime;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mockito;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.TimeZone;
 
-import static com.schedjoules.eventdiscovery.eventlist.itemsprovider.ScrollDirection.BOTTOM;
-import static com.schedjoules.eventdiscovery.eventlist.itemsprovider.ScrollDirection.TOP;
+import static com.schedjoules.eventdiscovery.framework.eventlist.itemsprovider.ScrollDirection.BOTTOM;
+import static com.schedjoules.eventdiscovery.framework.eventlist.itemsprovider.ScrollDirection.TOP;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertSame;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 
 
 /**
@@ -59,8 +57,8 @@ public class EventListItemsTest
     public void setup()
     {
         TimeZone.setDefault(DateTime.UTC);
-        mUnderTest = new EventListItemsImpl(mock(Handler.class));
-        mAdapterNotifier = mock(AdapterNotifier.class);
+        mUnderTest = new EventListItemsImpl(Mockito.mock(Handler.class));
+        mAdapterNotifier = Mockito.mock(AdapterNotifier.class);
         mAdapterNotifier.notifyInitialItemsAdded(new ArrayList());
         mUnderTest.setAdapterNotifier(mAdapterNotifier);
     }
@@ -87,7 +85,7 @@ public class EventListItemsTest
         mUnderTest.mergeNewItems(newItems, BOTTOM);
 
         // ASSERT
-        verify(mAdapterNotifier, times(1)).notifyNewItemsAdded(newItems, 0);
+        Mockito.verify(mAdapterNotifier, Mockito.times(1)).notifyNewItemsAdded(newItems, 0);
         assertSameElementsInProvider(newItems);
         assertHeaderForItem(1, h1orig);
         assertHeaderForItem(2, h1orig);
@@ -110,8 +108,9 @@ public class EventListItemsTest
         mUnderTest.mergeNewItems(newItemsTop, TOP);
 
         // ASSERT
-        verify(mAdapterNotifier, times(1)).notifyItemRemoved(0);
-        verify(mAdapterNotifier, times(1)).notifyNewItemsAdded(Arrays.asList(h1orig, eMinus1, eMinus2), 0);
+        Mockito.verify(mAdapterNotifier, Mockito.times(1)).notifyItemRemoved(0);
+        Mockito.verify(mAdapterNotifier, Mockito.times(1))
+                .notifyNewItemsAdded(Arrays.asList(h1orig, eMinus1, eMinus2), 0);
         assertSameElementsInProvider(Arrays.<ListItem>asList(h1orig, eMinus1, eMinus2, e1, e2));
         assertHeaderForItem(1, h1orig);
         assertHeaderForItem(2, h1orig);
@@ -141,7 +140,7 @@ public class EventListItemsTest
         mUnderTest.mergeNewItems(newItems, BOTTOM);
 
         // ASSERT
-        verify(mAdapterNotifier, times(1)).notifyNewItemsAdded(newItems, 0);
+        Mockito.verify(mAdapterNotifier, Mockito.times(1)).notifyNewItemsAdded(newItems, 0);
         assertSameElementsInProvider(newItems);
         assertHeaderForItem(1, h1orig);
         assertHeaderForItem(2, h1orig);
@@ -164,7 +163,7 @@ public class EventListItemsTest
         mUnderTest.mergeNewItems(newItemsBottom, BOTTOM);
 
         // ASSERT
-        verify(mAdapterNotifier, times(1)).notifyNewItemsAdded(Arrays.asList(ePlus1, ePlus2), 3);
+        Mockito.verify(mAdapterNotifier, Mockito.times(1)).notifyNewItemsAdded(Arrays.asList(ePlus1, ePlus2), 3);
         assertSameElementsInProvider(Arrays.<ListItem>asList(h1orig, e1, e2, ePlus1, ePlus2));
         assertHeaderForItem(1, h1orig);
         assertHeaderForItem(2, h1orig);
