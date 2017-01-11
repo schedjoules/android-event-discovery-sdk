@@ -27,7 +27,6 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.schedjoules.eventdiscovery.EventIntents;
 import com.schedjoules.eventdiscovery.demo.R;
 
 
@@ -49,7 +48,7 @@ public final class AddToCalendarActivity extends AppCompatActivity
                 "This is an Activity with intent-filter for the specific action:\n'%s'\n\n" +
                         "You can add the filter to your Activity to avoid showing the chooser to the user.\n\n" +
                         "If no Activity with this action is found, then the standard '%s' action is used to fire the intent.",
-                EventIntents.ACTION_ADD_TO_CALENDAR, Intent.ACTION_INSERT);
+                "schedjoules.event.intent.action.ADD_TO_CALENDAR", Intent.ACTION_INSERT);
 
         ((TextView) findViewById(R.id.activity_add_to_calendar_text)).setText(description);
     }

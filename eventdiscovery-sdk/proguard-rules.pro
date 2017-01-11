@@ -16,4 +16,4 @@
 #   public *;
 #}
 
--keepnames class com.schedjoules.eventdiscovery.common.OurGlideModule
+-keepnames class com.schedjoules.eventdiscovery.framework.common.OurGlideModule

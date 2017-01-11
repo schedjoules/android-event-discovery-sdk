@@ -9,7 +9,7 @@ import com.schedjoules.client.SchedJoulesApi;
 import com.schedjoules.client.SchedJoulesApiClient;
 import com.schedjoules.client.utils.StringAccessToken;
 import com.schedjoules.eventdiscovery.service.AbstractApiService;
-import com.schedjoules.eventdiscovery.utils.SharedPrefsUserIdentifier;
+import com.schedjoules.eventdiscovery.framework.utils.SharedPrefsUserIdentifier;
 
 import org.dmfs.httpessentials.executors.retrying.Retrying;
 import org.dmfs.httpessentials.executors.retrying.policies.DefaultRetryPolicy;
