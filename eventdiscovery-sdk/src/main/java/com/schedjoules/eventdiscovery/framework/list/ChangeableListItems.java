@@ -17,6 +17,9 @@
 
 package com.schedjoules.eventdiscovery.framework.list;
 
+import android.support.v7.widget.RecyclerView;
+
+
 /**
  * {@link ListItems} that can receive a {@link ListChange} and apply it.
  *
@@ -28,5 +31,5 @@ public interface ChangeableListItems extends ListItems
     void apply(ListChange listChange);
 
     // TODO make the setter on GeneralMultiTypeAdapter, so this can come in constructor
-    void setAdapterNotifier(AdapterNotifier adapterNotifier);
+    void setAdapterNotifier(RecyclerView.Adapter adapter);
 }

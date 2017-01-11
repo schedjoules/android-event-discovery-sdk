@@ -34,5 +34,5 @@ public interface ListChange
      * Apply the change to the given items, i.e. update this mutable list that holds the {@link ListItem}s of the whole
      * list, and call the appropriate notifications for the adapter.
      */
-    void apply(List<ListItem> items, AdapterNotifier adapterNotifier);
+    void apply(List<ListItem> items, RecyclerView.Adapter adapter);
 }

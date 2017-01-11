@@ -17,7 +17,8 @@
 
 package com.schedjoules.eventdiscovery.framework.list.changes;
 
-import com.schedjoules.eventdiscovery.framework.list.AdapterNotifier;
+import android.support.v7.widget.RecyclerView;
+
 import com.schedjoules.eventdiscovery.framework.list.ListChange;
 import com.schedjoules.eventdiscovery.framework.list.ListItem;
 
@@ -25,7 +26,8 @@ import java.util.List;
 
 
 /**
- * {@link ListChange} that replaces all items in the list, i.e. clears the list and adds the new Items.
+ * {@link ListChange} that replaces all items in the list without animations, i.e. clears the list and adds the new
+ * Items.
  *
  * @author Gabor Keszthelyi
  */
@@ -41,14 +43,14 @@ public final class ReplaceAll implements ListChange
 
 
     @Override
-    public void apply(List<ListItem> items, AdapterNotifier adapterNotifier)
+    public void apply(List<ListItem> items, RecyclerView.Adapter adapter)
     {
         int sizeBefore = items.size();
 
         items.clear();
         items.addAll(mNewItems);
 
-        adapterNotifier.notifyItemRangeRemoved(0, sizeBefore);
-        adapterNotifier.notifyItemRangeInserted(0, items.size());
+        adapter.notifyItemRangeRemoved(0, sizeBefore);
+        adapter.notifyItemRangeInserted(0, items.size());
     }
 }

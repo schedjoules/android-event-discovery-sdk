@@ -17,6 +17,8 @@
 
 package com.schedjoules.eventdiscovery.framework.list;
 
+import android.support.v7.widget.RecyclerView;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,20 +32,20 @@ public final class BasicChangeableListItems implements ChangeableListItems
 {
     private List<ListItem> mItems = new ArrayList<>();
 
-    private AdapterNotifier mAdapterNotifier;
+    private RecyclerView.Adapter mAdapter;
 
 
     @Override
     public void apply(ListChange listChange)
     {
-        listChange.apply(mItems, mAdapterNotifier);
+        listChange.apply(mItems, mAdapter);
     }
 
 
     @Override
-    public void setAdapterNotifier(AdapterNotifier adapterNotifier)
+    public void setAdapterNotifier(RecyclerView.Adapter adapter)
     {
-        mAdapterNotifier = adapterNotifier;
+        mAdapter = adapter;
     }
 
 
