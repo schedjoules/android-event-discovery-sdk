@@ -23,7 +23,7 @@
 
             <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:orientation="vertical">
 
                 <com.schedjoules.eventdiscovery.framework.microfragments.eventdetails.fragments.views.HorizontalActionsView
@@ -56,19 +56,36 @@
                         android:orientation="vertical"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
                         android:layout_marginTop="12dp"/>
 
-                <com.schedjoules.eventdiscovery.framework.microfragments.eventdetails.fragments.views.SchedJoulesFooterView
-                        android:id="@+id/schedjoules_event_detail_schedjoules_footer"
-                        android:layout_height="wrap_content"
-                        android:layout_width="match_parent"
-                        android:layout_margin="@dimen/schedjoules_activity_horizontal_margin"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                        android:gravity="right|end"
-                        android:text="@string/schedjoules_powered_by_footer"/>
+                <View
+                        android:id="@+id/schedjoules_footer_placeholder"
+                        android:visibility="invisible"
+                        android:layout_height="20dp"
+                        android:layout_width="match_parent"/>
             </LinearLayout>
 
         </android.support.v4.widget.NestedScrollView>
 
+
+        <com.schedjoules.eventdiscovery.framework.microfragments.eventdetails.fragments.views.SchedJoulesFooterView
+                android:id="@+id/schedjoules_footer"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:paddingLeft="@dimen/schedjoules_activity_horizontal_margin"
+                android:paddingRight="@dimen/schedjoules_activity_horizontal_margin"
+                android:paddingStart="@dimen/schedjoules_activity_horizontal_margin"
+                android:paddingEnd="@dimen/schedjoules_activity_horizontal_margin"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"
+                android:background="#f0f0f0"
+                android:gravity="right|end|center"
+                app:layout_anchor="@id/schedjoules_footer_placeholder"
+                app:layout_anchorGravity="bottom|center_horizontal"
+                android:layout_gravity="top|end|right"
+                android:drawableRight="@drawable/schedjoules_footer_powered_by"
+                android:drawableEnd="@drawable/schedjoules_footer_powered_by"
+                app:layout_behavior="com.schedjoules.eventdiscovery.framework.widgets.FooterBehavior"/>
     </android.support.design.widget.CoordinatorLayout>
 </layout>

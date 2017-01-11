@@ -26,7 +26,6 @@
     <string name="schedjoules_action_book_hotel">Hotel</string>
     <string name="schedjoules_action_book_parking">Parking</string>
     <string name="schedjoules_action_add_to_calendar">Add to calendar</string>
-    <string name="schedjoules_powered_by_footer" translatable="false">Powered by SchedJoules</string>
     <string name="schedjoules_wait_message">This might take a moment</string>
     <string name="schedjoules_error_loading_event">Could not load event\nPlease check your internet connection</string>
 
