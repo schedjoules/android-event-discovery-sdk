@@ -38,9 +38,9 @@ import com.schedjoules.eventdiscovery.databinding.SchedjoulesFragmentLocationSel
 import com.schedjoules.eventdiscovery.framework.EventIntents;
 import com.schedjoules.eventdiscovery.framework.common.BaseActivity;
 import com.schedjoules.eventdiscovery.framework.common.BaseFragment;
-import com.schedjoules.eventdiscovery.framework.list.BasicChangeableListItems;
-import com.schedjoules.eventdiscovery.framework.list.ChangeableListItems;
 import com.schedjoules.eventdiscovery.framework.list.GeneralMultiTypeAdapter;
+import com.schedjoules.eventdiscovery.framework.list.changes.BasicChangeableListItems;
+import com.schedjoules.eventdiscovery.framework.list.changes.ChangeableListItems;
 import com.schedjoules.eventdiscovery.framework.location.list.PlaceListController;
 import com.schedjoules.eventdiscovery.framework.location.list.PlaceListControllerImpl;
 import com.schedjoules.eventdiscovery.framework.location.model.GeoPlace;
@@ -104,7 +104,7 @@ public final class LocationSelectionFragment extends BaseFragment implements Pla
 
         // New Adapter is needed after configuration change, otherwise activity is leaked
         GeneralMultiTypeAdapter adapter = new GeneralMultiTypeAdapter(mSuggestionItems);
-        mSuggestionItems.setAdapterNotifier(adapter);
+        mSuggestionItems.setAdapter(adapter);
 
         views.schedjoulesLocationSelectionList.setAdapter(adapter);
 

@@ -15,33 +15,21 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery.framework.list;
+package com.schedjoules.eventdiscovery.framework.list.changes;
 
 import android.support.v7.widget.RecyclerView;
 
+import com.schedjoules.eventdiscovery.framework.list.ListItems;
+
 
 /**
- * Interface for the {@link RecyclerView.Adapter} notify methods.
+ * {@link ListItems} that can receive a {@link ListChange} and apply it.
  *
  * @author Gabor Keszthelyi
  */
-public interface AdapterNotifier
+public interface ChangeableListItems extends ListItems
 {
-    void notifyDataSetChanged();
+    void apply(ListChange listChange);
 
-    void notifyItemChanged(int position);
-
-    void notifyItemChanged(int position, Object payload);
-
-    void notifyItemRangeChanged(int positionStart, int itemCount);
-
-    void notifyItemInserted(int position);
-
-    void notifyItemMoved(int fromPosition, int toPosition);
-
-    void notifyItemRangeInserted(int positionStart, int itemCount);
-
-    void notifyItemRemoved(int position);
-
-    void notifyItemRangeRemoved(int positionStart, int itemCount);
+    void setAdapter(RecyclerView.Adapter adapter);
 }

@@ -19,38 +19,48 @@ package com.schedjoules.eventdiscovery.framework.list.changes;
 
 import android.support.v7.widget.RecyclerView;
 
-import com.schedjoules.eventdiscovery.framework.list.ListChange;
 import com.schedjoules.eventdiscovery.framework.list.ListItem;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
 /**
- * {@link ListChange} that replaces all items in the list without animations, i.e. clears the list and adds the new
- * Items.
+ * Basic implementation of {@link ChangeableListItems}.
  *
  * @author Gabor Keszthelyi
  */
-public final class ReplaceAll implements ListChange
+public final class BasicChangeableListItems implements ChangeableListItems
 {
-    public final List<ListItem> mNewItems;
+    private List<ListItem> mItems = new ArrayList<>();
+
+    private RecyclerView.Adapter mAdapter;
 
 
-    public ReplaceAll(List<ListItem> newItems)
+    @Override
+    public void apply(ListChange listChange)
     {
-        mNewItems = newItems;
+        listChange.apply(mItems, mAdapter);
     }
 
 
     @Override
-    public void apply(List<ListItem> items, RecyclerView.Adapter adapter)
+    public void setAdapter(RecyclerView.Adapter adapter)
     {
-        int sizeBefore = items.size();
+        mAdapter = adapter;
+    }
 
-        items.clear();
-        items.addAll(mNewItems);
 
-        adapter.notifyItemRangeRemoved(0, sizeBefore);
-        adapter.notifyItemRangeInserted(0, items.size());
+    @Override
+    public ListItem get(int position)
+    {
+        return mItems.get(position);
+    }
+
+
+    @Override
+    public int itemCount()
+    {
+        return mItems.size();
     }
 }

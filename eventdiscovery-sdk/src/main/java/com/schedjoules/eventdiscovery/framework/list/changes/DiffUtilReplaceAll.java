@@ -20,7 +20,6 @@ package com.schedjoules.eventdiscovery.framework.list.changes;
 import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 
-import com.schedjoules.eventdiscovery.framework.list.ListChange;
 import com.schedjoules.eventdiscovery.framework.list.ListItem;
 
 import java.util.List;
@@ -43,11 +42,11 @@ public final class DiffUtilReplaceAll implements ListChange
 
 
     @Override
-    public void apply(List<ListItem> items, RecyclerView.Adapter adapter)
+    public void apply(List<ListItem> oldItems, RecyclerView.Adapter adapter)
     {
-        DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new EqualsDiffUtilCallback<>(items, mNewItems));
-        items.clear();
-        items.addAll(mNewItems);
+        DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new EqualsDiffUtilCallback<>(oldItems, mNewItems));
+        oldItems.clear();
+        oldItems.addAll(mNewItems);
         diffResult.dispatchUpdatesTo(adapter);
     }
 

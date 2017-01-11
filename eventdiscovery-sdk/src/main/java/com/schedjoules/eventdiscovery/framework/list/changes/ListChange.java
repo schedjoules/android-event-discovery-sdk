@@ -15,21 +15,26 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery.framework.list;
+package com.schedjoules.eventdiscovery.framework.list.changes;
 
 import android.support.v7.widget.RecyclerView;
 
+import com.schedjoules.eventdiscovery.framework.list.ListItem;
+
+import java.util.List;
+
 
 /**
- * {@link ListItems} that can receive a {@link ListChange} and apply it.
+ * Represents a change or change set for a list displayed in a {@link RecyclerView}.
  *
  * @author Gabor Keszthelyi
  */
-public interface ChangeableListItems extends ListItems
+public interface ListChange
 {
 
-    void apply(ListChange listChange);
-
-    // TODO make the setter on GeneralMultiTypeAdapter, so this can come in constructor
-    void setAdapterNotifier(RecyclerView.Adapter adapter);
+    /**
+     * Apply the change to the given items, i.e. update this mutable list that holds the {@link ListItem}s of the whole
+     * list, and call the appropriate notifications for the adapter.
+     */
+    void apply(List<ListItem> oldItems, RecyclerView.Adapter adapter);
 }
