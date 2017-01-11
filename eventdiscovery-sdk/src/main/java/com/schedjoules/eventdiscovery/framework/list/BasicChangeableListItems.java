@@ -15,41 +15,35 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery.framework.location.list;
-
-import android.support.v7.widget.RecyclerView;
-
-import com.schedjoules.eventdiscovery.framework.list.BasicAdapterNotifier;
-import com.schedjoules.eventdiscovery.framework.list.ListItem;
-import com.schedjoules.eventdiscovery.framework.list.changes.ReplaceAll;
+package com.schedjoules.eventdiscovery.framework.list;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
 /**
- * The implementation for {@link PlaceSuggestionListItems}.
+ * Basic implementation of {@link ChangeableListItems}.
  *
  * @author Gabor Keszthelyi
  */
-public final class PlaceSuggestionListItemsImpl implements PlaceSuggestionListItems
+public final class BasicChangeableListItems implements ChangeableListItems
 {
     private List<ListItem> mItems = new ArrayList<>();
-    private RecyclerView.Adapter mAdapter;
+
+    private AdapterNotifier mAdapterNotifier;
 
 
     @Override
-    public void replaceAllItems(List<ListItem> newItems)
+    public void apply(ListChange listChange)
     {
-        // TODO make the background task return a ListChange
-        new ReplaceAll(newItems).apply(mItems, new BasicAdapterNotifier(mAdapter));
+        listChange.apply(mItems, mAdapterNotifier);
     }
 
 
     @Override
-    public void setAdapter(RecyclerView.Adapter adapter)
+    public void setAdapterNotifier(AdapterNotifier adapterNotifier)
     {
-        mAdapter = adapter;
+        mAdapterNotifier = adapterNotifier;
     }
 
 

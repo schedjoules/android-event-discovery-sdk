@@ -38,10 +38,12 @@ import com.schedjoules.eventdiscovery.databinding.SchedjoulesFragmentLocationSel
 import com.schedjoules.eventdiscovery.framework.EventIntents;
 import com.schedjoules.eventdiscovery.framework.common.BaseActivity;
 import com.schedjoules.eventdiscovery.framework.common.BaseFragment;
+import com.schedjoules.eventdiscovery.framework.list.BasicAdapterNotifier;
+import com.schedjoules.eventdiscovery.framework.list.BasicChangeableListItems;
+import com.schedjoules.eventdiscovery.framework.list.ChangeableListItems;
 import com.schedjoules.eventdiscovery.framework.list.GeneralMultiTypeAdapter;
 import com.schedjoules.eventdiscovery.framework.location.list.PlaceListController;
 import com.schedjoules.eventdiscovery.framework.location.list.PlaceListControllerImpl;
-import com.schedjoules.eventdiscovery.framework.location.list.PlaceSuggestionListItemsImpl;
 import com.schedjoules.eventdiscovery.framework.location.model.GeoPlace;
 import com.schedjoules.eventdiscovery.framework.location.model.ParcelableGeoPlace;
 import com.schedjoules.eventdiscovery.framework.widgets.HideKeyboardActionListener;
@@ -57,7 +59,7 @@ public final class LocationSelectionFragment extends BaseFragment implements Pla
 {
     private GoogleApiClient mGoogleApiClient;
     private PlaceListController mPlaceListController;
-    private PlaceSuggestionListItemsImpl mSuggestionItems;
+    private ChangeableListItems mSuggestionItems;
 
 
     public static Fragment newInstance()
@@ -87,7 +89,7 @@ public final class LocationSelectionFragment extends BaseFragment implements Pla
          */
         mGoogleApiClient.connect();
 
-        mSuggestionItems = new PlaceSuggestionListItemsImpl();
+        mSuggestionItems = new BasicChangeableListItems();
         mPlaceListController = new PlaceListControllerImpl(mGoogleApiClient, this, mSuggestionItems);
     }
 
@@ -103,7 +105,7 @@ public final class LocationSelectionFragment extends BaseFragment implements Pla
 
         // New Adapter is needed after configuration change, otherwise activity is leaked
         GeneralMultiTypeAdapter adapter = new GeneralMultiTypeAdapter(mSuggestionItems);
-        mSuggestionItems.setAdapter(adapter);
+        mSuggestionItems.setAdapterNotifier(new BasicAdapterNotifier(adapter));
 
         views.schedjoulesLocationSelectionList.setAdapter(adapter);
 

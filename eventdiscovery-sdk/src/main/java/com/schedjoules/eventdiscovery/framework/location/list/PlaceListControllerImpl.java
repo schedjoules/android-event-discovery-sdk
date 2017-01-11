@@ -21,7 +21,9 @@ import android.util.Log;
 
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.schedjoules.eventdiscovery.framework.async.SafeAsyncTaskResult;
+import com.schedjoules.eventdiscovery.framework.list.ChangeableListItems;
 import com.schedjoules.eventdiscovery.framework.list.ListItem;
+import com.schedjoules.eventdiscovery.framework.list.changes.ReplaceAll;
 import com.schedjoules.eventdiscovery.framework.location.PlaceSuggestionItem;
 import com.schedjoules.eventdiscovery.framework.location.model.GeoPlace;
 import com.schedjoules.eventdiscovery.framework.location.model.NamedPlace;
@@ -47,12 +49,12 @@ public final class PlaceListControllerImpl implements PlaceListController, Place
     private final ExecutorService mExecutorService;
     private final PlaceSuggestionQueryTask.Client mTaskClient;
     private final PlaceSelectedListener mPlaceSelectedListener;
-    private final PlaceSuggestionListItems mItems;
+    private final ChangeableListItems mItems;
 
     private String mLastQuery;
 
 
-    public PlaceListControllerImpl(GoogleApiClient apiClient, PlaceSelectedListener listener, PlaceSuggestionListItems items)
+    public PlaceListControllerImpl(GoogleApiClient apiClient, PlaceSelectedListener listener, ChangeableListItems items)
     {
         mApiClient = apiClient;
         mPlaceSelectedListener = listener;
@@ -111,7 +113,7 @@ public final class PlaceListControllerImpl implements PlaceListController, Place
                 }
             }
 
-            mItems.replaceAllItems(newItems);
+            mItems.apply(new ReplaceAll(newItems));
         }
 
 
