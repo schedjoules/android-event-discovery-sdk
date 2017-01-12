@@ -36,8 +36,7 @@ public final class Anywhere implements GeoPlace
 
     public Anywhere(Context context)
     {
-        mAnywhereNamedPlace = new AnywhereNamedPlace(
-                context.getString(R.string.schedjoules_default_location_placeholder_name));
+        mAnywhereNamedPlace = new AnywhereNamedPlace(context);
     }
 
 
@@ -57,12 +56,13 @@ public final class Anywhere implements GeoPlace
 
     private static class AnywhereNamedPlace implements NamedPlace
     {
-        private final CharSequence mName;
+
+        private final Context mAppContext;
 
 
-        private AnywhereNamedPlace(CharSequence name)
+        private AnywhereNamedPlace(Context context)
         {
-            mName = name;
+            mAppContext = context.getApplicationContext();
         }
 
 
@@ -77,7 +77,7 @@ public final class Anywhere implements GeoPlace
         @Override
         public CharSequence name()
         {
-            return mName;
+            return mAppContext.getString(R.string.schedjoules_default_location_placeholder_name);
         }
 
 
