@@ -45,8 +45,8 @@ import com.schedjoules.eventdiscovery.framework.location.list.PlaceListControlle
 import com.schedjoules.eventdiscovery.framework.location.list.PlaceListControllerImpl;
 import com.schedjoules.eventdiscovery.framework.location.model.GeoPlace;
 import com.schedjoules.eventdiscovery.framework.location.model.ParcelableGeoPlace;
+import com.schedjoules.eventdiscovery.framework.widgets.AbstractTextWatcher;
 import com.schedjoules.eventdiscovery.framework.widgets.HideKeyboardActionListener;
-import com.schedjoules.eventdiscovery.framework.widgets.SimpleTextWatcher;
 
 
 /**
@@ -109,7 +109,7 @@ public final class LocationSelectionFragment extends BaseFragment implements Pla
         views.schedjoulesLocationSelectionList.setAdapter(adapter);
 
         EditText editText = views.schedjoulesLocationSelectionInput;
-        editText.addTextChangedListener(new SimpleTextWatcher()
+        editText.addTextChangedListener(new AbstractTextWatcher()
         {
             @Override
             public void afterTextChanged(Editable s)
