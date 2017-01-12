@@ -15,8 +15,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:layoutManager="LinearLayoutManager"
+                android:layout_marginBottom="24dp"
                 tools:context=".framework.eventlist.EventListActivity"
                 tools:listitem="@layout/schedjoules_list_item_event"/>
 
+        <include layout="@layout/schedjoules_powered_by_footer"/>
     </FrameLayout>
 </layout>
