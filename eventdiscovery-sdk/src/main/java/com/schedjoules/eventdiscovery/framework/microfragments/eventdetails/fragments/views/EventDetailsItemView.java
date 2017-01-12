@@ -21,6 +21,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -71,9 +73,18 @@ public final class EventDetailsItemView extends RelativeLayout
     }
 
 
-    public void setTextAsTitle(CharSequence text)
+    public void setTextAsTitle(String text)
     {
-        mTitle.setText(text);
+        if (text.contains("</"))
+        {
+            // only parse as HTML if the string contains HTML
+            mTitle.setText(Html.fromHtml(text));
+            mTitle.setMovementMethod(LinkMovementMethod.getInstance());
+        }
+        else
+        {
+            mTitle.setText(text);
+        }
     }
 
 
