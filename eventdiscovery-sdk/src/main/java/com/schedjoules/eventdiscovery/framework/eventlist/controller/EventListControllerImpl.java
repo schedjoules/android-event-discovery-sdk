@@ -50,7 +50,7 @@ import static com.schedjoules.eventdiscovery.framework.eventlist.controller.Scro
  *
  * @author Gabor Keszthelyi
  */
-public class EventListControllerImpl implements EventListController, EventListBackgroundMessage.OnClickListener
+public final class EventListControllerImpl implements EventListController, EventListBackgroundMessage.OnClickListener
 {
     public static final int CLOSE_TO_TOP_OR_BOTTOM_THRESHOLD = 30;
 

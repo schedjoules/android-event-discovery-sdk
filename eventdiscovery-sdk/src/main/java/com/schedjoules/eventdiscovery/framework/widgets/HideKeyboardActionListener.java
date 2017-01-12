@@ -28,7 +28,7 @@ import android.widget.TextView;
  *
  * @author Gabor Keszthelyi
  */
-public class HideKeyboardActionListener implements TextView.OnEditorActionListener
+public final class HideKeyboardActionListener implements TextView.OnEditorActionListener
 {
     @Override
     public boolean onEditorAction(TextView v, int actionId, KeyEvent event)

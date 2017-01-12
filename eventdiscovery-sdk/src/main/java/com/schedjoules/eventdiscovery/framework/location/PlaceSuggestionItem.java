@@ -30,7 +30,7 @@ import com.schedjoules.eventdiscovery.framework.location.model.NamedPlace;
  *
  * @author Gabor Keszthelyi
  */
-public class PlaceSuggestionItem implements ListItem<LocationSuggestionItemView>
+public final class PlaceSuggestionItem implements ListItem<LocationSuggestionItemView>
 {
     private final NamedPlace mNamedPlace;
 
