@@ -24,7 +24,6 @@ import com.schedjoules.eventdiscovery.framework.async.SafeAsyncTaskResult;
 import com.schedjoules.eventdiscovery.framework.list.ListItem;
 import com.schedjoules.eventdiscovery.framework.list.changes.ChangeableListItems;
 import com.schedjoules.eventdiscovery.framework.list.changes.DiffUtilReplaceAll;
-import com.schedjoules.eventdiscovery.framework.location.PlaceSuggestionItem;
 import com.schedjoules.eventdiscovery.framework.location.model.GeoPlace;
 import com.schedjoules.eventdiscovery.framework.location.model.NamedPlace;
 import com.schedjoules.eventdiscovery.framework.location.tasks.PlaceByIdTask;

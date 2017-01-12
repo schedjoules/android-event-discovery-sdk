@@ -28,7 +28,7 @@ import com.schedjoules.eventdiscovery.framework.async.DiscardCheck;
 import com.schedjoules.eventdiscovery.framework.async.DiscardingSafeAsyncTask;
 import com.schedjoules.eventdiscovery.framework.async.SafeAsyncTaskCallback;
 import com.schedjoules.eventdiscovery.framework.list.ListItem;
-import com.schedjoules.eventdiscovery.framework.location.PlaceSuggestionItem;
+import com.schedjoules.eventdiscovery.framework.location.list.PlaceSuggestionItem;
 import com.schedjoules.eventdiscovery.framework.location.model.GooglePredictionNamedPlace;
 
 import java.util.ArrayList;

@@ -15,13 +15,12 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery.framework.location;
+package com.schedjoules.eventdiscovery.framework.location.list;
 
 import android.view.View;
 
 import com.schedjoules.eventdiscovery.R;
 import com.schedjoules.eventdiscovery.framework.list.ListItem;
-import com.schedjoules.eventdiscovery.framework.location.list.LocationSuggestionItemView;
 import com.schedjoules.eventdiscovery.framework.location.model.NamedPlace;
 
 
@@ -30,7 +29,7 @@ import com.schedjoules.eventdiscovery.framework.location.model.NamedPlace;
  *
  * @author Gabor Keszthelyi
  */
-public final class PlaceSuggestionItem implements ListItem<LocationSuggestionItemView>
+public final class PlaceSuggestionItem implements ListItem<PlaceSuggestionItemView>
 {
     private final NamedPlace mNamedPlace;
 
@@ -46,19 +45,18 @@ public final class PlaceSuggestionItem implements ListItem<LocationSuggestionIte
     @Override
     public int layoutResId()
     {
-        return R.layout.schedjoules_list_item_location_suggestion;
+        return R.layout.schedjoules_list_item_place_suggestion;
     }
 
 
     @Override
-    public void bindDataTo(LocationSuggestionItemView view)
+    public void bindDataTo(PlaceSuggestionItemView view)
     {
-        view.setTitle(mNamedPlace.name());
-        view.setSubTitle(mNamedPlace.extraContext());
+        view.update(mNamedPlace);
         view.setOnClickListener(new View.OnClickListener()
         {
             @Override
-            public void onClick(final View v)
+            public void onClick(View v)
             {
                 mOnClickListener.onPlaceSuggestionSelected(mNamedPlace);
             }

@@ -23,21 +23,23 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.schedjoules.eventdiscovery.R;
+import com.schedjoules.eventdiscovery.framework.location.model.NamedPlace;
+import com.schedjoules.eventdiscovery.framework.utils.SmartView;
 
 
 /**
- * View for the location suggestion items in the list.
+ * View for the place suggestion items in the list.
  *
  * @author Gabor Keszthelyi
  */
-public final class LocationSuggestionItemView extends LinearLayout
+public final class PlaceSuggestionItemView extends LinearLayout implements SmartView<NamedPlace>
 {
 
-    private TextView mTitle;
-    private TextView mSubTitle;
+    private TextView mName;
+    private TextView mExtraContext;
 
 
-    public LocationSuggestionItemView(Context context, AttributeSet attrs)
+    public PlaceSuggestionItemView(Context context, AttributeSet attrs)
     {
         super(context, attrs);
     }
@@ -47,19 +49,16 @@ public final class LocationSuggestionItemView extends LinearLayout
     protected void onFinishInflate()
     {
         super.onFinishInflate();
-        mTitle = (TextView) findViewById(R.id.schedjoules_location_suggestion_item_title);
-        mSubTitle = (TextView) findViewById(R.id.schedjoules_location_suggestion_item_subtitle);
+        mName = (TextView) findViewById(R.id.schedjoules_place_suggestion_item_name);
+        mExtraContext = (TextView) findViewById(R.id.schedjoules_location_suggestion_item_extra_context);
     }
 
 
-    public void setTitle(CharSequence title)
+    @Override
+    public void update(NamedPlace namedPlace)
     {
-        mTitle.setText(title);
+        mName.setText(namedPlace.name());
+        mExtraContext.setText(namedPlace.extraContext());
     }
 
-
-    public void setSubTitle(CharSequence subTitle)
-    {
-        mSubTitle.setText(subTitle);
-    }
 }
