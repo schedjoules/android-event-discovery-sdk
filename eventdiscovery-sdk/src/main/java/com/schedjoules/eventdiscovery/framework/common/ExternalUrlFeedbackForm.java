@@ -22,7 +22,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.schedjoules.eventdiscovery.framework.activities.MicroFragmentHostActivity;
+import com.schedjoules.eventdiscovery.framework.activities.FeedbackMicroFragmentHostActivity;
 import com.schedjoules.eventdiscovery.framework.microfragments.feedback.FeedbackMicroFragment;
 
 import org.dmfs.android.microfragments.MicroFragmentHost;
@@ -39,7 +39,7 @@ public final class ExternalUrlFeedbackForm implements FeedbackForm
     @Override
     public void show(Activity activity)
     {
-        Intent intent = new Intent(activity, MicroFragmentHostActivity.class);
+        Intent intent = new Intent(activity, FeedbackMicroFragmentHostActivity.class);
         Bundle nestedBundle = new Bundle(1);
         nestedBundle.putParcelable("MicroFragment", new FeedbackMicroFragment());
         intent.putExtra("com.schedjoules.nestedExtras", nestedBundle);

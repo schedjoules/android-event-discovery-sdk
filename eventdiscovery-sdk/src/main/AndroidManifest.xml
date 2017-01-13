@@ -11,6 +11,12 @@
                 android:enabled="true"
                 android:theme="@style/SchedJoules_AppTheme.NoActionBar">
         </activity>
+        <activity
+                android:name=".framework.activities.FeedbackMicroFragmentHostActivity"
+                android:exported="false"
+                android:enabled="true"
+                android:theme="@style/SchedJoules_AppTheme.NoActionBar">
+        </activity>
 
         <activity
                 android:name=".framework.eventlist.EventListActivity"
