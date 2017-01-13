@@ -100,6 +100,13 @@ public final class ParcelableGeoLocation implements GeoLocation, Parcelable
 
 
     @Override
+    public String toString()
+    {
+        return mDelegate.toString();
+    }
+
+
+    @Override
     public void writeToParcel(Parcel dest, int flags)
     {
         dest.writeFloat(mDelegate.latitude());

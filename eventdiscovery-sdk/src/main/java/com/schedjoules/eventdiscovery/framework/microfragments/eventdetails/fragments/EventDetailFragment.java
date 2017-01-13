@@ -36,13 +36,11 @@ import com.schedjoules.eventdiscovery.databinding.SchedjoulesFragmentEventDetail
 import com.schedjoules.eventdiscovery.framework.actions.ActionViewIterable;
 import com.schedjoules.eventdiscovery.framework.actions.Actions;
 import com.schedjoules.eventdiscovery.framework.actions.BaseActionFactory;
-import com.schedjoules.eventdiscovery.framework.activities.MicroFragmentHostActivity;
 import com.schedjoules.eventdiscovery.framework.common.BaseActivity;
 import com.schedjoules.eventdiscovery.framework.common.BaseFragment;
 import com.schedjoules.eventdiscovery.framework.common.ExternalUrlFeedbackForm;
 import com.schedjoules.eventdiscovery.framework.datetime.LongDate;
 import com.schedjoules.eventdiscovery.framework.datetime.StartAndEndTime;
-import com.schedjoules.eventdiscovery.framework.eventlist.EventListActivity;
 import com.schedjoules.eventdiscovery.framework.microfragments.eventdetails.ShowEventMicroFragment;
 import com.schedjoules.eventdiscovery.framework.microfragments.eventdetails.fragments.menu.EventDetailsMenu;
 import com.schedjoules.eventdiscovery.framework.microfragments.eventdetails.fragments.views.EventDetailsItemView;
@@ -65,8 +63,9 @@ import static com.schedjoules.eventdiscovery.framework.utils.LocationFormatter.l
 
 
 /**
- * A fragment representing a single Event detail screen. This fragment is either contained in a {@link EventListActivity} in two-pane mode (on tablets) or a
- * {@link MicroFragmentHostActivity} on handsets.
+ * TODO location dropdown arrow in toolbar
+ * <p>
+ * A fragment representing a single Event detail screen.
  *
  * @author Gabor Keszthelyi
  */
@@ -158,16 +157,19 @@ public final class EventDetailFragment extends BaseFragment implements EventDeta
     {
         if (mActions.size() > 0)
         {
-            int maxNumberOfItemsInTopBar = getResources().getInteger(R.integer.schedjoules_maxNumberOfHorizontalActions);
+            int maxNumberOfItemsInTopBar = getResources().getInteger(
+                    R.integer.schedjoules_maxNumberOfHorizontalActions);
 
             mHorizontalActions.showActionViews(
-                    new ActionViewIterable(new Limiting<>(new Actions(mActions, mEvent, new BaseActionFactory()), maxNumberOfItemsInTopBar),
+                    new ActionViewIterable(new Limiting<>(new Actions(mActions, mEvent, new BaseActionFactory()),
+                            maxNumberOfItemsInTopBar),
                             new SmallEventActionView.Factory(mHorizontalActions)));
 
             mViews.schedjoulesEventDetailsDivider.setVisibility(View.VISIBLE);
             mHorizontalActions.setVisibility(View.VISIBLE);
 
-            for (View view : new ActionViewIterable(new Skipping<>(new Actions(mActions, mEvent, new BaseActionFactory()), maxNumberOfItemsInTopBar),
+            for (View view : new ActionViewIterable(
+                    new Skipping<>(new Actions(mActions, mEvent, new BaseActionFactory()), maxNumberOfItemsInTopBar),
                     new EventDetailsItemView.Factory(mVerticalItems)))
             {
                 mVerticalItems.addView(view);
@@ -189,7 +191,8 @@ public final class EventDetailFragment extends BaseFragment implements EventDeta
             @Override
             public void run()
             {
-                new ExternalUrlFeedbackForm().show(getActivity(), new FragmentEnvironment<>(EventDetailFragment.this).host());
+                new ExternalUrlFeedbackForm().show(getActivity(),
+                        new FragmentEnvironment<>(EventDetailFragment.this).host());
             }
         });
     }

@@ -20,8 +20,8 @@ package com.schedjoules.eventdiscovery.framework.eventlist.items;
 import android.view.View;
 
 import com.schedjoules.eventdiscovery.R;
-import com.schedjoules.eventdiscovery.framework.adapter.ListItem;
-import com.schedjoules.eventdiscovery.framework.adapter.flexibleadapter.AbstractFlexible;
+import com.schedjoules.eventdiscovery.framework.list.ListItem;
+import com.schedjoules.eventdiscovery.framework.list.flexibleadapter.AbstractFlexible;
 
 
 /**

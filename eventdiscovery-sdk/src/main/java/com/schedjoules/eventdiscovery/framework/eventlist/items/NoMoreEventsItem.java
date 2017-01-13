@@ -21,8 +21,8 @@ import android.support.annotation.StringRes;
 import android.widget.TextView;
 
 import com.schedjoules.eventdiscovery.R;
-import com.schedjoules.eventdiscovery.framework.adapter.ListItem;
-import com.schedjoules.eventdiscovery.framework.adapter.flexibleadapter.AbstractFlexible;
+import com.schedjoules.eventdiscovery.framework.list.ListItem;
+import com.schedjoules.eventdiscovery.framework.list.flexibleadapter.AbstractFlexible;
 
 
 /**
