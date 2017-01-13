@@ -32,7 +32,7 @@ import java.util.List;
  */
 public final class BasicChangeableListItems implements ChangeableListItems
 {
-    private List<ListItem> mItems = new ArrayList<>();
+    private final List<ListItem> mItems = new ArrayList<>();
 
     private RecyclerView.Adapter mAdapter;
 
