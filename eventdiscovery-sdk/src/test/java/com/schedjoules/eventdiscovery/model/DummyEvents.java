@@ -26,7 +26,7 @@ import com.schedjoules.client.eventsdiscovery.Envelope;
 import com.schedjoules.client.eventsdiscovery.Event;
 import com.schedjoules.client.eventsdiscovery.ResultPage;
 import com.schedjoules.client.eventsdiscovery.queries.SimpleEventsDiscovery;
-import com.schedjoules.eventdiscovery.framework.eventlist.itemsprovider.ScrollDirection;
+import com.schedjoules.eventdiscovery.framework.eventlist.controller.ScrollDirection;
 
 import org.dmfs.rfc5545.DateTime;
 import org.dmfs.rfc5545.Duration;
@@ -40,8 +40,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import static com.schedjoules.eventdiscovery.framework.eventlist.itemsprovider.ScrollDirection.BOTTOM;
-import static com.schedjoules.eventdiscovery.framework.eventlist.itemsprovider.ScrollDirection.TOP;
+import static com.schedjoules.eventdiscovery.framework.eventlist.controller.ScrollDirection.BOTTOM;
+import static com.schedjoules.eventdiscovery.framework.eventlist.controller.ScrollDirection.TOP;
 
 
 /**
@@ -159,7 +159,7 @@ public final class DummyEvents
     }
 
 
-    private static class DummyResultPage implements ResultPage<Envelope<Event>>
+    private static final class DummyResultPage implements ResultPage<Envelope<Event>>
     {
         private final Iterable<Envelope<Event>> mItems;
 
@@ -206,7 +206,7 @@ public final class DummyEvents
     }
 
 
-    private static class DummyEnvelope implements Envelope<Event>
+    private static final class DummyEnvelope implements Envelope<Event>
     {
         private final Event mEvent;
 
@@ -246,7 +246,7 @@ public final class DummyEvents
     }
 
 
-    private static class EmptyResultPage implements ResultPage<Envelope<Event>>
+    private static final class EmptyResultPage implements ResultPage<Envelope<Event>>
     {
         private final ScrollDirection mDirection;
 

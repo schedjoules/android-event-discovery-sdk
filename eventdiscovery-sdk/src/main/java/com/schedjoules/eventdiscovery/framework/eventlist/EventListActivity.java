@@ -36,11 +36,11 @@ public final class EventListActivity extends BaseActivity
     {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.schedjoules_activity_event_list);
+        setContentView(R.layout.schedjoules_activity_frame);
 
         if (savedInstanceState == null)
         {
-            getSupportFragmentManager().beginTransaction().add(R.id.schedjoules_event_list_activity_content,
+            getSupportFragmentManager().beginTransaction().add(R.id.schedjoules_activity_content,
                     EventListFragment.newInstance(getIntent().getExtras())).commit();
         }
     }

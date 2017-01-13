@@ -18,10 +18,10 @@
 package com.schedjoules.eventdiscovery.framework.eventlist.items;
 
 import com.schedjoules.eventdiscovery.R;
-import com.schedjoules.eventdiscovery.framework.adapter.ListItem;
-import com.schedjoules.eventdiscovery.framework.adapter.flexibleadapter.AbstractFlexibleHeader;
 import com.schedjoules.eventdiscovery.framework.datetime.FormattedDateTime;
 import com.schedjoules.eventdiscovery.framework.datetime.SmartFormattedDay;
+import com.schedjoules.eventdiscovery.framework.list.ListItem;
+import com.schedjoules.eventdiscovery.framework.list.flexibleadapter.AbstractFlexibleHeader;
 
 import org.dmfs.rfc5545.DateTime;
 
