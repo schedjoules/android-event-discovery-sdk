@@ -42,4 +42,6 @@ public final class EventIntents
      * Extra for the event uid field sent in the add to calendar intent.
      */
     public static final String EXTRA_SCHEDJOULES_EVENT_UID = "schedjoules.event.intent.extra.UID";
+
+    public static final String EXTRA_GEO_PLACE = "schedjoules.event.intent.extra.GEO_PLACE";
 }

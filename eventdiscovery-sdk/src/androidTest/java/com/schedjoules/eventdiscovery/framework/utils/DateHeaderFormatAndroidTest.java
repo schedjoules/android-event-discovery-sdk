@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 SchedJoules
+ * Copyright 2017 SchedJoules
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -44,7 +44,7 @@ import static junit.framework.Assert.assertEquals;
  * @author Gabor Keszthelyi
  */
 @RunWith(AndroidJUnit4.class)
-public class DateHeaderFormatAndroidTest
+public final class DateHeaderFormatAndroidTest
 {
 
     private Context mContext;

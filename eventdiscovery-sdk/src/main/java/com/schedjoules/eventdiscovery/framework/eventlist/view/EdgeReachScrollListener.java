@@ -20,10 +20,10 @@ package com.schedjoules.eventdiscovery.framework.eventlist.view;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
-import com.schedjoules.eventdiscovery.framework.eventlist.itemsprovider.ScrollDirection;
+import com.schedjoules.eventdiscovery.framework.eventlist.controller.ScrollDirection;
 
-import static com.schedjoules.eventdiscovery.framework.eventlist.itemsprovider.ScrollDirection.BOTTOM;
-import static com.schedjoules.eventdiscovery.framework.eventlist.itemsprovider.ScrollDirection.TOP;
+import static com.schedjoules.eventdiscovery.framework.eventlist.controller.ScrollDirection.BOTTOM;
+import static com.schedjoules.eventdiscovery.framework.eventlist.controller.ScrollDirection.TOP;
 
 
 /**

@@ -29,7 +29,7 @@ import org.dmfs.rfc5545.DateTime;
  *
  * @author Gabor Keszthelyi
  */
-public class ShortTime implements FormattedDateTime
+public final class ShortTime implements FormattedDateTime
 {
     public final DateTime mDateTime;
 

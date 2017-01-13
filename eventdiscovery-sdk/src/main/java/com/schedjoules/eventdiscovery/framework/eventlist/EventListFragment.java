@@ -39,19 +39,19 @@ import com.schedjoules.eventdiscovery.databinding.SchedjoulesFragmentEventListBi
 import com.schedjoules.eventdiscovery.framework.common.BaseActivity;
 import com.schedjoules.eventdiscovery.framework.common.BaseFragment;
 import com.schedjoules.eventdiscovery.framework.common.ExternalUrlFeedbackForm;
-import com.schedjoules.eventdiscovery.framework.eventlist.itemsprovider.EventListItemsImpl;
-import com.schedjoules.eventdiscovery.framework.eventlist.itemsprovider.EventListItemsProvider;
-import com.schedjoules.eventdiscovery.framework.eventlist.itemsprovider.EventListItemsProviderImpl;
-import com.schedjoules.eventdiscovery.framework.eventlist.itemsprovider.FlexibleAdapterNotifier;
+import com.schedjoules.eventdiscovery.framework.eventlist.controller.EventListController;
+import com.schedjoules.eventdiscovery.framework.eventlist.controller.EventListControllerImpl;
+import com.schedjoules.eventdiscovery.framework.eventlist.controller.EventListItemsImpl;
 import com.schedjoules.eventdiscovery.framework.eventlist.view.EdgeReachScrollListener;
 import com.schedjoules.eventdiscovery.framework.eventlist.view.EventListBackgroundMessage;
 import com.schedjoules.eventdiscovery.framework.eventlist.view.EventListLoadingIndicatorOverlay;
 import com.schedjoules.eventdiscovery.framework.eventlist.view.EventListMenu;
-import com.schedjoules.eventdiscovery.framework.location.LastSelectedLocation;
-import com.schedjoules.eventdiscovery.framework.location.LocationSelection;
-import com.schedjoules.eventdiscovery.framework.location.LocationSelectionResult;
-import com.schedjoules.eventdiscovery.framework.location.PlacesApiLocationSelection;
-import com.schedjoules.eventdiscovery.framework.location.SharedPrefLastSelectedLocation;
+import com.schedjoules.eventdiscovery.framework.list.flexibleadapter.FlexibleAdapterNotifier;
+import com.schedjoules.eventdiscovery.framework.location.ActivityForResultPlaceSelection;
+import com.schedjoules.eventdiscovery.framework.location.LastSelectedPlace;
+import com.schedjoules.eventdiscovery.framework.location.PlaceSelection;
+import com.schedjoules.eventdiscovery.framework.location.SharedPrefLastSelectedPlace;
+import com.schedjoules.eventdiscovery.framework.location.model.GeoPlace;
 import com.schedjoules.eventdiscovery.framework.utils.FutureServiceConnection;
 import com.schedjoules.eventdiscovery.framework.utils.InsightsTask;
 import com.schedjoules.eventdiscovery.service.ApiService;
@@ -71,12 +71,13 @@ import static com.schedjoules.eventdiscovery.framework.EventIntents.EXTRA_START_
  *
  * @author Gabor Keszthelyi
  */
-public final class EventListFragment extends BaseFragment implements LocationSelection.Listener, EventListMenu.Listener
+
+public final class EventListFragment extends BaseFragment implements PlaceSelection.Listener, EventListMenu.Listener
 {
     private FutureServiceConnection<ApiService> mApiService;
-    private EventListItemsProvider mListItemsProvider;
-    private PlacesApiLocationSelection mLocationSelection;
-    private LastSelectedLocation mLastSelectedLocation;
+    private EventListController mListItemsProvider;
+    private ActivityForResultPlaceSelection mLocationSelection;
+    private LastSelectedPlace mLastSelectedPlace;
 
     private Toolbar mToolbar;
     private EventListMenu mMenu;
@@ -101,12 +102,12 @@ public final class EventListFragment extends BaseFragment implements LocationSel
 
         mApiService = new ApiService.FutureConnection(getActivity());
 
-        mListItemsProvider = new EventListItemsProviderImpl(mApiService, new EventListItemsImpl());
+        mListItemsProvider = new EventListControllerImpl(mApiService, new EventListItemsImpl());
 
-        mLocationSelection = new PlacesApiLocationSelection(this);
+        mLocationSelection = new ActivityForResultPlaceSelection(this);
         mLocationSelection.registerListener(this);
 
-        mLastSelectedLocation = new SharedPrefLastSelectedLocation(getContext());
+        mLastSelectedPlace = new SharedPrefLastSelectedPlace(getContext());
 
         new InsightsTask(getActivity()).execute(new Screen(new StringToken("list")));
     }
@@ -136,7 +137,7 @@ public final class EventListFragment extends BaseFragment implements LocationSel
         recyclerView.setAdapter(adapter);
 
         EdgeReachScrollListener scrollListener = new EdgeReachScrollListener(recyclerView, mListItemsProvider,
-                EventListItemsProviderImpl.CLOSE_TO_TOP_OR_BOTTOM_THRESHOLD);
+                EventListControllerImpl.CLOSE_TO_TOP_OR_BOTTOM_THRESHOLD);
         recyclerView.addOnScrollListener(scrollListener);
 
         mListItemsProvider.setAdapterNotifier(new FlexibleAdapterNotifier(adapter));
@@ -147,7 +148,7 @@ public final class EventListFragment extends BaseFragment implements LocationSel
 
     private void setupToolbar()
     {
-        mToolbar.setTitle(mLastSelectedLocation.get().name());
+        mToolbar.setTitle(mLastSelectedPlace.get().namedPlace().name());
         mToolbar.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -248,10 +249,10 @@ public final class EventListFragment extends BaseFragment implements LocationSel
 
 
     @Override
-    public void onLocationSelected(LocationSelectionResult result)
+    public void onPlaceSelected(GeoPlace result)
     {
-        mLastSelectedLocation.update(result);
-        mToolbar.setTitle(result.name());
+        mLastSelectedPlace.update(result);
+        mToolbar.setTitle(result.namedPlace().name());
         mListItemsProvider.loadEvents(result.geoLocation(), startAfter());
     }
 
@@ -275,7 +276,7 @@ public final class EventListFragment extends BaseFragment implements LocationSel
         }
         else
         {
-            return mLastSelectedLocation.get().geoLocation();
+            return mLastSelectedPlace.get().geoLocation();
         }
     }
 

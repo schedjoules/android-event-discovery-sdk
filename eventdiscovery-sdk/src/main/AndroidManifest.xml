@@ -54,6 +54,14 @@
             </intent-filter>
         </activity>
 
+        <activity
+                android:name=".framework.location.LocationSelectionActivity"
+                android:label=""
+                android:exported="false"
+                android:enabled="true"
+                android:windowSoftInputMode="adjustPan|stateAlwaysVisible"
+                android:theme="@style/SchedJoules_AppTheme.NoActionBar"/>
+
         <service
                 android:name=".framework.services.BasicInsightsService"
                 android:exported="false"
