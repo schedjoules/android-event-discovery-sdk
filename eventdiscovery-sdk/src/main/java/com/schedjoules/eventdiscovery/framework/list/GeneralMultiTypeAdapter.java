@@ -70,7 +70,7 @@ public final class GeneralMultiTypeAdapter extends RecyclerView.Adapter<GeneralM
     }
 
 
-    static class SimpleViewHolder extends RecyclerView.ViewHolder
+    static final class SimpleViewHolder extends RecyclerView.ViewHolder
     {
         private SimpleViewHolder(View itemView)
         {

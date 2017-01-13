@@ -44,7 +44,7 @@ import static junit.framework.Assert.assertEquals;
  * @author Gabor Keszthelyi
  */
 @RunWith(AndroidJUnit4.class)
-public class DateHeaderFormatAndroidTest
+public final class DateHeaderFormatAndroidTest
 {
 
     private Context mContext;

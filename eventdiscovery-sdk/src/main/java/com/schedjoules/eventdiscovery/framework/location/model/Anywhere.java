@@ -54,7 +54,7 @@ public final class Anywhere implements GeoPlace
     }
 
 
-    private static class AnywhereNamedPlace implements NamedPlace
+    private static final class AnywhereNamedPlace implements NamedPlace
     {
 
         private final Context mAppContext;

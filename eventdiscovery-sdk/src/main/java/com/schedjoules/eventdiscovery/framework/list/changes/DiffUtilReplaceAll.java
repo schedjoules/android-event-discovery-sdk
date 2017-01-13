@@ -51,7 +51,7 @@ public final class DiffUtilReplaceAll implements ListChange
     }
 
 
-    private static class EqualsDiffUtilCallback<T> extends DiffUtil.Callback
+    private static final class EqualsDiffUtilCallback<T> extends DiffUtil.Callback
     {
 
         private final List<T> mOldItems;

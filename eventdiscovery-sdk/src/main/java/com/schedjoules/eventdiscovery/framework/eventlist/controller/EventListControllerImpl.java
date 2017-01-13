@@ -281,7 +281,7 @@ public final class EventListControllerImpl implements EventListController, Event
     }
 
 
-    private class DownloadTaskClient implements EventListDownloadTask.Client
+    private final class DownloadTaskClient implements EventListDownloadTask.Client
     {
 
         // Called from both background and main thread

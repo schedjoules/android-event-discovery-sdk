@@ -78,7 +78,7 @@ public final class PlaceListControllerImpl implements PlaceListController, Place
     }
 
 
-    private class PlaceSuggestionQueryTaskClient implements PlaceSuggestionQueryTask.Client
+    private final class PlaceSuggestionQueryTaskClient implements PlaceSuggestionQueryTask.Client
     {
 
         @Override
@@ -124,7 +124,7 @@ public final class PlaceListControllerImpl implements PlaceListController, Place
     }
 
 
-    private class PlaceByIdTaskClient implements PlaceByIdTask.Client
+    private final class PlaceByIdTaskClient implements PlaceByIdTask.Client
     {
 
         @Override

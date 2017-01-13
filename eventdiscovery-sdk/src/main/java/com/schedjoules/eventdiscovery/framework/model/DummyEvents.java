@@ -159,7 +159,7 @@ public final class DummyEvents
     }
 
 
-    private static class DummyResultPage implements ResultPage<Envelope<Event>>
+    private static final class DummyResultPage implements ResultPage<Envelope<Event>>
     {
         private final Iterable<Envelope<Event>> mItems;
 
@@ -206,7 +206,7 @@ public final class DummyEvents
     }
 
 
-    private static class DummyEnvelope implements Envelope<Event>
+    private static final class DummyEnvelope implements Envelope<Event>
     {
         private final Event mEvent;
 
@@ -246,7 +246,7 @@ public final class DummyEvents
     }
 
 
-    private static class DummyEvent implements Event
+    private static final class DummyEvent implements Event
     {
 
         private final String mTitle;
@@ -310,7 +310,7 @@ public final class DummyEvents
     }
 
 
-    private static class EmptyResultPage implements ResultPage<Envelope<Event>>
+    private static final class EmptyResultPage implements ResultPage<Envelope<Event>>
     {
         private final ScrollDirection mDirection;
 

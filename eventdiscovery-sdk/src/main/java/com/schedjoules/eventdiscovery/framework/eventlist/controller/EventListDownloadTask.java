@@ -93,7 +93,7 @@ public final class EventListDownloadTask extends
     }
 
 
-    public static class TaskResult
+    public static final class TaskResult
     {
 
         public final List<ListItem> mListItems;
