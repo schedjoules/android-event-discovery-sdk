@@ -80,6 +80,7 @@ public final class EventDetailsItemView extends RelativeLayout
             // only parse as HTML if the string contains HTML
             mTitle.setText(Html.fromHtml(text));
             mTitle.setMovementMethod(LinkMovementMethod.getInstance());
+            mTitle.setLinkTextColor(getContext().getResources().getColor(R.color.schedjoules_colorPrimary));
         }
         else
         {
