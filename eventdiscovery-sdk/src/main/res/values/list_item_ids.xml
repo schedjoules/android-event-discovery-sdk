@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <item type="id" name="schedjoules_standard_event_list_item"/>
-    <item type="id" name="schedjoules_no_event_list_item"/>
-    <item type="id" name="schedjoules_date_header_list_item"/>
-</resources>

@@ -42,16 +42,18 @@ public final class FlexibleAdapterNotifier implements ThirdPartyAdapterNotifier<
     @Override
     public void notifyInitialItemsAdded(List initialItems)
     {
-        //noinspection unchecked
-        mFlexibleAdapter.addItems(0, initialItems);
+        notifyNewItemsAdded(initialItems, 0);
     }
 
 
     @Override
     public void notifyNewItemsAdded(List newItems, int positionStart)
     {
-        //noinspection unchecked
-        mFlexibleAdapter.addItems(positionStart, newItems);
+        if (!newItems.isEmpty())
+        {
+            //noinspection unchecked
+            mFlexibleAdapter.addItems(positionStart, newItems);
+        }
     }
 
 
@@ -66,7 +68,7 @@ public final class FlexibleAdapterNotifier implements ThirdPartyAdapterNotifier<
     @Override
     public void notifyItemsCleared(int totalSize)
     {
-        mFlexibleAdapter.removeRange(0, totalSize);
+        mFlexibleAdapter.clear();
     }
 
 

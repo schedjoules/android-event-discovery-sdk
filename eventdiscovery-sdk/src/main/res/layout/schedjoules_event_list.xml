@@ -7,6 +7,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+        <!-- Need to keep the RecyclerView within a FrameLayout
+        so that FlexibleAdapter can add the sticky header view. -->
+
         <android.support.v7.widget.RecyclerView
                 android:id="@+id/schedjoules_event_list"
                 android:layout_width="match_parent"
@@ -15,6 +18,5 @@
                 tools:context=".framework.eventlist.EventListActivity"
                 tools:listitem="@layout/schedjoules_list_item_event"/>
 
-        <include layout="@layout/sticky_header_layout"/>
     </FrameLayout>
 </layout>
