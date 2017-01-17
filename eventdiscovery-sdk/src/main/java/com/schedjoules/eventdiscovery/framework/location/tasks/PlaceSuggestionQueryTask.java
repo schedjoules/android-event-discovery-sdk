@@ -59,14 +59,16 @@ public final class PlaceSuggestionQueryTask extends DiscardingSafeAsyncTask<Stri
     {
         GoogleApiClient googleApiClient = googleApiClients[0];
 
-        AutocompletePredictionBuffer predictions =
+        AutocompletePredictionBuffer predictionBuffer =
                 Places.GeoDataApi.getAutocompletePredictions(googleApiClient, query, null, CITIES_FILTER).await();
 
         List<ListItem> newItems = new ArrayList<>();
-        for (AutocompletePrediction prediction : predictions)
+        for (AutocompletePrediction prediction : predictionBuffer   )
         {
-            newItems.add(new PlaceSuggestionItem(new GooglePredictionNamedPlace(prediction)));
+            AutocompletePrediction frozen = prediction.freeze();
+            newItems.add(new PlaceSuggestionItem(new GooglePredictionNamedPlace(frozen)));
         }
+        predictionBuffer.release();
 
         return newItems;
     }

@@ -50,11 +50,12 @@ public final class PlaceByIdTask extends SafeAsyncTask<NamedPlace, GoogleApiClie
     {
         GoogleApiClient googleApiClient = googleApiClients[0];
 
-        PendingResult<PlaceBuffer> placeById = Places.GeoDataApi.getPlaceById(googleApiClient, namedPlace.id());
-        PlaceBuffer placeBuffer = placeById.await();
-        Place place = placeBuffer.get(0);
+        PendingResult<PlaceBuffer> pendingResult = Places.GeoDataApi.getPlaceById(googleApiClient, namedPlace.id());
+        PlaceBuffer placeBuffer = pendingResult.await();
+        Place frozenPlace = placeBuffer.get(0).freeze();
+        placeBuffer.release();
 
-        return new StructuredGeoPlace(namedPlace, new GoogleGeoLocation(place));
+        return new StructuredGeoPlace(namedPlace, new GoogleGeoLocation(frozenPlace));
     }
 
 
