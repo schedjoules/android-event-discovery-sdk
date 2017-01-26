@@ -108,8 +108,8 @@ public final class LocationSelectionFragment extends BaseFragment implements Pla
 
         views.schedjoulesLocationSelectionList.setAdapter(adapter);
 
-        EditText editText = views.schedjoulesLocationSelectionInput;
-        editText.addTextChangedListener(new AbstractTextWatcher()
+        EditText searchEditText = views.schedjoulesLocationSelectionInput;
+        searchEditText.addTextChangedListener(new AbstractTextWatcher()
         {
             @Override
             public void afterTextChanged(Editable s)
@@ -117,7 +117,7 @@ public final class LocationSelectionFragment extends BaseFragment implements Pla
                 mPlaceListController.query(s.toString());
             }
         });
-        editText.setOnEditorActionListener(new HideKeyboardActionListener());
+        searchEditText.setOnEditorActionListener(new HideKeyboardActionListener());
 
         return views.getRoot();
     }
