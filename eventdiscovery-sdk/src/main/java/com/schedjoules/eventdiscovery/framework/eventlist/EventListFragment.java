@@ -59,6 +59,8 @@ import com.schedjoules.eventdiscovery.service.ApiService;
 import org.dmfs.httpessentials.types.StringToken;
 import org.dmfs.rfc5545.DateTime;
 
+import java.util.ArrayList;
+
 import eu.davidea.flexibleadapter.FlexibleAdapter;
 import eu.davidea.flexibleadapter.items.IFlexible;
 
@@ -176,7 +178,7 @@ public final class EventListFragment extends BaseFragment implements PlaceSelect
 
     private FlexibleAdapter createAdapter()
     {
-        FlexibleAdapter<IFlexible> adapter = new FlexibleAdapter<>(null);
+        FlexibleAdapter<IFlexible> adapter = new FlexibleAdapter<>(new ArrayList<IFlexible>());
         adapter.setDisplayHeadersAtStartUp(true);
         adapter.setStickyHeaders(true);
         return adapter;
