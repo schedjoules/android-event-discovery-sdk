@@ -52,7 +52,7 @@
     <!-- Needed to override toolbar style fix bug of small title in landscape (theme resource sets it 14sp in land)
     See: http://stackoverflow.com/a/28056935/4247460 -->
     <style name="SchedJoules_ToolbarTitle" parent="@style/TextAppearance.Widget.AppCompat.Toolbar.Title">
-        <item name="android:textSize">20sp</item>
+        <item name="android:textSize">@dimen/schedjoules_toolbar_title_font_size</item>
     </style>
 
 </resources>

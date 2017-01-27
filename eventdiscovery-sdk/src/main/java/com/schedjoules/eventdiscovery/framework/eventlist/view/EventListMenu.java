@@ -58,11 +58,6 @@ public final class EventListMenu implements OnCreateOptionsMenuFragment, OnOptio
             mListener.onUpButtonClick();
             return true;
         }
-        else if (item.getItemId() == R.id.schedjoules_event_list_menu_location)
-        {
-            mListener.onLocationMenuIconClick();
-            return true;
-        }
         else if (item.getItemId() == R.id.schedjoules_event_list_menu_feedback)
         {
             mListener.onFeedbackMenuClick();
@@ -75,8 +70,6 @@ public final class EventListMenu implements OnCreateOptionsMenuFragment, OnOptio
     public interface Listener
     {
         void onUpButtonClick();
-
-        void onLocationMenuIconClick();
 
         void onFeedbackMenuClick();
     }
