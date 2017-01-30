@@ -20,6 +20,7 @@ package com.schedjoules.eventdiscovery.framework.eventlist.controller;
 import android.os.Handler;
 import android.os.Looper;
 
+import com.android.annotations.VisibleForTesting;
 import com.schedjoules.eventdiscovery.framework.eventlist.items.DateHeaderItem;
 import com.schedjoules.eventdiscovery.framework.eventlist.items.EventItem;
 import com.schedjoules.eventdiscovery.framework.list.ListItem;
@@ -30,6 +31,7 @@ import org.dmfs.rfc5545.DateTime;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ListIterator;
 
 import static com.schedjoules.eventdiscovery.framework.eventlist.controller.ScrollDirection.BOTTOM;
 import static com.schedjoules.eventdiscovery.framework.eventlist.controller.ScrollDirection.TOP;
@@ -44,14 +46,21 @@ public final class EventListItemsImpl implements EventListItems
 {
     private final List<ListItem> mItems = new ArrayList<>();
 
-    private final Handler mainHandler;
+    private final Handler mMainHandler;
 
     private ThirdPartyAdapterNotifier mAdapterNotifier;
 
 
     public EventListItemsImpl()
     {
-        mainHandler = new Handler(Looper.getMainLooper());
+        this(new Handler(Looper.getMainLooper()));
+    }
+
+
+    @VisibleForTesting
+    EventListItemsImpl(Handler mainHandler)
+    {
+        mMainHandler = mainHandler;
     }
 
 
@@ -82,7 +91,7 @@ public final class EventListItemsImpl implements EventListItems
     public void addSpecialItemPost(final ListItem specialItem, final ScrollDirection direction)
     {
         // Posting is needed otherwise it can get added in the same loop, resulting in pushing the list down
-        mainHandler.postDelayed(new Runnable()
+        mMainHandler.postDelayed(new Runnable()
         {
             @Override
             public void run()
@@ -218,26 +227,28 @@ public final class EventListItemsImpl implements EventListItems
     }
 
 
-    private DateHeaderItem getLastDateHeader(List<ListItem> newItems)
+    private DateHeaderItem getLastDateHeader(List<ListItem> items)
     {
-        for (int i = newItems.size() - 1; i >= 0; i--)
+        ListIterator<ListItem> listIterator = items.listIterator(items.size());
+        while (listIterator.hasPrevious())
         {
-            if (newItems.get(i) instanceof DateHeaderItem)
+            ListItem previous = listIterator.previous();
+            if (previous instanceof DateHeaderItem)
             {
-                return (DateHeaderItem) newItems.get(i);
+                return (DateHeaderItem) previous;
             }
         }
         return null;
     }
 
 
-    private DateHeaderItem getFirstDateHeader(List<ListItem> newItems)
+    private DateHeaderItem getFirstDateHeader(List<ListItem> items)
     {
-        for (int i = 0; i < newItems.size(); i++)
+        for (ListItem item : items)
         {
-            if (newItems.get(i) instanceof DateHeaderItem)
+            if (item instanceof DateHeaderItem)
             {
-                return (DateHeaderItem) newItems.get(i);
+                return (DateHeaderItem) item;
             }
         }
         return null;

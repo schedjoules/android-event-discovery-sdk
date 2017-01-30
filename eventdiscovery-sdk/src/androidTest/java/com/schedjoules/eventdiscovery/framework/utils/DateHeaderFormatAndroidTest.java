@@ -43,6 +43,7 @@ import static junit.framework.Assert.assertEquals;
  *
  * @author Gabor Keszthelyi
  */
+// TODO low prio - tests depend on actual year now, will fail in 2018
 @RunWith(AndroidJUnit4.class)
 public final class DateHeaderFormatAndroidTest
 {
@@ -73,9 +74,9 @@ public final class DateHeaderFormatAndroidTest
 
         assertEquals("Today", dateHeaderText(DateTime.now()));
         assertEquals("Tomorrow", dateHeaderText(DateTime.now().addDuration(new Duration(1, 1, 0))));
-        assertEquals("Mon, October 24", dateHeaderText(new DateTime(2016, 10 - 1, 24, 23, 44, 33)));
-        assertEquals("Tue, October 18", dateHeaderText(new DateTime(2016, 10 - 1, 18, 0, 44, 33)));
-        assertEquals("Sun, January 1, 2017", dateHeaderText(new DateTime(2017, 0, 1, 0, 44, 33)));
+        assertEquals("Tue, October 24", dateHeaderText(new DateTime(2017, 10 - 1, 24, 23, 44, 33)));
+        assertEquals("Wed, October 18", dateHeaderText(new DateTime(2017, 10 - 1, 18, 0, 44, 33)));
+        assertEquals("Mon, January 1, 2018", dateHeaderText(new DateTime(2018, 0, 1, 0, 44, 33)));
     }
 
 
@@ -87,28 +88,9 @@ public final class DateHeaderFormatAndroidTest
 
         assertEquals("Today", dateHeaderText(DateTime.now()));
         assertEquals("Tomorrow", dateHeaderText(DateTime.now().addDuration(new Duration(1, 1, 0))));
-        assertEquals("Tue, October 25", dateHeaderText(new DateTime(2016, 10 - 1, 24, 23, 44, 33)));
-        assertEquals("Tue, October 18", dateHeaderText(new DateTime(2016, 10 - 1, 18, 0, 44, 33)));
-        assertEquals("Sun, January 1, 2017", dateHeaderText(new DateTime(2017, 0, 1, 0, 44, 33)));
-    }
-
-
-    @Test
-    public void testFormat_UTC1_USooo()
-    {
-        TimeZone.setDefault(TimeZone.getTimeZone("Europe/Amsterdam"));
-        setLocale(Locale.US);
-
-        DateHeaderItemView view = new DateHeaderItemView(mContext, null);
-        new DateHeaderItem(DateTime.now()).bindDataTo(view);
-        CharSequence text = view.getText();
-        assertEquals("Today", text);
-
-        assertEquals("Today", dateHeaderText(DateTime.now()));
-        assertEquals("Tomorrow", dateHeaderText(DateTime.now().addDuration(new Duration(1, 1, 0))));
-        assertEquals("Tue, October 25", dateHeaderText(new DateTime(2016, 10 - 1, 24, 23, 44, 33)));
-        assertEquals("Tue, October 18", dateHeaderText(new DateTime(2016, 10 - 1, 18, 0, 44, 33)));
-        assertEquals("Sun, January 1, 2017", dateHeaderText(new DateTime(2017, 0, 1, 0, 44, 33)));
+        assertEquals("Wed, October 25", dateHeaderText(new DateTime(2017, 10 - 1, 24, 23, 44, 33)));
+        assertEquals("Wed, October 18", dateHeaderText(new DateTime(2017, 10 - 1, 18, 0, 44, 33)));
+        assertEquals("Mon, January 1, 2018", dateHeaderText(new DateTime(2018, 0, 1, 0, 44, 33)));
     }
 
 
@@ -120,9 +102,9 @@ public final class DateHeaderFormatAndroidTest
 
         assertEquals("Vandaag", dateHeaderText(DateTime.now()));
         assertEquals("Morgen", dateHeaderText(DateTime.now().addDuration(new Duration(1, 1, 0))));
-        assertEquals("di 25 oktober", dateHeaderText(new DateTime(2016, 10 - 1, 24, 23, 44, 33)));
-        assertEquals("di 18 oktober", dateHeaderText(new DateTime(2016, 10 - 1, 18, 0, 44, 33)));
-        assertEquals("zo 1 januari 2017", dateHeaderText(new DateTime(2017, 0, 1, 0, 44, 33)));
+        assertEquals("wo 25 oktober", dateHeaderText(new DateTime(2017, 10 - 1, 24, 23, 44, 33)));
+        assertEquals("wo 18 oktober", dateHeaderText(new DateTime(2017, 10 - 1, 18, 0, 44, 33)));
+        assertEquals("ma 1 januari 2018", dateHeaderText(new DateTime(2018, 0, 1, 0, 44, 33)));
     }
 
 
@@ -134,9 +116,9 @@ public final class DateHeaderFormatAndroidTest
 
         assertEquals("Heute", dateHeaderText(DateTime.now()));
         assertEquals("Morgen", dateHeaderText(DateTime.now().addDuration(new Duration(1, 1, 0))));
-        assertEquals("Di., 25. Oktober", dateHeaderText(new DateTime(2016, 10 - 1, 24, 23, 44, 33)));
-        assertEquals("Di., 18. Oktober", dateHeaderText(new DateTime(2016, 10 - 1, 18, 0, 44, 33)));
-        assertEquals("So., 1. Januar 2017", dateHeaderText(new DateTime(2017, 0, 1, 0, 44, 33)));
+        assertEquals("Mi., 25. Oktober", dateHeaderText(new DateTime(2017, 10 - 1, 24, 23, 44, 33)));
+        assertEquals("Mi., 18. Oktober", dateHeaderText(new DateTime(2017, 10 - 1, 18, 0, 44, 33)));
+        assertEquals("Mo., 1. Januar 2018", dateHeaderText(new DateTime(2018, 0, 1, 0, 44, 33)));
     }
 
 

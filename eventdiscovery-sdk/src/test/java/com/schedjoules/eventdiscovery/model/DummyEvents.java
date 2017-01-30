@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 SchedJoules
+ * Copyright 2016 SchedJoules
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery.framework.model;
+package com.schedjoules.eventdiscovery.model;
 
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -24,12 +24,10 @@ import android.util.Pair;
 import com.schedjoules.client.ApiQuery;
 import com.schedjoules.client.eventsdiscovery.Envelope;
 import com.schedjoules.client.eventsdiscovery.Event;
-import com.schedjoules.client.eventsdiscovery.Location;
 import com.schedjoules.client.eventsdiscovery.ResultPage;
 import com.schedjoules.client.eventsdiscovery.queries.SimpleEventsDiscovery;
 import com.schedjoules.eventdiscovery.framework.eventlist.controller.ScrollDirection;
 
-import org.dmfs.httpessentials.types.Link;
 import org.dmfs.rfc5545.DateTime;
 import org.dmfs.rfc5545.Duration;
 
@@ -59,15 +57,17 @@ Use in EventListDownloadTask.doInBackgroundWithException():
 */
 public final class DummyEvents
 {
-    static final int HOURS_BETWEEN_EVENTS = 5;
-    static final int NO_OF_EVENTS_PER_PAGE = 1;
     private static final String TAG = "Network";
     private static final DateFormat MEDIUM_LONG_DATE_FORMAT = new SimpleDateFormat("EEE, dd MMM yyyy",
             Locale.getDefault());
+
     static Map<ScrollDirection, Integer> pageLimits = new HashMap<>();
     static Map<ScrollDirection, Integer> eventCounters = new HashMap<>();
     static Map<ScrollDirection, Integer> pageCounters = new HashMap<>();
     static Map<ScrollDirection, Pair<Integer, Integer>> errorOccurrences = new HashMap<>();
+
+    static final int HOURS_BETWEEN_EVENTS = 5;
+    static final int NO_OF_EVENTS_PER_PAGE = 1;
 
     static
     {
@@ -242,70 +242,6 @@ public final class DummyEvents
         public Event payload()
         {
             return mEvent;
-        }
-    }
-
-
-    private static final class DummyEvent implements Event
-    {
-
-        private final String mTitle;
-        private final DateTime mStart;
-
-
-        private DummyEvent(String title, DateTime start)
-        {
-            mTitle = title;
-            mStart = start;
-        }
-
-
-        @Override
-        public String uid()
-        {
-            return "dummy uid";
-        }
-
-
-        @Override
-        public DateTime start()
-        {
-            return mStart;
-        }
-
-
-        @Override
-        public Duration duration()
-        {
-            return new Duration(1, 0, 2, 0, 0);
-        }
-
-
-        @Override
-        public String title()
-        {
-            return mTitle;
-        }
-
-
-        @Override
-        public String description()
-        {
-            return "dummy desc";
-        }
-
-
-        @Override
-        public Iterable<Location> locations()
-        {
-            return Collections.emptyList();
-        }
-
-
-        @Override
-        public Iterable<Link> links()
-        {
-            return Collections.emptyList();
         }
     }
 
