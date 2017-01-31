@@ -20,8 +20,17 @@
                     android:id="@+id/schedjoules_event_list_toolbar"
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
-                    app:titleTextAppearance="@style/SchedJoules_ToolbarTitle"
-                    app:popupTheme="@style/SchedJoules_AppTheme.PopupOverlay"/>
+                    app:popupTheme="@style/SchedJoules_AppTheme.PopupOverlay">
+
+                <TextView
+                        android:id="@+id/schedjoules_event_list_toolbar_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:maxLines="1"
+                        android:ellipsize="middle"
+                        style="@style/SchedJoules_ToolbarTitle"/>
+
+            </android.support.v7.widget.Toolbar>
 
         </android.support.design.widget.AppBarLayout>
 

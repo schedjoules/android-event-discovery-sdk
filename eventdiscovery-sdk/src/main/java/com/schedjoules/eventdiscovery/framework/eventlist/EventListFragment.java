@@ -31,6 +31,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.schedjoules.client.eventsdiscovery.GeoLocation;
 import com.schedjoules.client.insights.steps.Screen;
@@ -54,6 +55,7 @@ import com.schedjoules.eventdiscovery.framework.location.SharedPrefLastSelectedP
 import com.schedjoules.eventdiscovery.framework.location.model.GeoPlace;
 import com.schedjoules.eventdiscovery.framework.utils.FutureServiceConnection;
 import com.schedjoules.eventdiscovery.framework.utils.InsightsTask;
+import com.schedjoules.eventdiscovery.framework.widgets.TextWithIcon;
 import com.schedjoules.eventdiscovery.service.ApiService;
 
 import org.dmfs.httpessentials.types.StringToken;
@@ -81,7 +83,7 @@ public final class EventListFragment extends BaseFragment implements PlaceSelect
     private ActivityForResultPlaceSelection mLocationSelection;
     private LastSelectedPlace mLastSelectedPlace;
 
-    private Toolbar mToolbar;
+    private TextView mToolbarTitle;
     private EventListMenu mMenu;
 
     private boolean mIsInitializing;
@@ -125,8 +127,7 @@ public final class EventListFragment extends BaseFragment implements PlaceSelect
         mMenu = new EventListMenu(this);
         setHasOptionsMenu(true);
 
-        mToolbar = views.schedjoulesEventListToolbar;
-        setupToolbar();
+        setupToolbar(views);
 
         mListItemsProvider.setBackgroundMessageUI(
                 new EventListBackgroundMessage(views.schedjoulesEventListBackgroundMessage));
@@ -148,10 +149,16 @@ public final class EventListFragment extends BaseFragment implements PlaceSelect
     }
 
 
-    private void setupToolbar()
+    private void setupToolbar(SchedjoulesFragmentEventListBinding views)
     {
-        mToolbar.setTitle(mLastSelectedPlace.get().namedPlace().name());
-        mToolbar.setOnClickListener(new View.OnClickListener()
+        Toolbar toolbar = views.schedjoulesEventListToolbar;
+        CharSequence lastSelectedPlace = mLastSelectedPlace.get().namedPlace().name();
+        toolbar.setTitle(""); // Need to set it to empty, otherwise the activity label is set automatically
+
+        mToolbarTitle = views.schedjoulesEventListToolbarTitle;
+        mToolbarTitle.setText(
+                new TextWithIcon(getContext(), lastSelectedPlace, R.drawable.schedjoules_ic_arrow_drop_down_white));
+        mToolbarTitle.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
@@ -161,17 +168,16 @@ public final class EventListFragment extends BaseFragment implements PlaceSelect
         });
 
         BaseActivity activity = (BaseActivity) getActivity();
-        activity.setSupportActionBar(mToolbar);
+        activity.setSupportActionBar(toolbar);
 
         Resources res = activity.getResources();
+        toolbar.setContentInsetsAbsolute(res.getDimensionPixelSize(R.dimen.schedjoules_list_item_horizontal_margin),
+                toolbar.getContentInsetRight());
+
         if (res.getBoolean(R.bool.schedjoules_enableBackArrowOnEventListScreen))
         {
             //noinspection ConstantConditions
             activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        }
-        else
-        {
-            mToolbar.setTitleMarginStart(res.getDimensionPixelSize(R.dimen.schedjoules_list_item_horizontal_margin));
         }
     }
 
@@ -230,13 +236,6 @@ public final class EventListFragment extends BaseFragment implements PlaceSelect
 
 
     @Override
-    public void onLocationMenuIconClick()
-    {
-        mLocationSelection.initiateSelection();
-    }
-
-
-    @Override
     public void onFeedbackMenuClick()
     {
         new ExternalUrlFeedbackForm().show(getActivity());
@@ -254,7 +253,8 @@ public final class EventListFragment extends BaseFragment implements PlaceSelect
     public void onPlaceSelected(GeoPlace result)
     {
         mLastSelectedPlace.update(result);
-        mToolbar.setTitle(result.namedPlace().name());
+        CharSequence name = result.namedPlace().name();
+        mToolbarTitle.setText(new TextWithIcon(getContext(), name, R.drawable.schedjoules_ic_arrow_drop_down_white));
         mListItemsProvider.loadEvents(result.geoLocation(), startAfter());
     }
 

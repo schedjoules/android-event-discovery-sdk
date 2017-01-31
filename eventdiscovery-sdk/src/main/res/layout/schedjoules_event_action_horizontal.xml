@@ -13,7 +13,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_width="@dimen/schedjoules_event_detail_item_icon"
             android:layout_height="@dimen/schedjoules_event_detail_item_icon"
-            tools:src="@drawable/schedjoules_ic_menu_location_selection"/>
+            tools:src="@drawable/schedjoules_ic_action_buy"/>
 
     <TextView
             android:id="@+id/schedjoules_small_event_action_name"
