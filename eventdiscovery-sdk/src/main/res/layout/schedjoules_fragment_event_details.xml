@@ -67,14 +67,27 @@
             </LinearLayout>
 
         </android.support.v4.widget.NestedScrollView>
-
-        <!-- Note, adding layout_width and layout_height is mandatory, otherwise the other attributes won't take effect -->
-        <include layout="@layout/schedjoules_powered_by_footer"
-                 android:layout_height="wrap_content"
-                 android:layout_width="match_parent"
-                 app:layout_anchor="@id/schedjoules_footer_placeholder"
-                 app:layout_anchorGravity="bottom|center_horizontal"
-                 app:layout_behavior="com.schedjoules.eventdiscovery.framework.widgets.FooterBehavior"/>
+        <com.schedjoules.eventdiscovery.framework.microfragments.eventdetails.fragments.views.SchedJoulesFooterView
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/schedjoules_footer"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:paddingLeft="@dimen/schedjoules_activity_horizontal_margin"
+                android:paddingRight="@dimen/schedjoules_activity_horizontal_margin"
+                android:paddingStart="@dimen/schedjoules_activity_horizontal_margin"
+                android:paddingEnd="@dimen/schedjoules_activity_horizontal_margin"
+                android:paddingTop="6dp"
+                android:paddingBottom="6dp"
+                android:background="#f0f0f0"
+                android:gravity="right|end|center"
+                android:layout_gravity="top|end|right"
+                android:drawableRight="@drawable/schedjoules_footer_powered_by"
+                android:drawableEnd="@drawable/schedjoules_footer_powered_by"
+                app:layout_anchor="@id/schedjoules_footer_placeholder"
+                app:layout_anchorGravity="bottom|center_horizontal"
+                app:layout_behavior="com.schedjoules.eventdiscovery.framework.widgets.FooterBehavior"
+                android:textSize="0sp"/>
 
     </android.support.design.widget.CoordinatorLayout>
 </layout>
