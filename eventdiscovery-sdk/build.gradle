@@ -38,6 +38,13 @@ android {
                 exclude 'META-INF/LGPL2.1'
             }
         }
+        String sharedTestDir = 'src/sharedTest/java'
+        test {
+            java.srcDir sharedTestDir
+        }
+        androidTest {
+            java.srcDir sharedTestDir
+        }
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_7
@@ -69,5 +76,5 @@ dependencies {
     androidTestCompile 'com.android.support:support-annotations:23.4.0'
     androidTestCompile 'com.android.support.test:runner:0.5'
     androidTestCompile 'com.android.support.test:rules:0.5'
-
+    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2'
 }

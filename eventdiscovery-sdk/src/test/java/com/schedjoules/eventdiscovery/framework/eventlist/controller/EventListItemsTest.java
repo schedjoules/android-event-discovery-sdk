@@ -23,7 +23,7 @@ import com.schedjoules.eventdiscovery.framework.eventlist.items.DateHeaderItem;
 import com.schedjoules.eventdiscovery.framework.eventlist.items.EventItem;
 import com.schedjoules.eventdiscovery.framework.list.ListItem;
 import com.schedjoules.eventdiscovery.framework.list.flexibleadapter.ThirdPartyAdapterNotifier;
-import com.schedjoules.eventdiscovery.model.DummyEvent;
+import com.schedjoules.eventdiscovery.testutils.DummyEvent;
 
 import org.dmfs.rfc5545.DateTime;
 import org.junit.Before;
@@ -39,6 +39,8 @@ import static com.schedjoules.eventdiscovery.framework.eventlist.controller.Scro
 import static com.schedjoules.eventdiscovery.framework.eventlist.controller.ScrollDirection.TOP;
 import static junit.framework.Assert.assertSame;
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 
 /**
@@ -86,7 +88,7 @@ public class EventListItemsTest
         mUnderTest.mergeNewItems(newItems, BOTTOM);
 
         // ASSERT
-        Mockito.verify(mAdapterNotifier, Mockito.times(1)).notifyNewItemsAdded(newItems, 0);
+        verify(mAdapterNotifier, times(1)).notifyNewItemsAdded(newItems, 0);
         assertSameElementsInProvider(newItems);
         assertHeaderForItem(1, h1orig);
         assertHeaderForItem(2, h1orig);
@@ -109,8 +111,8 @@ public class EventListItemsTest
         mUnderTest.mergeNewItems(newItemsTop, TOP);
 
         // ASSERT
-        Mockito.verify(mAdapterNotifier, Mockito.times(1)).notifyItemRemoved(0);
-        Mockito.verify(mAdapterNotifier, Mockito.times(1))
+        verify(mAdapterNotifier, times(1)).notifyItemRemoved(0);
+        verify(mAdapterNotifier, times(1))
                 .notifyNewItemsAdded(Arrays.asList(h1orig, eMinus1, eMinus2), 0);
         assertSameElementsInProvider(Arrays.<ListItem>asList(h1orig, eMinus1, eMinus2, e1, e2));
         assertHeaderForItem(1, h1orig);
@@ -141,7 +143,7 @@ public class EventListItemsTest
         mUnderTest.mergeNewItems(newItems, BOTTOM);
 
         // ASSERT
-        Mockito.verify(mAdapterNotifier, Mockito.times(1)).notifyNewItemsAdded(newItems, 0);
+        verify(mAdapterNotifier, times(1)).notifyNewItemsAdded(newItems, 0);
         assertSameElementsInProvider(newItems);
         assertHeaderForItem(1, h1orig);
         assertHeaderForItem(2, h1orig);
@@ -164,7 +166,7 @@ public class EventListItemsTest
         mUnderTest.mergeNewItems(newItemsBottom, BOTTOM);
 
         // ASSERT
-        Mockito.verify(mAdapterNotifier, Mockito.times(1)).notifyNewItemsAdded(Arrays.asList(ePlus1, ePlus2), 3);
+        verify(mAdapterNotifier, times(1)).notifyNewItemsAdded(Arrays.asList(ePlus1, ePlus2), 3);
         assertSameElementsInProvider(Arrays.<ListItem>asList(h1orig, e1, e2, ePlus1, ePlus2));
         assertHeaderForItem(1, h1orig);
         assertHeaderForItem(2, h1orig);

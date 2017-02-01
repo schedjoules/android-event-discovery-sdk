@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 SchedJoules
+ * Copyright 2017 SchedJoules
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -24,9 +24,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.schedjoules.client.insights.steps.EntryPoint;
+import com.schedjoules.eventdiscovery.demo.optionals.AddToCalendarActivity;
 import com.schedjoules.eventdiscovery.discovery.BasicEventDiscovery;
 import com.schedjoules.eventdiscovery.eventdetails.UidEventDetails;
-import com.schedjoules.eventdiscovery.demo.optionals.AddToCalendarActivity;
 import com.schedjoules.eventdiscovery.framework.utils.InsightsTask;
 
 import org.dmfs.httpessentials.types.StringToken;
