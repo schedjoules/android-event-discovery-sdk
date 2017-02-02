@@ -3,10 +3,23 @@
 
     <application android:theme="@style/SchedJoules_AppTheme">
 
+        <service
+                android:name=".testutils.mockapi.MockApiService"
+                android:exported="false">
+            <intent-filter>
+                <action android:name="com.schedjoules.API"/>
+            </intent-filter>
+        </service>
+
         <activity
-                android:name=".framework.utils.TestMessageActivity"
-                android:label="Test"/>
+                android:name=".testutils.activities.TestMessageActivity"
+                android:label="Message test"/>
+
+        <activity
+                android:name=".testutils.activities.LauncherTestActivity"
+                android:label="Test launcher"/>
 
     </application>
 
 </manifest>
+

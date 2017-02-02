@@ -76,6 +76,11 @@ public final class EventListItemsImpl implements EventListItems
     @Override
     public void mergeNewItems(List<ListItem> newItems, ScrollDirection direction)
     {
+        if (newItems.isEmpty())
+        {
+            return;
+        }
+
         if (direction == BOTTOM)
         {
             mergeNewItemsBottom(newItems);

@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery.framework.utils;
+package com.schedjoules.eventdiscovery.testutils.activities;
 
 import android.content.Context;
 import android.content.Intent;

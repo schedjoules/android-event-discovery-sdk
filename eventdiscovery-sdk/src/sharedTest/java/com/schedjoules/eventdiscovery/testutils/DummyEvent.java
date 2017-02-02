@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 SchedJoules
+ * Copyright 2017 SchedJoules
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery.model;
+package com.schedjoules.eventdiscovery.testutils;
 
 import com.schedjoules.client.eventsdiscovery.Event;
 import com.schedjoules.client.eventsdiscovery.Location;
@@ -30,7 +30,7 @@ import java.util.Collections;
 /**
  * @author Gabor Keszthelyi
  */
-public class DummyEvent implements Event
+public final class DummyEvent implements Event
 {
 
     private final String mTitle;

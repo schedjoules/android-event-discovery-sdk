@@ -15,14 +15,14 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery.framework.utils;
+package com.schedjoules.eventdiscovery.framework.datetime;
 
 import android.content.Context;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.text.format.DateUtils;
 
-import com.schedjoules.eventdiscovery.framework.datetime.SmartFormattedDay;
+import com.schedjoules.eventdiscovery.testutils.activities.TestMessageActivity;
 
 import org.dmfs.rfc5545.DateTime;
 import org.junit.Before;
@@ -46,8 +46,7 @@ import static android.text.format.DateUtils.FORMAT_SHOW_WEEKDAY;
 
 
 /**
- * A test that shows various {@link DateUtils} formatted texts on the screen to be able to check and compare them
- * easily.
+ * A test that shows various {@link DateUtils} formatted texts on the screen to be able to check and compare them easily.
  *
  * @author Gabor Keszthelyi
  */
