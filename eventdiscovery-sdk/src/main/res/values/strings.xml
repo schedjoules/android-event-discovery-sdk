@@ -34,4 +34,6 @@
     <string name="schedjoules_location_selection_hint">Enter location</string>
     <string name="schedjoules_menu_feedback">Feedback</string>
 
+    <string name="schedjoules_today">Today</string>
+    <string name="schedjoules_tomorrow">Tomorrow</string>
 </resources>

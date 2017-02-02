@@ -18,8 +18,12 @@
 package com.schedjoules.eventdiscovery.framework.datetime;
 
 import android.content.Context;
+import android.os.Build;
 import android.support.annotation.NonNull;
+import android.support.annotation.StringRes;
 import android.text.format.DateUtils;
+
+import com.schedjoules.eventdiscovery.R;
 
 import org.dmfs.rfc5545.DateTime;
 
@@ -51,16 +55,32 @@ public final class SmartFormattedDay implements FormattedDateTime
     public CharSequence value(Context context)
     {
         long timestamp = mDateTime.getTimestamp();
-        if (DateUtils.isToday(timestamp) || DateUtils.isToday(timestamp - DAY_IN_MILLIS)) // For "Today" and "Tomorrow"
+
+        if (DateUtils.isToday(timestamp))
         {
-            long nowToRelateTo = System.currentTimeMillis();
-            return DateUtils.getRelativeTimeSpanString(timestamp, nowToRelateTo, DAY_IN_MILLIS).toString();
+            return relativeDay(context, timestamp, R.string.schedjoules_today);
+        }
+        else if (DateUtils.isToday(timestamp - DAY_IN_MILLIS))
+        {
+            return relativeDay(context, timestamp, R.string.schedjoules_tomorrow);
         }
         else
         {
             return DateUtils.formatDateTime(context, timestamp,
                     FORMAT_SHOW_WEEKDAY | FORMAT_SHOW_DATE | FORMAT_ABBREV_WEEKDAY);
         }
+    }
+
+
+    private CharSequence relativeDay(Context context, long timestamp, @StringRes int dayName)
+    {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR2)
+        {
+            return context.getString(dayName);
+        }
+
+        long now = System.currentTimeMillis();
+        return DateUtils.getRelativeTimeSpanString(timestamp, now, DAY_IN_MILLIS).toString();
     }
 
 }
