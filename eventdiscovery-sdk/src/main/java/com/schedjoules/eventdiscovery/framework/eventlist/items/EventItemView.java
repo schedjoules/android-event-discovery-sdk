@@ -22,7 +22,7 @@ import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -34,7 +34,7 @@ import com.schedjoules.eventdiscovery.R;
  *
  * @author Gabor Keszthelyi
  */
-public final class EventItemView extends RelativeLayout
+public final class EventItemView extends LinearLayout
 {
     private TextView mTitle;
     private TextView mTime;

@@ -28,6 +28,7 @@ import com.schedjoules.eventdiscovery.testutils.mockapi.MockApi;
 import com.schedjoules.eventdiscovery.testutils.mockapi.MockPagesSetupBuilder;
 
 import org.dmfs.rfc5545.DateTime;
+import org.dmfs.rfc5545.Duration;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -35,6 +36,7 @@ import org.junit.runner.RunWith;
 
 import java.util.concurrent.TimeUnit;
 
+import static com.schedjoules.eventdiscovery.testutils.Durations.days;
 import static com.schedjoules.eventdiscovery.testutils.Durations.hours;
 import static com.schedjoules.eventdiscovery.testutils.espresso.TestUtils.waitForMinutes;
 import static com.schedjoules.eventdiscovery.testutils.mockapi.pages.MockApiPages.empty;
@@ -48,7 +50,7 @@ import static java.util.Arrays.asList;
  *
  * @author Gabor Keszthelyi
  */
-@Suppress // Comment this out to run the manual testing
+@Suppress // Comment this annotation out to run the manual testing
 @RunWith(AndroidJUnit4.class)
 public class EventListManualAndroidTest
 {
@@ -67,18 +69,81 @@ public class EventListManualAndroidTest
 
 
     @Test
-    public void test()
+    public void testToday()
     {
         MockApi.useMockSetup(new MockPagesSetupBuilder()
                 .setFirstEventTime(DateTime.now())
                 .setIntervalBetweenEvents(hours(5))
-                .setEventsOnPagesBottom(
-                        asList(
-                                success(3), success(2), error(), error(), error(), success(3), empty()))
                 .setEventsOnPagesTop(
                         asList(
                                 empty()))
+                .setEventsOnPagesBottom(
+                        asList(
+                                success(3), success(5), success(5), success(5), error(), error(), error(), success(3), empty()))
                 .setPageLoadTime(1000)
+                .createMockPagesSetup());
+
+        new BasicEventDiscovery().start(mActivityTestRule.getActivity());
+
+        waitForMinutes(5);
+    }
+
+
+    @Test
+    public void testVarious()
+    {
+        MockApi.useMockSetup(new MockPagesSetupBuilder()
+                .setFirstEventTime(DateTime.now().addDuration(new Duration(1, 30, 0)))
+                .setIntervalBetweenEvents(hours(5))
+                .setEventsOnPagesTop(
+                        asList(
+                                success(5), error(), error(), success(2), success(4), success(4), error(), empty()))
+                .setEventsOnPagesBottom(
+                        asList(
+                                success(5), success(3), success(5), success(5), error(), error(), error(), success(3), empty()))
+                .setPageLoadTime(3000)
+                .createMockPagesSetup());
+
+        new BasicEventDiscovery().start(mActivityTestRule.getActivity());
+
+        waitForMinutes(5);
+    }
+
+
+    @Test
+    public void test_mergingItemsOnTop()
+    {
+        MockApi.useMockSetup(new MockPagesSetupBuilder()
+                .setFirstEventTime(DateTime.now().addDuration(days(10)))
+                .setIntervalBetweenEvents(hours(5))
+                .setEventsOnPagesTop(
+                        asList(
+                                success(3), success(3), success(3), success(3), success(3), success(3), empty()))
+                .setEventsOnPagesBottom(
+                        asList(
+                                success(5), empty()))
+                .setPageLoadTime(2000)
+                .createMockPagesSetup());
+
+        new BasicEventDiscovery().start(mActivityTestRule.getActivity());
+
+        waitForMinutes(5);
+    }
+
+
+    @Test
+    public void test_mergingItemsOnBottom()
+    {
+        MockApi.useMockSetup(new MockPagesSetupBuilder()
+                .setFirstEventTime(DateTime.now().addDuration(days(10)))
+                .setIntervalBetweenEvents(hours(2))
+                .setEventsOnPagesTop(
+                        asList(
+                                empty()))
+                .setEventsOnPagesBottom(
+                        asList(
+                                success(2), success(6), success(6), success(6), success(6), empty()))
+                .setPageLoadTime(2000)
                 .createMockPagesSetup());
 
         new BasicEventDiscovery().start(mActivityTestRule.getActivity());

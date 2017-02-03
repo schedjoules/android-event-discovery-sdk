@@ -20,15 +20,21 @@ package com.schedjoules.eventdiscovery.framework.eventlist.controller;
 import com.schedjoules.client.eventsdiscovery.Envelope;
 import com.schedjoules.client.eventsdiscovery.Event;
 import com.schedjoules.client.eventsdiscovery.ResultPage;
-import com.schedjoules.eventdiscovery.framework.common.DividerItem;
 import com.schedjoules.eventdiscovery.framework.eventlist.items.DateHeaderItem;
 import com.schedjoules.eventdiscovery.framework.eventlist.items.EventItem;
 import com.schedjoules.eventdiscovery.framework.list.ListItem;
+import com.schedjoules.eventdiscovery.framework.list.flexibleadapter.FlexibleHeaderItemAdapter;
+import com.schedjoules.eventdiscovery.framework.list.flexibleadapter.FlexibleSectionableAdapter;
+import com.schedjoules.eventdiscovery.framework.list.flexibleadapter.HeaderFlexibleViewHolder;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import eu.davidea.flexibleadapter.items.IFlexible;
+import eu.davidea.flexibleadapter.items.IHeader;
+import eu.davidea.flexibleadapter.items.ISectionable;
 
 
 /**
@@ -56,38 +62,37 @@ public final class EventListItemsComposer
      *
      * @return the list of {@link ListItem} that can be added to the RecyclerView
      */
-    public List<ListItem> compose(ResultPage<Envelope<Event>> resultPage)
+    public List<IFlexible> compose(ResultPage<Envelope<Event>> resultPage)
     {
         if (resultPage == null)
         {
             return new ArrayList<>(0);
         }
 
-        List<ListItem> items = new ArrayList<>();
+        List<IFlexible> items = new ArrayList<>();
 
         // DateHeaderItem is used as value object here as the key for the Map,
         // but we need the reference to the actual object as well, so the need for the Map instead of a Set.
-        Map<DateHeaderItem, DateHeaderItem> dayHeaders = new HashMap<>();
+        Map<IHeader<HeaderFlexibleViewHolder>, IHeader<HeaderFlexibleViewHolder>> headers = new HashMap<>();
 
         for (Envelope<Event> envelope : resultPage.items())
         {
             if (envelope.hasPayload())
             {
                 Event event = envelope.payload();
-//                Log.d("Network", String.format("event | %s | %s",
+//                Log.d("network", String.format("event | %s | %s",
 //                        new SimpleDateFormat("M dd HH:mm").format(event.start().getTimestamp()), event.title()));
 
-                DateHeaderItem dayHeader = new DateHeaderItem(event.start());
+                IHeader header = new FlexibleHeaderItemAdapter<>(new DateHeaderItem(event.start()));
 
-                if (!dayHeaders.containsKey(dayHeader))
+                if (!headers.containsKey(header))
                 {
-                    dayHeaders.put(dayHeader, dayHeader);
-                    items.add(dayHeader);
+                    headers.put(header, header);
                 }
-                EventItem item = new EventItem(event);
-                item.setHeader(dayHeaders.get(dayHeader));
-                items.add(item);
-                items.add(new DividerItem());
+
+                ISectionable sectionItem = new FlexibleSectionableAdapter<>(
+                        new EventItem(event), headers.get(header));
+                items.add(sectionItem);
             }
         }
 

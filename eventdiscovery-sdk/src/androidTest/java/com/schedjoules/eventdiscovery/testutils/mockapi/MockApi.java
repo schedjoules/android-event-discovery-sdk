@@ -62,11 +62,19 @@ public final class MockApi implements Api
         try
         {
             sIdlingResource.increment();
+            if (uri.toString().contains("/events?start_at_or_after="))
+            {
+                return (T) sMockResultPages.nextResultPage(ScrollDirection.BOTTOM);
+            }
             if (uri.equals(DummyResultPage.URI_TOP))
             {
                 return (T) sMockResultPages.nextResultPage(ScrollDirection.TOP);
             }
-            return (T) sMockResultPages.nextResultPage(ScrollDirection.BOTTOM);
+            else if (uri.equals(DummyResultPage.URI_BOTTOM))
+            {
+                return (T) sMockResultPages.nextResultPage(ScrollDirection.BOTTOM);
+            }
+            return null;
         }
         finally
         {

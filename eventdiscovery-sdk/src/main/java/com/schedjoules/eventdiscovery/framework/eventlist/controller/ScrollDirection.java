@@ -23,18 +23,25 @@ import com.schedjoules.eventdiscovery.R;
 import com.schedjoules.eventdiscovery.framework.eventlist.items.ErrorItem;
 import com.schedjoules.eventdiscovery.framework.eventlist.items.LoadingIndicatorItem;
 import com.schedjoules.eventdiscovery.framework.eventlist.items.NoMoreEventsItem;
+import com.schedjoules.eventdiscovery.framework.list.flexibleadapter.FlexibleItemAdapter;
 
 import java.util.EnumMap;
 
+import eu.davidea.flexibleadapter.items.IFlexible;
+
 
 /**
- * Represents a list scrolling direction.
+ * Represents an event list scrolling direction.
  *
  * @author Gabor Keszthelyi
  */
 public enum ScrollDirection
 {
-    TOP(new NoMoreEventsItem(R.string.schedjoules_event_list_no_past_events))
+    TOP(
+            new ErrorItem(),
+            new LoadingIndicatorItem(),
+            new NoMoreEventsItem(R.string.schedjoules_event_list_no_past_events))
+
             {
                 @Override
                 public <T> boolean hasComingPageQuery(EnumMap<ScrollDirection, ResultPage<T>> lastResultPages)
@@ -50,7 +57,11 @@ public enum ScrollDirection
                 }
             },
 
-    BOTTOM(new NoMoreEventsItem(R.string.schedjoules_event_list_no_future_events))
+    BOTTOM(
+            new ErrorItem(),
+            new LoadingIndicatorItem(),
+            new NoMoreEventsItem(R.string.schedjoules_event_list_no_future_events))
+
             {
                 @Override
                 public <T> boolean hasComingPageQuery(EnumMap<ScrollDirection, ResultPage<T>> lastResultPages)
@@ -66,14 +77,34 @@ public enum ScrollDirection
                 }
             };
 
-    public final ErrorItem mErrorItem = new ErrorItem();
-    public final LoadingIndicatorItem mLoadingIndicatorItem = new LoadingIndicatorItem();
-    public final NoMoreEventsItem mNoMoreEventsItem;
+    private final IFlexible mErrorItem;
+    private final IFlexible mLoadingIndicatorItem;
+    private final IFlexible mNoMoreEventsItem;
 
 
-    ScrollDirection(NoMoreEventsItem noMoreEventsItem)
+    ScrollDirection(ErrorItem errorItem, LoadingIndicatorItem loadingIndicatorItem, NoMoreEventsItem noMoreEventsItem)
     {
-        mNoMoreEventsItem = noMoreEventsItem;
+        mErrorItem = new FlexibleItemAdapter<>(errorItem);
+        mLoadingIndicatorItem = new FlexibleItemAdapter<>(loadingIndicatorItem);
+        mNoMoreEventsItem = new FlexibleItemAdapter<>(noMoreEventsItem);
+    }
+
+
+    public IFlexible errorItem()
+    {
+        return mErrorItem;
+    }
+
+
+    public IFlexible loadingIndicatorItem()
+    {
+        return mLoadingIndicatorItem;
+    }
+
+
+    public IFlexible noMoreEventsItem()
+    {
+        return mNoMoreEventsItem;
     }
 
 

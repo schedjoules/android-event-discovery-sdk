@@ -34,6 +34,7 @@ import com.schedjoules.eventdiscovery.testutils.mockapi.pages.SuccessMockApiPage
 import org.dmfs.rfc5545.DateTime;
 import org.dmfs.rfc5545.Duration;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
@@ -53,6 +54,8 @@ import static com.schedjoules.eventdiscovery.testutils.Durations.reverse;
 public final class MockResultPages
 {
     private static final String TAG = "DummyNetwork";
+
+    private static final DateFormat DATE_FORMAT = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.SHORT);
 
     private final MockPagesSetup mSetup;
 
@@ -121,10 +124,17 @@ public final class MockResultPages
 
     private Iterable<Envelope<Event>> envelopes(ScrollDirection direction, int noOfEvents)
     {
-        List<Envelope<Event>> result = new ArrayList<>();
+        List<Envelope<Event>> result = new ArrayList<>(noOfEvents);
         for (int i = 1; i <= noOfEvents; i++)
         {
-            result.add(dummyEnvelope(direction, i));
+            if (direction == BOTTOM)
+            {
+                result.add(dummyEnvelope(direction, i));
+            }
+            else
+            {
+                result.add(0, dummyEnvelope(direction, noOfEvents - i + 1));
+            }
         }
         return result;
     }
@@ -136,11 +146,11 @@ public final class MockResultPages
         DateTime start = lastDateTime.addDuration(offset(direction));
         mLastAddedEventStartTime.put(direction, start);
 
-        String title = String.format("%s P%s E%s   %s",
-                direction == BOTTOM ? "B" : "T",
+        String title = String.format("%s Page%s Event%s\n%s",
+                direction == BOTTOM ? "Bottom" : "Top",
                 mPageCounters.get(direction).get(),
                 posOfEventPerPage,
-                start.toString());
+                DATE_FORMAT.format(start.getTimestamp()));
 
         return new DummyEnvelope(new DummyEvent(title, start));
     }

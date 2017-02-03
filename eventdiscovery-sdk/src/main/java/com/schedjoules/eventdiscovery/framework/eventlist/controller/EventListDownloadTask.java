@@ -27,11 +27,12 @@ import com.schedjoules.client.eventsdiscovery.ResultPage;
 import com.schedjoules.eventdiscovery.framework.async.DiscardCheck;
 import com.schedjoules.eventdiscovery.framework.async.DiscardingSafeAsyncTask;
 import com.schedjoules.eventdiscovery.framework.async.SafeAsyncTaskCallback;
-import com.schedjoules.eventdiscovery.framework.list.ListItem;
 import com.schedjoules.eventdiscovery.framework.utils.FutureServiceConnection;
 import com.schedjoules.eventdiscovery.service.ApiService;
 
 import java.util.List;
+
+import eu.davidea.flexibleadapter.items.IFlexible;
 
 
 /**
@@ -64,7 +65,7 @@ public final class EventListDownloadTask extends
         FutureServiceConnection<ApiService> apiService = futureServiceConnection[0];
         ResultPage<Envelope<Event>> resultPage = apiService.service(1000).apiResponse(taskParam.mQuery);
 
-        List<ListItem> listItems = EventListItemsComposer.INSTANCE.compose(resultPage);
+        List<IFlexible> listItems = EventListItemsComposer.INSTANCE.compose(resultPage);
 
         return new TaskResult(listItems, resultPage);
     }
@@ -96,11 +97,11 @@ public final class EventListDownloadTask extends
     public static final class TaskResult
     {
 
-        public final List<ListItem> mListItems;
+        public final List<IFlexible> mListItems;
         public final ResultPage<Envelope<Event>> mResultPage;
 
 
-        public TaskResult(List<ListItem> listItems, ResultPage<Envelope<Event>> resultPage)
+        public TaskResult(List<IFlexible> listItems, ResultPage<Envelope<Event>> resultPage)
         {
             mListItems = listItems;
             mResultPage = resultPage;

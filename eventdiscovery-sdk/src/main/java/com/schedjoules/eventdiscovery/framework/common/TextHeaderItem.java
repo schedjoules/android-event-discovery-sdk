@@ -21,7 +21,6 @@ import android.widget.TextView;
 
 import com.schedjoules.eventdiscovery.R;
 import com.schedjoules.eventdiscovery.framework.list.ListItem;
-import com.schedjoules.eventdiscovery.framework.list.flexibleadapter.AbstractFlexibleHeader;
 
 
 /**
@@ -29,7 +28,7 @@ import com.schedjoules.eventdiscovery.framework.list.flexibleadapter.AbstractFle
  *
  * @author Gabor Keszthelyi
  */
-public final class TextHeaderItem extends AbstractFlexibleHeader<TextView> implements ListItem<TextView>
+public final class TextHeaderItem implements ListItem<TextView>
 {
 
     private final CharSequence mTitle;

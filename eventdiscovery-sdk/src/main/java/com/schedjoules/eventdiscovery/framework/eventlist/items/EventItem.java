@@ -27,7 +27,6 @@ import com.schedjoules.eventdiscovery.framework.common.BaseActivity;
 import com.schedjoules.eventdiscovery.framework.datetime.FormattedDateTime;
 import com.schedjoules.eventdiscovery.framework.datetime.ShortTime;
 import com.schedjoules.eventdiscovery.framework.list.ListItem;
-import com.schedjoules.eventdiscovery.framework.list.flexibleadapter.AbstractFlexibleSectionable;
 import com.schedjoules.eventdiscovery.framework.model.SchedJoulesLinks;
 import com.schedjoules.eventdiscovery.framework.utils.InsightsTask;
 
@@ -39,7 +38,7 @@ import org.dmfs.httpessentials.types.StringToken;
  *
  * @author Gabor Keszthelyi
  */
-public final class EventItem extends AbstractFlexibleSectionable<EventItemView> implements ListItem<EventItemView>
+public final class EventItem implements ListItem<EventItemView>
 {
     private final Event mEvent;
     private final FormattedDateTime mFormattedTime;
@@ -66,7 +65,6 @@ public final class EventItem extends AbstractFlexibleSectionable<EventItemView> 
         view.setTime(mFormattedTime.value(view.getContext()));
         if (mEvent.locations().iterator().hasNext())
         {
-            // TODO What and how to display from location(s)?
             view.setLocation(mEvent.locations().iterator().next().name());
         }
 

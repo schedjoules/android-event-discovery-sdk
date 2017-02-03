@@ -69,6 +69,7 @@ public final class MainActivity extends AppCompatActivity
     {
         new BasicEventDiscovery()
                 .withStart(DateTime.now().addDuration(new Duration(1, 10, 0)))
+//                .withStart(new DateTime(2017, 2 - 1, 26, 12, 0, 0))
                 .start(this);
     }
 

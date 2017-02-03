@@ -24,14 +24,13 @@ import com.schedjoules.eventdiscovery.framework.eventlist.view.EdgeReachScrollLi
 import com.schedjoules.eventdiscovery.framework.eventlist.view.EventListBackgroundMessage;
 import com.schedjoules.eventdiscovery.framework.eventlist.view.EventListLoadingIndicatorOverlay;
 import com.schedjoules.eventdiscovery.framework.list.ListItems;
-import com.schedjoules.eventdiscovery.framework.list.flexibleadapter.ThirdPartyAdapterNotifier;
 
 import org.dmfs.rfc5545.DateTime;
 
 
 /**
- * Controller for the event list, it responsible to initiate API request, manage states and update the {@link ListItems}
- * associated with the {@link RecyclerView}
+ * Controller for the event list, it responsible to initiate API request, manage states and update the {@link ListItems} associated with the {@link
+ * RecyclerView}
  *
  * @author Gabor Keszthelyi
  */
@@ -43,7 +42,7 @@ public interface EventListController extends EdgeReachScrollListener.Listener
      */
     void loadEvents(GeoLocation geoLocation, DateTime dateTime);
 
-    void setAdapterNotifier(ThirdPartyAdapterNotifier adapterNotifier);
+    void setAdapter(RecyclerView.Adapter adapter);
 
     void setBackgroundMessageUI(EventListBackgroundMessage backgroundMessage);
 

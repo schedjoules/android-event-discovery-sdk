@@ -6,8 +6,9 @@
     <dimen name="schedjoules_app_bar_height">200dp</dimen>
     <dimen name="schedjoules_item_width">320dp</dimen>
 
-    <dimen name="schedjoules_list_item_vertical_margin">16dp</dimen>
-    <dimen name="schedjoules_list_item_horizontal_margin">22dp</dimen>
+    <dimen name="schedjoules_list_item_padding_top">14dp</dimen>
+    <dimen name="schedjoules_list_item_padding_bottom">16dp</dimen>
+    <dimen name="schedjoules_list_item_padding_horizontal">22dp</dimen>
     <dimen name="schedjoules_list_item_image_height">64dp</dimen>
     <dimen name="schedjoules_list_item_image_width">64dp</dimen>
     <dimen name="schedjoules_list_item_default_height">96dp</dimen>

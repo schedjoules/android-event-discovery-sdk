@@ -21,7 +21,6 @@ import android.widget.TextView;
 
 import com.schedjoules.eventdiscovery.R;
 import com.schedjoules.eventdiscovery.framework.list.ListItem;
-import com.schedjoules.eventdiscovery.framework.list.flexibleadapter.AbstractFlexible;
 
 
 /**
@@ -29,7 +28,7 @@ import com.schedjoules.eventdiscovery.framework.list.flexibleadapter.AbstractFle
  *
  * @author Gabor Keszthelyi
  */
-public final class ErrorItem extends AbstractFlexible<TextView> implements ListItem<TextView>
+public final class ErrorItem implements ListItem<TextView>
 {
     @Override
     public int layoutResId()
