@@ -83,6 +83,14 @@ public final class BasicActionsService extends Service implements ActionService
 
 
     @Override
+    public int onStartCommand(Intent intent, int flags, int startId)
+    {
+        // Start the service non-sticky. We don't need it to be restarted if it's killed. It will be started automatically when any of our activities is started.
+        return START_NOT_STICKY;
+    }
+
+
+    @Override
     public final void onDestroy()
     {
         mApiServiceConnection.disconnect();

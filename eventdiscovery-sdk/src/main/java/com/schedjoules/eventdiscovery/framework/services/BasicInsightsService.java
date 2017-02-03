@@ -91,6 +91,14 @@ public final class BasicInsightsService extends Service implements InsightsServi
 
 
     @Override
+    public int onStartCommand(Intent intent, int flags, int startId)
+    {
+        // Start the service non-sticky. We don't need it to be restarted if it's killed. It will be started automatically when any of our activities is started.
+        return START_NOT_STICKY;
+    }
+
+
+    @Override
     public final void onDestroy()
     {
         mSession = new Closed(mSession);
