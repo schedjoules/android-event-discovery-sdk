@@ -9,12 +9,14 @@
                 android:name=".framework.activities.MicroFragmentHostActivity"
                 android:exported="false"
                 android:enabled="true"
+                android:hardwareAccelerated="true"
                 android:theme="@style/SchedJoules_AppTheme.NoActionBar">
         </activity>
         <activity
                 android:name=".framework.activities.FeedbackMicroFragmentHostActivity"
                 android:exported="false"
                 android:enabled="true"
+                android:hardwareAccelerated="true"
                 android:theme="@style/SchedJoules_AppTheme.NoActionBar">
         </activity>
 
@@ -23,6 +25,7 @@
                 android:theme="@style/SchedJoules_AppTheme.NoActionBar"
                 android:exported="false"
                 android:enabled="true"
+                android:hardwareAccelerated="true"
                 android:label="@string/schedjoules_title_event_list">
             <intent-filter>
                 <action android:name="schedjoules.intent.action.EVENT_DISCOVERY"/>
@@ -66,6 +69,7 @@
                 android:exported="false"
                 android:enabled="true"
                 android:windowSoftInputMode="adjustPan|stateAlwaysVisible"
+                android:hardwareAccelerated="true"
                 android:theme="@style/SchedJoules_AppTheme.NoActionBar"/>
 
         <service
