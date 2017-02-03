@@ -50,7 +50,7 @@ public final class ApiService extends AbstractApiService
                                                 new DefaultRetryPolicy(3)),
                                         // make sure to use the BuildConfig of your application
                                         new VersionedProduct(BuildConfig.APPLICATION_ID, BuildConfig.VERSION_NAME)),
-                                BuildConfig.DEBUG, "EventDiscovery-Request");
+                                BuildConfig.LOG_REQUESTS, "EventDiscovery-Request");
 
                 return new SchedJoulesApi(client, executor, new SharedPrefsUserIdentifier(context));
             }

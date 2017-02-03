@@ -1,8 +1,8 @@
 apply plugin: 'com.android.application'
 
-Properties properties = new Properties()
-properties.load(project.rootProject.file('local.properties').newDataInputStream())
-def googlePlacesApiKey = properties.getProperty('google.places.api.key')
+Properties localProperties = new Properties()
+localProperties.load(project.rootProject.file('local.properties').newDataInputStream())
+def googlePlacesApiKey = localProperties.getProperty('google.places.api.key')
 if (googlePlacesApiKey == null) {
     // use a dummy key instead of throwing an Exception to allow automated build on Travis, Jenkins, Jitpack et al.
     googlePlacesApiKey = "replace-me"
@@ -26,6 +26,14 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            // add BuildConfig field that tells whether to log requests or not. By default this is disabled for release builds and enabled for debug builds.
+            // to enable request logs for release builds add this line to your local.properties:
+            // request.log.enabled=true
+            buildConfigField "boolean", "LOG_REQUESTS", localProperties.getProperty("request.log.enabled", "false");
+        }
+        debug {
+            minifyEnabled false
+            buildConfigField "boolean", "LOG_REQUESTS", localProperties.getProperty("request.log.enabled", "true");
         }
     }
     dataBinding {
