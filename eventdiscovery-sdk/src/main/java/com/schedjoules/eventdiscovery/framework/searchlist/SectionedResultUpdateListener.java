@@ -15,25 +15,18 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery.framework.location.list;
-
-import com.schedjoules.eventdiscovery.framework.location.model.GeoPlace;
-
+package com.schedjoules.eventdiscovery.framework.searchlist;
 
 /**
- * The controller for the list of places, it initiates the network queries, updates the list items, and notifies when
- * user selected a place.
+ * Listener interface for components that handle {@link ResultUpdate} marked with section numbers.
  *
  * @author Gabor Keszthelyi
  */
-public interface PlaceListController
+public interface SectionedResultUpdateListener<T>
 {
 
-    void query(String query);
-
-    interface PlaceSelectedListener
-    {
-        void onPlaceSelected(GeoPlace geoPlace);
-    }
-
+    /**
+     * Called when a {@link SearchModule} with the given <code>sectionNumber</code> requests the given update to its section.
+     */
+    void onUpdate(int sectionNumber, ResultUpdate<T> update);
 }

@@ -23,9 +23,9 @@ import android.content.res.Resources;
 import android.os.Build;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
+import android.widget.TextView;
 
 import com.schedjoules.eventdiscovery.framework.eventlist.items.DateHeaderItem;
-import com.schedjoules.eventdiscovery.framework.eventlist.items.DateHeaderItemView;
 
 import org.dmfs.rfc5545.DateTime;
 import org.dmfs.rfc5545.Duration;
@@ -80,7 +80,7 @@ public final class DateHeaderFormatAndroidTest
 
     private CharSequence dateHeaderText(DateTime eventStartTime)
     {
-        DateHeaderItemView view = new DateHeaderItemView(mContext, null);
+        TextView view = new TextView(mContext);
         new DateHeaderItem(eventStartTime).bindDataTo(view);
         return view.getText();
     }

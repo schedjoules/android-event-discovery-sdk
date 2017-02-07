@@ -36,4 +36,6 @@
 
     <string name="schedjoules_today">Today</string>
     <string name="schedjoules_tomorrow">Tomorrow</string>
+
+    <string name="schedjoules_location_picker_place_suggestions_title">Suggestions</string>
 </resources>

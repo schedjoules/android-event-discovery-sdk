@@ -31,22 +31,26 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.places.Places;
 import com.schedjoules.eventdiscovery.R;
 import com.schedjoules.eventdiscovery.databinding.SchedjoulesFragmentLocationSelectionBinding;
 import com.schedjoules.eventdiscovery.framework.EventIntents;
 import com.schedjoules.eventdiscovery.framework.common.BaseActivity;
 import com.schedjoules.eventdiscovery.framework.common.BaseFragment;
 import com.schedjoules.eventdiscovery.framework.list.GeneralMultiTypeAdapter;
-import com.schedjoules.eventdiscovery.framework.list.changes.BasicChangeableListItems;
-import com.schedjoules.eventdiscovery.framework.list.changes.ChangeableListItems;
-import com.schedjoules.eventdiscovery.framework.location.list.PlaceListController;
-import com.schedjoules.eventdiscovery.framework.location.list.PlaceListControllerImpl;
+import com.schedjoules.eventdiscovery.framework.list.ListItemSelectionAction;
 import com.schedjoules.eventdiscovery.framework.location.model.GeoPlace;
 import com.schedjoules.eventdiscovery.framework.location.model.ParcelableGeoPlace;
+import com.schedjoules.eventdiscovery.framework.searchlist.BasicSearchListItems;
+import com.schedjoules.eventdiscovery.framework.searchlist.CompositeSearchModule;
+import com.schedjoules.eventdiscovery.framework.searchlist.SearchListItems;
+import com.schedjoules.eventdiscovery.framework.searchlist.SearchModule;
+import com.schedjoules.eventdiscovery.framework.searchlist.SearchModulesFactory;
+import com.schedjoules.eventdiscovery.framework.searchlist.delaying.UpdateDelaying;
 import com.schedjoules.eventdiscovery.framework.widgets.AbstractTextWatcher;
 import com.schedjoules.eventdiscovery.framework.widgets.HideKeyboardActionListener;
+
+import java.util.Arrays;
+import java.util.List;
 
 
 /**
@@ -54,11 +58,11 @@ import com.schedjoules.eventdiscovery.framework.widgets.HideKeyboardActionListen
  *
  * @author Gabor Keszthelyi
  */
-public final class LocationSelectionFragment extends BaseFragment implements PlaceListController.PlaceSelectedListener
+public final class LocationSelectionFragment extends BaseFragment
 {
-    private GoogleApiClient mGoogleApiClient;
-    private PlaceListController mPlaceListController;
-    private ChangeableListItems mSuggestionItems;
+    private SearchModule mCompositeModule;
+    private GeneralMultiTypeAdapter mAdapter;
+    private SearchListItems mSearchListItems;
 
 
     public static Fragment newInstance()
@@ -71,25 +75,31 @@ public final class LocationSelectionFragment extends BaseFragment implements Pla
     public void onCreate(@Nullable Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setRetainInstance(true);
 
-        mGoogleApiClient = new GoogleApiClient
-                .Builder(getContext().getApplicationContext())
-                .addApi(Places.GEO_DATA_API)
-                .addApi(Places.PLACE_DETECTION_API)
-                .build();
-        /**
-         * TODO enableAutomanage OR manual error handling
-         * enableAutoManage() on the builder would enable automatic default error handling as well,
-         * but it's tricky to get initialization correctly with Activity and retained Fragment lifecycles.
-         * Either enable automanage or add 'manual' error handling with addOnConnectionFailedListener().
-         *
-         * See https://developers.google.com/android/reference/com/google/android/gms/common/api/GoogleApiClient.Builder.html#enableAutoManage(android.support.v4.app.FragmentActivity, com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener)
-         */
-        mGoogleApiClient.connect();
+        mSearchListItems = new UpdateDelaying(new BasicSearchListItems(), 10, getResources().getInteger(android.R.integer.config_mediumAnimTime));
+        mAdapter = new GeneralMultiTypeAdapter(mSearchListItems);
+        mSearchListItems.setAdapter(mAdapter);
 
-        mSuggestionItems = new BasicChangeableListItems();
-        mPlaceListController = new PlaceListControllerImpl(mGoogleApiClient, this, mSuggestionItems);
+        // SearchModuleFactory can be made Serializable/Parcelable so they can be passed in
+        List<SearchModule> modules = new SearchModulesFactory<>(
+                getActivity(),
+                mSearchListItems,
+                new ListItemSelectionAction<GeoPlace>()
+                {
+                    @Override
+                    public void onItemSelected(GeoPlace geoPlace)
+                    {
+                        Bundle nestedExtras = new Bundle();
+                        nestedExtras.putParcelable(EventIntents.EXTRA_GEO_PLACE, new ParcelableGeoPlace(geoPlace));
+                        Intent data = new Intent();
+                        data.putExtra("com.schedjoules.nestedExtras", nestedExtras);
+                        getActivity().setResult(Activity.RESULT_OK, data);
+                        getActivity().finish();
+                    }
+                },
+                Arrays.asList(PlaceSuggestionModule.FACTORY)
+        ).create();
+        mCompositeModule = new CompositeSearchModule(modules);
     }
 
 
@@ -102,22 +112,26 @@ public final class LocationSelectionFragment extends BaseFragment implements Pla
 
         initToolbar(views.schedjoulesLocationSelectionToolbar);
 
-        // New Adapter is needed after configuration change, otherwise activity is leaked
-        GeneralMultiTypeAdapter adapter = new GeneralMultiTypeAdapter(mSuggestionItems);
-        mSuggestionItems.setAdapter(adapter);
-
-        views.schedjoulesLocationSelectionList.setAdapter(adapter);
+        views.schedjoulesLocationSelectionList.setAdapter(mAdapter);
 
         EditText searchEditText = views.schedjoulesLocationSelectionInput;
         searchEditText.addTextChangedListener(new AbstractTextWatcher()
         {
             @Override
-            public void afterTextChanged(Editable s)
+            public void afterTextChanged(Editable editable)
             {
-                mPlaceListController.query(s.toString());
+                String newQuery = editable.toString();
+                mSearchListItems.onSearchQueryChange(newQuery);
+                mCompositeModule.onSearchQueryChange(newQuery);
             }
         });
         searchEditText.setOnEditorActionListener(new HideKeyboardActionListener());
+
+        if (savedInstanceState == null)
+        {
+            mSearchListItems.onSearchQueryChange("");
+            mCompositeModule.onSearchQueryChange("");
+        }
 
         return views.getRoot();
     }
@@ -146,24 +160,10 @@ public final class LocationSelectionFragment extends BaseFragment implements Pla
 
 
     @Override
-    public void onPlaceSelected(GeoPlace geoPlace)
-    {
-        if (getActivity() != null)
-        {
-            Bundle nestedExtras = new Bundle();
-            nestedExtras.putParcelable(EventIntents.EXTRA_GEO_PLACE, new ParcelableGeoPlace(geoPlace));
-            Intent data = new Intent();
-            data.putExtra("com.schedjoules.nestedExtras", nestedExtras);
-            getActivity().setResult(Activity.RESULT_OK, data);
-            getActivity().finish();
-        }
-    }
-
-
-    @Override
     public void onDestroy()
     {
         super.onDestroy();
-        mGoogleApiClient.disconnect();
+        mCompositeModule.shutDown();
     }
+
 }

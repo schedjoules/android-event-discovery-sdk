@@ -15,28 +15,21 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery.framework.eventlist.items;
+package com.schedjoules.eventdiscovery.framework.list.changes.nonnotifying;
 
-import android.content.Context;
-import android.util.AttributeSet;
-import android.widget.TextView;
+import java.util.List;
 
 
 /**
- * View for the date header items in the event list.
+ * {@link NonNotifyingListChange} that clears the list.
  *
  * @author Gabor Keszthelyi
  */
-public final class DateHeaderItemView extends TextView
+public final class ClearAll<T> implements NonNotifyingListChange<T>
 {
-    public DateHeaderItemView(Context context, AttributeSet attrs)
+    @Override
+    public void apply(List<T> currentItems)
     {
-        super(context, attrs);
-    }
-
-
-    public void setDateText(CharSequence dateText)
-    {
-        setText(dateText);
+        currentItems.clear();
     }
 }

@@ -15,45 +15,29 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery.framework.eventlist.items;
+package com.schedjoules.eventdiscovery.framework.common;
 
 import android.widget.TextView;
 
 import com.schedjoules.eventdiscovery.R;
-import com.schedjoules.eventdiscovery.framework.datetime.FormattedDateTime;
-import com.schedjoules.eventdiscovery.framework.datetime.SmartFormattedDay;
 import com.schedjoules.eventdiscovery.framework.list.ListItem;
 import com.schedjoules.eventdiscovery.framework.list.flexibleadapter.AbstractFlexibleHeader;
 
-import org.dmfs.rfc5545.DateTime;
-
-import java.util.TimeZone;
-
 
 /**
- * Even list item representing a date header.
+ * {@link ListItem} for a header that shows the given text.
  *
  * @author Gabor Keszthelyi
  */
-public final class DateHeaderItem extends AbstractFlexibleHeader<TextView> implements ListItem<TextView>
+public final class TextHeaderItem extends AbstractFlexibleHeader<TextView> implements ListItem<TextView>
 {
 
-    private final DateTime mLocalDay;
-
-    // Should not be used for equals()
-    private final FormattedDateTime formattedDay;
+    private final CharSequence mTitle;
 
 
-    public DateHeaderItem(DateTime dateTime)
+    public TextHeaderItem(CharSequence title)
     {
-        mLocalDay = toLocalDay(dateTime);
-        formattedDay = new SmartFormattedDay(dateTime);
-    }
-
-
-    private DateTime toLocalDay(DateTime dateTime)
-    {
-        return dateTime.shiftTimeZone(TimeZone.getDefault()).toAllDay();
+        mTitle = title;
     }
 
 
@@ -67,14 +51,7 @@ public final class DateHeaderItem extends AbstractFlexibleHeader<TextView> imple
     @Override
     public void bindDataTo(TextView view)
     {
-        view.setText(formattedDay.value(view.getContext()));
-    }
-
-
-    @Override
-    public String toString()
-    {
-        return mLocalDay.toString();
+        view.setText(mTitle);
     }
 
 
@@ -90,9 +67,9 @@ public final class DateHeaderItem extends AbstractFlexibleHeader<TextView> imple
             return false;
         }
 
-        DateHeaderItem that = (DateHeaderItem) o;
+        TextHeaderItem that = (TextHeaderItem) o;
 
-        return mLocalDay.equals(that.mLocalDay);
+        return mTitle.equals(that.mTitle);
 
     }
 
@@ -100,6 +77,13 @@ public final class DateHeaderItem extends AbstractFlexibleHeader<TextView> imple
     @Override
     public int hashCode()
     {
-        return mLocalDay.hashCode();
+        return mTitle.hashCode();
+    }
+
+
+    @Override
+    public String toString()
+    {
+        return mTitle.toString();
     }
 }

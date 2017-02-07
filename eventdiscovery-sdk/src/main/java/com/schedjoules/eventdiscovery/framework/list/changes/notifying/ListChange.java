@@ -15,22 +15,23 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery.framework.listen;
+package com.schedjoules.eventdiscovery.framework.list.changes.notifying;
 
-import android.app.Activity;
-import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
+
+import java.util.List;
 
 
 /**
- * Components that handle onCreate() lifecycle events can implement this interface.
+ * Represents a change or change set for a list displayed in a {@link RecyclerView}.
  *
  * @author Gabor Keszthelyi
  */
-public interface OnCreate
+public interface ListChange<T>
 {
 
     /**
-     * @see Activity#onCreate(Bundle)
+     * Apply the change to the given items, i.e. update this mutable list that holds the list items, and call the appropriate notifications for the adapter.
      */
-    void onCreate();
+    void apply(List<T> currentItems, RecyclerView.Adapter adapter);
 }

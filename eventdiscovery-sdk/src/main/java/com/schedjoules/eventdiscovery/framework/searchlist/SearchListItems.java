@@ -15,26 +15,20 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery.framework.list.changes;
-
-import android.support.v7.widget.RecyclerView;
+package com.schedjoules.eventdiscovery.framework.searchlist;
 
 import com.schedjoules.eventdiscovery.framework.list.ListItem;
-
-import java.util.List;
+import com.schedjoules.eventdiscovery.framework.list.ListItems;
+import com.schedjoules.eventdiscovery.framework.list.changes.notifying.ChangeableListItems;
+import com.schedjoules.eventdiscovery.framework.list.sectioned.SectionableListItem;
 
 
 /**
- * Represents a change or change set for a list displayed in a {@link RecyclerView}.
+ * Component for holding and updating most of the state associated with a search list. i.e. the list of the items, the query, the adapter.
  *
  * @author Gabor Keszthelyi
  */
-public interface ListChange
+public interface SearchListItems extends ListItems, SearchQueryInputListener,
+        SectionedResultUpdateListener<ListItem>, ChangeableListItems<SectionableListItem>
 {
-
-    /**
-     * Apply the change to the given items, i.e. update this mutable list that holds the {@link ListItem}s of the whole
-     * list, and call the appropriate notifications for the adapter.
-     */
-    void apply(List<ListItem> oldItems, RecyclerView.Adapter adapter);
 }
