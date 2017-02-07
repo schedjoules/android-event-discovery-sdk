@@ -27,4 +27,6 @@
     <string name="schedjoules_action_book_parking">Parkeren</string>
     <string name="schedjoules_action_add_to_calendar">Toevoegen aan agenda</string>
 
+    <string name="schedjoules_today">Vandaag</string>
+    <string name="schedjoules_tomorrow">Morgen</string>
 </resources>
