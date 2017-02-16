@@ -26,9 +26,8 @@ import com.google.android.gms.location.places.AutocompletePredictionBuffer;
 import com.google.android.gms.location.places.Places;
 import com.schedjoules.eventdiscovery.framework.async.SafeAsyncTask;
 import com.schedjoules.eventdiscovery.framework.async.SafeAsyncTaskCallback;
-import com.schedjoules.eventdiscovery.framework.list.ListItem;
-import com.schedjoules.eventdiscovery.framework.location.listitems.PlaceSuggestionItem;
 import com.schedjoules.eventdiscovery.framework.location.model.GooglePredictionNamedPlace;
+import com.schedjoules.eventdiscovery.framework.location.model.namedplace.NamedPlace;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +38,7 @@ import java.util.List;
  *
  * @author Gabor Keszthelyi
  */
-public final class PlaceSuggestionQueryTask extends SafeAsyncTask<String, GoogleApiClient, Void, List<ListItem>>
+public final class PlaceSuggestionQueryTask extends SafeAsyncTask<String, GoogleApiClient, Void, List<NamedPlace>>
 {
 
     private static final AutocompleteFilter CITIES_FILTER = new AutocompleteFilter.Builder()
@@ -54,26 +53,26 @@ public final class PlaceSuggestionQueryTask extends SafeAsyncTask<String, Google
 
 
     @Override
-    protected List<ListItem> doInBackgroundWithException(String query, GoogleApiClient... googleApiClients) throws Exception
+    protected List<NamedPlace> doInBackgroundWithException(String query, GoogleApiClient... googleApiClients) throws Exception
     {
         GoogleApiClient googleApiClient = googleApiClients[0];
 
         AutocompletePredictionBuffer predictionBuffer =
                 Places.GeoDataApi.getAutocompletePredictions(googleApiClient, query, null, CITIES_FILTER).await();
 
-        List<ListItem> newItems = new ArrayList<>();
+        List<NamedPlace> places = new ArrayList<>();
         for (AutocompletePrediction prediction : predictionBuffer)
         {
             AutocompletePrediction frozen = prediction.freeze();
-            newItems.add(new PlaceSuggestionItem(new GooglePredictionNamedPlace(frozen)));
+            places.add(new GooglePredictionNamedPlace(frozen));
         }
         predictionBuffer.release();
 
-        return newItems;
+        return places;
     }
 
 
-    public interface Client extends SafeAsyncTaskCallback<String, List<ListItem>>
+    public interface Client extends SafeAsyncTaskCallback<String, List<NamedPlace>>
     {
 
     }

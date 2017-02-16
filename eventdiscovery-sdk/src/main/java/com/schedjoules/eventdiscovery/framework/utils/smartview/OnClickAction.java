@@ -15,18 +15,17 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery.framework.searchlist;
+package com.schedjoules.eventdiscovery.framework.utils.smartview;
 
 /**
- * Listener interface for components that handle {@link ResultUpdate} marked with section numbers.
+ * An action that can be executed when a UI element is clicked by the user.
  *
  * @author Gabor Keszthelyi
  */
-public interface SectionedResultUpdateListener<T>
+public interface OnClickAction
 {
-
     /**
-     * Called when a {@link SearchModule} with the given <code>sectionNumber</code> requests the given update to its section.
+     * Called when the UI element has been clicked.
      */
-    void onUpdate(int sectionNumber, ResultUpdate<T> update);
+    void onClick();
 }

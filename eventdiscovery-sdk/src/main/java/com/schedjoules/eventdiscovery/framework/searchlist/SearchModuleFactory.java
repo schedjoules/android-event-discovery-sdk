@@ -19,17 +19,18 @@ package com.schedjoules.eventdiscovery.framework.searchlist;
 
 import android.app.Activity;
 
+import com.schedjoules.eventdiscovery.framework.list.ItemChosenAction;
 import com.schedjoules.eventdiscovery.framework.list.ListItem;
-import com.schedjoules.eventdiscovery.framework.list.ListItemSelectionAction;
 import com.schedjoules.eventdiscovery.framework.location.PlaceSuggestionModule;
+import com.schedjoules.eventdiscovery.framework.searchlist.resultupdates.ResultUpdateListener;
 
 
 /**
  * Factory for creating {@link SearchModule} for a search list.
  * <p>
- * Note: The reason why the {@link ListItemSelectionAction} is passed in to the {@link SearchModule} to be executed by it, instead of handling it generally
- * outside of the {@link SearchModule}, is that it may need to make extra calls when the user clicks, to fetch the actual data represented by the item. (Example
- * is {@link PlaceSuggestionModule})
+ * Note: The reason why the {@link ItemChosenAction} is passed in to the {@link SearchModule} to be executed by it, instead of handling it generally outside of
+ * the {@link SearchModule}, is that it may need to make extra calls when the user clicks, to fetch the actual data represented by the item. (Example is {@link
+ * PlaceSuggestionModule})
  *
  * @author Gabor Keszthelyi
  */
@@ -42,10 +43,10 @@ public interface SearchModuleFactory<ITEM_DATA>
      *         can be used to initiate connections/resources that the {@link SearchModule} may need
      * @param updateListener
      *         the {@link SearchModule} can use this to send update requests about its section in the list.
-     * @param itemSelectionAction
-     *         should be executed by the {@link SearchModule} when the user selects an item
+     * @param itemChosenAction
+     *         should be executed by the {@link SearchModule} when the user has chosen an item
      *
      * @return new instance of {@link SearchModule}
      */
-    SearchModule create(Activity activity, ResultUpdateListener<ListItem> updateListener, ListItemSelectionAction<ITEM_DATA> itemSelectionAction);
+    SearchModule create(Activity activity, ResultUpdateListener<ListItem> updateListener, ItemChosenAction<ITEM_DATA> itemChosenAction);
 }

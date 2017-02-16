@@ -27,6 +27,7 @@ import java.util.List;
  */
 public final class ClearAll<T> implements NonNotifyingListChange<T>
 {
+
     @Override
     public void apply(List<T> currentItems)
     {

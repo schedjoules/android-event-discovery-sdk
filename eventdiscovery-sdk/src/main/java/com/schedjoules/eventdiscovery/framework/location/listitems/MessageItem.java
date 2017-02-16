@@ -15,17 +15,30 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery.framework.utils;
+package com.schedjoules.eventdiscovery.framework.location.listitems;
+
+import com.schedjoules.eventdiscovery.R;
+import com.schedjoules.eventdiscovery.framework.list.ListItem;
+import com.schedjoules.eventdiscovery.framework.list.smart.AbstractSmartListItem;
+
 
 /**
- * General factory interface.
+ * A {@link ListItem} on the location picker that displays a message.
  *
  * @author Gabor Keszthelyi
  */
-public interface Factory<T>
+public final class MessageItem extends AbstractSmartListItem<String, MessageItemView>
 {
-    /**
-     * Create the object.
-     */
-    T create();
+
+    public MessageItem(String text)
+    {
+        super(text, R.layout.schedjoules_list_item_location_message);
+    }
+
+
+    @Override
+    protected String toStringLabel()
+    {
+        return "MessageItem";
+    }
 }

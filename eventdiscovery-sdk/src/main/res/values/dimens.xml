@@ -15,5 +15,7 @@
     <dimen name="schedjoules_event_list_progress_bar">36dp</dimen>
     <dimen name="schedjoules_event_detail_item_icon">28dp</dimen>
 
+    <dimen name="schedjoules_location_list_item_height">64dp</dimen>
+
     <dimen name="schedjoules_toolbar_title_font_size">20dp</dimen>
 </resources>

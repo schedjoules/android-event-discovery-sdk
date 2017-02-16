@@ -38,7 +38,20 @@ public abstract class SafeAsyncTask<TASK_PARAM, EXECUTE_PARAM, PROGRESS, TASK_RE
     public SafeAsyncTask(TASK_PARAM taskParam, SafeAsyncTaskCallback<TASK_PARAM, TASK_RESULT> callback)
     {
         mTaskParam = taskParam;
-        mCallback = new WeakReference<SafeAsyncTaskCallback<TASK_PARAM, TASK_RESULT>>(callback);
+        mCallback = new WeakReference<>(callback);
+    }
+
+
+    @Override
+    protected final void onPreExecute()
+    {
+        onPreExecuteWithParam(mTaskParam);
+    }
+
+
+    protected void onPreExecuteWithParam(TASK_PARAM taskParam)
+    {
+
     }
 
 

@@ -3,9 +3,9 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:minHeight="@dimen/schedjoules_location_list_item_height"
         android:focusable="true"
-        android:background="?attr/selectableItemBackground"
-        android:orientation="vertical">
+        android:background="?attr/selectableItemBackground">
 
     <TextView
             android:id="@+id/schedjoules_place_suggestion_item_name"
@@ -22,6 +22,7 @@
             android:id="@+id/schedjoules_location_suggestion_item_extra_context"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@id/schedjoules_place_suggestion_item_name"
             android:paddingLeft="24dp"
             android:paddingRight="24dp"
             android:paddingTop="1dp"
@@ -29,6 +30,10 @@
             android:textSize="12sp"
             android:gravity="left|center_vertical"/>
 
-    <include layout="@layout/schedjoules_list_item_divider"/>
+    <View
+            android:layout_height="1px"
+            android:layout_width="match_parent"
+            android:background="@color/schedjoules_divider"
+            android:layout_alignParentBottom="true"/>
 
 </com.schedjoules.eventdiscovery.framework.location.listitems.PlaceSuggestionItemView>

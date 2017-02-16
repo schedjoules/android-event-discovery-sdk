@@ -15,21 +15,18 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery.framework.searchlist;
+package com.schedjoules.eventdiscovery.framework.searchlist.predicate;
 
 /**
- * Listener interface for components that handle {@link ResultUpdate}s.
+ * A general predicate for checking whether a query is valid in a certain context or not.
  *
  * @author Gabor Keszthelyi
  */
-public interface ResultUpdateListener<T>
+public interface QueryPredicate
 {
 
     /**
-     * Called from {@link SearchModule} then it wants to update its section in the list.
-     *
-     * @param update
-     *         and update to the section of the list
+     * Tells whether the given query is valid in the given context or not.
      */
-    void onUpdate(ResultUpdate<T> update);
+    boolean isValid(String query);
 }

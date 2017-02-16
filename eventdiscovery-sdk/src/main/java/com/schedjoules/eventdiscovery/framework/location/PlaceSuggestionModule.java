@@ -22,22 +22,26 @@ import android.util.Log;
 
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.places.Places;
-import com.schedjoules.eventdiscovery.R;
 import com.schedjoules.eventdiscovery.framework.async.SafeAsyncTaskResult;
+import com.schedjoules.eventdiscovery.framework.list.ItemChosenAction;
 import com.schedjoules.eventdiscovery.framework.list.ListItem;
-import com.schedjoules.eventdiscovery.framework.list.ListItemSelectionAction;
 import com.schedjoules.eventdiscovery.framework.list.changes.nonnotifying.ClearAll;
-import com.schedjoules.eventdiscovery.framework.list.changes.nonnotifying.ReplaceAll;
+import com.schedjoules.eventdiscovery.framework.list.smart.Clickable;
 import com.schedjoules.eventdiscovery.framework.location.listitems.PlaceSuggestionItem;
 import com.schedjoules.eventdiscovery.framework.location.model.GeoPlace;
-import com.schedjoules.eventdiscovery.framework.location.model.NamedPlace;
+import com.schedjoules.eventdiscovery.framework.location.model.namedplace.Equalable;
+import com.schedjoules.eventdiscovery.framework.location.model.namedplace.NamedPlace;
 import com.schedjoules.eventdiscovery.framework.location.tasks.PlaceByIdTask;
 import com.schedjoules.eventdiscovery.framework.location.tasks.PlaceSuggestionQueryTask;
-import com.schedjoules.eventdiscovery.framework.searchlist.ResultUpdateListener;
 import com.schedjoules.eventdiscovery.framework.searchlist.SearchModule;
 import com.schedjoules.eventdiscovery.framework.searchlist.SearchModuleFactory;
-import com.schedjoules.eventdiscovery.framework.searchlist.SearchResultUpdate;
+import com.schedjoules.eventdiscovery.framework.searchlist.resultupdates.Clear;
+import com.schedjoules.eventdiscovery.framework.searchlist.resultupdates.ReplaceAll;
+import com.schedjoules.eventdiscovery.framework.searchlist.resultupdates.ResultUpdateListener;
+import com.schedjoules.eventdiscovery.framework.searchlist.resultupdates.SearchResultUpdate;
+import com.schedjoules.eventdiscovery.framework.utils.smartview.OnClickAction;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -50,17 +54,16 @@ import java.util.concurrent.TimeUnit;
  *
  * @author Gabor Keszthelyi
  */
-public final class PlaceSuggestionModule implements SearchModule, PlaceSuggestionItem.OnClickListener
+public final class PlaceSuggestionModule implements SearchModule
 {
-    public static SearchModuleFactory<GeoPlace> FACTORY = new SearchModuleFactory<GeoPlace>()
+    public static final SearchModuleFactory<GeoPlace> FACTORY = new SearchModuleFactory<GeoPlace>()
     {
         @Override
-        public SearchModule create(Activity activity, ResultUpdateListener<ListItem> updateListener, ListItemSelectionAction<GeoPlace> itemSelectionAction)
+        public SearchModule create(Activity activity, ResultUpdateListener<ListItem> updateListener, ItemChosenAction<GeoPlace> itemChosenAction)
         {
             GoogleApiClient googleApiClient = new GoogleApiClient
                     .Builder(activity)
                     .addApi(Places.GEO_DATA_API)
-                    .addApi(Places.PLACE_DETECTION_API)
                     .build();
             /**
              * TODO enableAutomanage OR manual error handling
@@ -72,8 +75,7 @@ public final class PlaceSuggestionModule implements SearchModule, PlaceSuggestio
              */
 
             googleApiClient.connect();
-            return new PlaceSuggestionModule(updateListener, itemSelectionAction, googleApiClient,
-                    activity.getString(R.string.schedjoules_location_picker_place_suggestions_title));
+            return new PlaceSuggestionModule(updateListener, itemChosenAction, googleApiClient);
         }
 
     };
@@ -81,9 +83,8 @@ public final class PlaceSuggestionModule implements SearchModule, PlaceSuggestio
     private static final String TAG = "PlaceSuggestionModule";
 
     private final ResultUpdateListener<ListItem> mUpdateListener;
-    private final ListItemSelectionAction<GeoPlace> mSelectionAction;
+    private final ItemChosenAction<GeoPlace> mItemChosenAction;
     private final GoogleApiClient mGoogleApiClient;
-    private final CharSequence mHeaderTitle;
 
     private final ExecutorService mExecutorService;
     private final PlaceSuggestionQueryTask.Client mSuggestionQueryTaskClient;
@@ -92,14 +93,12 @@ public final class PlaceSuggestionModule implements SearchModule, PlaceSuggestio
 
 
     private PlaceSuggestionModule(ResultUpdateListener<ListItem> updateListener,
-                                  ListItemSelectionAction<GeoPlace> itemSelectionAction,
-                                  GoogleApiClient googleApiClient,
-                                  CharSequence headerTitle)
+                                  ItemChosenAction<GeoPlace> itemChosenAction,
+                                  GoogleApiClient googleApiClient)
     {
         mUpdateListener = updateListener;
-        mSelectionAction = itemSelectionAction;
+        mItemChosenAction = itemChosenAction;
         mGoogleApiClient = googleApiClient;
-        mHeaderTitle = headerTitle;
 
         mJobQueue = new LinkedBlockingQueue<>();
         mExecutorService = new ThreadPoolExecutor(1, 1, 0L, TimeUnit.MILLISECONDS, mJobQueue);
@@ -117,7 +116,6 @@ public final class PlaceSuggestionModule implements SearchModule, PlaceSuggestio
     }
 
 
-    @Override
     public void onPlaceSuggestionSelected(NamedPlace namedPlace)
     {
         new PlaceByIdTask(namedPlace, mPlaceByIdTaskClient).executeOnExecutor(mExecutorService, mGoogleApiClient);
@@ -128,11 +126,18 @@ public final class PlaceSuggestionModule implements SearchModule, PlaceSuggestio
     public void onSearchQueryChange(String newQuery)
     {
         mJobQueue.clear();
-        new PlaceSuggestionQueryTask(newQuery, mSuggestionQueryTaskClient).executeOnExecutor(mExecutorService, mGoogleApiClient);
+        if (newQuery.isEmpty())
+        {
+            mUpdateListener.onUpdate(new Clear<ListItem>(newQuery));
+        }
+        else
+        {
+            new PlaceSuggestionQueryTask(newQuery, mSuggestionQueryTaskClient).executeOnExecutor(mExecutorService, mGoogleApiClient);
+        }
     }
 
 
-    private void onSuggestionsReceived(List<ListItem> newSuggestions, String query)
+    private void onSuggestionsReceived(List<NamedPlace> newSuggestions, String query)
     {
         if (newSuggestions.isEmpty())
         {
@@ -140,21 +145,23 @@ public final class PlaceSuggestionModule implements SearchModule, PlaceSuggestio
             return;
         }
 
-        for (ListItem newItem : newSuggestions)
+        List<ListItem> newItems = new ArrayList<>();
+        for (final NamedPlace namedPlace : newSuggestions)
         {
-            if (newItem instanceof PlaceSuggestionItem)
-            {
-                ((PlaceSuggestionItem) newItem).setListener(PlaceSuggestionModule.this);
-            }
+            ListItem item = new Clickable<>(
+                    new PlaceSuggestionItem<>(new Equalable(namedPlace)),
+                    new OnClickAction()
+                    {
+                        @Override
+                        public void onClick()
+                        {
+                            onPlaceSuggestionSelected(namedPlace);
+                        }
+                    }
+            );
+            newItems.add(item);
         }
-
-        // TODO Uncomment when there is another module already:
-//        if (!newSuggestions.isEmpty())
-//        {
-//            newSuggestions.add(0, new TextHeaderItem(mHeaderTitle));
-//        }
-
-        mUpdateListener.onUpdate(new SearchResultUpdate<>(new ReplaceAll<>(newSuggestions), query));
+        mUpdateListener.onUpdate(new ReplaceAll<>(newItems, query));
     }
 
 
@@ -162,7 +169,7 @@ public final class PlaceSuggestionModule implements SearchModule, PlaceSuggestio
     {
 
         @Override
-        public void onTaskFinish(SafeAsyncTaskResult<List<ListItem>> taskResult, String query)
+        public void onTaskFinish(SafeAsyncTaskResult<List<NamedPlace>> taskResult, String query)
         {
             try
             {
@@ -186,7 +193,7 @@ public final class PlaceSuggestionModule implements SearchModule, PlaceSuggestio
         {
             try
             {
-                mSelectionAction.onItemSelected(result.value());
+                mItemChosenAction.onItemChosen(result.value());
             }
             catch (Exception e)
             {

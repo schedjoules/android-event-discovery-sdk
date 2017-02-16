@@ -35,7 +35,7 @@ import java.net.URI;
  *
  * @author Gabor Keszthelyi
  */
-public class RequestUriLogging implements HttpRequestExecutor
+public final class RequestUriLogging implements HttpRequestExecutor
 {
 
     private final HttpRequestExecutor mDelegate;
