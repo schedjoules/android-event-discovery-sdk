@@ -65,9 +65,10 @@ public abstract class SafeAsyncTask<TASK_PARAM, EXECUTE_PARAM, PROGRESS, TASK_RE
     @Override
     protected final void onPostExecute(SafeAsyncTaskResult<TASK_RESULT> taskResult)
     {
-        if (mCallback.get() != null)
+        SafeAsyncTaskCallback<TASK_PARAM, TASK_RESULT> callback = mCallback.get();
+        if (callback != null)
         {
-            mCallback.get().onTaskFinish(taskResult, mTaskParam);
+            callback.onTaskFinish(taskResult, mTaskParam);
         }
     }
 }

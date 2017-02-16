@@ -59,9 +59,13 @@ public abstract class DiscardingPreExecuteSafeAsyncTask<TASK_PARAM, EXECUTE_PARA
         {
             cancel(false);
         }
-        else if (mPreExecuteCallback.get() != null)
+        else
         {
-            mPreExecuteCallback.get().onPreExecute(mTaskParam);
+            PreExecuteCallback<TASK_PARAM> preExecuteCallback = mPreExecuteCallback.get();
+            if (preExecuteCallback != null)
+            {
+                preExecuteCallback.onPreExecute(mTaskParam);
+            }
         }
     }
 
@@ -104,15 +108,17 @@ public abstract class DiscardingPreExecuteSafeAsyncTask<TASK_PARAM, EXECUTE_PARA
             return;
         }
 
-        if (mCallback.get() != null)
+        SafeAsyncTaskCallback<TASK_PARAM, TASK_RESULT> callback = mCallback.get();
+        if (callback != null)
         {
-            mCallback.get().onTaskFinish(taskResult, mTaskParam);
+            callback.onTaskFinish(taskResult, mTaskParam);
         }
     }
 
 
     private boolean shouldDiscard()
     {
-        return mDiscardCheck.get() != null && mDiscardCheck.get().shouldDiscard(mTaskParam);
+        DiscardCheck<TASK_PARAM> discardCheck = mDiscardCheck.get();
+        return discardCheck != null && discardCheck.shouldDiscard(mTaskParam);
     }
 }

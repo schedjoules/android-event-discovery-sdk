@@ -15,21 +15,21 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery.framework.list.changes;
-
-import android.support.v7.widget.RecyclerView;
-
-import com.schedjoules.eventdiscovery.framework.list.ListItems;
-
+package com.schedjoules.eventdiscovery.framework.searchlist;
 
 /**
- * {@link ListItems} that can receive a {@link ListChange} and apply it.
+ * Listener interface for components that handle {@link ResultUpdate}s.
  *
  * @author Gabor Keszthelyi
  */
-public interface ChangeableListItems extends ListItems
+public interface ResultUpdateListener<T>
 {
-    void apply(ListChange listChange);
 
-    void setAdapter(RecyclerView.Adapter adapter);
+    /**
+     * Called from {@link SearchModule} then it wants to update its section in the list.
+     *
+     * @param update
+     *         and update to the section of the list
+     */
+    void onUpdate(ResultUpdate<T> update);
 }

@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery.framework.list.changes;
+package com.schedjoules.eventdiscovery.framework.list.changes.notifying;
 
 import android.support.v7.widget.RecyclerView;
 
@@ -30,7 +30,7 @@ import java.util.List;
  *
  * @author Gabor Keszthelyi
  */
-public final class BasicChangeableListItems implements ChangeableListItems
+public final class BasicChangeableListItems implements ChangeableListItems<ListItem>
 {
     private final List<ListItem> mItems = new ArrayList<>();
 
@@ -38,7 +38,7 @@ public final class BasicChangeableListItems implements ChangeableListItems
 
 
     @Override
-    public void apply(ListChange listChange)
+    public void apply(ListChange<ListItem> listChange)
     {
         listChange.apply(mItems, mAdapter);
     }

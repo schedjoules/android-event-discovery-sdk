@@ -24,11 +24,10 @@ import com.google.android.gms.location.places.AutocompleteFilter;
 import com.google.android.gms.location.places.AutocompletePrediction;
 import com.google.android.gms.location.places.AutocompletePredictionBuffer;
 import com.google.android.gms.location.places.Places;
-import com.schedjoules.eventdiscovery.framework.async.DiscardCheck;
-import com.schedjoules.eventdiscovery.framework.async.DiscardingSafeAsyncTask;
+import com.schedjoules.eventdiscovery.framework.async.SafeAsyncTask;
 import com.schedjoules.eventdiscovery.framework.async.SafeAsyncTaskCallback;
 import com.schedjoules.eventdiscovery.framework.list.ListItem;
-import com.schedjoules.eventdiscovery.framework.location.list.PlaceSuggestionItem;
+import com.schedjoules.eventdiscovery.framework.location.listitems.PlaceSuggestionItem;
 import com.schedjoules.eventdiscovery.framework.location.model.GooglePredictionNamedPlace;
 
 import java.util.ArrayList;
@@ -40,7 +39,7 @@ import java.util.List;
  *
  * @author Gabor Keszthelyi
  */
-public final class PlaceSuggestionQueryTask extends DiscardingSafeAsyncTask<String, GoogleApiClient, Void, List<ListItem>>
+public final class PlaceSuggestionQueryTask extends SafeAsyncTask<String, GoogleApiClient, Void, List<ListItem>>
 {
 
     private static final AutocompleteFilter CITIES_FILTER = new AutocompleteFilter.Builder()
@@ -50,7 +49,7 @@ public final class PlaceSuggestionQueryTask extends DiscardingSafeAsyncTask<Stri
 
     public PlaceSuggestionQueryTask(String query, Client client)
     {
-        super(query, client, client);
+        super(query, client);
     }
 
 
@@ -74,7 +73,7 @@ public final class PlaceSuggestionQueryTask extends DiscardingSafeAsyncTask<Stri
     }
 
 
-    public interface Client extends SafeAsyncTaskCallback<String, List<ListItem>>, DiscardCheck<String>
+    public interface Client extends SafeAsyncTaskCallback<String, List<ListItem>>
     {
 
     }

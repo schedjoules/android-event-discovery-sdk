@@ -15,12 +15,10 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery.framework.list.changes;
+package com.schedjoules.eventdiscovery.framework.list.changes.notifying;
 
 import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
-
-import com.schedjoules.eventdiscovery.framework.list.ListItem;
 
 import java.util.List;
 
@@ -30,23 +28,23 @@ import java.util.List;
  *
  * @author Gabor Keszthelyi
  */
-public final class DiffUtilReplaceAll implements ListChange
+public final class DiffUtilReplaceAll<T> implements ListChange<T>
 {
-    public final List<ListItem> mNewItems;
+    private final List<T> mNewItems;
 
 
-    public DiffUtilReplaceAll(List<ListItem> newItems)
+    public DiffUtilReplaceAll(List<T> newItems)
     {
         mNewItems = newItems;
     }
 
 
     @Override
-    public void apply(List<ListItem> oldItems, RecyclerView.Adapter adapter)
+    public void apply(List<T> currentItems, RecyclerView.Adapter adapter)
     {
-        DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new EqualsDiffUtilCallback<>(oldItems, mNewItems));
-        oldItems.clear();
-        oldItems.addAll(mNewItems);
+        DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new EqualsDiffUtilCallback<>(currentItems, mNewItems));
+        currentItems.clear();
+        currentItems.addAll(mNewItems);
         diffResult.dispatchUpdatesTo(adapter);
     }
 

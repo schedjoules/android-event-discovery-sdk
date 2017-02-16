@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery.framework.location.list;
+package com.schedjoules.eventdiscovery.framework.location.listitems;
 
 import android.content.Context;
 import android.util.AttributeSet;

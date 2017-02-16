@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery.framework.location.list;
+package com.schedjoules.eventdiscovery.framework.location.listitems;
 
 import android.view.View;
 
@@ -93,6 +93,15 @@ public final class PlaceSuggestionItem implements ListItem<PlaceSuggestionItemVi
     public void setListener(OnClickListener listener)
     {
         mOnClickListener = listener;
+    }
+
+
+    @Override
+    public String toString()
+    {
+        return "PlaceSuggestionItem{" +
+                "mNamedPlace=" + mNamedPlace.name() +
+                '}';
     }
 
 

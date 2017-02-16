@@ -96,15 +96,17 @@ public abstract class DiscardingSafeAsyncTask<TASK_PARAM, EXECUTE_PARAM, PROGRES
             return;
         }
 
-        if (mCallback.get() != null)
+        SafeAsyncTaskCallback<TASK_PARAM, TASK_RESULT> callback = mCallback.get();
+        if (callback != null)
         {
-            mCallback.get().onTaskFinish(taskResult, mTaskParam);
+            callback.onTaskFinish(taskResult, mTaskParam);
         }
     }
 
 
     private boolean shouldDiscard()
     {
-        return mDiscardCheck.get() != null && mDiscardCheck.get().shouldDiscard(mTaskParam);
+        DiscardCheck<TASK_PARAM> discardCheck = mDiscardCheck.get();
+        return discardCheck != null && discardCheck.shouldDiscard(mTaskParam);
     }
 }
