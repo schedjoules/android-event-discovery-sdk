@@ -29,7 +29,7 @@ import com.schedjoules.client.eventsdiscovery.locations.StructuredGeoLocation;
  *
  * @author Marten Gajda
  */
-public final class ParcelableGeoLocation implements GeoLocation, Parcelable
+public final class ParcelableGeoLocation implements GeoLocation, Parcelable, Equalable
 {
     public static final Creator<ParcelableGeoLocation> CREATOR = new Creator<ParcelableGeoLocation>()
     {

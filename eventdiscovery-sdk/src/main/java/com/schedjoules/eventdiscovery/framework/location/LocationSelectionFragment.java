@@ -37,7 +37,7 @@ import com.schedjoules.eventdiscovery.framework.EventIntents;
 import com.schedjoules.eventdiscovery.framework.common.BaseActivity;
 import com.schedjoules.eventdiscovery.framework.common.BaseFragment;
 import com.schedjoules.eventdiscovery.framework.list.GeneralMultiTypeAdapter;
-import com.schedjoules.eventdiscovery.framework.list.ListItemSelectionAction;
+import com.schedjoules.eventdiscovery.framework.list.ItemChosenAction;
 import com.schedjoules.eventdiscovery.framework.location.model.GeoPlace;
 import com.schedjoules.eventdiscovery.framework.location.model.ParcelableGeoPlace;
 import com.schedjoules.eventdiscovery.framework.searchlist.BasicSearchListItems;
@@ -76,7 +76,7 @@ public final class LocationSelectionFragment extends BaseFragment
     {
         super.onCreate(savedInstanceState);
 
-        mSearchListItems = new UpdateDelaying(new BasicSearchListItems(), 10, getResources().getInteger(android.R.integer.config_mediumAnimTime));
+        mSearchListItems = new UpdateDelaying(new BasicSearchListItems(), 5, getResources().getInteger(android.R.integer.config_mediumAnimTime));
         mAdapter = new GeneralMultiTypeAdapter(mSearchListItems);
         mSearchListItems.setAdapter(mAdapter);
 
@@ -84,10 +84,10 @@ public final class LocationSelectionFragment extends BaseFragment
         List<SearchModule> modules = new SearchModulesFactory<>(
                 getActivity(),
                 mSearchListItems,
-                new ListItemSelectionAction<GeoPlace>()
+                new ItemChosenAction<GeoPlace>()
                 {
                     @Override
-                    public void onItemSelected(GeoPlace geoPlace)
+                    public void onItemChosen(GeoPlace geoPlace)
                     {
                         Bundle nestedExtras = new Bundle();
                         nestedExtras.putParcelable(EventIntents.EXTRA_GEO_PLACE, new ParcelableGeoPlace(geoPlace));
@@ -97,8 +97,12 @@ public final class LocationSelectionFragment extends BaseFragment
                         getActivity().finish();
                     }
                 },
-                Arrays.asList(PlaceSuggestionModule.FACTORY)
+                Arrays.asList(
+                        new CurrentLocationPermissionProxyFactory(CurrentLocationModule.FACTORY),
+                        PlaceSuggestionModule.FACTORY
+                )
         ).create();
+
         mCompositeModule = new CompositeSearchModule(modules);
     }
 

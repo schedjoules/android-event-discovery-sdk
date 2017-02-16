@@ -15,21 +15,30 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery.framework.searchlist;
+package com.schedjoules.eventdiscovery.framework.location.listitems;
+
+import com.schedjoules.eventdiscovery.R;
+import com.schedjoules.eventdiscovery.framework.list.ListItem;
+import com.schedjoules.eventdiscovery.framework.list.smart.AbstractSmartListItem;
+
 
 /**
- * Listener interface for components that handle {@link ResultUpdate}s.
+ * A {@link ListItem} on the location picker that displays a message.
  *
  * @author Gabor Keszthelyi
  */
-public interface ResultUpdateListener<T>
+public final class MessageItem extends AbstractSmartListItem<String, MessageItemView>
 {
 
-    /**
-     * Called from {@link SearchModule} then it wants to update its section in the list.
-     *
-     * @param update
-     *         and update to the section of the list
-     */
-    void onUpdate(ResultUpdate<T> update);
+    public MessageItem(String text)
+    {
+        super(text, R.layout.schedjoules_list_item_location_message);
+    }
+
+
+    @Override
+    protected String toStringLabel()
+    {
+        return "MessageItem";
+    }
 }

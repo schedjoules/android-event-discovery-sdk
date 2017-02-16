@@ -21,8 +21,8 @@ import android.os.Handler;
 import android.os.Looper;
 
 import com.schedjoules.eventdiscovery.framework.list.ListItem;
-import com.schedjoules.eventdiscovery.framework.searchlist.ResultUpdate;
-import com.schedjoules.eventdiscovery.framework.searchlist.SectionedResultUpdateListener;
+import com.schedjoules.eventdiscovery.framework.searchlist.resultupdates.ResultUpdate;
+import com.schedjoules.eventdiscovery.framework.searchlist.resultupdates.SectionedResultUpdateListener;
 
 import java.util.Iterator;
 import java.util.LinkedList;

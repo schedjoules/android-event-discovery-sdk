@@ -18,6 +18,7 @@
 package com.schedjoules.eventdiscovery.framework.location.model;
 
 import com.google.android.gms.location.places.AutocompletePrediction;
+import com.schedjoules.eventdiscovery.framework.location.model.namedplace.NamedPlace;
 
 
 /**

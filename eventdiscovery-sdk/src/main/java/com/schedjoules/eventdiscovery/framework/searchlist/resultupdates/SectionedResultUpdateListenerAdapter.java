@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery.framework.searchlist;
+package com.schedjoules.eventdiscovery.framework.searchlist.resultupdates;
 
 /**
  * Adapts {@link ResultUpdateListener} to {@link SectionedResultUpdateListener}.

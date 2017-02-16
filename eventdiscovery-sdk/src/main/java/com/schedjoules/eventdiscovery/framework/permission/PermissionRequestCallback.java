@@ -15,21 +15,26 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery.framework.list;
+package com.schedjoules.eventdiscovery.framework.permission;
 
 /**
- * Action that can be executed when a list item was selected.
+ * Callback to deliver the result for a permission request.
  *
  * @author Gabor Keszthelyi
  */
-public interface ListItemSelectionAction<T>
+public interface PermissionRequestCallback<S extends PermissionStatus>
 {
 
     /**
-     * Called when the item was selected by the user.
+     * Called when the user answered the permission dialog.
      *
-     * @param itemData
-     *         the data corresponding to the list item
+     * @param newStatus
+     *         the new status of {@link Permission}
      */
-    void onItemSelected(T itemData);
+    void onUserAnswered(S newStatus);
+
+    /**
+     * Called when the permission request has been interrupted for some reason.
+     */
+    void onRequestInterrupted();
 }

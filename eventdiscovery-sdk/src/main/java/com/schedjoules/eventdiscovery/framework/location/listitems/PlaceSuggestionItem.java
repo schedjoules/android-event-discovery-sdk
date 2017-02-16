@@ -17,96 +17,30 @@
 
 package com.schedjoules.eventdiscovery.framework.location.listitems;
 
-import android.view.View;
-
 import com.schedjoules.eventdiscovery.R;
 import com.schedjoules.eventdiscovery.framework.list.ListItem;
-import com.schedjoules.eventdiscovery.framework.location.model.NamedPlace;
+import com.schedjoules.eventdiscovery.framework.list.smart.AbstractSmartListItem;
+import com.schedjoules.eventdiscovery.framework.location.model.namedplace.NamedPlace;
+import com.schedjoules.eventdiscovery.framework.model.Equalable;
 
 
 /**
- * List item for the location suggestion.
+ * {@link ListItem} for the place suggestion items on the location picker.
  *
  * @author Gabor Keszthelyi
  */
-public final class PlaceSuggestionItem implements ListItem<PlaceSuggestionItemView>
+public final class PlaceSuggestionItem<D extends NamedPlace & Equalable> extends AbstractSmartListItem<D, PlaceSuggestionItemView<D>>
 {
-    private final NamedPlace mNamedPlace;
-
-    private OnClickListener mOnClickListener;
-
-
-    public PlaceSuggestionItem(NamedPlace namedPlace)
+    public PlaceSuggestionItem(D namedPlace)
     {
-        mNamedPlace = namedPlace;
+        super(namedPlace, R.layout.schedjoules_list_item_place_suggestion);
     }
 
 
     @Override
-    public int layoutResId()
+    protected String toStringLabel()
     {
-        return R.layout.schedjoules_list_item_place_suggestion;
+        return "PlaceSuggestionItem";
     }
 
-
-    @Override
-    public void bindDataTo(PlaceSuggestionItemView view)
-    {
-        view.update(mNamedPlace);
-        view.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                mOnClickListener.onPlaceSuggestionSelected(mNamedPlace);
-            }
-        });
-    }
-
-
-    @Override
-    public boolean equals(Object o)
-    {
-        if (this == o)
-        {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass())
-        {
-            return false;
-        }
-
-        PlaceSuggestionItem that = (PlaceSuggestionItem) o;
-
-        return mNamedPlace.id().equals(that.mNamedPlace.id());
-
-    }
-
-
-    @Override
-    public int hashCode()
-    {
-        return mNamedPlace.id().hashCode();
-    }
-
-
-    public void setListener(OnClickListener listener)
-    {
-        mOnClickListener = listener;
-    }
-
-
-    @Override
-    public String toString()
-    {
-        return "PlaceSuggestionItem{" +
-                "mNamedPlace=" + mNamedPlace.name() +
-                '}';
-    }
-
-
-    public interface OnClickListener
-    {
-        void onPlaceSuggestionSelected(NamedPlace namedPlace);
-    }
 }

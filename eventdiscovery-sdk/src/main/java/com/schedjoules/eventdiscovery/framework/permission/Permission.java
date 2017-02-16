@@ -15,17 +15,25 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery.framework.utils;
+package com.schedjoules.eventdiscovery.framework.permission;
 
 /**
- * General factory interface.
+ * Represents a single Android permission.
  *
  * @author Gabor Keszthelyi
  */
-public interface Factory<T>
+public interface Permission<S extends PermissionStatus>
 {
     /**
-     * Create the object.
+     * The status of this permission.
      */
-    T create();
+    S status();
+
+    /**
+     * Initiates requesting this permission from the user.
+     *
+     * @param callback
+     *         the callback to deliver the result
+     */
+    void request(PermissionRequestCallback<S> callback);
 }

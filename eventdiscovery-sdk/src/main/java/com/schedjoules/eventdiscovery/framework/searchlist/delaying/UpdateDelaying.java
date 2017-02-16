@@ -23,9 +23,9 @@ import android.support.v7.widget.RecyclerView;
 import com.schedjoules.eventdiscovery.framework.list.ListItem;
 import com.schedjoules.eventdiscovery.framework.list.changes.notifying.ListChange;
 import com.schedjoules.eventdiscovery.framework.list.sectioned.SectionableListItem;
-import com.schedjoules.eventdiscovery.framework.searchlist.ResultUpdate;
 import com.schedjoules.eventdiscovery.framework.searchlist.SearchListItems;
-import com.schedjoules.eventdiscovery.framework.searchlist.SectionedResultUpdateListener;
+import com.schedjoules.eventdiscovery.framework.searchlist.resultupdates.ResultUpdate;
+import com.schedjoules.eventdiscovery.framework.searchlist.resultupdates.SectionedResultUpdateListener;
 
 
 /**

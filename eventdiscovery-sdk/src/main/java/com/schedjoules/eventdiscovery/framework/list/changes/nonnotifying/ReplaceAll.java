@@ -17,6 +17,7 @@
 
 package com.schedjoules.eventdiscovery.framework.list.changes.nonnotifying;
 
+import java.util.Collections;
 import java.util.List;
 
 
@@ -33,6 +34,12 @@ public final class ReplaceAll<T> implements NonNotifyingListChange<T>
     public ReplaceAll(List<T> newItems)
     {
         mNewItems = newItems;
+    }
+
+
+    public ReplaceAll(T item)
+    {
+        this(Collections.<T>singletonList(item));
     }
 
 

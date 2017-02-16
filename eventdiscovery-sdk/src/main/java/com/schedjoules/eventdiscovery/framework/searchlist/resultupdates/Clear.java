@@ -15,28 +15,31 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery.framework.searchlist;
+package com.schedjoules.eventdiscovery.framework.searchlist.resultupdates;
 
+import com.schedjoules.eventdiscovery.framework.list.changes.nonnotifying.ClearAll;
 import com.schedjoules.eventdiscovery.framework.list.changes.nonnotifying.NonNotifyingChangeableList;
 
 
 /**
- * Represents and update to a section of a search list. {@link SearchModule}s can create these and pass on to {@link ResultUpdateListener}.
+ * {@link ResultUpdate} to clear all items if the current query string still matches.
  *
  * @author Gabor Keszthelyi
  */
-public interface ResultUpdate<T>
+public final class Clear<T> implements ResultUpdate<T>
 {
+    private final String mQuery;
 
-    /**
-     * Applies the changes of this update to the given list.
-     * <p>
-     * Depending on the update it can check if currentQuery matches the query this update belongs to and discard if it doesn't.
-     *
-     * @param changeableList
-     *         the changeable list representing a section of the whole list
-     * @param currentQuery
-     *         the current (last) query entered by the user
-     */
-    void apply(NonNotifyingChangeableList<T> changeableList, String currentQuery);
+
+    public Clear(String query)
+    {
+        mQuery = query;
+    }
+
+
+    @Override
+    public void apply(NonNotifyingChangeableList<T> changeableList, String currentQuery)
+    {
+        new SearchResultUpdate<>(new ClearAll<T>(), mQuery).apply(changeableList, currentQuery);
+    }
 }

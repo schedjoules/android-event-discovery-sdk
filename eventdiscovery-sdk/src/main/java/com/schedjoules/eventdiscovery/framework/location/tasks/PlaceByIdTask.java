@@ -28,8 +28,8 @@ import com.schedjoules.eventdiscovery.framework.async.SafeAsyncTask;
 import com.schedjoules.eventdiscovery.framework.async.SafeAsyncTaskCallback;
 import com.schedjoules.eventdiscovery.framework.location.model.GeoPlace;
 import com.schedjoules.eventdiscovery.framework.location.model.GoogleGeoLocation;
-import com.schedjoules.eventdiscovery.framework.location.model.NamedPlace;
 import com.schedjoules.eventdiscovery.framework.location.model.StructuredGeoPlace;
+import com.schedjoules.eventdiscovery.framework.location.model.namedplace.NamedPlace;
 
 
 /**

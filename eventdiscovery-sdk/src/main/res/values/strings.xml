@@ -37,5 +37,9 @@
     <string name="schedjoules_today">Today</string>
     <string name="schedjoules_tomorrow">Tomorrow</string>
 
-    <string name="schedjoules_location_picker_place_suggestions_title">Suggestions</string>
+    <string name="schedjoules_location_picker_current_location">Current location</string>
+    <string name="schedjoules_location_picker_current_location_locating">Locating…</string>
+    <string name="schedjoules_location_picker_current_location_permission_rationale">To use your current location, please grant permission to access your location…</string>
+    <string name="schedjoules_location_picker_current_location_permission_inform_about_phone_settings">To later enable current location display, grant the location permission from your device settings.</string>
+    <string name="schedjoules_location_picker_current_location_error">Failed to get the location. Tap to retry.</string>
 </resources>
