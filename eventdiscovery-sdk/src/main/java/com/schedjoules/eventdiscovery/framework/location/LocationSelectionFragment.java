@@ -40,6 +40,8 @@ import com.schedjoules.eventdiscovery.framework.list.GeneralMultiTypeAdapter;
 import com.schedjoules.eventdiscovery.framework.list.ItemChosenAction;
 import com.schedjoules.eventdiscovery.framework.location.model.GeoPlace;
 import com.schedjoules.eventdiscovery.framework.location.model.ParcelableGeoPlace;
+import com.schedjoules.eventdiscovery.framework.location.recentlocations.RecentLocationsModule;
+import com.schedjoules.eventdiscovery.framework.location.recentlocations.Remembered;
 import com.schedjoules.eventdiscovery.framework.searchlist.BasicSearchListItems;
 import com.schedjoules.eventdiscovery.framework.searchlist.CompositeSearchModule;
 import com.schedjoules.eventdiscovery.framework.searchlist.SearchListItems;
@@ -100,8 +102,8 @@ public final class LocationSelectionFragment extends BaseFragment
                 },
                 Arrays.asList(
                         new CurrentLocationPermissionProxyFactory(CurrentLocationModule.FACTORY),
-                        PlaceSuggestionModule.FACTORY
-                )
+                        new Remembered(RecentLocationsModule.FACTORY),
+                        new Remembered(PlaceSuggestionModule.FACTORY))
         ).create();
 
         mCompositeModule = new CompositeSearchModule(modules);
