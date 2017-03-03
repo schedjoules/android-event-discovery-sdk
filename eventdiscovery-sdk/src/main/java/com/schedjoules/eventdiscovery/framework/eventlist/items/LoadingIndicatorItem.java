@@ -21,7 +21,6 @@ import android.view.View;
 
 import com.schedjoules.eventdiscovery.R;
 import com.schedjoules.eventdiscovery.framework.list.ListItem;
-import com.schedjoules.eventdiscovery.framework.list.flexibleadapter.AbstractFlexible;
 
 
 /**
@@ -29,7 +28,7 @@ import com.schedjoules.eventdiscovery.framework.list.flexibleadapter.AbstractFle
  *
  * @author Gabor Keszthelyi
  */
-public final class LoadingIndicatorItem extends AbstractFlexible<View> implements ListItem<View>
+public final class LoadingIndicatorItem implements ListItem<View>
 {
     @Override
     public int layoutResId()

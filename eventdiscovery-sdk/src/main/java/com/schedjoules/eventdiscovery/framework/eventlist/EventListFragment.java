@@ -42,12 +42,11 @@ import com.schedjoules.eventdiscovery.framework.common.BaseFragment;
 import com.schedjoules.eventdiscovery.framework.common.ExternalUrlFeedbackForm;
 import com.schedjoules.eventdiscovery.framework.eventlist.controller.EventListController;
 import com.schedjoules.eventdiscovery.framework.eventlist.controller.EventListControllerImpl;
-import com.schedjoules.eventdiscovery.framework.eventlist.controller.EventListItemsImpl;
+import com.schedjoules.eventdiscovery.framework.eventlist.controller.FlexibleAdapterEventListItems;
 import com.schedjoules.eventdiscovery.framework.eventlist.view.EdgeReachScrollListener;
 import com.schedjoules.eventdiscovery.framework.eventlist.view.EventListBackgroundMessage;
 import com.schedjoules.eventdiscovery.framework.eventlist.view.EventListLoadingIndicatorOverlay;
 import com.schedjoules.eventdiscovery.framework.eventlist.view.EventListMenu;
-import com.schedjoules.eventdiscovery.framework.list.flexibleadapter.FlexibleAdapterNotifier;
 import com.schedjoules.eventdiscovery.framework.location.ActivityForResultPlaceSelection;
 import com.schedjoules.eventdiscovery.framework.location.LastSelectedPlace;
 import com.schedjoules.eventdiscovery.framework.location.PlaceSelection;
@@ -62,6 +61,7 @@ import org.dmfs.httpessentials.types.StringToken;
 import org.dmfs.rfc5545.DateTime;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import eu.davidea.flexibleadapter.FlexibleAdapter;
 import eu.davidea.flexibleadapter.items.IFlexible;
@@ -79,7 +79,7 @@ import static com.schedjoules.eventdiscovery.framework.EventIntents.EXTRA_START_
 public final class EventListFragment extends BaseFragment implements PlaceSelection.Listener, EventListMenu.Listener
 {
     private FutureServiceConnection<ApiService> mApiService;
-    private EventListController mListItemsProvider;
+    private EventListController mListItemsController;
     private ActivityForResultPlaceSelection mLocationSelection;
     private LastSelectedPlace mLastSelectedPlace;
 
@@ -87,6 +87,7 @@ public final class EventListFragment extends BaseFragment implements PlaceSelect
     private EventListMenu mMenu;
 
     private boolean mIsInitializing;
+    private FlexibleAdapter mAdapter;
 
 
     public static Fragment newInstance(Bundle args)
@@ -106,7 +107,7 @@ public final class EventListFragment extends BaseFragment implements PlaceSelect
 
         mApiService = new ApiService.FutureConnection(getActivity());
 
-        mListItemsProvider = new EventListControllerImpl(mApiService, new EventListItemsImpl());
+        mListItemsController = new EventListControllerImpl(mApiService, new FlexibleAdapterEventListItems());
 
         mLocationSelection = new ActivityForResultPlaceSelection(this);
         mLocationSelection.registerListener(this);
@@ -129,21 +130,21 @@ public final class EventListFragment extends BaseFragment implements PlaceSelect
 
         setupToolbar(views);
 
-        mListItemsProvider.setBackgroundMessageUI(
+        mListItemsController.setBackgroundMessageUI(
                 new EventListBackgroundMessage(views.schedjoulesEventListBackgroundMessage));
-        mListItemsProvider.setLoadingIndicatorUI(
+        mListItemsController.setLoadingIndicatorUI(
                 new EventListLoadingIndicatorOverlay(views.schedjoulesEventListProgressBar));
 
-        FlexibleAdapter adapter = createAdapter();
+        createAdapter();
 
         RecyclerView recyclerView = views.schedjoulesEventListInclude.schedjoulesEventList;
-        recyclerView.setAdapter(adapter);
+        recyclerView.setAdapter(mAdapter);
 
-        EdgeReachScrollListener scrollListener = new EdgeReachScrollListener(recyclerView, mListItemsProvider,
+        EdgeReachScrollListener scrollListener = new EdgeReachScrollListener(recyclerView, mListItemsController,
                 EventListControllerImpl.CLOSE_TO_TOP_OR_BOTTOM_THRESHOLD);
         recyclerView.addOnScrollListener(scrollListener);
 
-        mListItemsProvider.setAdapterNotifier(new FlexibleAdapterNotifier(adapter));
+        mListItemsController.setAdapter(mAdapter);
 
         return views.getRoot();
     }
@@ -171,7 +172,7 @@ public final class EventListFragment extends BaseFragment implements PlaceSelect
         activity.setSupportActionBar(toolbar);
 
         Resources res = activity.getResources();
-        toolbar.setContentInsetsAbsolute(res.getDimensionPixelSize(R.dimen.schedjoules_list_item_horizontal_margin),
+        toolbar.setContentInsetsAbsolute(res.getDimensionPixelSize(R.dimen.schedjoules_list_item_padding_horizontal),
                 toolbar.getContentInsetRight());
 
         if (res.getBoolean(R.bool.schedjoules_enableBackArrowOnEventListScreen))
@@ -182,7 +183,29 @@ public final class EventListFragment extends BaseFragment implements PlaceSelect
     }
 
 
-    private FlexibleAdapter createAdapter()
+    private void createAdapter()
+    {
+        if (mAdapter == null)
+        {
+            mAdapter = createNewFlexibleAdapter();
+        }
+        else
+        {
+            List<IFlexible> currentItems = new ArrayList<>(mAdapter.getItemCount());
+            for (int i = 0; i < mAdapter.getItemCount(); i++)
+            {
+                currentItems.add(mAdapter.getItem(i));
+            }
+
+            FlexibleAdapter<IFlexible> newAdapter = createNewFlexibleAdapter();
+            newAdapter.addItems(0, currentItems);
+
+            mAdapter = newAdapter;
+        }
+    }
+
+
+    private FlexibleAdapter<IFlexible> createNewFlexibleAdapter()
     {
         FlexibleAdapter<IFlexible> adapter = new FlexibleAdapter<>(new ArrayList<IFlexible>());
         adapter.setDisplayHeadersAtStartUp(true);
@@ -199,7 +222,7 @@ public final class EventListFragment extends BaseFragment implements PlaceSelect
         {
             mIsInitializing = false;
             // Can only be started currently after UI is initialized (so not in onCreate()) because it updates it
-            mListItemsProvider.loadEvents(location(), startAfter());
+            mListItemsController.loadEvents(location(), startAfter());
         }
     }
 
@@ -255,7 +278,7 @@ public final class EventListFragment extends BaseFragment implements PlaceSelect
         mLastSelectedPlace.update(result);
         CharSequence name = result.namedPlace().name();
         mToolbarTitle.setText(new TextWithIcon(getContext(), name, R.drawable.schedjoules_ic_arrow_drop_down_white));
-        mListItemsProvider.loadEvents(result.geoLocation(), startAfter());
+        mListItemsController.loadEvents(result.geoLocation(), startAfter());
     }
 
 

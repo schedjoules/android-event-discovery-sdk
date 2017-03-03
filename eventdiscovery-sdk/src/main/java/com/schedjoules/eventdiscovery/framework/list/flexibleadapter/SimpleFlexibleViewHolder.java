@@ -30,13 +30,13 @@ import eu.davidea.viewholders.FlexibleViewHolder;
  *
  * @author Gabor Keszthelyi
  */
-public final class SimpleFlexibleViewHolder extends FlexibleViewHolder
+public final class SimpleFlexibleViewHolder<V extends View> extends FlexibleViewHolder
 {
 
-    public final View mView;
+    public final V mView;
 
 
-    public SimpleFlexibleViewHolder(View view, FlexibleAdapter adapter)
+    public SimpleFlexibleViewHolder(V view, FlexibleAdapter adapter)
     {
         super(view, adapter);
         mView = view;

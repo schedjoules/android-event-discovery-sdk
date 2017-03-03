@@ -23,7 +23,6 @@ import com.schedjoules.eventdiscovery.R;
 import com.schedjoules.eventdiscovery.framework.datetime.FormattedDateTime;
 import com.schedjoules.eventdiscovery.framework.datetime.SmartFormattedDay;
 import com.schedjoules.eventdiscovery.framework.list.ListItem;
-import com.schedjoules.eventdiscovery.framework.list.flexibleadapter.AbstractFlexibleHeader;
 
 import org.dmfs.rfc5545.DateTime;
 
@@ -35,7 +34,7 @@ import java.util.TimeZone;
  *
  * @author Gabor Keszthelyi
  */
-public final class DateHeaderItem extends AbstractFlexibleHeader<TextView> implements ListItem<TextView>
+public final class DateHeaderItem implements ListItem<TextView>
 {
 
     private final DateTime mLocalDay;

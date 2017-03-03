@@ -17,6 +17,7 @@
 
 package com.schedjoules.eventdiscovery.framework.eventlist.controller;
 
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
 import com.schedjoules.client.ApiQuery;
@@ -29,7 +30,6 @@ import com.schedjoules.eventdiscovery.framework.eventlist.controller.EventListDo
 import com.schedjoules.eventdiscovery.framework.eventlist.controller.EventListDownloadTask.TaskResult;
 import com.schedjoules.eventdiscovery.framework.eventlist.view.EventListBackgroundMessage;
 import com.schedjoules.eventdiscovery.framework.eventlist.view.EventListLoadingIndicatorOverlay;
-import com.schedjoules.eventdiscovery.framework.list.flexibleadapter.ThirdPartyAdapterNotifier;
 import com.schedjoules.eventdiscovery.framework.utils.FutureServiceConnection;
 import com.schedjoules.eventdiscovery.framework.utils.Objects;
 import com.schedjoules.eventdiscovery.service.ApiService;
@@ -40,6 +40,9 @@ import java.util.EnumMap;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
+import eu.davidea.flexibleadapter.FlexibleAdapter;
+import eu.davidea.flexibleadapter.items.IFlexible;
 
 import static com.schedjoules.eventdiscovery.framework.eventlist.controller.ScrollDirection.BOTTOM;
 import static com.schedjoules.eventdiscovery.framework.eventlist.controller.ScrollDirection.TOP;
@@ -59,14 +62,10 @@ public final class EventListControllerImpl implements EventListController, Event
     private final FutureServiceConnection<ApiService> mApiService;
 
     private final ExecutorService mExecutorService;
-
-    private EventListBackgroundMessage mBackgroundMessage;
-
-    private final EventListItems mItems;
-    private EventListLoadingIndicatorOverlay mLoadingIndicatorOverlay;
-
+    private final EventListItems<IFlexible, FlexibleAdapter<IFlexible>> mItems;
     private final EnumMap<ScrollDirection, ResultPage<Envelope<Event>>> mLastResultPages;
-
+    private EventListBackgroundMessage mBackgroundMessage;
+    private EventListLoadingIndicatorOverlay mLoadingIndicatorOverlay;
     private GeoLocation mLocation;
     private Map<ScrollDirection, Boolean> mIsLoading;
 
@@ -76,7 +75,7 @@ public final class EventListControllerImpl implements EventListController, Event
     private Map<ScrollDirection, TaskParam> mErrorTaskParam;
 
 
-    public EventListControllerImpl(FutureServiceConnection<ApiService> apiService, EventListItems items)
+    public EventListControllerImpl(FutureServiceConnection<ApiService> apiService, EventListItems<IFlexible, FlexibleAdapter<IFlexible>> items)
     {
         mApiService = apiService;
         mItems = items;
@@ -108,9 +107,9 @@ public final class EventListControllerImpl implements EventListController, Event
 
 
     @Override
-    public void setAdapterNotifier(ThirdPartyAdapterNotifier adapterNotifier)
+    public void setAdapter(RecyclerView.Adapter adapter)
     {
-        mItems.setAdapterNotifier(adapterNotifier);
+        mItems.setAdapter((FlexibleAdapter) adapter); // TODO remove cast
     }
 
 
@@ -204,7 +203,7 @@ public final class EventListControllerImpl implements EventListController, Event
             // This request will result in empty first page, so not worth showing the loading
             if (!(direction == TOP && mItems.isTodayShown()))
             {
-                mItems.addSpecialItemPost(direction.mLoadingIndicatorItem, direction);
+                mItems.addSpecialItemPost(direction.loadingIndicatorItem(), direction);
             }
         }
     }
@@ -222,7 +221,7 @@ public final class EventListControllerImpl implements EventListController, Event
         }
         else
         {
-            mItems.removeSpecialItem(direction.mLoadingIndicatorItem, direction);
+            mItems.removeSpecialItem(direction.loadingIndicatorItem(), direction);
         }
 
         // Resuming from error mode:
@@ -234,7 +233,7 @@ public final class EventListControllerImpl implements EventListController, Event
             }
             else
             {
-                mItems.removeSpecialItem(direction.mErrorItem, direction);
+                mItems.removeSpecialItem(direction.errorItem(), direction);
             }
             mIsInErrorMode.put(direction, false);
         }
@@ -247,7 +246,7 @@ public final class EventListControllerImpl implements EventListController, Event
         else if (!direction.hasComingPageQuery(mLastResultPages)
                 && (direction == BOTTOM || (direction == TOP && !mItems.isTodayShown())))
         {
-            mItems.addSpecialItemNow(direction.mNoMoreEventsItem, direction);
+            mItems.addSpecialItemNow(direction.noMoreEventsItem(), direction);
         }
     }
 
@@ -263,7 +262,7 @@ public final class EventListControllerImpl implements EventListController, Event
         }
         else
         {
-            mItems.removeSpecialItem(direction.mLoadingIndicatorItem, direction);
+            mItems.removeSpecialItem(direction.loadingIndicatorItem(), direction);
         }
 
         if (!mIsInErrorMode.get(direction))
@@ -274,7 +273,7 @@ public final class EventListControllerImpl implements EventListController, Event
             }
             else
             {
-                mItems.addSpecialItemNow(direction.mErrorItem, direction);
+                mItems.addSpecialItemNow(direction.errorItem(), direction);
             }
             mIsInErrorMode.put(direction, true);
         }

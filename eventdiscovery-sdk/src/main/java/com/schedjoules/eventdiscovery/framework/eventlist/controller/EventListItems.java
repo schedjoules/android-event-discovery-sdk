@@ -17,10 +17,6 @@
 
 package com.schedjoules.eventdiscovery.framework.eventlist.controller;
 
-import com.schedjoules.eventdiscovery.framework.list.ListItem;
-import com.schedjoules.eventdiscovery.framework.list.ListItems;
-import com.schedjoules.eventdiscovery.framework.list.flexibleadapter.ThirdPartyAdapterNotifier;
-
 import java.util.List;
 
 
@@ -29,17 +25,17 @@ import java.util.List;
  *
  * @author Gabor Keszthelyi
  */
-public interface EventListItems extends ListItems
+public interface EventListItems<ITEM, ADAPTER>
 {
-    void setAdapterNotifier(ThirdPartyAdapterNotifier adapterNotifier);
+    void setAdapter(ADAPTER adapter);
 
-    void mergeNewItems(List<ListItem> newItems, ScrollDirection direction);
+    void mergeNewItems(List<ITEM> newItems, ScrollDirection direction);
 
-    void addSpecialItemPost(ListItem specialItem, ScrollDirection direction);
+    void addSpecialItemPost(ITEM specialItem, ScrollDirection direction);
 
-    void addSpecialItemNow(ListItem specialItem, ScrollDirection direction);
+    void addSpecialItemNow(ITEM specialItem, ScrollDirection direction);
 
-    void removeSpecialItem(ListItem specialItem, ScrollDirection direction);
+    void removeSpecialItem(ITEM specialItem, ScrollDirection direction);
 
     boolean isTodayShown();
 

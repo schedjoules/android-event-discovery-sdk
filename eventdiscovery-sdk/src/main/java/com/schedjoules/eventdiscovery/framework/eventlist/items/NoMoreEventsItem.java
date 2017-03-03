@@ -22,7 +22,6 @@ import android.widget.TextView;
 
 import com.schedjoules.eventdiscovery.R;
 import com.schedjoules.eventdiscovery.framework.list.ListItem;
-import com.schedjoules.eventdiscovery.framework.list.flexibleadapter.AbstractFlexible;
 
 
 /**
@@ -30,7 +29,7 @@ import com.schedjoules.eventdiscovery.framework.list.flexibleadapter.AbstractFle
  *
  * @author Gabor Keszthelyi
  */
-public final class NoMoreEventsItem extends AbstractFlexible<TextView> implements ListItem<TextView>
+public final class NoMoreEventsItem implements ListItem<TextView>
 {
     private final int mText;
 
