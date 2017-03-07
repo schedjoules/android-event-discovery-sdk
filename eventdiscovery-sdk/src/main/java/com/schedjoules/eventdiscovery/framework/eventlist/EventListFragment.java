@@ -88,6 +88,7 @@ public final class EventListFragment extends BaseFragment implements PlaceSelect
 
     private boolean mIsInitializing;
     private FlexibleAdapter mAdapter;
+    private SchedjoulesFragmentEventListBinding mViews;
 
 
     public static Fragment newInstance(Bundle args)
@@ -122,31 +123,22 @@ public final class EventListFragment extends BaseFragment implements PlaceSelect
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
     {
-        SchedjoulesFragmentEventListBinding views = DataBindingUtil.inflate(inflater,
+        mViews = DataBindingUtil.inflate(inflater,
                 R.layout.schedjoules_fragment_event_list, container, false);
 
         mMenu = new EventListMenu(this);
         setHasOptionsMenu(true);
 
-        setupToolbar(views);
+        setupToolbar(mViews);
 
         mListItemsController.setBackgroundMessageUI(
-                new EventListBackgroundMessage(views.schedjoulesEventListBackgroundMessage));
+                new EventListBackgroundMessage(mViews.schedjoulesEventListBackgroundMessage));
         mListItemsController.setLoadingIndicatorUI(
-                new EventListLoadingIndicatorOverlay(views.schedjoulesEventListProgressBar));
+                new EventListLoadingIndicatorOverlay(mViews.schedjoulesEventListProgressBar));
 
-        createAdapter();
+        initAdapterAndRecyclerView(true);
 
-        RecyclerView recyclerView = views.schedjoulesEventListInclude.schedjoulesEventList;
-        recyclerView.setAdapter(mAdapter);
-
-        EdgeReachScrollListener scrollListener = new EdgeReachScrollListener(recyclerView, mListItemsController,
-                EventListControllerImpl.CLOSE_TO_TOP_OR_BOTTOM_THRESHOLD);
-        recyclerView.addOnScrollListener(scrollListener);
-
-        mListItemsController.setAdapter(mAdapter);
-
-        return views.getRoot();
+        return mViews.getRoot();
     }
 
 
@@ -183,9 +175,24 @@ public final class EventListFragment extends BaseFragment implements PlaceSelect
     }
 
 
-    private void createAdapter()
+    private void initAdapterAndRecyclerView(boolean restoring)
     {
-        if (mAdapter == null)
+        createAdapter(restoring);
+
+        RecyclerView recyclerView = mViews.schedjoulesEventListInclude.schedjoulesEventList;
+        recyclerView.setAdapter(mAdapter);
+
+        EdgeReachScrollListener scrollListener = new EdgeReachScrollListener(recyclerView, mListItemsController,
+                EventListControllerImpl.CLOSE_TO_TOP_OR_BOTTOM_THRESHOLD);
+        recyclerView.addOnScrollListener(scrollListener);
+
+        mListItemsController.setAdapter(mAdapter);
+    }
+
+
+    private void createAdapter(boolean restoring)
+    {
+        if (mAdapter == null || !restoring)
         {
             mAdapter = createNewFlexibleAdapter();
         }
@@ -275,9 +282,9 @@ public final class EventListFragment extends BaseFragment implements PlaceSelect
     @Override
     public void onPlaceSelected(GeoPlace result)
     {
+        initAdapterAndRecyclerView(false);
         mLastSelectedPlace.update(result);
-        CharSequence name = result.namedPlace().name();
-        mToolbarTitle.setText(new TextWithIcon(getContext(), name, R.drawable.schedjoules_ic_arrow_drop_down_white));
+        mToolbarTitle.setText(new TextWithIcon(getContext(), result.namedPlace().name(), R.drawable.schedjoules_ic_arrow_drop_down_white));
         mListItemsController.loadEvents(result.geoLocation(), startAfter());
     }
 
