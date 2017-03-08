@@ -169,7 +169,7 @@ public final class PermissionProxy implements SearchModule
 
 
         @Override
-        public void onUserAnswered(FiveWayPermissionStatus newStatus)
+        public void onResult(FiveWayPermissionStatus newStatus)
         {
             // "Re-fire" the query to this proxy
             onSearchQueryChange(mQuery);
@@ -177,7 +177,7 @@ public final class PermissionProxy implements SearchModule
 
 
         @Override
-        public void onRequestInterrupted()
+        public void onInterrupt()
         {
             // Nothing to do here, the same message items is still shown, user can retry with that
         }

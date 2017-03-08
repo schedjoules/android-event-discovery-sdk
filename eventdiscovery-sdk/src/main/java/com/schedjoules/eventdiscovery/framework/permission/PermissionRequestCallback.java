@@ -31,10 +31,10 @@ public interface PermissionRequestCallback<S extends PermissionStatus>
      * @param newStatus
      *         the new status of {@link Permission}
      */
-    void onUserAnswered(S newStatus);
+    void onResult(S newStatus);
 
     /**
      * Called when the permission request has been interrupted for some reason.
      */
-    void onRequestInterrupted();
+    void onInterrupt();
 }

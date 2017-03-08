@@ -67,7 +67,7 @@ public final class FiveWayPermission implements Permission<FiveWayPermissionStat
         FiveWayPermissionStatus currentStatus = status();
         if (currentStatus.granted() || currentStatus == NOT_IN_MANIFEST)
         {
-            callback.onUserAnswered(currentStatus);
+            callback.onResult(currentStatus);
         }
 
         LocalBroadcastManager.getInstance(mActivity).registerReceiver(new BroadcastReceiver()
@@ -88,11 +88,11 @@ public final class FiveWayPermission implements Permission<FiveWayPermissionStat
 
                 if (result.grantResults.length != 0)
                 {
-                    callback.onUserAnswered(status());
+                    callback.onResult(status());
                 }
                 else
                 {
-                    callback.onRequestInterrupted();
+                    callback.onInterrupt();
                 }
 
                 LocalBroadcastManager.getInstance(mActivity).unregisterReceiver(this);
