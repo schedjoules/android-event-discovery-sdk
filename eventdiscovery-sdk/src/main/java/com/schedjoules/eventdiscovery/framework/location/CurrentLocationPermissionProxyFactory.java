@@ -21,10 +21,10 @@ import android.Manifest;
 
 import com.schedjoules.eventdiscovery.R;
 import com.schedjoules.eventdiscovery.framework.location.model.GeoPlace;
-import com.schedjoules.eventdiscovery.framework.searchlist.QueryPredicate;
 import com.schedjoules.eventdiscovery.framework.searchlist.SearchModuleFactory;
 import com.schedjoules.eventdiscovery.framework.searchlist.permissionproxy.AbstractPermissionProxyModuleFactory;
 import com.schedjoules.eventdiscovery.framework.searchlist.permissionproxy.PermissionProxy;
+import com.schedjoules.eventdiscovery.framework.searchlist.predicate.EmptyQueryPredicate;
 
 
 /**
@@ -46,14 +46,4 @@ public final class CurrentLocationPermissionProxyFactory extends AbstractPermiss
                 R.string.schedjoules_location_picker_current_location_permission_inform_about_phone_settings);
     }
 
-
-    private static class EmptyQueryPredicate implements QueryPredicate
-    {
-
-        @Override
-        public boolean isValid(String query)
-        {
-            return query.isEmpty();
-        }
-    }
 }

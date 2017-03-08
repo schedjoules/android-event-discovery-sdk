@@ -25,9 +25,9 @@ import com.schedjoules.eventdiscovery.framework.list.ListItem;
 import com.schedjoules.eventdiscovery.framework.permission.fiveway.FiveWayPermission;
 import com.schedjoules.eventdiscovery.framework.permission.fiveway.FiveWayPermissionStatus;
 import com.schedjoules.eventdiscovery.framework.searchlist.NoOpSearchModule;
-import com.schedjoules.eventdiscovery.framework.searchlist.QueryPredicate;
 import com.schedjoules.eventdiscovery.framework.searchlist.SearchModule;
 import com.schedjoules.eventdiscovery.framework.searchlist.SearchModuleFactory;
+import com.schedjoules.eventdiscovery.framework.searchlist.predicate.QueryPredicate;
 import com.schedjoules.eventdiscovery.framework.searchlist.resultupdates.ResultUpdateListener;
 
 import static com.schedjoules.eventdiscovery.framework.permission.fiveway.FiveWayPermissionStatus.DENIED_WITH_NEVER_ASK_AGAIN;

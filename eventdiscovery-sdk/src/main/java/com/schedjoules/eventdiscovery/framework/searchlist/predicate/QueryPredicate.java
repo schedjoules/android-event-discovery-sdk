@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery.framework.searchlist;
+package com.schedjoules.eventdiscovery.framework.searchlist.predicate;
 
 /**
  * A general predicate for checking whether a query is valid in a certain context or not.
