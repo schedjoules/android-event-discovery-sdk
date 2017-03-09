@@ -17,14 +17,13 @@
 
 package com.schedjoules.eventdiscovery.framework.searchlist.permissionproxy;
 
+import android.app.Activity;
 import android.support.annotation.Nullable;
 
 import com.schedjoules.eventdiscovery.framework.list.ListItem;
 import com.schedjoules.eventdiscovery.framework.list.smart.Clickable;
 import com.schedjoules.eventdiscovery.framework.location.listitems.MessageItem;
-import com.schedjoules.eventdiscovery.framework.permission.PermissionRequestCallback;
-import com.schedjoules.eventdiscovery.framework.permission.fiveway.FiveWayPermission;
-import com.schedjoules.eventdiscovery.framework.permission.fiveway.FiveWayPermissionStatus;
+import com.schedjoules.eventdiscovery.framework.permission.Permission;
 import com.schedjoules.eventdiscovery.framework.searchlist.SearchModule;
 import com.schedjoules.eventdiscovery.framework.searchlist.SearchModuleFactory;
 import com.schedjoules.eventdiscovery.framework.searchlist.predicate.QueryPredicate;
@@ -32,6 +31,8 @@ import com.schedjoules.eventdiscovery.framework.searchlist.resultupdates.Clear;
 import com.schedjoules.eventdiscovery.framework.searchlist.resultupdates.ResultUpdateListener;
 import com.schedjoules.eventdiscovery.framework.searchlist.resultupdates.ShowSingle;
 import com.schedjoules.eventdiscovery.framework.utils.smartview.OnClickAction;
+
+import java.lang.ref.WeakReference;
 
 
 /**
@@ -42,18 +43,22 @@ import com.schedjoules.eventdiscovery.framework.utils.smartview.OnClickAction;
  */
 public final class PermissionProxy implements SearchModule
 {
+    private final WeakReference<Activity> mActivityReference;
     private final SearchModule mDelegate;
     private final QueryPredicate mQueryPredicate;
     private final ResultUpdateListener<ListItem> mUpdateListener;
-    private final FiveWayPermission mPermission;
+    private final Permission mPermission;
     private final String mNotAskedYetMessage;
     private final String mDeniedMessage;
     private final String mDeniedWithNeverAskAgainMessage;
+    private boolean mPermissionRequested;
 
 
     /**
      * Constructor.
      *
+     * @param activity
+     *         The current {@link Activity}.
      * @param delegate
      *         the delegate module to dispatch queries to if the permission is granted
      * @param queryPredicate
@@ -69,14 +74,16 @@ public final class PermissionProxy implements SearchModule
      * @param deniedWithNeverAskAgainMessage
      *         the message that should be displayed as an item when the permission has been denied with "Never ask again" checked
      */
-    public PermissionProxy(SearchModule delegate,
+    public PermissionProxy(Activity activity,
+                           SearchModule delegate,
                            QueryPredicate queryPredicate,
                            ResultUpdateListener<ListItem> updateListener,
-                           FiveWayPermission permission,
+                           Permission permission,
                            String notAskedYetMessage,
                            String deniedMessage,
                            String deniedWithNeverAskAgainMessage)
     {
+        mActivityReference = new WeakReference<>(activity);
         mDelegate = delegate;
         mQueryPredicate = queryPredicate;
         mUpdateListener = updateListener;
@@ -102,26 +109,28 @@ public final class PermissionProxy implements SearchModule
         }
         else
         {
-            switch (mPermission.status())
+            if (mPermission.isGranted())
             {
-                case GRANTED:
-                    mDelegate.onSearchQueryChange(newQuery);
-                    break;
-
-                case NOT_ASKED_YET:
+                mDelegate.onSearchQueryChange(newQuery);
+            }
+            else
+            {
+                if (mPermissionRequested)
+                {
+                    Activity activity = mActivityReference.get();
+                    if (activity != null && mPermission.isGrantable(activity))
+                    {
+                        showMessageItem(mDeniedMessage, new PermissionRequestOnClick(newQuery), newQuery);
+                    }
+                    else
+                    {
+                        showMessageItem(mDeniedWithNeverAskAgainMessage, null, newQuery);
+                    }
+                }
+                else
+                {
                     showMessageItem(mNotAskedYetMessage, new PermissionRequestOnClick(newQuery), newQuery);
-                    break;
-
-                case DENIED:
-                    showMessageItem(mDeniedMessage, new PermissionRequestOnClick(newQuery), newQuery);
-                    break;
-
-                case DENIED_WITH_NEVER_ASK_AGAIN:
-                    showMessageItem(mDeniedWithNeverAskAgainMessage, null, newQuery);
-                    break;
-
-                default: // Should not happen
-                    mUpdateListener.onUpdate(new Clear<ListItem>(newQuery));
+                }
             }
         }
     }
@@ -150,36 +159,13 @@ public final class PermissionProxy implements SearchModule
         @Override
         public void onClick()
         {
-            mPermission.request(new OurPermissionRequestCallback(mQuery));
+            Activity activity = mActivityReference.get();
+            if (activity != null)
+            {
+                mPermissionRequested = true;
+                mPermission.request().send(activity);
+            }
         }
 
-    }
-
-
-    private class OurPermissionRequestCallback implements PermissionRequestCallback<FiveWayPermissionStatus>
-    {
-
-        private final String mQuery;
-
-
-        OurPermissionRequestCallback(String query)
-        {
-            mQuery = query;
-        }
-
-
-        @Override
-        public void onResult(FiveWayPermissionStatus newStatus)
-        {
-            // "Re-fire" the query to this proxy
-            onSearchQueryChange(mQuery);
-        }
-
-
-        @Override
-        public void onInterrupt()
-        {
-            // Nothing to do here, the same message items is still shown, user can retry with that
-        }
     }
 }

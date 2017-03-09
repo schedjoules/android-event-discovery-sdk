@@ -22,23 +22,18 @@ import android.support.annotation.StringRes;
 
 import com.schedjoules.eventdiscovery.framework.list.ItemChosenAction;
 import com.schedjoules.eventdiscovery.framework.list.ListItem;
-import com.schedjoules.eventdiscovery.framework.permission.fiveway.FiveWayPermission;
-import com.schedjoules.eventdiscovery.framework.permission.fiveway.FiveWayPermissionStatus;
+import com.schedjoules.eventdiscovery.framework.permission.AppPermissions;
+import com.schedjoules.eventdiscovery.framework.permission.BasicAppPermissions;
+import com.schedjoules.eventdiscovery.framework.permission.Permission;
 import com.schedjoules.eventdiscovery.framework.searchlist.NoOpSearchModule;
 import com.schedjoules.eventdiscovery.framework.searchlist.SearchModule;
 import com.schedjoules.eventdiscovery.framework.searchlist.SearchModuleFactory;
 import com.schedjoules.eventdiscovery.framework.searchlist.predicate.QueryPredicate;
 import com.schedjoules.eventdiscovery.framework.searchlist.resultupdates.ResultUpdateListener;
 
-import static com.schedjoules.eventdiscovery.framework.permission.fiveway.FiveWayPermissionStatus.DENIED_WITH_NEVER_ASK_AGAIN;
-import static com.schedjoules.eventdiscovery.framework.permission.fiveway.FiveWayPermissionStatus.NOT_IN_MANIFEST;
-
 
 /**
  * {@link SearchModuleFactory} for {@link PermissionProxy}.
- * <p>
- * It creates a {@link NoOpSearchModule} if the permission has status {@link FiveWayPermissionStatus#DENIED_WITH_NEVER_ASK_AGAIN} or {@link
- * FiveWayPermissionStatus#NOT_IN_MANIFEST}. Otherwise it decorates the given delegate module with a {@link PermissionProxy}.
  *
  * @author Gabor Keszthelyi
  */
@@ -71,10 +66,10 @@ public abstract class AbstractPermissionProxyModuleFactory<ITEM_DATA> implements
     @Override
     public final SearchModule create(Activity activity, ResultUpdateListener<ListItem> updateListener, ItemChosenAction<ITEM_DATA> itemChosenAction)
     {
-        FiveWayPermission permission = new FiveWayPermission(activity, mPermissionName);
-        FiveWayPermissionStatus status = permission.status();
+        AppPermissions appPermissions = new BasicAppPermissions(activity);
+        Permission permission = appPermissions.forName(mPermissionName);
 
-        if (status == DENIED_WITH_NEVER_ASK_AGAIN || status == NOT_IN_MANIFEST)
+        if (!permission.isGrantable(activity))
         {
             return new NoOpSearchModule();
         }
@@ -82,6 +77,7 @@ public abstract class AbstractPermissionProxyModuleFactory<ITEM_DATA> implements
         SearchModule delegateModule = mDelegateModuleFactory.create(activity, updateListener, itemChosenAction);
 
         return new PermissionProxy(
+                activity,
                 delegateModule,
                 mQueryPredicate,
                 updateListener,

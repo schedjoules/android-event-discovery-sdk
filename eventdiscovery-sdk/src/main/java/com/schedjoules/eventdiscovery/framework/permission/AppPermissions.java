@@ -15,21 +15,23 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery.framework.permission.tracker;
-
-import android.app.Activity;
-
+package com.schedjoules.eventdiscovery.framework.permission;
 
 /**
- * A permission request result that can be registered, i.e. any saved state to be updated.
+ * Set of Android's app permissions.
  *
- * @author Gabor Keszthelyi
+ * @author Marten Gajda
  */
-public interface TrackablePermissionRequestResult
+public interface AppPermissions
 {
 
     /**
-     * Registers this permission request result, i.e. updates any corresponding saved state.
+     * Return the {@link Permission} of the given name.
+     *
+     * @param permissionName
+     *         The name of the {@link Permission} to return.
+     *
+     * @return A {@link Permission}.
      */
-    void register(Activity activity);
+    Permission forName(String permissionName);
 }

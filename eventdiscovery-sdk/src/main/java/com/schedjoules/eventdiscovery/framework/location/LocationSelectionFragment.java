@@ -60,6 +60,7 @@ import java.util.List;
  */
 public final class LocationSelectionFragment extends BaseFragment
 {
+    private EditText mSearchEditText;
     private SearchModule mCompositeModule;
     private GeneralMultiTypeAdapter mAdapter;
     private SearchListItems mSearchListItems;
@@ -118,8 +119,8 @@ public final class LocationSelectionFragment extends BaseFragment
 
         views.schedjoulesLocationSelectionList.setAdapter(mAdapter);
 
-        EditText searchEditText = views.schedjoulesLocationSelectionInput;
-        searchEditText.addTextChangedListener(new AbstractTextWatcher()
+        mSearchEditText = views.schedjoulesLocationSelectionInput;
+        mSearchEditText.addTextChangedListener(new AbstractTextWatcher()
         {
             @Override
             public void afterTextChanged(Editable editable)
@@ -129,7 +130,7 @@ public final class LocationSelectionFragment extends BaseFragment
                 mCompositeModule.onSearchQueryChange(newQuery);
             }
         });
-        searchEditText.setOnEditorActionListener(new HideKeyboardActionListener());
+        mSearchEditText.setOnEditorActionListener(new HideKeyboardActionListener());
 
         if (savedInstanceState == null)
         {
@@ -138,6 +139,16 @@ public final class LocationSelectionFragment extends BaseFragment
         }
 
         return views.getRoot();
+    }
+
+
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        // update all modules, things may have changed while we were asleep.
+        // for instance the user could have revoked or granted a permission in the device settings
+        mCompositeModule.onSearchQueryChange(mSearchEditText.getText().toString());
     }
 
 

@@ -17,23 +17,45 @@
 
 package com.schedjoules.eventdiscovery.framework.permission;
 
+import android.app.Activity;
+
+
 /**
  * Represents a single Android permission.
  *
- * @author Gabor Keszthelyi
+ * @author Marten Gajda
  */
-public interface Permission<S extends PermissionStatus>
+public interface Permission
 {
     /**
-     * The status of this permission.
+     * The name of this permission.
+     *
+     * @return A String containing the permission name.
      */
-    S status();
+    String name();
 
     /**
-     * Initiates requesting this permission from the user.
+     * Return whether this permission is granted or not.
      *
-     * @param callback
-     *         the callback to deliver the result
+     * @return {@code true} if this permission has been granted to the app, {@code false} otherwise.
      */
-    void request(PermissionRequestCallback<S> callback);
+    boolean isGranted();
+
+    /**
+     * Returns whether this permission can be granted at runtime by calling {@link #request()} and sending the returned {@link PermissionRequest}.
+     * On Android SDK levels <22 this will always return {@code false}.
+     *
+     * @param activity
+     *         The current {@link Activity}.
+     *
+     * @return {@code true} if this permission can be granted, {@code false} otherwise.
+     */
+    boolean isGrantable(Activity activity);
+
+    /**
+     * Creates a {@link PermissionRequest} to request this {@link Permission}.
+     *
+     * @return A new {@link PermissionRequest} for this single {@link Permission}.
+     */
+    PermissionRequest request();
 }

@@ -17,15 +17,29 @@
 
 package com.schedjoules.eventdiscovery.framework.permission;
 
+import android.content.Context;
+import android.os.Build;
+
+
 /**
- * Represent that status of a Android permission.
+ * Basic {@link AppPermissions} implementation. It automatically handles different permission support on different Android versions.
  *
- * @author Gabor Keszthelyi
+ * @author Marten Gajda
  */
-public interface PermissionStatus
+public final class BasicAppPermissions implements AppPermissions
 {
-    /**
-     * Tells whether the permission is granted or not.
-     */
-    boolean granted();
+    private final AppPermissions mDelegate;
+
+
+    public BasicAppPermissions(Context context)
+    {
+        mDelegate = Build.VERSION.SDK_INT < 23 ? new LegacyAppPermissions(context) : new MarshmallowPermissions(context);
+    }
+
+
+    @Override
+    public Permission forName(String permissionName)
+    {
+        return mDelegate.forName(permissionName);
+    }
 }

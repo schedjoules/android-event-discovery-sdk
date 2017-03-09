@@ -23,7 +23,6 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
 
-import com.schedjoules.eventdiscovery.framework.permission.broadcast.PermissionResultBroadcast;
 import com.schedjoules.eventdiscovery.framework.services.BasicActionsService;
 import com.schedjoules.eventdiscovery.framework.services.BasicInsightsService;
 
@@ -55,6 +54,6 @@ public abstract class BaseActivity extends AppCompatActivity
     public final void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults)
     {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        new PermissionResultBroadcast(requestCode, permissions, grantResults).send(this);
+        // TODO do we have to notity anyone?
     }
 }

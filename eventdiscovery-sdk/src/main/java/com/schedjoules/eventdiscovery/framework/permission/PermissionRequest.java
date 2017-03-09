@@ -17,24 +17,31 @@
 
 package com.schedjoules.eventdiscovery.framework.permission;
 
+import android.app.Activity;
+
+
 /**
- * Callback to deliver the result for a permission request.
+ * A request to grant a permission.
  *
- * @author Gabor Keszthelyi
+ * @author Marten Gajda
  */
-public interface PermissionRequestCallback<S extends PermissionStatus>
+public interface PermissionRequest
 {
-
     /**
-     * Called when the user answered the permission dialog.
+     * Adds the given {@link Permission}s to this request.
      *
-     * @param newStatus
-     *         the new status of {@link Permission}
+     * @param permissions
+     *         An array of {@link Permission}s.
+     *
+     * @return A new {@link PermissionRequest} that also asks for the added {@link Permission}s.
      */
-    void onResult(S newStatus);
+    PermissionRequest withPermission(Permission... permissions);
 
     /**
-     * Called when the permission request has been interrupted for some reason.
+     * Send this {@link PermissionRequest} and ask the user to grant the {@link Permission}s.
+     *
+     * @param activity
+     *         An {@link Activity}.
      */
-    void onInterrupt();
+    void send(Activity activity);
 }
