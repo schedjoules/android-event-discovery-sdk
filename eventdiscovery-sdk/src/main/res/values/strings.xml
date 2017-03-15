@@ -54,4 +54,6 @@
     <!-- The title above the list of recently selected location. -->
     <string name="schedjoules_location_picker_caption_recent_locations">Recent locations</string>
 
+    <!-- A brief message that's presented to the user if there is no (official) API coverage for his country. -->
+    <string name="schedjoules_message_country_not_supported">Event discovery is currently not supported in your country.</string>
 </resources>

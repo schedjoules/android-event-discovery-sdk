@@ -21,7 +21,9 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -37,6 +39,7 @@ import com.schedjoules.client.eventsdiscovery.GeoLocation;
 import com.schedjoules.client.insights.steps.Screen;
 import com.schedjoules.eventdiscovery.R;
 import com.schedjoules.eventdiscovery.databinding.SchedjoulesFragmentEventListBinding;
+import com.schedjoules.eventdiscovery.discovery.SimpleCoverageTest;
 import com.schedjoules.eventdiscovery.framework.common.BaseActivity;
 import com.schedjoules.eventdiscovery.framework.common.BaseFragment;
 import com.schedjoules.eventdiscovery.framework.common.ExternalUrlFeedbackForm;
@@ -58,6 +61,8 @@ import com.schedjoules.eventdiscovery.framework.widgets.TextWithIcon;
 import com.schedjoules.eventdiscovery.service.ApiService;
 
 import org.dmfs.httpessentials.types.StringToken;
+import org.dmfs.pigeonpost.Dovecote;
+import org.dmfs.pigeonpost.localbroadcast.SerializableDovecote;
 import org.dmfs.rfc5545.DateTime;
 
 import java.util.ArrayList;
@@ -89,6 +94,8 @@ public final class EventListFragment extends BaseFragment implements PlaceSelect
     private boolean mIsInitializing;
     private FlexibleAdapter mAdapter;
     private SchedjoulesFragmentEventListBinding mViews;
+
+    private Dovecote<Boolean> mCoverageDoveCote;
 
 
     public static Fragment newInstance(Bundle args)
@@ -137,6 +144,19 @@ public final class EventListFragment extends BaseFragment implements PlaceSelect
                 new EventListLoadingIndicatorOverlay(mViews.schedjoulesEventListProgressBar));
 
         initAdapterAndRecyclerView(true);
+
+        mCoverageDoveCote = new SerializableDovecote<>(getActivity(), "coveragetest", new Dovecote.OnPigeonReturnCallback<Boolean>()
+        {
+            @Override
+            public void onPigeonReturn(@NonNull Boolean serializable)
+            {
+                if (!serializable)
+                {
+                    Snackbar.make(getView(), R.string.schedjoules_message_country_not_supported, Snackbar.LENGTH_INDEFINITE).show();
+                }
+            }
+        });
+        new SimpleCoverageTest(mCoverageDoveCote).execute(getActivity());
 
         return mViews.getRoot();
     }
@@ -290,10 +310,17 @@ public final class EventListFragment extends BaseFragment implements PlaceSelect
 
 
     @Override
+    public void onDestroyView()
+    {
+        mCoverageDoveCote.dispose();
+        super.onDestroyView();
+    }
+
+
+    @Override
     public void onDestroy()
     {
         super.onDestroy();
-
         mApiService.disconnect();
         mLocationSelection.unregisterListener();
     }

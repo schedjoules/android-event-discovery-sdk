@@ -89,6 +89,12 @@
             </intent-filter>
         </service>
 
+        <service
+                android:name=".framework.services.CoverageService"
+                android:exported="false"
+                android:enabled="true"
+                android:stopWithTask="true"/>
+
         <meta-data
                 android:name="com.schedjoules.eventdiscovery.framework.common.SchedJoulesGlideModule"
                 android:value="GlideModule"/>
