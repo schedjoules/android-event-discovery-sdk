@@ -36,6 +36,7 @@ import com.schedjoules.eventdiscovery.databinding.SchedjoulesFragmentEventDetail
 import com.schedjoules.eventdiscovery.framework.actions.ActionViewIterable;
 import com.schedjoules.eventdiscovery.framework.actions.Actions;
 import com.schedjoules.eventdiscovery.framework.actions.BaseActionFactory;
+import com.schedjoules.eventdiscovery.framework.actions.ViewIntentActionExecutable;
 import com.schedjoules.eventdiscovery.framework.common.BaseActivity;
 import com.schedjoules.eventdiscovery.framework.common.BaseFragment;
 import com.schedjoules.eventdiscovery.framework.common.ExternalUrlFeedbackForm;
@@ -47,10 +48,11 @@ import com.schedjoules.eventdiscovery.framework.microfragments.eventdetails.frag
 import com.schedjoules.eventdiscovery.framework.microfragments.eventdetails.fragments.views.EventDetailsTwoLineItemView;
 import com.schedjoules.eventdiscovery.framework.microfragments.eventdetails.fragments.views.HorizontalActionsView;
 import com.schedjoules.eventdiscovery.framework.microfragments.eventdetails.fragments.views.SmallEventActionView;
+import com.schedjoules.eventdiscovery.framework.model.BookTicketLink;
 import com.schedjoules.eventdiscovery.framework.model.SchedJoulesLinks;
 import com.schedjoules.eventdiscovery.framework.utils.InsightsTask;
-import com.schedjoules.eventdiscovery.framework.utils.Limiting;
-import com.schedjoules.eventdiscovery.framework.utils.Skipping;
+import com.schedjoules.eventdiscovery.framework.utils.iterators.Limiting;
+import com.schedjoules.eventdiscovery.framework.utils.iterators.Skipping;
 
 import org.dmfs.android.microfragments.FragmentEnvironment;
 import org.dmfs.android.microfragments.MicroFragmentEnvironment;
@@ -63,8 +65,6 @@ import static com.schedjoules.eventdiscovery.framework.utils.LocationFormatter.l
 
 
 /**
- * TODO location dropdown arrow in toolbar
- * <p>
  * A fragment representing a single Event detail screen.
  *
  * @author Gabor Keszthelyi
@@ -103,6 +103,7 @@ public final class EventDetailFragment extends BaseFragment implements EventDeta
         mViews.schedjoulesDetailsHeader.schedjoulesEventDetailToolbarLayout.setTitle(mEvent.title());
         addFixVerticalItems();
         showActions();
+        showTicketButton();
         Glide.with(getActivity())
                 .load(new SchedJoulesLinks(mEvent.links()).bannerUri())
                 .into(mViews.schedjoulesDetailsHeader.schedjoulesEventDetailBanner);
@@ -124,8 +125,6 @@ public final class EventDetailFragment extends BaseFragment implements EventDeta
     }
 
 
-    // TODO Could be factored out declaratively to sg like EventDetailItems implements Iterator<View>.
-    // (And create LinearLayout with addViews(Iterator<View> views) for mVerticalItems (would be useful in onResult, too))
     private void addFixVerticalItems()
     {
         EventDetailsTwoLineItemView dateTimeItem = EventDetailsTwoLineItemView.inflate(mVerticalItems);
@@ -179,6 +178,26 @@ public final class EventDetailFragment extends BaseFragment implements EventDeta
         {
             // hide actions bar
             mViews.schedjoulesEventHorizontalActions.setVisibility(View.GONE);
+        }
+    }
+
+
+    private void showTicketButton()
+    {
+        final BookTicketLink ticketLink = new BookTicketLink(mActions);
+        if (ticketLink.isPresent())
+        {
+            mViews.schedjoulesEventDetailsTicketButton.setText(getString(R.string.schedjoules_event_details_ticket_button_title));
+            mViews.schedjoulesEventDetailsTicketButton.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    new ViewIntentActionExecutable(ticketLink.value(), mEvent).execute(getActivity());
+                }
+            });
+            mViews.schedjoulesEventDetailsTicketButtonSpace.setVisibility(View.VISIBLE);
+            mViews.schedjoulesEventDetailsTicketButtonArea.setVisibility(View.VISIBLE);
         }
     }
 

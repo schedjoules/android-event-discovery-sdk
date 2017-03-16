@@ -40,8 +40,9 @@ public final class BaseActionFactory implements ActionFactory
         String relType = actionLink.relationTypes().iterator().next();
         switch (relType)
         {
-            case "http://schedjoules.com/rel/action/book":
-                return new BookAction(actionLink, event);
+            // Not shown as Action currently but may be useful later:
+//            case "http://schedjoules.com/rel/action/book":
+//                return new BookAction(actionLink, event);
 
             case "http://schedjoules.com/rel/action/share":
                 return new ShareAction(actionLink, event);

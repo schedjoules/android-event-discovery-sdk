@@ -26,6 +26,10 @@
     <string name="schedjoules_action_book_hotel">Hotel</string>
     <string name="schedjoules_action_book_parking">Parking</string>
     <string name="schedjoules_action_add_to_calendar">Add to calendar</string>
+
+    <!-- Label for the tickets button on the Event Details screen. -->
+    <string name="schedjoules_event_details_ticket_button_title">Get Tickets</string>
+
     <string name="schedjoules_wait_message">This might take a moment</string>
     <string name="schedjoules_error_loading_event">Could not load event\nPlease check your internet connection</string>
 

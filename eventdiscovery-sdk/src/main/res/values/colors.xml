@@ -2,7 +2,7 @@
 <resources>
     <color name="schedjoules_colorPrimary">#3e5362</color>
     <color name="schedjoules_colorPrimaryDark">#26333d</color>
-    <color name="schedjoules_colorAccent">#f16667</color>
+    <color name="schedjoules_colorAccent">#0CAF60</color>
 
     <color name="schedjoules_text_content">#101010</color>
     <color name="schedjoules_content_icon">#707070</color>

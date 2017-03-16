@@ -15,13 +15,13 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery.framework.utils;
+package com.schedjoules.eventdiscovery.framework.utils.iterators;
 
 import java.util.Iterator;
 
 
 /**
- * An {@link Iterator} that returns only the first leading elements of another {@link Iterator}.
+ * An {@link Iterable} that returns only the first leading elements of another {@link Iterable}.
  *
  * @author Marten Gajda
  */
