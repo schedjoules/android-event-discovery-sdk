@@ -19,12 +19,12 @@ package com.schedjoules.eventdiscovery.framework.location.listitems;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.schedjoules.eventdiscovery.R;
-import com.schedjoules.eventdiscovery.framework.location.model.NamedPlace;
-import com.schedjoules.eventdiscovery.framework.utils.SmartView;
+import com.schedjoules.eventdiscovery.framework.location.model.namedplace.NamedPlace;
+import com.schedjoules.eventdiscovery.framework.utils.smartview.SmartView;
 
 
 /**
@@ -32,7 +32,7 @@ import com.schedjoules.eventdiscovery.framework.utils.SmartView;
  *
  * @author Gabor Keszthelyi
  */
-public final class PlaceSuggestionItemView extends LinearLayout implements SmartView<NamedPlace>
+public final class PlaceSuggestionItemView<T extends NamedPlace> extends RelativeLayout implements SmartView<T>
 {
 
     private TextView mName;
@@ -55,7 +55,7 @@ public final class PlaceSuggestionItemView extends LinearLayout implements Smart
 
 
     @Override
-    public void update(NamedPlace namedPlace)
+    public void update(T namedPlace)
     {
         mName.setText(namedPlace.name());
         mExtraContext.setText(namedPlace.extraContext());

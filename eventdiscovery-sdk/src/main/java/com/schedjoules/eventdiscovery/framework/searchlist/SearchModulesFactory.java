@@ -19,8 +19,9 @@ package com.schedjoules.eventdiscovery.framework.searchlist;
 
 import android.app.Activity;
 
-import com.schedjoules.eventdiscovery.framework.list.ListItemSelectionAction;
-import com.schedjoules.eventdiscovery.framework.utils.Factory;
+import com.schedjoules.eventdiscovery.framework.list.ItemChosenAction;
+import com.schedjoules.eventdiscovery.framework.searchlist.resultupdates.SectionedResultUpdateListenerAdapter;
+import com.schedjoules.eventdiscovery.framework.utils.factory.Factory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,18 +36,18 @@ public final class SearchModulesFactory<ITEM_DATA> implements Factory<List<Searc
 {
     private final Activity mActivity;
     private final SearchListItems mSearchListItems;
-    private final ListItemSelectionAction<ITEM_DATA> mItemSelectionAction;
+    private final ItemChosenAction<ITEM_DATA> mItemChosenAction;
     private final List<SearchModuleFactory<ITEM_DATA>> mFactories;
 
 
     public SearchModulesFactory(Activity activity,
                                 SearchListItems searchListItems,
-                                ListItemSelectionAction<ITEM_DATA> itemSelectionAction,
+                                ItemChosenAction<ITEM_DATA> itemChosenAction,
                                 List<SearchModuleFactory<ITEM_DATA>> factories)
     {
         mActivity = activity;
         mSearchListItems = searchListItems;
-        mItemSelectionAction = itemSelectionAction;
+        mItemChosenAction = itemChosenAction;
         mFactories = factories;
     }
 
@@ -62,7 +63,7 @@ public final class SearchModulesFactory<ITEM_DATA> implements Factory<List<Searc
                     mActivity,
                     // Adding 1000 to the index to avoid confusion with list positions
                     new SectionedResultUpdateListenerAdapter<>(i + 1000, mSearchListItems),
-                    mItemSelectionAction);
+                    mItemChosenAction);
             modules.add(searchModule);
         }
         return modules;

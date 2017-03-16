@@ -50,4 +50,5 @@ public final class LocationSelectionActivity extends BaseActivity
                     .commit();
         }
     }
+
 }

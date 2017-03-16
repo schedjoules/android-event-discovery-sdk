@@ -15,21 +15,21 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery.framework.list;
+package com.schedjoules.eventdiscovery.framework.utils;
+
+import android.content.Context;
+
 
 /**
- * Action that can be executed when a list item was selected.
+ * Represents an Android broadcast.
  *
  * @author Gabor Keszthelyi
  */
-public interface ListItemSelectionAction<T>
+public interface Broadcast
 {
 
     /**
-     * Called when the item was selected by the user.
-     *
-     * @param itemData
-     *         the data corresponding to the list item
+     * Sends the broadcast.
      */
-    void onItemSelected(T itemData);
+    void send(Context context);
 }

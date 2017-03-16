@@ -29,4 +29,12 @@
 
     <string name="schedjoules_today">Vandaag</string>
     <string name="schedjoules_tomorrow">Morgen</string>
+
+    <string name="schedjoules_location_picker_current_location">Huidige locatie</string>
+    <string name="schedjoules_location_picker_current_location_locating">Locatie zoeken…</string>
+    <string name="schedjoules_location_picker_current_location_permission_rationale">Om uw huidige locatie te kunnen gebruiken, geeft u toegang tot uw locatie.</string>
+    <string name="schedjoules_location_picker_current_location_permission_inform_about_phone_settings">Om weergave van uw huidige locatie later mogelijk te maken, geeft u toegang tot uw locatie in de instellingen van uw toestel.</string>
+    <string name="schedjoules_location_picker_current_location_error">Het is niet gelukt om uw locatie te bepalen. Klik om het opnieuw te proberen.</string>
+    <string name="schedjoules_location_picker_caption_place_suggestions">Suggesties</string>
+    <string name="schedjoules_location_picker_caption_recent_locations">Recente locaties</string>
 </resources>

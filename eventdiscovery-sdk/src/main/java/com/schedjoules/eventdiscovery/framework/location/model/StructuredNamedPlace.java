@@ -17,6 +17,9 @@
 
 package com.schedjoules.eventdiscovery.framework.location.model;
 
+import com.schedjoules.eventdiscovery.framework.location.model.namedplace.NamedPlace;
+
+
 /**
  * @author Gabor Keszthelyi
  */

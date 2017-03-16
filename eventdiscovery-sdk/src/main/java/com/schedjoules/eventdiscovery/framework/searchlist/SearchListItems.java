@@ -21,6 +21,7 @@ import com.schedjoules.eventdiscovery.framework.list.ListItem;
 import com.schedjoules.eventdiscovery.framework.list.ListItems;
 import com.schedjoules.eventdiscovery.framework.list.changes.notifying.ChangeableListItems;
 import com.schedjoules.eventdiscovery.framework.list.sectioned.SectionableListItem;
+import com.schedjoules.eventdiscovery.framework.searchlist.resultupdates.SectionedResultUpdateListener;
 
 
 /**

@@ -21,6 +21,7 @@ import android.content.Context;
 
 import com.schedjoules.client.eventsdiscovery.GeoLocation;
 import com.schedjoules.eventdiscovery.R;
+import com.schedjoules.eventdiscovery.framework.location.model.namedplace.NamedPlace;
 import com.schedjoules.eventdiscovery.framework.model.UndefinedGeoLocation;
 
 
@@ -69,8 +70,7 @@ public final class Anywhere implements GeoPlace
         @Override
         public String id()
         {
-            throw new UnsupportedOperationException(
-                    String.format("%s doesn't have id, just name", Anywhere.class.getName()));
+            return "Anywhere";
         }
 
 

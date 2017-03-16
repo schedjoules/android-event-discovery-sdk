@@ -21,6 +21,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.schedjoules.client.eventsdiscovery.GeoLocation;
+import com.schedjoules.eventdiscovery.framework.location.model.namedplace.NamedPlace;
 import com.schedjoules.eventdiscovery.framework.model.ParcelableGeoLocation;
 
 

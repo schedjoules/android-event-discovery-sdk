@@ -15,23 +15,21 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery.framework.utils;
+package com.schedjoules.eventdiscovery.framework.searchlist.resultupdates;
 
-import android.view.View;
+import com.schedjoules.eventdiscovery.framework.searchlist.SearchModule;
 
 
 /**
- * Interface that can be implemented by any {@link View} that is 'smart', i.e. it takes care of how to update itself
- * from data/model and may also initiate actions, when clicked for example, instead of calling back.
+ * Listener interface for components that handle {@link ResultUpdate} marked with section numbers.
  *
  * @author Gabor Keszthelyi
  */
-public interface SmartView<T>
+public interface SectionedResultUpdateListener<T>
 {
 
     /**
-     * Called to update the View's content with the provided data.
+     * Called when a {@link SearchModule} with the given <code>sectionNumber</code> requests the given update to its section.
      */
-    void update(T data);
-
+    void onUpdate(int sectionNumber, ResultUpdate<T> update);
 }

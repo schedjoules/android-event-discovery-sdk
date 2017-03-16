@@ -15,18 +15,24 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery.framework.location.model;
+package com.schedjoules.eventdiscovery.framework.searchlist.resultupdates;
+
+import com.schedjoules.eventdiscovery.framework.searchlist.SearchModule;
+
 
 /**
- * Represents a place (city, venue, place) with a name and identifier.
+ * Listener interface for components that handle {@link ResultUpdate}s.
  *
  * @author Gabor Keszthelyi
  */
-public interface NamedPlace
+public interface ResultUpdateListener<T>
 {
-    String id();
 
-    CharSequence name();
-
-    CharSequence extraContext();
+    /**
+     * Called from {@link SearchModule} then it wants to update its section in the list.
+     *
+     * @param update
+     *         and update to the section of the list
+     */
+    void onUpdate(ResultUpdate<T> update);
 }

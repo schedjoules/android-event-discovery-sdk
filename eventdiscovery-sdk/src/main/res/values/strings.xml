@@ -37,5 +37,21 @@
     <string name="schedjoules_today">Today</string>
     <string name="schedjoules_tomorrow">Tomorrow</string>
 
-    <string name="schedjoules_location_picker_place_suggestions_title">Suggestions</string>
+    <!-- Location picker screen: -->
+
+    <!-- Location picker list item name for current location of the user/device -->
+    <string name="schedjoules_location_picker_current_location">Current location</string>
+    <!-- Progress list item displayed during retrieving the current location -->
+    <string name="schedjoules_location_picker_current_location_locating">Find location…</string>
+    <!-- List message item displayed in place of current location after user denied to give permission to access their location on the system dialog. -->
+    <string name="schedjoules_location_picker_current_location_permission_rationale">To use your current location, please allow access to your location.</string>
+    <!-- List message item displayed in place of current location after user denied to give permission to access their location on the system dialog and also checked "Never show again" checkbox. (They can only give the permission from phone settings after that.)-->
+    <string name="schedjoules_location_picker_current_location_permission_inform_about_phone_settings">To later enable current location display, allow access to your location from your device settings.</string>
+    <!-- Error message list item displayed in place of current location when there was some error during retrieving the location. -->
+    <string name="schedjoules_location_picker_current_location_error">We could not determine your location. Please tap to retry.</string>
+    <!-- The title above the list items for place suggestions, i.e. suggestions retrieved from Google based on the text the user types.-->
+    <string name="schedjoules_location_picker_caption_place_suggestions">Suggestions</string>
+    <!-- The title above the list of recently selected location. -->
+    <string name="schedjoules_location_picker_caption_recent_locations">Recent locations</string>
+
 </resources>

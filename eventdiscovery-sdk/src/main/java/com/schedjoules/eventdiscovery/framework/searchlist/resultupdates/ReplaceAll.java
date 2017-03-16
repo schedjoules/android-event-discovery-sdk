@@ -15,36 +15,36 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery.framework.searchlist;
+package com.schedjoules.eventdiscovery.framework.searchlist.resultupdates;
 
 import com.schedjoules.eventdiscovery.framework.list.changes.nonnotifying.NonNotifyingChangeableList;
-import com.schedjoules.eventdiscovery.framework.list.changes.nonnotifying.NonNotifyingListChange;
+
+import java.util.List;
 
 
 /**
- * {@link ResultUpdate} for a search result. It doesn't apply itself if the query has been changed in the meantime.
+ * {@link ResultUpdate} to replace all items with the given ones, if the current query string still matches.
  *
  * @author Gabor Keszthelyi
  */
-public final class SearchResultUpdate<T> implements ResultUpdate<T>
+public final class ReplaceAll<T> implements ResultUpdate<T>
 {
-    private final NonNotifyingListChange<T> mNonNotifyingListChange;
+    private final List<T> mItems;
     private final String mQuery;
 
 
-    public SearchResultUpdate(NonNotifyingListChange<T> nonNotifyingListChange, String query)
+    public ReplaceAll(List<T> items, String query)
     {
-        mNonNotifyingListChange = nonNotifyingListChange;
+        mItems = items;
         mQuery = query;
     }
 
 
     @Override
-    public void apply(NonNotifyingChangeableList<T> list, String currentQuery)
+    public void apply(NonNotifyingChangeableList<T> changeableList, String currentQuery)
     {
-        if (currentQuery.equals(mQuery))
-        {
-            list.apply(mNonNotifyingListChange);
-        }
+        new SearchResultUpdate<>(
+                new com.schedjoules.eventdiscovery.framework.list.changes.nonnotifying.ReplaceAll<>(mItems), mQuery)
+                .apply(changeableList, currentQuery);
     }
 }
