@@ -15,17 +15,15 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery.framework.location.tasks;
+package com.schedjoules.eventdiscovery.framework.googleapis.requests;
 
-import android.os.AsyncTask;
-
+import com.google.android.gms.common.api.Api;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.places.AutocompleteFilter;
 import com.google.android.gms.location.places.AutocompletePrediction;
 import com.google.android.gms.location.places.AutocompletePredictionBuffer;
 import com.google.android.gms.location.places.Places;
-import com.schedjoules.eventdiscovery.framework.async.SafeAsyncTask;
-import com.schedjoules.eventdiscovery.framework.async.SafeAsyncTaskCallback;
+import com.schedjoules.eventdiscovery.framework.googleapis.GoogleApiRequest;
 import com.schedjoules.eventdiscovery.framework.location.model.GooglePredictionNamedPlace;
 import com.schedjoules.eventdiscovery.framework.location.model.namedplace.NamedPlace;
 
@@ -34,31 +32,42 @@ import java.util.List;
 
 
 /**
- * {@link AsyncTask} to query Google Places API for place suggestions.
+ * Request to get autocomplete predictions.
  *
  * @author Gabor Keszthelyi
  */
-public final class PlaceSuggestionQueryTask extends SafeAsyncTask<String, GoogleApiClient, Void, List<NamedPlace>>
+public final class GetAutoCompletePredictionsRequest implements GoogleApiRequest<List<NamedPlace>>
 {
-
     private static final AutocompleteFilter CITIES_FILTER = new AutocompleteFilter.Builder()
             .setTypeFilter(AutocompleteFilter.TYPE_FILTER_CITIES)
             .build();
 
+    private final String mQuery;
 
-    public PlaceSuggestionQueryTask(String query, Client client)
+
+    public GetAutoCompletePredictionsRequest(String query)
     {
-        super(query, client);
+        mQuery = query;
     }
 
 
     @Override
-    protected List<NamedPlace> doInBackgroundWithException(String query, GoogleApiClient... googleApiClients) throws Exception
+    public Api requiredApi()
     {
-        GoogleApiClient googleApiClient = googleApiClients[0];
+        return Places.GEO_DATA_API;
+    }
 
+
+    @Override
+    public List<NamedPlace> execute(GoogleApiClient googleApiClient)
+    {
         AutocompletePredictionBuffer predictionBuffer =
-                Places.GeoDataApi.getAutocompletePredictions(googleApiClient, query, null, CITIES_FILTER).await();
+                Places.GeoDataApi.getAutocompletePredictions(googleApiClient, mQuery, null, CITIES_FILTER).await();
+
+        if (!predictionBuffer.getStatus().isSuccess())
+        {
+            throw new RuntimeException("Error response for AutocompletePredictions, Status: " + predictionBuffer.getStatus());
+        }
 
         List<NamedPlace> places = new ArrayList<>();
         for (AutocompletePrediction prediction : predictionBuffer)
@@ -69,11 +78,5 @@ public final class PlaceSuggestionQueryTask extends SafeAsyncTask<String, Google
         predictionBuffer.release();
 
         return places;
-    }
-
-
-    public interface Client extends SafeAsyncTaskCallback<String, List<NamedPlace>>
-    {
-
     }
 }

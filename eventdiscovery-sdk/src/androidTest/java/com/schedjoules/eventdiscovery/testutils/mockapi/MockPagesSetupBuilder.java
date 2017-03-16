@@ -28,7 +28,7 @@ import java.util.List;
 /**
  * Generated with 'Replace constructor with builder' IntelliJ action for {@link MockPagesSetup}.
  */
-public class MockPagesSetupBuilder
+public final class MockPagesSetupBuilder
 {
     private DateTime mFirstEventTime;
     private Duration mIntervalBetweenEvents;

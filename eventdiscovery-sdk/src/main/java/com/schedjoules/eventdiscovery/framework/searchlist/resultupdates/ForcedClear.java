@@ -15,30 +15,23 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery.framework.location.listitems;
+package com.schedjoules.eventdiscovery.framework.searchlist.resultupdates;
 
-import com.schedjoules.eventdiscovery.R;
-import com.schedjoules.eventdiscovery.framework.list.ListItem;
-import com.schedjoules.eventdiscovery.framework.list.smart.AbstractSmartListItem;
+import com.schedjoules.eventdiscovery.framework.list.changes.nonnotifying.ClearAll;
+import com.schedjoules.eventdiscovery.framework.list.changes.nonnotifying.NonNotifyingChangeableList;
 
 
 /**
- * A {@link ListItem} on the location picker that displays a message.
+ * {@link ResultUpdate} to clear all items regardless of the current query.
  *
  * @author Gabor Keszthelyi
  */
-public final class MessageItem extends AbstractSmartListItem<CharSequence, MessageItemView>
+public final class ForcedClear<T> implements ResultUpdate<T>
 {
 
-    public MessageItem(CharSequence text)
-    {
-        super(text, R.layout.schedjoules_list_item_location_message);
-    }
-
-
     @Override
-    protected String toStringLabel()
+    public void apply(NonNotifyingChangeableList<T> changeableList, String currentQuery)
     {
-        return "MessageItem";
+        changeableList.apply(new ClearAll<T>());
     }
 }

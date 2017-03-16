@@ -27,7 +27,7 @@ import com.schedjoules.eventdiscovery.framework.list.ListItem;
  *
  * @author Gabor Keszthelyi
  */
-public class TestListItem implements ListItem
+public final class TestListItem implements ListItem
 {
     private final int mId;
 

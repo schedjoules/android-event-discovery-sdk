@@ -17,7 +17,7 @@
 
 package com.schedjoules.eventdiscovery.framework.searchlist;
 
-import android.app.Activity;
+import android.support.v4.app.FragmentActivity;
 
 import com.schedjoules.eventdiscovery.framework.list.ItemChosenAction;
 import com.schedjoules.eventdiscovery.framework.searchlist.resultupdates.SectionedResultUpdateListenerAdapter;
@@ -34,13 +34,13 @@ import java.util.List;
  */
 public final class SearchModulesFactory<ITEM_DATA> implements Factory<List<SearchModule>>
 {
-    private final Activity mActivity;
+    private final FragmentActivity mActivity;
     private final SearchListItems mSearchListItems;
     private final ItemChosenAction<ITEM_DATA> mItemChosenAction;
     private final List<SearchModuleFactory<ITEM_DATA>> mFactories;
 
 
-    public SearchModulesFactory(Activity activity,
+    public SearchModulesFactory(FragmentActivity activity,
                                 SearchListItems searchListItems,
                                 ItemChosenAction<ITEM_DATA> itemChosenAction,
                                 List<SearchModuleFactory<ITEM_DATA>> factories)

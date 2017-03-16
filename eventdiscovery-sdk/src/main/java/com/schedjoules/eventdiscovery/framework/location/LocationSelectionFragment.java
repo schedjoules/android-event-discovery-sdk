@@ -30,10 +30,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.places.Places;
 import com.schedjoules.eventdiscovery.R;
 import com.schedjoules.eventdiscovery.databinding.SchedjoulesFragmentLocationSelectionBinding;
 import com.schedjoules.eventdiscovery.framework.common.BaseActivity;
 import com.schedjoules.eventdiscovery.framework.common.BaseFragment;
+import com.schedjoules.eventdiscovery.framework.googleapis.BasicGoogleApis;
+import com.schedjoules.eventdiscovery.framework.googleapis.Connected;
+import com.schedjoules.eventdiscovery.framework.googleapis.GoogleApis;
 import com.schedjoules.eventdiscovery.framework.list.GeneralMultiTypeAdapter;
 import com.schedjoules.eventdiscovery.framework.list.ItemChosenAction;
 import com.schedjoules.eventdiscovery.framework.location.model.GeoPlace;
@@ -80,6 +85,8 @@ public final class LocationSelectionFragment extends BaseFragment
         mAdapter = new GeneralMultiTypeAdapter(mSearchListItems);
         mSearchListItems.setAdapter(mAdapter);
 
+        GoogleApis googleApis = new Connected(new BasicGoogleApis(getActivity(), LocationServices.API, Places.GEO_DATA_API));
+
         // SearchModuleFactory can be made Serializable/Parcelable so they can be passed in
         List<SearchModule> modules = new SearchModulesFactory<>(
                 getActivity(),
@@ -95,9 +102,10 @@ public final class LocationSelectionFragment extends BaseFragment
                     }
                 },
                 Arrays.asList(
-                        new CurrentLocationPermissionProxyFactory(CurrentLocationModule.FACTORY),
+                        new CurrentLocationPermissionProxyFactory(new CurrentLocationModuleFactory(googleApis)),
                         new Remembered(RecentLocationsModule.FACTORY),
-                        new Remembered(PlaceSuggestionModule.FACTORY))
+                        new Remembered(new PlaceSuggestionModuleFactory(googleApis))
+                )
         ).create();
 
         mCompositeModule = new CompositeSearchModule(modules);
@@ -122,17 +130,12 @@ public final class LocationSelectionFragment extends BaseFragment
             public void afterTextChanged(Editable editable)
             {
                 String newQuery = editable.toString();
+                // Order is relevant here, SearchListItems has to come first:
                 mSearchListItems.onSearchQueryChange(newQuery);
                 mCompositeModule.onSearchQueryChange(newQuery);
             }
         });
         mSearchEditText.setOnEditorActionListener(new HideKeyboardActionListener());
-
-        if (savedInstanceState == null)
-        {
-            mSearchListItems.onSearchQueryChange("");
-            mCompositeModule.onSearchQueryChange("");
-        }
 
         return views.getRoot();
     }
@@ -144,7 +147,7 @@ public final class LocationSelectionFragment extends BaseFragment
         super.onResume();
         // update all modules, things may have changed while we were asleep.
         // for instance the user could have revoked or granted a permission in the device settings
-        mCompositeModule.onSearchQueryChange(mSearchEditText.getText().toString());
+        mSearchEditText.setText(mSearchEditText.getText()); // triggers the TextChangedListener
     }
 
 

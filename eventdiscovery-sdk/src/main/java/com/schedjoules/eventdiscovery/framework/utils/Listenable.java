@@ -15,30 +15,17 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery.framework.location.listitems;
-
-import com.schedjoules.eventdiscovery.R;
-import com.schedjoules.eventdiscovery.framework.list.ListItem;
-import com.schedjoules.eventdiscovery.framework.list.smart.AbstractSmartListItem;
-
+package com.schedjoules.eventdiscovery.framework.utils;
 
 /**
- * A {@link ListItem} on the location picker that displays a message.
+ * General interface for components that are 'listenable', i.e. can notify registered listeners of the given type.
  *
  * @author Gabor Keszthelyi
  */
-public final class MessageItem extends AbstractSmartListItem<CharSequence, MessageItemView>
+public interface Listenable<L>
 {
-
-    public MessageItem(CharSequence text)
-    {
-        super(text, R.layout.schedjoules_list_item_location_message);
-    }
-
-
-    @Override
-    protected String toStringLabel()
-    {
-        return "MessageItem";
-    }
+    /**
+     * Registers the given listener to be notified when the corresponding event/callback happens.
+     */
+    void listen(L listener);
 }

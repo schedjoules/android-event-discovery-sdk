@@ -15,17 +15,15 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery.framework.location.tasks;
+package com.schedjoules.eventdiscovery.framework.googleapis.requests;
 
-import android.os.AsyncTask;
-
+import com.google.android.gms.common.api.Api;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.PlaceBuffer;
 import com.google.android.gms.location.places.Places;
-import com.schedjoules.eventdiscovery.framework.async.SafeAsyncTask;
-import com.schedjoules.eventdiscovery.framework.async.SafeAsyncTaskCallback;
+import com.schedjoules.eventdiscovery.framework.googleapis.GoogleApiRequest;
 import com.schedjoules.eventdiscovery.framework.location.model.GeoPlace;
 import com.schedjoules.eventdiscovery.framework.location.model.GoogleGeoLocation;
 import com.schedjoules.eventdiscovery.framework.location.model.StructuredGeoPlace;
@@ -33,34 +31,42 @@ import com.schedjoules.eventdiscovery.framework.location.model.namedplace.NamedP
 
 
 /**
- * {@link AsyncTask} for getting the {@link Place} for an id.
+ * Request to get the full Google Place by for a Place id.
  *
  * @author Gabor Keszthelyi
  */
-public final class PlaceByIdTask extends SafeAsyncTask<NamedPlace, GoogleApiClient, Void, GeoPlace>
+public final class GetPlaceByIdRequest implements GoogleApiRequest<GeoPlace>
 {
-    public PlaceByIdTask(NamedPlace namedPlace, Client client)
+    private final NamedPlace mNamedPlace;
+
+
+    public GetPlaceByIdRequest(NamedPlace namedPlace)
     {
-        super(namedPlace, client);
+        mNamedPlace = namedPlace;
     }
 
 
     @Override
-    protected GeoPlace doInBackgroundWithException(NamedPlace namedPlace, GoogleApiClient... googleApiClients) throws Exception
+    public Api requiredApi()
     {
-        GoogleApiClient googleApiClient = googleApiClients[0];
-
-        PendingResult<PlaceBuffer> pendingResult = Places.GeoDataApi.getPlaceById(googleApiClient, namedPlace.id());
-        PlaceBuffer placeBuffer = pendingResult.await();
-        Place frozenPlace = placeBuffer.get(0).freeze();
-        placeBuffer.release();
-
-        return new StructuredGeoPlace(namedPlace, new GoogleGeoLocation(frozenPlace));
+        return Places.GEO_DATA_API;
     }
 
 
-    public interface Client extends SafeAsyncTaskCallback<NamedPlace, GeoPlace>
+    @Override
+    public GeoPlace execute(GoogleApiClient googleApiClient)
     {
+        PendingResult<PlaceBuffer> pendingResult = Places.GeoDataApi.getPlaceById(googleApiClient, mNamedPlace.id());
+        PlaceBuffer placeBuffer = pendingResult.await();
 
+        if (!placeBuffer.getStatus().isSuccess())
+        {
+            throw new RuntimeException("Error result for GetPlaceById, Status: " + placeBuffer.getStatus());
+        }
+
+        Place frozenPlace = placeBuffer.get(0).freeze();
+        placeBuffer.release();
+
+        return new StructuredGeoPlace(mNamedPlace, new GoogleGeoLocation(frozenPlace));
     }
 }

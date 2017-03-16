@@ -33,7 +33,7 @@ import java.util.Iterator;
  *
  * @author Marten Gajda
  */
-public class RecentGeoPlaces implements Recents<GeoPlace>
+public final class RecentGeoPlaces implements Recents<GeoPlace>
 {
     private final Recents<GeoPlace> mDelegate;
 

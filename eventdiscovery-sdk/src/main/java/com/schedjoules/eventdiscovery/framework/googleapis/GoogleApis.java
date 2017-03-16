@@ -15,33 +15,25 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery.framework.utils.factory;
+package com.schedjoules.eventdiscovery.framework.googleapis;
+
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.schedjoules.eventdiscovery.framework.googleapis.errors.AbstractGoogleApiRequestException;
+
 
 /**
- * Caching decorator for {@link Factory}.
+ * Facade for {@link GoogleApiClient} and Google APIs.
  *
  * @author Gabor Keszthelyi
  */
-public final class Caching<T> implements Factory<T>
+public interface GoogleApis
 {
-    private final Factory<T> mDelegate;
 
-    private T mInstance;
-
-
-    public Caching(Factory<T> delegate)
-    {
-        mDelegate = delegate;
-    }
-
-
-    @Override
-    public T create()
-    {
-        if (mInstance == null)
-        {
-            mInstance = mDelegate.create();
-        }
-        return mInstance;
-    }
+    /**
+     * Executes the given request and returns the result or throws specific exceptions.
+     *
+     * @throws AbstractGoogleApiRequestException
+     *         see the subtypes for more
+     */
+    <T> T execute(GoogleApiRequest<T> request) throws AbstractGoogleApiRequestException;
 }

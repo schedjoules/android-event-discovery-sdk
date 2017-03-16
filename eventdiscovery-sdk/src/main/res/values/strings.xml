@@ -52,11 +52,21 @@
     <!-- List message item displayed in place of current location after user denied to give permission to access their location on the system dialog and also checked "Never show again" checkbox. (They can only give the permission from phone settings after that.)-->
     <string name="schedjoules_location_picker_current_location_permission_inform_about_phone_settings">To later enable current location display, allow access to your location from your device settings.</string>
     <!-- Error message list item displayed in place of current location when there was some error during retrieving the location. -->
-    <string name="schedjoules_location_picker_current_location_error">We could not determine your location. Please tap to retry.</string>
+    <string name="schedjoules_location_picker_current_location_error">We could not determine your location.</string>
     <!-- The title above the list items for place suggestions, i.e. suggestions retrieved from Google based on the text the user types.-->
     <string name="schedjoules_location_picker_caption_place_suggestions">Suggestions</string>
     <!-- The title above the list of recently selected location. -->
     <string name="schedjoules_location_picker_caption_recent_locations">Recent locations</string>
+    <!-- Error message item when Google API location service cannot be used for some reason, but user can retry. -->
+    <string name="schedjoules_location_picker_googleapi_error_recovarable">Could not access Google location service</string>
+    <!-- Error message item when Google API location service cannot be used for some reason, and it cannot be resolved (no retry button). -->
+    <string name="schedjoules_location_picker_googleapi_error_unrecovarable">Google location services are not available, location search doesn\'t work.</string>
+    <!-- Error message item when location suggestion request fails for some reason. -->
+    <string name="schedjoules_location_picker_suggestion_error">Could not get suggestions</string>
+    <!-- Error message itemm when user selects a location from the query suggestions, but request fails to download the extra information needed. -->
+    <string name="schedjoules_location_picker_suggestion_placelookup_error">Could not get data for\n\'%s\'</string>
+    <!-- General "Retry" button label -->
+    <string name="schedjoules_retry">Retry</string>
 
     <!-- A brief message that's presented to the user if there is no (official) API coverage for his country. -->
     <string name="schedjoules_message_country_not_supported">Event discovery is currently not supported in your country.</string>

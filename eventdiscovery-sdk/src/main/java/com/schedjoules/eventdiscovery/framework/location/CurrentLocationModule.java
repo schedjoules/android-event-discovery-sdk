@@ -19,37 +19,38 @@ package com.schedjoules.eventdiscovery.framework.location;
 
 import android.app.Activity;
 import android.location.Geocoder;
-import android.location.Location;
-import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.util.Log;
 
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.LocationServices;
+import com.schedjoules.client.eventsdiscovery.GeoLocation;
 import com.schedjoules.eventdiscovery.R;
 import com.schedjoules.eventdiscovery.framework.async.SafeAsyncTaskResult;
+import com.schedjoules.eventdiscovery.framework.googleapis.GoogleApis;
+import com.schedjoules.eventdiscovery.framework.googleapis.errors.AbstractGoogleApiRequestException;
+import com.schedjoules.eventdiscovery.framework.googleapis.errors.GoogleApiAutoManagedIssueException;
+import com.schedjoules.eventdiscovery.framework.googleapis.errors.GoogleApiExecutionException;
+import com.schedjoules.eventdiscovery.framework.googleapis.errors.GoogleApiNonRecoverableException;
+import com.schedjoules.eventdiscovery.framework.googleapis.errors.GoogleApiRecoverableException;
+import com.schedjoules.eventdiscovery.framework.googleapis.requests.GetLastLocationRequest;
+import com.schedjoules.eventdiscovery.framework.googleapis.requests.GoogleApiTask;
 import com.schedjoules.eventdiscovery.framework.list.ItemChosenAction;
 import com.schedjoules.eventdiscovery.framework.list.ListItem;
 import com.schedjoules.eventdiscovery.framework.list.smart.Clickable;
+import com.schedjoules.eventdiscovery.framework.location.listitems.ButtonedMessageItem;
 import com.schedjoules.eventdiscovery.framework.location.listitems.MessageItem;
-import com.schedjoules.eventdiscovery.framework.location.model.AndroidGeoLocation;
 import com.schedjoules.eventdiscovery.framework.location.model.GeoPlace;
 import com.schedjoules.eventdiscovery.framework.location.tasks.GetCityTask;
 import com.schedjoules.eventdiscovery.framework.model.ParcelableGeoLocation;
 import com.schedjoules.eventdiscovery.framework.searchlist.SearchModule;
-import com.schedjoules.eventdiscovery.framework.searchlist.SearchModuleFactory;
 import com.schedjoules.eventdiscovery.framework.searchlist.resultupdates.Clear;
+import com.schedjoules.eventdiscovery.framework.searchlist.resultupdates.ForcedClear;
 import com.schedjoules.eventdiscovery.framework.searchlist.resultupdates.ResultUpdateListener;
 import com.schedjoules.eventdiscovery.framework.searchlist.resultupdates.ShowSingle;
+import com.schedjoules.eventdiscovery.framework.utils.ActivityReloadAction;
 import com.schedjoules.eventdiscovery.framework.utils.cache.Cache;
 import com.schedjoules.eventdiscovery.framework.utils.cache.TimedSingleValueCache;
-import com.schedjoules.eventdiscovery.framework.utils.factory.Caching;
-import com.schedjoules.eventdiscovery.framework.utils.factory.Factory;
+import com.schedjoules.eventdiscovery.framework.utils.factory.Lazy;
 import com.schedjoules.eventdiscovery.framework.utils.smartview.OnClickAction;
-import com.schedjoules.eventdiscovery.framework.utils.strings.BasicStrings;
-import com.schedjoules.eventdiscovery.framework.utils.strings.Strings;
 
-import java.util.Locale;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -62,81 +63,44 @@ import java.util.concurrent.TimeUnit;
  */
 public final class CurrentLocationModule implements SearchModule
 {
-    public static final SearchModuleFactory<GeoPlace> FACTORY = new SearchModuleFactory<GeoPlace>()
-    {
-        @Override
-        public SearchModule create(final Activity activity, ResultUpdateListener<ListItem> updateListener, ItemChosenAction<GeoPlace> itemChosenAction)
-        {
-            GoogleApiClient googleApiClient = new GoogleApiClient
-                    .Builder(activity)
-                    .addApi(LocationServices.API)
-                    .build();
-            /**
-             * TODO enableAutomanage OR manual error handling
-             * enableAutoManage() on the builder would enable automatic default error handling as well,
-             * but it's tricky to get initialization correctly with Activity and retained Fragment lifecycles.
-             * Either enable automanage or add 'manual' error handling with addOnConnectionFailedListener().
-             *
-             * See https://developers.google.com/android/reference/com/google/android/gms/common/api/GoogleApiClient.Builder.html#enableAutoManage(android.support.v4.app.FragmentActivity, com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener)
-             */
 
-            googleApiClient.connect();
-
-            Factory<Geocoder> geocoderFactory = new Caching<>(new Factory<Geocoder>()
-            {
-                @Override
-                public Geocoder create()
-                {
-                    return new Geocoder(activity, Locale.getDefault());
-                }
-            });
-
-            return new CurrentLocationModule(googleApiClient, updateListener, itemChosenAction, geocoderFactory,
-                    new BasicStrings(activity));
-        }
-    };
+    private static final int CACHE_CITY_MINUTES = 3;
 
     private static final String TAG = "CurrentLocationModule";
 
-    private final GoogleApiClient mGoogleApiClient;
+    private final Activity mActivity;
     private final ResultUpdateListener<ListItem> mUpdateListener;
     private final ItemChosenAction<GeoPlace> mItemChosenAction;
-    private final Factory<Geocoder> mGeocoderFactory;
-    private final Strings mStrings;
-
+    private final Lazy<Geocoder> mGeocoderFactory;
+    private final GoogleApis mGoogleApis;
     private final ExecutorService mExecutorService;
-
-    private final GoogleApiConnectionCallback mApiConnectionCallback;
-    private final GetCityTaskClient mGetCityTaskClient;
-
+    private final GetCityTaskCallback mGetCityTaskCallback;
     private final Cache<ParcelableGeoLocation, GeoPlace> mCurrentCityCache;
 
 
-    public CurrentLocationModule(GoogleApiClient googleApiClient,
+    public CurrentLocationModule(Activity activity,
                                  ResultUpdateListener<ListItem> updateListener,
                                  ItemChosenAction<GeoPlace> itemChosenAction,
-                                 Factory<Geocoder> geocoderFactory,
-                                 Strings strings)
+                                 Lazy<Geocoder> geocoderFactory,
+                                 GoogleApis googleApis)
     {
-        mGoogleApiClient = googleApiClient;
+        mActivity = activity;
         mUpdateListener = updateListener;
         mItemChosenAction = itemChosenAction;
         mGeocoderFactory = geocoderFactory;
-        mStrings = strings;
+        mGoogleApis = googleApis;
 
         mExecutorService = Executors.newSingleThreadExecutor();
 
-        mApiConnectionCallback = new GoogleApiConnectionCallback();
-        mGetCityTaskClient = new GetCityTaskClient();
-        mCurrentCityCache = new TimedSingleValueCache<>(3, TimeUnit.MINUTES);
+        mGetCityTaskCallback = new GetCityTaskCallback();
+        mCurrentCityCache = new TimedSingleValueCache<>(CACHE_CITY_MINUTES, TimeUnit.MINUTES);
     }
 
 
     @Override
     public void shutDown()
     {
-        mGoogleApiClient.unregisterConnectionCallbacks(mApiConnectionCallback);
-        mGoogleApiClient.disconnect();
+        mExecutorService.shutdown();
     }
 
 
@@ -149,19 +113,70 @@ public final class CurrentLocationModule implements SearchModule
         }
         else
         {
-            ListItem loadingItem = new MessageItem(mStrings.get(R.string.schedjoules_location_picker_current_location_locating));
-            mUpdateListener.onUpdate(new ShowSingle<>(loadingItem, ""));
-
-            // Note: If already connected, onConnected() is called immediately.
-            mGoogleApiClient.registerConnectionCallbacks(mApiConnectionCallback);
+            loadCurrentLocation();
         }
+    }
+
+
+    private void loadCurrentLocation()
+    {
+        ListItem loadingItem = new MessageItem(mActivity.getString(R.string.schedjoules_location_picker_current_location_locating));
+        mUpdateListener.onUpdate(new ShowSingle<>(loadingItem, ""));
+
+        //noinspection MissingPermission
+        new GoogleApiTask<>(new GetLastLocationRequest(), new GoogleApiTask.Callback<GeoLocation>()
+        {
+            @Override
+            public void onTaskFinish(GoogleApiTask.Result<GeoLocation> result)
+            {
+                try
+                {
+                    onLastLocationReceived(result.value());
+                }
+                catch (GoogleApiAutoManagedIssueException e)
+                {
+                    Log.e(TAG, "Failed to get last location", e);
+                    // Do nothing, being auto-managed, module will be triggered in onResume()
+                }
+                catch (GoogleApiNonRecoverableException e)
+                {
+                    Log.e(TAG, "Failed to get last location", e);
+                    mUpdateListener.onUpdate(new ForcedClear<ListItem>());
+                }
+                catch (GoogleApiRecoverableException e)
+                {
+                    Log.e(TAG, "Failed to get last location", e);
+                    ListItem errorItem = new ButtonedMessageItem(
+                            mActivity.getText(R.string.schedjoules_location_picker_googleapi_error_recovarable),
+                            mActivity.getText(R.string.schedjoules_retry),
+                            new ActivityReloadAction(mActivity));
+                    mUpdateListener.onUpdate(new ShowSingle<>(errorItem, ""));
+                }
+                catch (GoogleApiExecutionException e)
+                {
+                    Log.e(TAG, "Failed to get last location", e);
+                    onFailedToGetLocation();
+                }
+                catch (AbstractGoogleApiRequestException e)
+                {
+                    throw new RuntimeException("Unhandled AbstractGoogleApiRequestException");
+                }
+            }
+        }).executeOnExecutor(mExecutorService, mGoogleApis);
+    }
+
+
+    private void onLastLocationReceived(GeoLocation result)
+    {
+        ParcelableGeoLocation geoLocation = new ParcelableGeoLocation(result);
+        new GetCityTask<>(geoLocation, mGetCityTaskCallback, mCurrentCityCache).executeOnExecutor(mExecutorService, mGeocoderFactory.get());
     }
 
 
     private void onCityReceived(final GeoPlace city)
     {
         ListItem item = new Clickable<>(
-                new MessageItem(mStrings.get(R.string.schedjoules_location_picker_current_location)),
+                new MessageItem(mActivity.getString(R.string.schedjoules_location_picker_current_location)),
                 new OnClickAction()
                 {
                     @Override
@@ -174,57 +189,17 @@ public final class CurrentLocationModule implements SearchModule
     }
 
 
-    private void onFailure()
+    private void onFailedToGetLocation()
     {
-        ListItem errorItem = new Clickable<>(
-                new MessageItem(mStrings.get(R.string.schedjoules_location_picker_current_location_error)),
-                new OnClickAction()
-                {
-                    @Override
-                    public void onClick()
-                    {
-                        // Retry:
-                        onSearchQueryChange("");
-                    }
-                }
-        );
+        ListItem errorItem = new ButtonedMessageItem(
+                mActivity.getString(R.string.schedjoules_location_picker_current_location_error),
+                mActivity.getString(R.string.schedjoules_retry),
+                new RetryAction());
         mUpdateListener.onUpdate(new ShowSingle<>(errorItem, ""));
     }
 
 
-    private class GoogleApiConnectionCallback implements GoogleApiClient.ConnectionCallbacks
-    {
-
-        @Override
-        public void onConnected(@Nullable Bundle bundle)
-        {
-            @SuppressWarnings("MissingPermission")
-            Location lastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-
-            if (lastLocation != null)
-            {
-                ParcelableGeoLocation geoLocation = new ParcelableGeoLocation(new AndroidGeoLocation(lastLocation));
-                new GetCityTask<>(geoLocation, mGetCityTaskClient, mCurrentCityCache).executeOnExecutor(mExecutorService, mGeocoderFactory.create());
-            }
-            else
-            {
-                Log.e(TAG, "Last location is null");
-                onFailure();
-            }
-        }
-
-
-        @Override
-        public void onConnectionSuspended(int i)
-        {
-            // Based on the documentation ("GoogleApiClient will automatically attempt to restore the connection...  wait for onConnected()")
-            // we probably should do nothing here. Extra state would be needed otherwise to check
-            // whether we already have the location displayed or not.
-        }
-    }
-
-
-    private class GetCityTaskClient implements GetCityTask.Client<ParcelableGeoLocation>
+    private final class GetCityTaskCallback implements GetCityTask.Client<ParcelableGeoLocation>
     {
 
         @Override
@@ -237,10 +212,19 @@ public final class CurrentLocationModule implements SearchModule
             catch (Exception e)
             {
                 Log.e(TAG, "GetCityTask failed", e);
-                onFailure();
+                onFailedToGetLocation();
             }
-
         }
+    }
 
+
+    private final class RetryAction implements OnClickAction
+    {
+
+        @Override
+        public void onClick()
+        {
+            onSearchQueryChange("");
+        }
     }
 }

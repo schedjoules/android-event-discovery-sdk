@@ -30,7 +30,7 @@ import eu.davidea.flexibleadapter.items.IFlexible;
  *
  * @author Gabor Keszthelyi
  */
-public class FlexibleAdapterFactory implements Factory<FlexibleAdapter<IFlexible>>
+public final class FlexibleAdapterFactory implements Factory<FlexibleAdapter<IFlexible>>
 {
     @Override
     public FlexibleAdapter<IFlexible> create()

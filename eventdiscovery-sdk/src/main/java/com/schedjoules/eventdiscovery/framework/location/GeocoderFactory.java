@@ -15,30 +15,35 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery.framework.location.listitems;
+package com.schedjoules.eventdiscovery.framework.location;
 
-import com.schedjoules.eventdiscovery.R;
-import com.schedjoules.eventdiscovery.framework.list.ListItem;
-import com.schedjoules.eventdiscovery.framework.list.smart.AbstractSmartListItem;
+import android.app.Activity;
+import android.location.Geocoder;
+
+import com.schedjoules.eventdiscovery.framework.utils.factory.Factory;
+
+import java.util.Locale;
 
 
 /**
- * A {@link ListItem} on the location picker that displays a message.
+ * Factory for {@link Geocoder}.
  *
  * @author Gabor Keszthelyi
  */
-public final class MessageItem extends AbstractSmartListItem<CharSequence, MessageItemView>
+public final class GeocoderFactory implements Factory<Geocoder>
 {
+    private final Activity mActivity;
 
-    public MessageItem(CharSequence text)
+
+    public GeocoderFactory(Activity activity)
     {
-        super(text, R.layout.schedjoules_list_item_location_message);
+        mActivity = activity;
     }
 
 
     @Override
-    protected String toStringLabel()
+    public Geocoder create()
     {
-        return "MessageItem";
+        return new Geocoder(mActivity, Locale.getDefault());
     }
 }

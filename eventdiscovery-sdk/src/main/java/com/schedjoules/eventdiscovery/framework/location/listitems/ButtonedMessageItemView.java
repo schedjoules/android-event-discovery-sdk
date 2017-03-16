@@ -28,22 +28,24 @@ import com.schedjoules.eventdiscovery.framework.utils.smartview.SmartView;
 
 
 /**
- * A {@link View} for a location picker list item that shows a message.
+ * A {@link View} for a location picker list item that shows a message and a button.
  *
  * @author Gabor Keszthelyi
  */
-public final class MessageItemView extends RelativeLayout implements SmartView<CharSequence>
+public final class ButtonedMessageItemView extends RelativeLayout implements SmartView<CharSequence>
 {
+    public static int ID_BUTTON = R.id.schedjoules_place_message_item_button;
+
     private TextView mTextView;
 
 
-    public MessageItemView(Context context)
+    public ButtonedMessageItemView(Context context)
     {
         super(context);
     }
 
 
-    public MessageItemView(Context context, AttributeSet attrs)
+    public ButtonedMessageItemView(Context context, AttributeSet attrs)
     {
         super(context, attrs);
     }
