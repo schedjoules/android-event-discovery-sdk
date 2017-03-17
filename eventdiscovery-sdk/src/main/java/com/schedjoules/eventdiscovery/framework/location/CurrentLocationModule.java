@@ -32,10 +32,8 @@ import com.schedjoules.eventdiscovery.framework.list.ItemChosenAction;
 import com.schedjoules.eventdiscovery.framework.list.ListItem;
 import com.schedjoules.eventdiscovery.framework.list.smart.Clickable;
 import com.schedjoules.eventdiscovery.framework.location.listitems.MessageItem;
-import com.schedjoules.eventdiscovery.framework.location.listitems.PlaceSuggestionItem;
 import com.schedjoules.eventdiscovery.framework.location.model.AndroidGeoLocation;
 import com.schedjoules.eventdiscovery.framework.location.model.GeoPlace;
-import com.schedjoules.eventdiscovery.framework.location.model.namedplace.Equalable;
 import com.schedjoules.eventdiscovery.framework.location.tasks.GetCityTask;
 import com.schedjoules.eventdiscovery.framework.model.ParcelableGeoLocation;
 import com.schedjoules.eventdiscovery.framework.searchlist.SearchModule;
@@ -163,7 +161,7 @@ public final class CurrentLocationModule implements SearchModule
     private void onCityReceived(final GeoPlace city)
     {
         ListItem item = new Clickable<>(
-                new PlaceSuggestionItem<>(new Equalable(city.namedPlace())),
+                new MessageItem(mStrings.get(R.string.schedjoules_location_picker_current_location)),
                 new OnClickAction()
                 {
                     @Override
