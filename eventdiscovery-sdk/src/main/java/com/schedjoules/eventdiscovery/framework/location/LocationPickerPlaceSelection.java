@@ -17,21 +17,28 @@
 
 package com.schedjoules.eventdiscovery.framework.location;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 
 
 /**
- * Represent an entry point to a Place selection UI solution.
+ * {@link PlaceSelection} that starts the Location Picker screen ({@link LocationSelectionActivity}) for the user to select the location.
  *
  * @author Gabor Keszthelyi
  */
-public interface PlaceSelection
+public final class LocationPickerPlaceSelection implements PlaceSelection
 {
 
-    /**
-     * Prompt user to select a location.
-     */
-    void start(@NonNull Fragment fragment);
+    @Override
+    public void start(@NonNull Fragment fragment)
+    {
+        if (fragment.getActivity() != null)
+        {
+            Intent intent = new Intent(fragment.getActivity(), LocationSelectionActivity.class);
+            fragment.startActivityForResult(intent, 47314);
+        }
+    }
 
 }
+

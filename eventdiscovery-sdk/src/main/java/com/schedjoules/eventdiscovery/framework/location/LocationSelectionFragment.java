@@ -18,7 +18,6 @@
 package com.schedjoules.eventdiscovery.framework.location;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -33,13 +32,11 @@ import android.widget.EditText;
 
 import com.schedjoules.eventdiscovery.R;
 import com.schedjoules.eventdiscovery.databinding.SchedjoulesFragmentLocationSelectionBinding;
-import com.schedjoules.eventdiscovery.framework.EventIntents;
 import com.schedjoules.eventdiscovery.framework.common.BaseActivity;
 import com.schedjoules.eventdiscovery.framework.common.BaseFragment;
 import com.schedjoules.eventdiscovery.framework.list.GeneralMultiTypeAdapter;
 import com.schedjoules.eventdiscovery.framework.list.ItemChosenAction;
 import com.schedjoules.eventdiscovery.framework.location.model.GeoPlace;
-import com.schedjoules.eventdiscovery.framework.location.model.ParcelableGeoPlace;
 import com.schedjoules.eventdiscovery.framework.location.recentlocations.RecentLocationsModule;
 import com.schedjoules.eventdiscovery.framework.location.recentlocations.Remembered;
 import com.schedjoules.eventdiscovery.framework.searchlist.BasicSearchListItems;
@@ -92,11 +89,8 @@ public final class LocationSelectionFragment extends BaseFragment
                     @Override
                     public void onItemChosen(GeoPlace geoPlace)
                     {
-                        Bundle nestedExtras = new Bundle();
-                        nestedExtras.putParcelable(EventIntents.EXTRA_GEO_PLACE, new ParcelableGeoPlace(geoPlace));
-                        Intent data = new Intent();
-                        data.putExtra("com.schedjoules.nestedExtras", nestedExtras);
-                        getActivity().setResult(Activity.RESULT_OK, data);
+                        new SharedPrefLastSelectedPlace(getContext()).update(geoPlace);
+                        getActivity().setResult(Activity.RESULT_OK);
                         getActivity().finish();
                     }
                 },
