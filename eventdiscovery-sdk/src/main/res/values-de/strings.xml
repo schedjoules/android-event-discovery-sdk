@@ -53,4 +53,6 @@
     <string name="schedjoules_location_picker_current_location_error">Dein Standort konnte nicht ermittelt werden. Hier tippen um es erneut zu versuchen.</string>
     <string name="schedjoules_location_picker_caption_place_suggestions">Vorschläge</string>
     <string name="schedjoules_location_picker_caption_recent_locations">Zuletzt gesucht</string>
+
+    <string name="schedjoules_message_country_not_supported">Event Discovery ist in deinem Land noch nicht verfügbar.</string>
 </resources>
