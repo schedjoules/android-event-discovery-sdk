@@ -167,7 +167,7 @@ public final class EventListFragment extends BaseFragment implements EventListMe
             @Override
             public void onClick(View v)
             {
-                onToolbarTitleClick();
+                new LocationPickerPlaceSelection().start(EventListFragment.this);
             }
         });
 
@@ -208,12 +208,6 @@ public final class EventListFragment extends BaseFragment implements EventListMe
         {
             getActivity().finish();
         }
-    }
-
-
-    public void onToolbarTitleClick()
-    {
-        new LocationPickerPlaceSelection().start(this);
     }
 
 

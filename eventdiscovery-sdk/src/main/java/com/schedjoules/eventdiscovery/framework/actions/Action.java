@@ -36,31 +36,13 @@ public interface Action
 {
 
     /**
-     * Returns the short label to display for this {@link Action}. This should return a single word that describes the action.
-     *
-     * @param context
-     *         A {@link Context}
-     *
-     * @return
+     * Returns the label to display for this {@link Action}.
      */
     @NonNull
-    String shortLabel(@NonNull Context context);
-
-    /**
-     * Returns the long label to display for this {@link Action}.
-     *
-     * @param context
-     *         A {@link Context}
-     *
-     * @return
-     */
-    @NonNull
-    String longLabel(@NonNull Context context);
+    CharSequence label(@NonNull Context context);
 
     /**
      * The icon to display for this Action.
-     *
-     * @return A {@link Drawable} of the icon.
      */
     @NonNull
     Drawable icon(@NonNull Context context);

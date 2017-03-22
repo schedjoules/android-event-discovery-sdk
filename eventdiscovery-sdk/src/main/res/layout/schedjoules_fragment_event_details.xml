@@ -26,31 +26,6 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                <com.schedjoules.eventdiscovery.framework.microfragments.eventdetails.fragments.views.HorizontalActionsView
-                        android:id="@+id/schedjoules_event_horizontal_actions"
-                        android:orientation="vertical"
-                        android:background="@android:color/white"
-                        android:layout_marginBottom="10dp"
-                        android:layout_width="match_parent"
-                        android:layout_height="80dp">
-
-                    <LinearLayout
-                            android:id="@+id/schedjoules_event_horizontal_actions_holder"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:orientation="horizontal"
-                            android:visibility="visible"/>
-
-                    <View
-                            android:id="@+id/schedjoules_event_details_divider"
-                            android:layout_width="match_parent"
-                            android:layout_height="1dp"
-                            android:layout_alignParentBottom="true"
-                            android:background="@color/schedjoules_divider"/>
-                </com.schedjoules.eventdiscovery.framework.microfragments.eventdetails.fragments.views.HorizontalActionsView>
-
-
                 <LinearLayout
                         android:id="@+id/schedjoules_event_detail_vertical_items"
                         android:orientation="vertical"
