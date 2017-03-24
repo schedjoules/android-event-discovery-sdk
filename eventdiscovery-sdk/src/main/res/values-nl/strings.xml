@@ -37,4 +37,6 @@
     <string name="schedjoules_location_picker_current_location_error">Het is niet gelukt om uw locatie te bepalen. Klik om het opnieuw te proberen.</string>
     <string name="schedjoules_location_picker_caption_place_suggestions">Suggesties</string>
     <string name="schedjoules_location_picker_caption_recent_locations">Recente locaties</string>
+
+    <string name="schedjoules_message_country_not_supported">Event discovery wordt momenteel niet ondersteund in uw land.</string>
 </resources>
