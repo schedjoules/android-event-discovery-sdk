@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery.framework.utils;
+package com.schedjoules.eventdiscovery.framework.utils.iterators;
 
 import org.dmfs.iterators.AbstractBaseIterator;
 

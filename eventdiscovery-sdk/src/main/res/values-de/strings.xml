@@ -43,6 +43,8 @@
     <string name="schedjoules_action_book">Karten</string>
     <string name="schedjoules_action_add_to_calendar">Termin speichern</string>
 
+    <string name="schedjoules_event_details_ticket_button_title">Tickets Bestellen</string>
+
     <string name="schedjoules_today">Heute</string>
     <string name="schedjoules_tomorrow">Morgen</string>
 

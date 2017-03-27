@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3e5362</color>
-    <color name="colorPrimaryDark">#26333d</color>
-    <color name="colorAccent">#f16667</color>
+    <color name="colorPrimary">@color/schedjoules_colorPrimary</color>
+    <color name="colorPrimaryDark">@color/schedjoules_colorPrimaryDark</color>
+    <color name="colorAccent">@color/schedjoules_colorAccent</color>
 </resources>

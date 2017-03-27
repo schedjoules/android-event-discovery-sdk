@@ -14,6 +14,7 @@
     <dimen name="schedjoules_list_item_default_height">96dp</dimen>
     <dimen name="schedjoules_event_list_progress_bar">36dp</dimen>
     <dimen name="schedjoules_event_detail_item_icon">28dp</dimen>
+    <dimen name="schedjoules_event_details_ticket_button_area_height">72dp</dimen>
 
     <dimen name="schedjoules_location_list_item_height">64dp</dimen>
 

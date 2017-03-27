@@ -7,16 +7,20 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
+
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
+
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
+
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
 
     <!-- SchedJoules Event Discovery customization -->
-    <color name="schedjoules_colorPrimary">@color/colorPrimary</color>
-    <color name="schedjoules_colorPrimaryDark">@color/colorPrimaryDark</color>
-    <color name="schedjoules_colorAccent">@color/colorAccent</color>
+    <!-- You can override the SDKs material palette if you would like: -->
+    <!--<color name="schedjoules_colorPrimary">...</color>-->
+    <!--<color name="schedjoules_colorPrimaryDark">...</color>-->
+    <!--<color name="schedjoules_colorAccent">...</color>-->
 
 </resources>
