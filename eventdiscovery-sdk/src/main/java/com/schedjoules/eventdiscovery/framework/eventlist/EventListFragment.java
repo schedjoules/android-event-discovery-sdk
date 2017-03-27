@@ -17,6 +17,7 @@
 
 package com.schedjoules.eventdiscovery.framework.eventlist;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.databinding.DataBindingUtil;
@@ -46,17 +47,17 @@ import com.schedjoules.eventdiscovery.framework.common.ExternalUrlFeedbackForm;
 import com.schedjoules.eventdiscovery.framework.eventlist.controller.EventListController;
 import com.schedjoules.eventdiscovery.framework.eventlist.controller.EventListControllerImpl;
 import com.schedjoules.eventdiscovery.framework.eventlist.controller.FlexibleAdapterEventListItems;
+import com.schedjoules.eventdiscovery.framework.eventlist.flexibleadapter.Copying;
+import com.schedjoules.eventdiscovery.framework.eventlist.flexibleadapter.FlexibleAdapterFactory;
 import com.schedjoules.eventdiscovery.framework.eventlist.view.EdgeReachScrollListener;
 import com.schedjoules.eventdiscovery.framework.eventlist.view.EventListBackgroundMessage;
 import com.schedjoules.eventdiscovery.framework.eventlist.view.EventListLoadingIndicatorOverlay;
 import com.schedjoules.eventdiscovery.framework.eventlist.view.EventListMenu;
-import com.schedjoules.eventdiscovery.framework.location.ActivityForResultPlaceSelection;
-import com.schedjoules.eventdiscovery.framework.location.LastSelectedPlace;
-import com.schedjoules.eventdiscovery.framework.location.PlaceSelection;
+import com.schedjoules.eventdiscovery.framework.location.LocationPickerPlaceSelection;
 import com.schedjoules.eventdiscovery.framework.location.SharedPrefLastSelectedPlace;
-import com.schedjoules.eventdiscovery.framework.location.model.GeoPlace;
 import com.schedjoules.eventdiscovery.framework.utils.FutureServiceConnection;
 import com.schedjoules.eventdiscovery.framework.utils.InsightsTask;
+import com.schedjoules.eventdiscovery.framework.utils.factory.Factory;
 import com.schedjoules.eventdiscovery.framework.widgets.TextWithIcon;
 import com.schedjoules.eventdiscovery.service.ApiService;
 
@@ -64,9 +65,6 @@ import org.dmfs.httpessentials.types.StringToken;
 import org.dmfs.pigeonpost.Dovecote;
 import org.dmfs.pigeonpost.localbroadcast.SerializableDovecote;
 import org.dmfs.rfc5545.DateTime;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import eu.davidea.flexibleadapter.FlexibleAdapter;
 import eu.davidea.flexibleadapter.items.IFlexible;
@@ -81,21 +79,22 @@ import static com.schedjoules.eventdiscovery.framework.EventIntents.EXTRA_START_
  * @author Gabor Keszthelyi
  */
 
-public final class EventListFragment extends BaseFragment implements PlaceSelection.Listener, EventListMenu.Listener
+public final class EventListFragment extends BaseFragment implements EventListMenu.Listener
 {
     private FutureServiceConnection<ApiService> mApiService;
     private EventListController mListItemsController;
-    private ActivityForResultPlaceSelection mLocationSelection;
-    private LastSelectedPlace mLastSelectedPlace;
 
     private TextView mToolbarTitle;
     private EventListMenu mMenu;
 
-    private boolean mIsInitializing;
-    private FlexibleAdapter mAdapter;
+    private FlexibleAdapter<IFlexible> mAdapter;
     private SchedjoulesFragmentEventListBinding mViews;
 
     private Dovecote<Boolean> mCoverageDoveCote;
+
+    private boolean mInitialized;
+    private boolean mRestored;
+    private boolean mHasOnActivityResult;
 
 
     public static Fragment newInstance(Bundle args)
@@ -111,16 +110,10 @@ public final class EventListFragment extends BaseFragment implements PlaceSelect
     {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-        mIsInitializing = true;
 
         mApiService = new ApiService.FutureConnection(getActivity());
 
         mListItemsController = new EventListControllerImpl(mApiService, new FlexibleAdapterEventListItems());
-
-        mLocationSelection = new ActivityForResultPlaceSelection(this);
-        mLocationSelection.registerListener(this);
-
-        mLastSelectedPlace = new SharedPrefLastSelectedPlace(getContext());
 
         new InsightsTask(getActivity()).execute(new Screen(new StringToken("list")));
     }
@@ -130,6 +123,9 @@ public final class EventListFragment extends BaseFragment implements PlaceSelect
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
     {
+        mInitialized = false;
+        mRestored = savedInstanceState != null;
+
         mViews = DataBindingUtil.inflate(inflater,
                 R.layout.schedjoules_fragment_event_list, container, false);
 
@@ -143,8 +139,6 @@ public final class EventListFragment extends BaseFragment implements PlaceSelect
         mListItemsController.setLoadingIndicatorUI(
                 new EventListLoadingIndicatorOverlay(mViews.schedjoulesEventListProgressBar));
 
-        initAdapterAndRecyclerView(true);
-
         mCoverageDoveCote = new SerializableDovecote<>(getActivity(), "coveragetest", new Dovecote.OnPigeonReturnCallback<Boolean>()
         {
             @Override
@@ -152,7 +146,7 @@ public final class EventListFragment extends BaseFragment implements PlaceSelect
             {
                 if (!serializable)
                 {
-                    Snackbar.make(getView(), R.string.schedjoules_message_country_not_supported, Snackbar.LENGTH_INDEFINITE).show();
+                    Snackbar.make(mViews.getRoot(), R.string.schedjoules_message_country_not_supported, Snackbar.LENGTH_INDEFINITE).show();
                 }
             }
         });
@@ -165,12 +159,9 @@ public final class EventListFragment extends BaseFragment implements PlaceSelect
     private void setupToolbar(SchedjoulesFragmentEventListBinding views)
     {
         Toolbar toolbar = views.schedjoulesEventListToolbar;
-        CharSequence lastSelectedPlace = mLastSelectedPlace.get().namedPlace().name();
         toolbar.setTitle(""); // Need to set it to empty, otherwise the activity label is set automatically
 
         mToolbarTitle = views.schedjoulesEventListToolbarTitle;
-        mToolbarTitle.setText(
-                new TextWithIcon(getContext(), lastSelectedPlace, R.drawable.schedjoules_ic_arrow_drop_down_white));
         mToolbarTitle.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -191,65 +182,6 @@ public final class EventListFragment extends BaseFragment implements PlaceSelect
         {
             //noinspection ConstantConditions
             activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        }
-    }
-
-
-    private void initAdapterAndRecyclerView(boolean restoring)
-    {
-        createAdapter(restoring);
-
-        RecyclerView recyclerView = mViews.schedjoulesEventListInclude.schedjoulesEventList;
-        recyclerView.setAdapter(mAdapter);
-
-        EdgeReachScrollListener scrollListener = new EdgeReachScrollListener(recyclerView, mListItemsController,
-                EventListControllerImpl.CLOSE_TO_TOP_OR_BOTTOM_THRESHOLD);
-        recyclerView.addOnScrollListener(scrollListener);
-
-        mListItemsController.setAdapter(mAdapter);
-    }
-
-
-    private void createAdapter(boolean restoring)
-    {
-        if (mAdapter == null || !restoring)
-        {
-            mAdapter = createNewFlexibleAdapter();
-        }
-        else
-        {
-            List<IFlexible> currentItems = new ArrayList<>(mAdapter.getItemCount());
-            for (int i = 0; i < mAdapter.getItemCount(); i++)
-            {
-                currentItems.add(mAdapter.getItem(i));
-            }
-
-            FlexibleAdapter<IFlexible> newAdapter = createNewFlexibleAdapter();
-            newAdapter.addItems(0, currentItems);
-
-            mAdapter = newAdapter;
-        }
-    }
-
-
-    private FlexibleAdapter<IFlexible> createNewFlexibleAdapter()
-    {
-        FlexibleAdapter<IFlexible> adapter = new FlexibleAdapter<>(new ArrayList<IFlexible>());
-        adapter.setDisplayHeadersAtStartUp(true);
-        adapter.setStickyHeaders(true);
-        return adapter;
-    }
-
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState)
-    {
-        super.onActivityCreated(savedInstanceState);
-        if (mIsInitializing)
-        {
-            mIsInitializing = false;
-            // Can only be started currently after UI is initialized (so not in onCreate()) because it updates it
-            mListItemsController.loadEvents(location(), startAfter());
         }
     }
 
@@ -281,7 +213,7 @@ public final class EventListFragment extends BaseFragment implements PlaceSelect
 
     public void onToolbarTitleClick()
     {
-        mLocationSelection.initiateSelection();
+        new LocationPickerPlaceSelection().start(this);
     }
 
 
@@ -295,17 +227,62 @@ public final class EventListFragment extends BaseFragment implements PlaceSelect
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data)
     {
-        mLocationSelection.onActivityResult(requestCode, resultCode, data);
+        mHasOnActivityResult = resultCode == Activity.RESULT_OK;
     }
 
 
     @Override
-    public void onPlaceSelected(GeoPlace result)
+    public void onResume()
     {
-        initAdapterAndRecyclerView(false);
-        mLastSelectedPlace.update(result);
-        mToolbarTitle.setText(new TextWithIcon(getContext(), result.namedPlace().name(), R.drawable.schedjoules_ic_arrow_drop_down_white));
-        mListItemsController.loadEvents(result.geoLocation(), startAfter());
+        super.onResume();
+        // Log.d("OnResumeStates", String.format("Initialized = %s | Restored = %s | HasActivityResult = %s", mInitialized, mRestored, mHasOnActivityResult));
+
+        if ((!mInitialized && !mRestored) || mHasOnActivityResult)
+        {
+            mInitialized = true;
+            mHasOnActivityResult = false;
+            update(true);
+        }
+        else if (!mInitialized && mRestored)
+        {
+            mInitialized = true;
+            update(false);
+        }
+    }
+
+
+    private void update(boolean freshList)
+    {
+        // Log.d("OnResumeStates", freshList ? "ClearingUpdate" : "NonClearingUpdate");
+        initAdapterAndRecyclerView(freshList);
+        mToolbarTitle.setText(
+                new TextWithIcon(getContext(), new SharedPrefLastSelectedPlace(getContext()).get().namedPlace().name(),
+                        R.drawable.schedjoules_ic_arrow_drop_down_white));
+        if (freshList)
+        {
+            mListItemsController.loadEvents(location(), startAfter());
+        }
+    }
+
+
+    private void initAdapterAndRecyclerView(boolean freshList)
+    {
+        Factory<FlexibleAdapter<IFlexible>> adapterFactory = new FlexibleAdapterFactory();
+        if (!freshList && mAdapter != null)
+        {
+            adapterFactory = new Copying(adapterFactory, mAdapter);
+        }
+        FlexibleAdapter<IFlexible> adapter = adapterFactory.create();
+
+        RecyclerView recyclerView = mViews.schedjoulesEventListInclude.schedjoulesEventList;
+        recyclerView.setAdapter(adapter);
+        adapter.setStickyHeaders(true); // Better to set it after adapter has been set to RecyclerView
+        recyclerView.addOnScrollListener(
+                new EdgeReachScrollListener(recyclerView, mListItemsController,
+                        EventListControllerImpl.CLOSE_TO_TOP_OR_BOTTOM_THRESHOLD));
+
+        mListItemsController.setAdapter(adapter);
+        mAdapter = adapter;
     }
 
 
@@ -322,7 +299,6 @@ public final class EventListFragment extends BaseFragment implements PlaceSelect
     {
         super.onDestroy();
         mApiService.disconnect();
-        mLocationSelection.unregisterListener();
     }
 
 
@@ -335,7 +311,7 @@ public final class EventListFragment extends BaseFragment implements PlaceSelect
         }
         else
         {
-            return mLastSelectedPlace.get().geoLocation();
+            return new SharedPrefLastSelectedPlace(getContext()).get().geoLocation();
         }
     }
 

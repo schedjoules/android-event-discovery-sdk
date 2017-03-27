@@ -47,7 +47,7 @@ import java.util.List;
  */
 public final class RecentLocationsModule implements SearchModule
 {
-    public static SearchModuleFactory<GeoPlace> FACTORY = new SearchModuleFactory<GeoPlace>()
+    public static final SearchModuleFactory<GeoPlace> FACTORY = new SearchModuleFactory<GeoPlace>()
     {
         @Override
         public SearchModule create(Activity activity, ResultUpdateListener<ListItem> updateListener, ItemChosenAction<GeoPlace> itemSelectionAction)
