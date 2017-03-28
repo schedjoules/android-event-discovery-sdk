@@ -25,7 +25,6 @@ import android.widget.TextView;
 
 import com.ms.square.android.expandabletextview.ExpandableTextView;
 import com.schedjoules.eventdiscovery.R;
-import com.schedjoules.eventdiscovery.framework.utils.charsequence.TrailTrimming;
 import com.schedjoules.eventdiscovery.framework.utils.smartview.SmartView;
 
 
@@ -59,13 +58,13 @@ public class LinkifyingExpandableTextView implements SmartView<String>
     {
         if (text.contains("</")) // only parse as HTML if the string contains HTML
         {
-            mExpandableTextView.setText(new TrailTrimming(Html.fromHtml(text)));
+            mExpandableTextView.setText(Html.fromHtml(text));
         }
         else
         {
             SpannableString spannableString = new SpannableString(text);
             Linkify.addLinks(spannableString, Linkify.ALL);
-            mExpandableTextView.setText(new TrailTrimming(spannableString));
+            mExpandableTextView.setText(spannableString);
         }
     }
 }
