@@ -42,17 +42,14 @@ import com.schedjoules.eventdiscovery.framework.common.BaseFragment;
 import com.schedjoules.eventdiscovery.framework.common.ExternalUrlFeedbackForm;
 import com.schedjoules.eventdiscovery.framework.datetime.LongDate;
 import com.schedjoules.eventdiscovery.framework.datetime.StartAndEndTime;
+import com.schedjoules.eventdiscovery.framework.location.model.VenueName;
 import com.schedjoules.eventdiscovery.framework.microfragments.eventdetails.ShowEventMicroFragment;
 import com.schedjoules.eventdiscovery.framework.microfragments.eventdetails.fragments.menu.EventDetailsMenu;
 import com.schedjoules.eventdiscovery.framework.microfragments.eventdetails.fragments.views.EventDetailsItemView;
 import com.schedjoules.eventdiscovery.framework.microfragments.eventdetails.fragments.views.EventDetailsTwoLineItemView;
-import com.schedjoules.eventdiscovery.framework.microfragments.eventdetails.fragments.views.HorizontalActionsView;
-import com.schedjoules.eventdiscovery.framework.microfragments.eventdetails.fragments.views.SmallEventActionView;
 import com.schedjoules.eventdiscovery.framework.model.BookTicketLink;
 import com.schedjoules.eventdiscovery.framework.model.SchedJoulesLinks;
 import com.schedjoules.eventdiscovery.framework.utils.InsightsTask;
-import com.schedjoules.eventdiscovery.framework.utils.iterators.Limiting;
-import com.schedjoules.eventdiscovery.framework.utils.iterators.Skipping;
 
 import org.dmfs.android.microfragments.FragmentEnvironment;
 import org.dmfs.android.microfragments.MicroFragmentEnvironment;
@@ -60,8 +57,6 @@ import org.dmfs.httpessentials.types.Link;
 import org.dmfs.httpessentials.types.StringToken;
 
 import java.util.List;
-
-import static com.schedjoules.eventdiscovery.framework.utils.LocationFormatter.longLocationFormat;
 
 
 /**
@@ -72,11 +67,10 @@ import static com.schedjoules.eventdiscovery.framework.utils.LocationFormatter.l
 public final class EventDetailFragment extends BaseFragment implements EventDetailsMenu.Listener
 {
     private Event mEvent;
-    private List<Link> mActions;
+    private List<Link> mActionLinks;
 
     private SchedjoulesFragmentEventDetailsBinding mViews;
     private LinearLayout mVerticalItems;
-    private HorizontalActionsView mHorizontalActions;
     private EventDetailsMenu mMenu;
 
 
@@ -85,7 +79,7 @@ public final class EventDetailFragment extends BaseFragment implements EventDeta
     {
         MicroFragmentEnvironment<ShowEventMicroFragment.EventParams> env = new FragmentEnvironment<>(this);
         mEvent = env.microFragment().parameters().event();
-        mActions = env.microFragment().parameters().actions();
+        mActionLinks = env.microFragment().parameters().actions();
 
         if (savedInstanceState == null)
         {
@@ -99,7 +93,6 @@ public final class EventDetailFragment extends BaseFragment implements EventDeta
         setHasOptionsMenu(true);
         mMenu = new EventDetailsMenu(this);
         mVerticalItems = mViews.schedjoulesEventDetailVerticalItems;
-        mHorizontalActions = mViews.schedjoulesEventHorizontalActions;
         mViews.schedjoulesDetailsHeader.schedjoulesEventDetailToolbarLayout.setTitle(mEvent.title());
         addFixVerticalItems();
         showActions();
@@ -133,12 +126,13 @@ public final class EventDetailFragment extends BaseFragment implements EventDeta
         dateTimeItem.setSubTitle(new StartAndEndTime(mEvent).value(getContext()));
         mVerticalItems.addView(dateTimeItem);
 
-        if (mEvent.locations().iterator().hasNext())
+        VenueName venueName = new VenueName(mEvent.locations());
+        if (venueName.isPresent())
         {
-            EventDetailsItemView locationItem = EventDetailsItemView.inflate(mVerticalItems);
-            locationItem.setIcon(R.drawable.schedjoules_ic_location);
-            locationItem.setTextAsTitle(longLocationFormat(mEvent.locations()));
-            mVerticalItems.addView(locationItem);
+            EventDetailsItemView venueItem = EventDetailsItemView.inflate(mVerticalItems);
+            venueItem.setIcon(R.drawable.schedjoules_ic_location);
+            venueItem.setTextAsTitle(venueName.value());
+            mVerticalItems.addView(venueItem);
         }
 
         if (!TextUtils.isEmpty(mEvent.description()))
@@ -148,43 +142,25 @@ public final class EventDetailFragment extends BaseFragment implements EventDeta
             descriptionItem.setTextAsTitle(mEvent.description());
             mVerticalItems.addView(descriptionItem);
         }
-
     }
 
 
     private void showActions()
     {
-        if (mActions.size() > 0)
+        ActionViewIterable actionViews = new ActionViewIterable(
+                new Actions(mActionLinks, mEvent, new BaseActionFactory()),
+                new EventDetailsItemView.Factory(mVerticalItems));
+
+        for (View view : actionViews)
         {
-            int maxNumberOfItemsInTopBar = getResources().getInteger(
-                    R.integer.schedjoules_maxNumberOfHorizontalActions);
-
-            mHorizontalActions.showActionViews(
-                    new ActionViewIterable(new Limiting<>(new Actions(mActions, mEvent, new BaseActionFactory()),
-                            maxNumberOfItemsInTopBar),
-                            new SmallEventActionView.Factory(mHorizontalActions)));
-
-            mViews.schedjoulesEventDetailsDivider.setVisibility(View.VISIBLE);
-            mHorizontalActions.setVisibility(View.VISIBLE);
-
-            for (View view : new ActionViewIterable(
-                    new Skipping<>(new Actions(mActions, mEvent, new BaseActionFactory()), maxNumberOfItemsInTopBar),
-                    new EventDetailsItemView.Factory(mVerticalItems)))
-            {
-                mVerticalItems.addView(view);
-            }
-        }
-        else
-        {
-            // hide actions bar
-            mViews.schedjoulesEventHorizontalActions.setVisibility(View.GONE);
+            mVerticalItems.addView(view);
         }
     }
 
 
     private void showTicketButton()
     {
-        final BookTicketLink ticketLink = new BookTicketLink(mActions);
+        final BookTicketLink ticketLink = new BookTicketLink(mActionLinks);
         if (ticketLink.isPresent())
         {
             mViews.schedjoulesEventDetailsTicketButton.setText(getString(R.string.schedjoules_event_details_ticket_button_title));

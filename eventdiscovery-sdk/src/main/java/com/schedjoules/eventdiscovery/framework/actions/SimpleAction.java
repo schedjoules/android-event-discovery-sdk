@@ -19,10 +19,13 @@ package com.schedjoules.eventdiscovery.framework.actions;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
+import android.support.v4.content.ContextCompat;
+
+import com.schedjoules.eventdiscovery.framework.utils.charsequence.CharSequenceFactory;
+import com.schedjoules.eventdiscovery.framework.utils.charsequence.ResourceCharSequenceFactory;
 
 
 /**
@@ -32,34 +35,30 @@ import android.support.annotation.StringRes;
  */
 public final class SimpleAction implements Action
 {
-    private final String mRelType;
-    private final int mLabelResId;
+    private final CharSequenceFactory mLabelFactory;
     private final int mIconResId;
     private final ActionExecutable mActionExecutable;
 
 
-    public SimpleAction(@NonNull String relType, @StringRes int labelResId, @DrawableRes int iconResId, @NonNull ActionExecutable actionExecutable)
+    public SimpleAction(CharSequenceFactory labelFactory, @DrawableRes int iconResId, @NonNull ActionExecutable actionExecutable)
     {
-        mRelType = relType;
-        mLabelResId = labelResId;
+        mLabelFactory = labelFactory;
         mIconResId = iconResId;
         mActionExecutable = actionExecutable;
     }
 
 
-    @NonNull
-    @Override
-    public String shortLabel(@NonNull Context context)
+    public SimpleAction(@StringRes int labelResId, @DrawableRes int iconResId, @NonNull ActionExecutable actionExecutable)
     {
-        return context.getString(mLabelResId);
+        this(new ResourceCharSequenceFactory(labelResId), iconResId, actionExecutable);
     }
 
 
     @NonNull
     @Override
-    public String longLabel(@NonNull Context context)
+    public CharSequence label(@NonNull Context context)
     {
-        return context.getString(mLabelResId);
+        return mLabelFactory.create(context);
     }
 
 
@@ -67,11 +66,7 @@ public final class SimpleAction implements Action
     @Override
     public Drawable icon(@NonNull Context context)
     {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP)
-        {
-            return context.getResources().getDrawable(mIconResId);
-        }
-        return context.getDrawable(mIconResId);
+        return ContextCompat.getDrawable(context, mIconResId);
     }
 
 

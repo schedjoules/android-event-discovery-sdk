@@ -19,9 +19,8 @@ package com.schedjoules.eventdiscovery.framework.actions;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
-import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 
 import com.schedjoules.client.eventsdiscovery.Event;
 import com.schedjoules.eventdiscovery.R;
@@ -54,27 +53,7 @@ public final class BookAction implements Action
 
     @NonNull
     @Override
-    public String shortLabel(@NonNull Context context)
-    {
-        switch (subtype())
-        {
-            case "hotel":
-                return context.getString(R.string.schedjoules_action_book_hotel);
-            case "taxi":
-                return context.getString(R.string.schedjoules_action_book_taxi);
-            case "parking":
-                return context.getString(R.string.schedjoules_action_book_parking);
-            case "ticket":
-                // fall through - same as default
-            default:
-                return context.getString(R.string.schedjoules_action_book);
-        }
-    }
-
-
-    @NonNull
-    @Override
-    public String longLabel(@NonNull Context context)
+    public String label(@NonNull Context context)
     {
         switch (subtype())
         {
@@ -99,15 +78,15 @@ public final class BookAction implements Action
         switch (subtype())
         {
             case "hotel":
-                return icon(context, R.drawable.schedjoules_ic_action_hotel);
+                return ContextCompat.getDrawable(context, R.drawable.schedjoules_ic_action_hotel);
             case "taxi":
-                return icon(context, R.drawable.schedjoules_ic_action_taxi);
+                return ContextCompat.getDrawable(context, R.drawable.schedjoules_ic_action_taxi);
             case "parking":
-                return icon(context, R.drawable.schedjoules_ic_action_parking);
+                return ContextCompat.getDrawable(context, R.drawable.schedjoules_ic_action_parking);
             case "ticket":
                 // fall through - same as default
             default:
-                return icon(context, R.drawable.schedjoules_ic_action_book);
+                return ContextCompat.getDrawable(context, R.drawable.schedjoules_ic_action_book);
         }
     }
 
@@ -125,13 +104,4 @@ public final class BookAction implements Action
         return mLink.firstParameter(TYPE, "ticket").value();
     }
 
-
-    private Drawable icon(Context context, @DrawableRes int drawable)
-    {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP)
-        {
-            return context.getResources().getDrawable(drawable);
-        }
-        return context.getDrawable(drawable);
-    }
 }

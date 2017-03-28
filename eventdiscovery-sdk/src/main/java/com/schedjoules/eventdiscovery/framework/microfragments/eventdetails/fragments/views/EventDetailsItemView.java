@@ -21,6 +21,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.util.AttributeSet;
@@ -73,14 +74,14 @@ public final class EventDetailsItemView extends RelativeLayout
     }
 
 
-    public void setTextAsTitle(String text)
+    public void setTextAsTitle(CharSequence text)
     {
-        if (text.contains("</"))
+        if (text.toString().contains("</"))
         {
             // only parse as HTML if the string contains HTML
-            mTitle.setText(Html.fromHtml(text));
+            mTitle.setText(Html.fromHtml(text.toString()));
             mTitle.setMovementMethod(LinkMovementMethod.getInstance());
-            mTitle.setLinkTextColor(getContext().getResources().getColor(R.color.schedjoules_colorPrimary));
+            mTitle.setLinkTextColor(ContextCompat.getColor(getContext(), R.color.schedjoules_colorPrimary));
         }
         else
         {
@@ -98,7 +99,7 @@ public final class EventDetailsItemView extends RelativeLayout
     private void setAction(final Action action)
     {
         Context context = getContext();
-        mTitle.setText(action.longLabel(context));
+        mTitle.setText(action.label(context));
         mIcon.setImageDrawable(action.icon(context));
         setOnClickListener(new OnClickListener()
         {
@@ -119,7 +120,7 @@ public final class EventDetailsItemView extends RelativeLayout
 
         public Factory(@NonNull ViewGroup parent)
         {
-            this.mParent = parent;
+            mParent = parent;
         }
 
 
