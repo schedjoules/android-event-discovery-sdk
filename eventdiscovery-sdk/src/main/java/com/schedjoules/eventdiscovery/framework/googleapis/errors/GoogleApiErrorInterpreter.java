@@ -15,30 +15,21 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery.framework.location.listitems;
+package com.schedjoules.eventdiscovery.framework.googleapis.errors;
 
-import com.schedjoules.eventdiscovery.R;
-import com.schedjoules.eventdiscovery.framework.list.ListItem;
-import com.schedjoules.eventdiscovery.framework.list.smart.AbstractSmartListItem;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
 
 
 /**
- * A {@link ListItem} on the location picker that displays a message.
+ * Interprets {@link GoogleApiClient.OnConnectionFailedListener} callback results as retriable or not.
  *
  * @author Gabor Keszthelyi
  */
-public final class MessageItem extends AbstractSmartListItem<CharSequence, MessageItemView>
+public interface GoogleApiErrorInterpreter
 {
-
-    public MessageItem(CharSequence text)
-    {
-        super(text, R.layout.schedjoules_list_item_location_message);
-    }
-
-
-    @Override
-    protected String toStringLabel()
-    {
-        return "MessageItem";
-    }
+    /**
+     * Tells whether the given {@link ConnectionResult} is considered a retriable error or not.
+     */
+    boolean isRetriable(ConnectionResult connectionResult);
 }

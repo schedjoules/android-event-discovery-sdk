@@ -58,7 +58,7 @@ import static java.util.Arrays.asList;
  * @author Gabor Keszthelyi
  */
 @RunWith(AndroidJUnit4.class)
-public class EventListAutomatedAndroidTest
+public final class EventListAutomatedAndroidTest
 {
     // Set to other than zero if you want to watch the test
     private static int WATCH_BREAK_MILLIS = 0;

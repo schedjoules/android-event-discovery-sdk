@@ -20,25 +20,35 @@ package com.schedjoules.eventdiscovery.framework.location;
 import android.app.Activity;
 import android.util.Log;
 
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.places.Places;
-import com.schedjoules.eventdiscovery.framework.async.SafeAsyncTaskResult;
+import com.schedjoules.eventdiscovery.R;
+import com.schedjoules.eventdiscovery.framework.googleapis.GoogleApis;
+import com.schedjoules.eventdiscovery.framework.googleapis.errors.AbstractGoogleApiRequestException;
+import com.schedjoules.eventdiscovery.framework.googleapis.errors.GoogleApiAutoManagedIssueException;
+import com.schedjoules.eventdiscovery.framework.googleapis.errors.GoogleApiExecutionException;
+import com.schedjoules.eventdiscovery.framework.googleapis.errors.GoogleApiNonRecoverableException;
+import com.schedjoules.eventdiscovery.framework.googleapis.errors.GoogleApiRecoverableException;
+import com.schedjoules.eventdiscovery.framework.googleapis.requests.GetAutoCompletePredictionsRequest;
+import com.schedjoules.eventdiscovery.framework.googleapis.requests.GetPlaceByIdRequest;
+import com.schedjoules.eventdiscovery.framework.googleapis.requests.GoogleApiTask;
 import com.schedjoules.eventdiscovery.framework.list.ItemChosenAction;
 import com.schedjoules.eventdiscovery.framework.list.ListItem;
 import com.schedjoules.eventdiscovery.framework.list.changes.nonnotifying.ClearAll;
 import com.schedjoules.eventdiscovery.framework.list.smart.Clickable;
+import com.schedjoules.eventdiscovery.framework.location.listitems.ButtonedMessageItem;
+import com.schedjoules.eventdiscovery.framework.location.listitems.MessageItem;
 import com.schedjoules.eventdiscovery.framework.location.listitems.PlaceSuggestionItem;
 import com.schedjoules.eventdiscovery.framework.location.model.GeoPlace;
+import com.schedjoules.eventdiscovery.framework.location.model.namedplace.CommaSeparated;
 import com.schedjoules.eventdiscovery.framework.location.model.namedplace.Equalable;
 import com.schedjoules.eventdiscovery.framework.location.model.namedplace.NamedPlace;
-import com.schedjoules.eventdiscovery.framework.location.tasks.PlaceByIdTask;
-import com.schedjoules.eventdiscovery.framework.location.tasks.PlaceSuggestionQueryTask;
 import com.schedjoules.eventdiscovery.framework.searchlist.SearchModule;
-import com.schedjoules.eventdiscovery.framework.searchlist.SearchModuleFactory;
 import com.schedjoules.eventdiscovery.framework.searchlist.resultupdates.Clear;
+import com.schedjoules.eventdiscovery.framework.searchlist.resultupdates.ForcedShowSingle;
 import com.schedjoules.eventdiscovery.framework.searchlist.resultupdates.ReplaceAll;
 import com.schedjoules.eventdiscovery.framework.searchlist.resultupdates.ResultUpdateListener;
 import com.schedjoules.eventdiscovery.framework.searchlist.resultupdates.SearchResultUpdate;
+import com.schedjoules.eventdiscovery.framework.searchlist.resultupdates.ShowSingle;
+import com.schedjoules.eventdiscovery.framework.utils.ActivityReloadAction;
 import com.schedjoules.eventdiscovery.framework.utils.smartview.OnClickAction;
 
 import java.util.ArrayList;
@@ -56,74 +66,41 @@ import java.util.concurrent.TimeUnit;
  */
 public final class PlaceSuggestionModule implements SearchModule
 {
-    public static final SearchModuleFactory<GeoPlace> FACTORY = new SearchModuleFactory<GeoPlace>()
-    {
-        @Override
-        public SearchModule create(Activity activity, ResultUpdateListener<ListItem> updateListener, ItemChosenAction<GeoPlace> itemChosenAction)
-        {
-            GoogleApiClient googleApiClient = new GoogleApiClient
-                    .Builder(activity)
-                    .addApi(Places.GEO_DATA_API)
-                    .build();
-            /**
-             * TODO enableAutomanage OR manual error handling
-             * enableAutoManage() on the builder would enable automatic default error handling as well,
-             * but it's tricky to get initialization correctly with Activity and retained Fragment lifecycles.
-             * Either enable automanage or add 'manual' error handling with addOnConnectionFailedListener().
-             *
-             * See https://developers.google.com/android/reference/com/google/android/gms/common/api/GoogleApiClient.Builder.html#enableAutoManage(android.support.v4.app.FragmentActivity, com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener)
-             */
-
-            googleApiClient.connect();
-            return new PlaceSuggestionModule(updateListener, itemChosenAction, googleApiClient);
-        }
-
-    };
 
     private static final String TAG = "PlaceSuggestionModule";
 
+    private final Activity mActivity;
     private final ResultUpdateListener<ListItem> mUpdateListener;
     private final ItemChosenAction<GeoPlace> mItemChosenAction;
-    private final GoogleApiClient mGoogleApiClient;
-
+    private final GoogleApis mGoogleApis;
     private final ExecutorService mExecutorService;
-    private final PlaceSuggestionQueryTask.Client mSuggestionQueryTaskClient;
-    private final PlaceByIdTaskClient mPlaceByIdTaskClient;
     private final LinkedBlockingQueue<Runnable> mJobQueue;
 
 
-    private PlaceSuggestionModule(ResultUpdateListener<ListItem> updateListener,
-                                  ItemChosenAction<GeoPlace> itemChosenAction,
-                                  GoogleApiClient googleApiClient)
+    public PlaceSuggestionModule(Activity activity,
+                                 ResultUpdateListener<ListItem> updateListener,
+                                 ItemChosenAction<GeoPlace> itemChosenAction,
+                                 GoogleApis googleApis)
     {
+        mActivity = activity;
         mUpdateListener = updateListener;
         mItemChosenAction = itemChosenAction;
-        mGoogleApiClient = googleApiClient;
-
+        mGoogleApis = googleApis;
         mJobQueue = new LinkedBlockingQueue<>();
         mExecutorService = new ThreadPoolExecutor(1, 1, 0L, TimeUnit.MILLISECONDS, mJobQueue);
-
-        mSuggestionQueryTaskClient = new PlaceSuggestionQueryTaskClient();
-        mPlaceByIdTaskClient = new PlaceByIdTaskClient();
     }
 
 
     @Override
     public void shutDown()
     {
-        mGoogleApiClient.disconnect();
+        mJobQueue.clear();
         mExecutorService.shutdown();
     }
 
 
-    public void onPlaceSuggestionSelected(NamedPlace namedPlace)
-    {
-        new PlaceByIdTask(namedPlace, mPlaceByIdTaskClient).executeOnExecutor(mExecutorService, mGoogleApiClient);
-    }
-
-
     @Override
-    public void onSearchQueryChange(String newQuery)
+    public void onSearchQueryChange(final String newQuery)
     {
         mJobQueue.clear();
         if (newQuery.isEmpty())
@@ -132,8 +109,65 @@ public final class PlaceSuggestionModule implements SearchModule
         }
         else
         {
-            new PlaceSuggestionQueryTask(newQuery, mSuggestionQueryTaskClient).executeOnExecutor(mExecutorService, mGoogleApiClient);
+            executeSuggestionQuery(newQuery);
         }
+    }
+
+
+    private void executeSuggestionQuery(final String query)
+    {
+        new GoogleApiTask<>(new GetAutoCompletePredictionsRequest(query), new GoogleApiTask.Callback<List<NamedPlace>>()
+        {
+            @Override
+            public void onTaskFinish(GoogleApiTask.Result<List<NamedPlace>> result)
+            {
+                try
+                {
+                    onSuggestionsReceived(result.value(), query);
+                }
+                catch (GoogleApiAutoManagedIssueException e)
+                {
+                    Log.e(TAG, "Failed to get suggestions", e);
+                    // Do nothing, being auto-managed, module will be triggered in onResume()
+                }
+                catch (GoogleApiNonRecoverableException e)
+                {
+                    Log.e(TAG, "Failed to get suggestions", e);
+                    ListItem errorItem = new MessageItem(mActivity.getText(R.string.schedjoules_location_picker_googleapi_error_unrecovarable));
+                    mUpdateListener.onUpdate(new ForcedShowSingle<>(errorItem));
+                }
+                catch (GoogleApiRecoverableException e)
+                {
+                    Log.e(TAG, "Failed to get suggestions", e);
+                    ListItem errorItem = new ButtonedMessageItem(
+                            mActivity.getText(R.string.schedjoules_location_picker_googleapi_error_recovarable),
+                            mActivity.getText(R.string.schedjoules_retry),
+                            new ActivityReloadAction(mActivity));
+                    mUpdateListener.onUpdate(new ShowSingle<>(errorItem, query));
+                }
+                catch (GoogleApiExecutionException e)
+                {
+                    Log.e(TAG, "Failed to get suggestions", e);
+                    ListItem errorItem = new ButtonedMessageItem(
+                            mActivity.getString(R.string.schedjoules_location_picker_suggestion_error),
+                            mActivity.getString(R.string.schedjoules_retry),
+                            new OnClickAction()
+                            {
+                                @Override
+                                public void onClick()
+                                {
+                                    executeSuggestionQuery(query);
+                                }
+                            }
+                    );
+                    mUpdateListener.onUpdate(new ShowSingle<>(errorItem, query));
+                }
+                catch (AbstractGoogleApiRequestException e)
+                {
+                    throw new RuntimeException("Unhandled AbstractGoogleApiRequestException");
+                }
+            }
+        }).executeOnExecutor(mExecutorService, mGoogleApis);
     }
 
 
@@ -150,14 +184,7 @@ public final class PlaceSuggestionModule implements SearchModule
         {
             ListItem item = new Clickable<>(
                     new PlaceSuggestionItem<>(new Equalable(namedPlace)),
-                    new OnClickAction()
-                    {
-                        @Override
-                        public void onClick()
-                        {
-                            onPlaceSuggestionSelected(namedPlace);
-                        }
-                    }
+                    new PlaceLookUpAction(namedPlace)
             );
             newItems.add(item);
         }
@@ -165,41 +192,44 @@ public final class PlaceSuggestionModule implements SearchModule
     }
 
 
-    private final class PlaceSuggestionQueryTaskClient implements PlaceSuggestionQueryTask.Client
+    private final class PlaceLookUpAction implements OnClickAction
     {
 
-        @Override
-        public void onTaskFinish(SafeAsyncTaskResult<List<NamedPlace>> taskResult, String query)
+        private final NamedPlace mNamedPlace;
+
+
+        PlaceLookUpAction(NamedPlace namedPlace)
         {
-            try
-            {
-                onSuggestionsReceived(taskResult.value(), query);
-            }
-            catch (Exception e)
-            {
-                // TODO Error handling on UI?
-                Log.e(TAG, "Error returned by places suggestion query task.", e);
-            }
+            mNamedPlace = namedPlace;
         }
 
-    }
-
-
-    private final class PlaceByIdTaskClient implements PlaceByIdTask.Client
-    {
 
         @Override
-        public void onTaskFinish(SafeAsyncTaskResult<GeoPlace> result, NamedPlace namedPlace)
+        public void onClick()
         {
-            try
+            new GoogleApiTask<>(new GetPlaceByIdRequest(mNamedPlace), new GoogleApiTask.Callback<GeoPlace>()
             {
-                mItemChosenAction.onItemChosen(result.value());
-            }
-            catch (Exception e)
-            {
-                // TODO Error handling on UI?
-                Log.e(TAG, "Error returned by place by id task.", e);
-            }
+                @Override
+                public void onTaskFinish(GoogleApiTask.Result<GeoPlace> result)
+                {
+                    try
+                    {
+                        mItemChosenAction.onItemChosen(result.value());
+                    }
+                    catch (Exception e)
+                    {
+                        ListItem errorItem = new ButtonedMessageItem(
+                                mActivity.getString(R.string.schedjoules_location_picker_suggestion_placelookup_error, new CommaSeparated(mNamedPlace)),
+                                mActivity.getString(R.string.schedjoules_retry),
+                                new PlaceLookUpAction(mNamedPlace)
+                        );
+                        mUpdateListener.onUpdate(new ForcedShowSingle<>(errorItem));
+                        Log.e(TAG, "Failed to get id for place", e);
+                    }
+
+                }
+            }).executeOnExecutor(mExecutorService, mGoogleApis);
         }
+
     }
 }

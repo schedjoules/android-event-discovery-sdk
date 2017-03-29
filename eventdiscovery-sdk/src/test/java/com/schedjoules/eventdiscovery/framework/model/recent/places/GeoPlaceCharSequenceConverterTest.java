@@ -31,7 +31,7 @@ import static junit.framework.Assert.assertEquals;
 /**
  * @author Marten Gajda
  */
-public class GeoPlaceCharSequenceConverterTest
+public final class GeoPlaceCharSequenceConverterTest
 {
     @Test
     public void fromValue() throws Exception

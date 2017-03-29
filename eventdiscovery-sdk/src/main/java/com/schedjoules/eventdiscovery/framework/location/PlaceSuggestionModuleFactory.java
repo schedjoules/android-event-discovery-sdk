@@ -15,11 +15,11 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery.framework.location.recentlocations;
+package com.schedjoules.eventdiscovery.framework.location;
 
 import android.app.Activity;
-import android.content.Context;
 
+import com.schedjoules.eventdiscovery.framework.googleapis.GoogleApis;
 import com.schedjoules.eventdiscovery.framework.list.ItemChosenAction;
 import com.schedjoules.eventdiscovery.framework.list.ListItem;
 import com.schedjoules.eventdiscovery.framework.location.model.GeoPlace;
@@ -29,33 +29,25 @@ import com.schedjoules.eventdiscovery.framework.searchlist.resultupdates.ResultU
 
 
 /**
- * A decorator to {@link SearchModuleFactory}s of {@link GeoPlace}s that adds the selected {@link GeoPlace} to the recent locations.
+ * {@link SearchModuleFactory} for {@link PlaceSuggestionModule}.
  *
- * @author Marten Gajda
+ * @author Gabor Keszthelyi
  */
-public final class Remembered implements SearchModuleFactory<GeoPlace>
+public final class PlaceSuggestionModuleFactory implements SearchModuleFactory<GeoPlace>
 {
-    private final SearchModuleFactory<GeoPlace> mDelegate;
+    private final GoogleApis mGoogleApis;
 
 
-    public Remembered(SearchModuleFactory<GeoPlace> delegate)
+    public PlaceSuggestionModuleFactory(GoogleApis googleApis)
     {
-        mDelegate = delegate;
+        mGoogleApis = googleApis;
     }
 
 
     @Override
-    public SearchModule create(final Activity activity, ResultUpdateListener<ListItem> updateListener, final ItemChosenAction<GeoPlace> itemSelectionAction)
+    public SearchModule create(Activity activity, ResultUpdateListener<ListItem> updateListener, ItemChosenAction<GeoPlace> itemChosenAction)
     {
-        final Context context = activity.getApplicationContext();
-        return mDelegate.create(activity, updateListener, new ItemChosenAction<GeoPlace>()
-        {
-            @Override
-            public void onItemChosen(GeoPlace itemData)
-            {
-                new RecentGeoPlaces(context).recent(itemData).remember();
-                itemSelectionAction.onItemChosen(itemData);
-            }
-        });
+        return new PlaceSuggestionModule(activity, updateListener, itemChosenAction, mGoogleApis);
     }
+
 }

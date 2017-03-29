@@ -15,30 +15,29 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery.framework.location.listitems;
+package com.schedjoules.eventdiscovery.framework.googleapis.errors;
 
-import com.schedjoules.eventdiscovery.R;
-import com.schedjoules.eventdiscovery.framework.list.ListItem;
-import com.schedjoules.eventdiscovery.framework.list.smart.AbstractSmartListItem;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.schedjoules.eventdiscovery.framework.googleapis.GoogleApiRequest;
 
 
 /**
- * A {@link ListItem} on the location picker that displays a message.
+ * Exception for signalling that some error happened during execution of the {@link GoogleApiRequest}.
+ * (So it's not a {@link GoogleApiClient} connection issue.)
  *
  * @author Gabor Keszthelyi
  */
-public final class MessageItem extends AbstractSmartListItem<CharSequence, MessageItemView>
+public class GoogleApiExecutionException extends AbstractGoogleApiRequestException
 {
-
-    public MessageItem(CharSequence text)
+    public GoogleApiExecutionException(String detailMessage)
     {
-        super(text, R.layout.schedjoules_list_item_location_message);
+        super(detailMessage);
     }
 
 
-    @Override
-    protected String toStringLabel()
+    public GoogleApiExecutionException(String detailMessage, Throwable throwable)
     {
-        return "MessageItem";
+        super(detailMessage, throwable);
     }
+
 }

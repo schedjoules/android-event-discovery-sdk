@@ -31,7 +31,7 @@ import static junit.framework.Assert.assertEquals;
  * @author Marten Gajda
  */
 @RunWith(AndroidJUnit4.class)
-public class SerializableCharSequenceConverterTest
+public final class SerializableCharSequenceConverterTest
 {
     @Test
     public void testStringSerializable() throws Exception

@@ -47,7 +47,7 @@ import static org.junit.Assert.assertTrue;
  */
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({ RecyclerView.Adapter.class })
-public class ListSectionChangeTest
+public final class ListSectionChangeTest
 {
 
     private RecyclerView.Adapter mAdapter;

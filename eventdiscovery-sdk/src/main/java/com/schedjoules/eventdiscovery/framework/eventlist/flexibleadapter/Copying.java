@@ -34,7 +34,7 @@ import eu.davidea.flexibleadapter.items.IFlexible;
  *
  * @author Gabor Keszthelyi
  */
-public class Copying implements Factory<FlexibleAdapter<IFlexible>>
+public final class Copying implements Factory<FlexibleAdapter<IFlexible>>
 {
     private final Factory<FlexibleAdapter<IFlexible>> mDelegate;
     private final FlexibleAdapter<IFlexible> mOldAdapter;

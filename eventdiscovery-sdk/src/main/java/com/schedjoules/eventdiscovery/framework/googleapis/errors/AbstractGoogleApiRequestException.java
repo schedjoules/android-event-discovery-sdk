@@ -15,30 +15,27 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery.framework.location.listitems;
+package com.schedjoules.eventdiscovery.framework.googleapis.errors;
 
-import com.schedjoules.eventdiscovery.R;
-import com.schedjoules.eventdiscovery.framework.list.ListItem;
-import com.schedjoules.eventdiscovery.framework.list.smart.AbstractSmartListItem;
+import com.schedjoules.eventdiscovery.framework.googleapis.GoogleApis;
 
 
 /**
- * A {@link ListItem} on the location picker that displays a message.
+ * Abstract base type for Exceptions thrown by {@link GoogleApis}.
  *
  * @author Gabor Keszthelyi
  */
-public final class MessageItem extends AbstractSmartListItem<CharSequence, MessageItemView>
+public abstract class AbstractGoogleApiRequestException extends Exception
 {
-
-    public MessageItem(CharSequence text)
+    public AbstractGoogleApiRequestException(String detailMessage)
     {
-        super(text, R.layout.schedjoules_list_item_location_message);
+        super(detailMessage);
     }
 
 
-    @Override
-    protected String toStringLabel()
+    public AbstractGoogleApiRequestException(String detailMessage, Throwable throwable)
     {
-        return "MessageItem";
+        super(detailMessage, throwable);
     }
+
 }

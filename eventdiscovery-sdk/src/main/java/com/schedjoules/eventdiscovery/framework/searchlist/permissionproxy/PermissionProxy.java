@@ -142,7 +142,7 @@ public final class PermissionProxy implements SearchModule
     }
 
 
-    private class PermissionRequestOnClick implements OnClickAction
+    private final class PermissionRequestOnClick implements OnClickAction
     {
         @Override
         public void onClick()

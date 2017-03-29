@@ -15,30 +15,33 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery.framework.location.listitems;
+package com.schedjoules.eventdiscovery.framework.utils;
 
-import com.schedjoules.eventdiscovery.R;
-import com.schedjoules.eventdiscovery.framework.list.ListItem;
-import com.schedjoules.eventdiscovery.framework.list.smart.AbstractSmartListItem;
+import android.app.Activity;
+
+import com.schedjoules.eventdiscovery.framework.utils.smartview.OnClickAction;
 
 
 /**
- * A {@link ListItem} on the location picker that displays a message.
+ * {@link OnClickAction} that reloads the given Activity.
  *
  * @author Gabor Keszthelyi
  */
-public final class MessageItem extends AbstractSmartListItem<CharSequence, MessageItemView>
+public final class ActivityReloadAction implements OnClickAction
 {
+    private final Activity mActivity;
 
-    public MessageItem(CharSequence text)
+
+    public ActivityReloadAction(Activity activity)
     {
-        super(text, R.layout.schedjoules_list_item_location_message);
+        mActivity = activity;
     }
 
 
     @Override
-    protected String toStringLabel()
+    public void onClick()
     {
-        return "MessageItem";
+        mActivity.finish();
+        mActivity.startActivity(mActivity.getIntent());
     }
 }

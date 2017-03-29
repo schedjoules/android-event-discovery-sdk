@@ -84,7 +84,7 @@ public final class DelayingUpdateListener implements SectionedResultUpdateListen
     }
 
 
-    private class SingleUpdate implements Runnable
+    private final class SingleUpdate implements Runnable
     {
         private final int mSectionNumber;
         private final ResultUpdate<ListItem> mSectionUpdate;
@@ -105,7 +105,7 @@ public final class DelayingUpdateListener implements SectionedResultUpdateListen
     }
 
 
-    private class RunAllUpdates implements Runnable
+    private final class RunAllUpdates implements Runnable
     {
 
         @Override

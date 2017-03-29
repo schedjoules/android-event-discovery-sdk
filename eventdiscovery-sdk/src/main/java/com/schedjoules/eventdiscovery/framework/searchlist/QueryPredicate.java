@@ -15,30 +15,18 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery.framework.location.listitems;
-
-import com.schedjoules.eventdiscovery.R;
-import com.schedjoules.eventdiscovery.framework.list.ListItem;
-import com.schedjoules.eventdiscovery.framework.list.smart.AbstractSmartListItem;
-
+package com.schedjoules.eventdiscovery.framework.searchlist;
 
 /**
- * A {@link ListItem} on the location picker that displays a message.
+ * A general predicate for checking whether a query is valid in a certain context or not.
  *
  * @author Gabor Keszthelyi
  */
-public final class MessageItem extends AbstractSmartListItem<CharSequence, MessageItemView>
+public interface QueryPredicate
 {
 
-    public MessageItem(CharSequence text)
-    {
-        super(text, R.layout.schedjoules_list_item_location_message);
-    }
-
-
-    @Override
-    protected String toStringLabel()
-    {
-        return "MessageItem";
-    }
+    /**
+     * Tells whether the given query is valid in the given context or not.
+     */
+    boolean isValid(String query);
 }

@@ -52,7 +52,7 @@ import static java.util.Arrays.asList;
  */
 @Suppress // Comment this annotation out to run the manual testing
 @RunWith(AndroidJUnit4.class)
-public class EventListManualAndroidTest
+public final class EventListManualAndroidTest
 {
     @Rule
     public ActivityTestRule<LauncherTestActivity> mActivityTestRule =
