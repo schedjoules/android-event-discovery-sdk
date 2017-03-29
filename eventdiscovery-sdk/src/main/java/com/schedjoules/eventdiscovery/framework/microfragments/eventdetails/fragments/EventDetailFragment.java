@@ -45,6 +45,7 @@ import com.schedjoules.eventdiscovery.framework.datetime.StartAndEndTime;
 import com.schedjoules.eventdiscovery.framework.location.model.VenueName;
 import com.schedjoules.eventdiscovery.framework.microfragments.eventdetails.ShowEventMicroFragment;
 import com.schedjoules.eventdiscovery.framework.microfragments.eventdetails.fragments.menu.EventDetailsMenu;
+import com.schedjoules.eventdiscovery.framework.microfragments.eventdetails.fragments.views.EventDetailsExpandableItemView;
 import com.schedjoules.eventdiscovery.framework.microfragments.eventdetails.fragments.views.EventDetailsItemView;
 import com.schedjoules.eventdiscovery.framework.microfragments.eventdetails.fragments.views.EventDetailsTwoLineItemView;
 import com.schedjoules.eventdiscovery.framework.model.BookTicketLink;
@@ -137,9 +138,9 @@ public final class EventDetailFragment extends BaseFragment implements EventDeta
 
         if (!TextUtils.isEmpty(mEvent.description()))
         {
-            EventDetailsItemView descriptionItem = EventDetailsItemView.inflate(mVerticalItems);
+            EventDetailsExpandableItemView descriptionItem = EventDetailsExpandableItemView.inflate(mVerticalItems);
             descriptionItem.setIcon(R.drawable.schedjoules_ic_description);
-            descriptionItem.setTextAsTitle(mEvent.description());
+            descriptionItem.setText(mEvent.description());
             mVerticalItems.addView(descriptionItem);
         }
     }
