@@ -17,6 +17,8 @@
 
 package com.schedjoules.eventdiscovery.framework.googleapis.requests;
 
+import android.util.Log;
+
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.Api;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -37,6 +39,8 @@ import java.util.concurrent.TimeUnit;
  */
 public final class ConnectionErrorHandling<T> implements GoogleApiRequest<T>
 {
+    private static final String TAG = "ConnectionErrorHandling";
+
     private final GoogleApiRequest<T> mDelegate;
 
 
@@ -49,9 +53,10 @@ public final class ConnectionErrorHandling<T> implements GoogleApiRequest<T>
     @Override
     public final T execute(GoogleApiClient googleApiClient) throws AbstractGoogleApiRequestException
     {
-        ConnectionResult connectionResult = googleApiClient.blockingConnect(3, TimeUnit.SECONDS);
+        ConnectionResult connectionResult = googleApiClient.blockingConnect(2, TimeUnit.SECONDS);
         if (!connectionResult.isSuccess())
         {
+            Log.e(TAG, "Error ConnectionResult: " + connectionResult);
             if (connectionResult.hasResolution())
             {
                 // This is being auto-managed

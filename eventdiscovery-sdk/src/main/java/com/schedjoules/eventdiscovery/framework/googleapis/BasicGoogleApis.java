@@ -18,16 +18,16 @@
 package com.schedjoules.eventdiscovery.framework.googleapis;
 
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 
 import com.google.android.gms.common.api.Api;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.schedjoules.eventdiscovery.framework.googleapis.errors.AbstractGoogleApiRequestException;
 import com.schedjoules.eventdiscovery.framework.utils.factory.Factory;
-import com.schedjoules.eventdiscovery.framework.utils.factory.Lazy;
+import com.schedjoules.eventdiscovery.framework.utils.factory.PeekableLazy;
 import com.schedjoules.eventdiscovery.framework.utils.factory.ThreadSafeLazy;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -39,18 +39,20 @@ import java.util.Set;
  */
 public class BasicGoogleApis implements GoogleApis
 {
+    private static final String TAG = "BasicGoogleApis";
+
     private static int clientIdCounter = 1264;
 
     private final FragmentActivity mActivity;
     private final Set<Api> mApis;
 
-    private Lazy<GoogleApiClient> mGoogleApiClient;
+    private PeekableLazy<GoogleApiClient> mGoogleApiClient;
 
 
     public BasicGoogleApis(FragmentActivity activity, Api... apis)
     {
         mActivity = activity;
-        mApis = Collections.synchronizedSet(new HashSet<>(Arrays.asList(apis)));
+        mApis = new HashSet<>(Arrays.asList(apis));
         mGoogleApiClient = new ThreadSafeLazy<>(new GoogleApiClientFactory());
     }
 
@@ -60,8 +62,18 @@ public class BasicGoogleApis implements GoogleApis
     {
         if (!mApis.contains(request.requiredApi()))
         {
-            mApis.add(request.requiredApi());
-            mGoogleApiClient = new ThreadSafeLazy<>(new GoogleApiClientFactory());
+            synchronized (this)
+            {
+                Log.i("BasicGoogleApis", "Adding new Api: " + request.requiredApi());
+                mApis.add(request.requiredApi());
+                if (mGoogleApiClient.isCreated())
+                {
+                    GoogleApiClient googleApiClient = mGoogleApiClient.get();
+                    googleApiClient.stopAutoManage(mActivity);
+                    googleApiClient.disconnect();
+                }
+                mGoogleApiClient = new ThreadSafeLazy<>(new GoogleApiClientFactory());
+            }
         }
         return request.execute(mGoogleApiClient.get());
     }
@@ -73,6 +85,7 @@ public class BasicGoogleApis implements GoogleApis
         @Override
         public GoogleApiClient create()
         {
+            Log.d(TAG, String.format("Building GoogleApiClient with id %d and Apis: %s", clientIdCounter, mApis));
             GoogleApiClient.Builder builder = new GoogleApiClient.Builder(mActivity);
             for (Api api : mApis)
             {

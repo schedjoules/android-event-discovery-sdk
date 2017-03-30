@@ -24,7 +24,7 @@ package com.schedjoules.eventdiscovery.framework.utils.factory;
  *
  * @author Gabor Keszthelyi
  */
-public final class ThreadSafeLazy<T> implements Lazy<T>
+public final class ThreadSafeLazy<T> implements PeekableLazy<T>
 {
     private final Factory<T> mFactory;
 
@@ -54,6 +54,13 @@ public final class ThreadSafeLazy<T> implements Lazy<T>
             }
         }
         return tempWrapper.mValue;
+    }
+
+
+    @Override
+    public synchronized boolean isCreated()
+    {
+        return mWrapper != null && mWrapper.mValue != null;
     }
 
 
