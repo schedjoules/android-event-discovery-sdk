@@ -45,8 +45,6 @@
 
     <!-- Location picker list item name for current location of the user/device -->
     <string name="schedjoules_location_picker_current_location">Current location</string>
-    <!-- Progress list item displayed during retrieving the current location -->
-    <string name="schedjoules_location_picker_current_location_locating">Find location…</string>
     <!-- List message item displayed in place of current location after user denied to give permission to access their location on the system dialog. -->
     <string name="schedjoules_location_picker_current_location_permission_rationale">To use your current location, please allow access to your location.</string>
     <!-- List message item displayed in place of current location after user denied to give permission to access their location on the system dialog and also checked "Never show again" checkbox. (They can only give the permission from phone settings after that.)-->
