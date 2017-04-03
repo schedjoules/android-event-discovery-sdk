@@ -19,6 +19,7 @@ package com.schedjoules.eventdiscovery.framework.microfragments.eventdetails.fra
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -35,6 +36,7 @@ import com.schedjoules.eventdiscovery.framework.common.ExternalUrlFeedbackForm;
 import com.schedjoules.eventdiscovery.framework.microfragments.eventdetails.ShowEventMicroFragment;
 import com.schedjoules.eventdiscovery.framework.microfragments.eventdetails.fragments.menu.EventDetailsMenu;
 import com.schedjoules.eventdiscovery.framework.microfragments.eventdetails.fragments.views.EventDetailsView;
+import com.schedjoules.eventdiscovery.framework.microfragments.eventdetails.fragments.views.EventHeaderView;
 import com.schedjoules.eventdiscovery.framework.utils.InsightsTask;
 
 import org.dmfs.android.microfragments.FragmentEnvironment;
@@ -63,13 +65,33 @@ public final class EventDetailFragment extends BaseFragment implements EventDeta
 
         SchedjoulesFragmentEventDetailsBinding views = DataBindingUtil.inflate(inflater, R.layout.schedjoules_fragment_event_details, container, false);
 
-        ((BaseActivity) getActivity()).setSupportActionBar(views.schedjoulesDetailsHeader.schedjoulesEventDetailToolbar);
+        ((BaseActivity) getActivity()).setSupportActionBar(views.schedjoulesDetailsHeader.schedjoulesEventDetailToolbarDark);
         setHasOptionsMenu(true);
-
         mMenu = new EventDetailsMenu(this);
+        // only one toolbar can serve as the "supportactionbar" so we need to set up the other one manually
+        Toolbar toolbar = views.schedjoulesDetailsHeader.schedjoulesEventDetailToolbarLight;
+        toolbar.inflateMenu(R.menu.schedjoules_event_details_menu);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                getActivity().finish();
+            }
+        });
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener()
+        {
+            @Override
+            public boolean onMenuItemClick(MenuItem item)
+            {
+                return onOptionsItemSelected(item);
+            }
+        });
 
+        new EventHeaderView(getActivity(), views.schedjoulesDetailsHeader).update(parameters.event());
         new EventDetailsView(views).update(parameters);
 
+        ((BaseActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         return views.getRoot();
     }
 

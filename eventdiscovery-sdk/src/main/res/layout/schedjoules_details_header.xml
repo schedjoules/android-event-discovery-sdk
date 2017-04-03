@@ -2,12 +2,13 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <android.support.design.widget.AppBarLayout
+    <net.opacapp.appbarlayout.AppBarLayout
             android:id="@+id/schedjoules_event_detail_app_bar"
             android:layout_width="match_parent"
             android:layout_height="@dimen/schedjoules_app_bar_height"
             android:fitsSystemWindows="true"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+            android:stateListAnimator="@animator/schedjoules_appbar_elevation"
+            android:theme="@style/SchedJoules_AppTheme.AppBarOverlay">
 
         <net.opacapp.multilinecollapsingtoolbar.CollapsingToolbarLayout
                 android:id="@+id/schedjoules_event_detail_toolbar_layout"
@@ -18,15 +19,19 @@
                 app:expandedTitleTextAppearance="@style/SchedJoules_ExpandedTitle"
                 app:expandedTitleMarginStart="@dimen/schedjoules_activity_horizontal_margin"
                 app:expandedTitleMarginEnd="@dimen/schedjoules_activity_horizontal_margin"
-                app:expandedTitleMarginBottom="@dimen/schedjoules_activity_horizontal_margin"
+                app:scrimAnimationDuration="600"
+                app:scrimVisibleHeightTrigger="160dp"
+                app:expandedTitleMarginBottom="48dp"
                 app:contentScrim="@color/schedjoules_colorPrimary"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed"
-                app:toolbarId="@+id/schedjoules_toolbar">
+                app:toolbarId="@+id/schedjoules_toolbar"
+                app:autoAnimate="none">
 
             <ImageView
                     android:id="@+id/schedjoules_event_detail_banner"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    app:layout_collapseParallaxMultiplier="1"
                     app:layout_collapseMode="parallax"
                     android:scaleType="centerCrop"
                     android:fitsSystemWindows="true"/>
@@ -41,19 +46,61 @@
             <View
                     android:layout_width="match_parent"
                     app:layout_collapseMode="parallax"
-                    android:layout_height="160dp"
+                    android:layout_height="144dp"
                     android:background="@drawable/schedjoules_gradient_drawable"
                     android:layout_gravity="center_horizontal|bottom"/>
 
             <android.support.v7.widget.Toolbar
-                    android:id="@+id/schedjoules_event_detail_toolbar"
+                    android:id="@+id/schedjoules_event_detail_toolbar_dark"
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
                     app:layout_collapseMode="pin"
-                    app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+                    app:popupTheme="@style/SchedJoules_AppTheme.PopupOverlay"
+                    app:theme="@style/SchedJoules_AppTheme.AppBarOverlay.Dark"
+                    app:layout_scrimMode="out"
+                    app:contentInsetStartWithNavigation="0dp"
+                    android:layout_marginBottom="20dp"/>
+
+            <android.support.v7.widget.Toolbar
+                    android:alpha="0"
+                    app:contentInsetStartWithNavigation="0dp"
+                    android:id="@+id/schedjoules_event_detail_toolbar_light"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    app:layout_collapseMode="pin"
+                    app:popupTheme="@style/SchedJoules_AppTheme.PopupOverlay"
+                    app:layout_scrimMode="in"
+                    android:layout_marginBottom="20dp"/>
+
+            <TextView
+                    android:id="@+id/datetime_dark"
+                    android:layout_width="match_parent"
+                    android:layout_gravity="bottom"
+                    android:padding="12dp"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginStart="4dp"
+                    android:textColor="#ffffffff"
+                    android:layout_height="wrap_content"
+                    app:layout_scrimMode="out"
+                    android:textSize="20sp"
+                    android:textAppearance="?android:attr/textAppearanceMedium"/>
+
+            <TextView
+                    android:alpha="0"
+                    android:id="@+id/datetime_light"
+                    android:layout_width="match_parent"
+                    android:layout_gravity="bottom"
+                    android:padding="12dp"
+                    android:layout_marginLeft="48dp"
+                    android:layout_marginStart="48dp"
+                    android:textColor="#a0000000"
+                    android:layout_height="wrap_content"
+                    app:layout_scrimMode="in"
+                    android:textSize="12sp"
+                    android:textAppearance="?android:attr/textAppearanceMedium"/>
 
         </net.opacapp.multilinecollapsingtoolbar.CollapsingToolbarLayout>
 
-    </android.support.design.widget.AppBarLayout>
+    </net.opacapp.appbarlayout.AppBarLayout>
 
 </layout>

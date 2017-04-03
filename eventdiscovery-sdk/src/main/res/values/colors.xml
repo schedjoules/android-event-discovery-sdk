@@ -1,19 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <!-- Color palette for the project: -->
     <color name="schedjoules_green_haze">#0CAF60</color>
     <color name="schedjoules_abbey">#515457</color>
     <color name="schedjoules_shark">#2E3135</color>
     <color name="schedjoules_oslo_grey">#8F9192</color>
+    <color name="schedjoules_silver_chalice">#b0b0b0</color>
+    <color name="schedjoules_white">#ffffff</color>
     <!-- (Names come from here: http://chir.ag/projects/name-that-color/) -->
 
     <!-- Colors by point of usage: -->
-    <color name="schedjoules_colorPrimary">@color/schedjoules_abbey</color>
-    <color name="schedjoules_colorPrimaryDark">@color/schedjoules_shark</color>
+    <color name="schedjoules_colorPrimary">@color/schedjoules_white</color>
+    <color name="schedjoules_colorPrimaryDark">@color/schedjoules_silver_chalice</color>
     <color name="schedjoules_colorAccent">@color/schedjoules_green_haze</color>
 
-    <color name="schedjoules_text_primary">@color/schedjoules_colorPrimary</color>
+    <color name="schedjoules_text_primary">@color/schedjoules_abbey</color>
     <color name="schedjoules_text_secondary">@color/schedjoules_oslo_grey</color>
     <color name="schedjoules_content_icon">@color/schedjoules_colorAccent</color>
 

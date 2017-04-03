@@ -1,6 +1,6 @@
 <resources>
 
-    <style name="SchedJoules_AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="SchedJoules_AppTheme" parent="Theme.AppCompat.Light">
         <item name="colorPrimary">@color/schedjoules_colorPrimary</item>
         <item name="colorPrimaryDark">@color/schedjoules_colorPrimaryDark</item>
         <item name="colorAccent">@color/schedjoules_colorAccent</item>
@@ -11,9 +11,13 @@
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="SchedJoules_AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
+    <style name="SchedJoules_AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Light"/>
+
+    <style name="SchedJoules_AppTheme.AppBarOverlay.Dark" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
 
     <style name="SchedJoules_AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
+
+    <style name="SchedJoules_AppTheme.PopupOverlay.Dark" parent="ThemeOverlay.AppCompat.Dark"/>
 
     <style name="SchedJoules_ExpandedTitle" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
         <item name="android:textSize">26sp</item>
@@ -46,7 +50,7 @@
         <item name="android:layout_width">@dimen/schedjoules_event_detail_item_icon_size</item>
         <item name="android:layout_height">@dimen/schedjoules_event_detail_item_icon_size</item>
         <item name="android:tint">@color/schedjoules_content_icon</item>
-        <item name="android:layout_marginRight">18dp</item>
+        <item name="android:layout_marginRight">24dp</item>
     </style>
 
     <!-- Needed to override toolbar style fix bug of small title in landscape (theme resource sets it 14sp in land)

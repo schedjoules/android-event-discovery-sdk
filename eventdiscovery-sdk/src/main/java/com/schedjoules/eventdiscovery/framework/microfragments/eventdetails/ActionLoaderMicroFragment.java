@@ -19,6 +19,8 @@ package com.schedjoules.eventdiscovery.framework.microfragments.eventdetails;
 
 import android.content.Context;
 import android.databinding.DataBindingUtil;
+import android.graphics.PorterDuff;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -29,12 +31,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.bumptech.glide.Glide;
 import com.schedjoules.client.eventsdiscovery.Event;
 import com.schedjoules.eventdiscovery.R;
 import com.schedjoules.eventdiscovery.databinding.SchedjoulesFragmentEventDetailsActionLoadingBinding;
+import com.schedjoules.eventdiscovery.framework.microfragments.eventdetails.fragments.views.EventHeaderView;
 import com.schedjoules.eventdiscovery.framework.model.ParcelableEvent;
-import com.schedjoules.eventdiscovery.framework.model.SchedJoulesLinks;
 import com.schedjoules.eventdiscovery.framework.services.ActionService;
 import com.schedjoules.eventdiscovery.framework.utils.ServiceJob;
 import com.schedjoules.eventdiscovery.framework.utils.ServiceJobQueue;
@@ -161,12 +162,16 @@ public final class ActionLoaderMicroFragment implements MicroFragment<Event>
             SchedjoulesFragmentEventDetailsActionLoadingBinding views = DataBindingUtil.inflate(inflater,
                     R.layout.schedjoules_fragment_event_details_action_loading, container, false);
 
-            views.schedjoulesDetailsHeader.schedjoulesEventDetailToolbarLayout.setTitle(mEvent.title());
+            new EventHeaderView(getActivity(), views.schedjoulesDetailsHeader).update(mEvent);
 
-            // we already have the event, so load and show the image right away
-            Glide.with(getActivity())
-                    .load(new SchedJoulesLinks(mEvent.links()).bannerUri())
-                    .into(views.schedjoulesDetailsHeader.schedjoulesEventDetailBanner);
+            if (Build.VERSION.SDK_INT < 21)
+            {
+                // on older Version the progressbar won't pick up the accent color, so we have to set it manually
+                views.schedjoulesEventDetailsHorizontalActionsProgressbar.getIndeterminateDrawable()
+                        .setColorFilter(getResources().getColor(R.color.schedjoules_colorAccent),
+                                PorterDuff.Mode.MULTIPLY);
+            }
+
             return views.getRoot();
         }
 
