@@ -57,4 +57,16 @@
     <string name="schedjoules_location_picker_caption_recent_locations">Zuletzt gesucht</string>
 
     <string name="schedjoules_message_country_not_supported">Event Discovery ist in deinem Land noch nicht verfügbar.</string>
+
+    <string name="schedjoules_wait_message">Dies könnte einen Moment dauern</string>
+    <string name="schedjoules_title_error">Fehler</string>
+    <string name="schedjoules_generic_error">Etwas ist schief gelaufen.\nBitte versuche es später noch einmal.</string>
+    <string name="schedjoules_menu_feedback">Feedback</string>
+    <string name="schedjoules_location_selection_hint">Ort eingeben</string>
+    <string name="schedjoules_location_picker_googleapi_error_recovarable">Konnte nicht mit Google Location Service verbinden.</string>
+    <string name="schedjoules_location_picker_googleapi_error_unrecovarable">Google Location Services nicht verfügbar. Die Ortsuche funktioniert daher nicht.</string>
+    <string name="schedjoules_location_picker_suggestion_error">Konnte keine Vorschläge laden</string>
+    <string name="schedjoules_location_picker_suggestion_placelookup_error">Konnte Daten für \'%s\' nicht laden</string>
+    <string name="schedjoules_retry">Wiederholen</string>
+
 </resources>

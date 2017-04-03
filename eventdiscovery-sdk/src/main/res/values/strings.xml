@@ -30,12 +30,13 @@
     <!-- Label for the tickets button on the Event Details screen. -->
     <string name="schedjoules_event_details_ticket_button_title">Get Tickets</string>
 
+    <!-- Message displayed in the middle of the screen when loading event details takes long. -->
     <string name="schedjoules_wait_message">This might take a moment</string>
-    <string name="schedjoules_error_loading_event">Could not load event\nPlease check your internet connection</string>
-
+    <!-- Screen title when failed to load event details. -->
     <string name="schedjoules_title_error">Error</string>
+    <!-- Message displayed in the middle when failed to load event details. -->
     <string name="schedjoules_generic_error">Something went wrong.\nPlease try again later.</string>
-    <string name="schedjoules_location_selection_hint">Enter location</string>
+    <!-- Overflow menu item label for opening Feedback screen/site -->
     <string name="schedjoules_menu_feedback">Feedback</string>
 
     <string name="schedjoules_today">Today</string>
@@ -43,6 +44,8 @@
 
     <!-- Location picker screen: -->
 
+    <!-- Hint displayed for the location search input field -->
+    <string name="schedjoules_location_selection_hint">Enter location</string>
     <!-- Location picker list item name for current location of the user/device -->
     <string name="schedjoules_location_picker_current_location">Current location</string>
     <!-- Progress list item displayed during retrieving the current location -->
@@ -63,7 +66,7 @@
     <string name="schedjoules_location_picker_googleapi_error_unrecovarable">Google location services are not available, location search doesn\'t work.</string>
     <!-- Error message item when location suggestion request fails for some reason. -->
     <string name="schedjoules_location_picker_suggestion_error">Could not get suggestions</string>
-    <!-- Error message itemm when user selects a location from the query suggestions, but request fails to download the extra information needed. -->
+    <!-- Error message item when user selects a location from the query suggestions, but request fails to download the extra information needed. Format parameter is 'city, country'-->
     <string name="schedjoules_location_picker_suggestion_placelookup_error">Could not get data for\n\'%s\'</string>
     <!-- General "Retry" button label -->
     <string name="schedjoules_retry">Retry</string>

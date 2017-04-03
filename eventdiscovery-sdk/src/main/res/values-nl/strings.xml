@@ -41,4 +41,17 @@
     <string name="schedjoules_location_picker_caption_recent_locations">Recente locaties</string>
 
     <string name="schedjoules_message_country_not_supported">Event discovery wordt momenteel niet ondersteund in uw land.</string>
+
+    <string name="schedjoules_wait_message">Het kan nog heel even duren</string>
+    <string name="schedjoules_title_error">Error</string>
+    <string name="schedjoules_generic_error">Er ging iets verkeerd.\nProbeer het zometeen nog een keer.</string>
+    <string name="schedjoules_menu_feedback">Feedback</string>
+    <string name="schedjoules_location_selection_hint">Locatie invoeren</string>
+    <string name="schedjoules_location_picker_googleapi_error_recovarable">Kon geen verbinding maken met Google Location Service</string>
+    <string name="schedjoules_location_picker_googleapi_error_unrecovarable">Google Location Service is niet beschikbaar. Het zoeken van een locatie werkt daarom niet.</string>
+    <string name="schedjoules_location_picker_suggestion_error">Suggesties konden niet worden geladen</string>
+    <string name="schedjoules_location_picker_suggestion_placelookup_error">Resultaten voor\n\'%s\' konden niet worden geladen</string>
+    <string name="schedjoules_retry">Opnieuw proberen</string>
+
+
 </resources>
