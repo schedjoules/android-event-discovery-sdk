@@ -15,35 +15,30 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery.framework.actions;
+package com.schedjoules.eventdiscovery.framework.utils.charsequence;
 
 import android.content.Context;
 
-import com.schedjoules.client.eventsdiscovery.Location;
-import com.schedjoules.eventdiscovery.R;
-import com.schedjoules.eventdiscovery.framework.location.model.AddressName;
-import com.schedjoules.eventdiscovery.framework.utils.charsequence.CharSequenceFactory;
-
 
 /**
- * Creates the label for the Directions action.
+ * {@link CharSequenceFactory} decorator to make the resulting {@link CharSequence} capital case.
  *
  * @author Gabor Keszthelyi
  */
-public final class DirectionsLabelFactory implements CharSequenceFactory
+public final class UpperCased implements CharSequenceFactory
 {
-    private final Iterable<Location> mLocations;
+    private final CharSequenceFactory mDelegate;
 
 
-    public DirectionsLabelFactory(Iterable<Location> locations)
+    public UpperCased(CharSequenceFactory delegate)
     {
-        mLocations = locations;
+        mDelegate = delegate;
     }
 
 
     @Override
     public CharSequence create(Context context)
     {
-        return new AddressName(mLocations).value(context.getString(R.string.schedjoules_action_directions).toUpperCase());
+        return mDelegate.create(context).toString().toUpperCase();
     }
 }

@@ -17,33 +17,29 @@
 
 package com.schedjoules.eventdiscovery.framework.actions;
 
-import android.content.Context;
-
-import com.schedjoules.client.eventsdiscovery.Location;
-import com.schedjoules.eventdiscovery.R;
-import com.schedjoules.eventdiscovery.framework.location.model.AddressName;
-import com.schedjoules.eventdiscovery.framework.utils.charsequence.CharSequenceFactory;
+import android.app.Activity;
+import android.view.View;
 
 
 /**
- * Creates the label for the Directions action.
+ * A {@link View.OnClickListener} that executes the given {@link ActionExecutable} on onClick().
  *
  * @author Gabor Keszthelyi
  */
-public final class DirectionsLabelFactory implements CharSequenceFactory
+public final class ActionClickListener implements View.OnClickListener
 {
-    private final Iterable<Location> mLocations;
+    private final ActionExecutable mActionExecutable;
 
 
-    public DirectionsLabelFactory(Iterable<Location> locations)
+    public ActionClickListener(ActionExecutable actionExecutable)
     {
-        mLocations = locations;
+        mActionExecutable = actionExecutable;
     }
 
 
     @Override
-    public CharSequence create(Context context)
+    public void onClick(View v)
     {
-        return new AddressName(mLocations).value(context.getString(R.string.schedjoules_action_directions).toUpperCase());
+        mActionExecutable.execute((Activity) v.getContext());
     }
 }

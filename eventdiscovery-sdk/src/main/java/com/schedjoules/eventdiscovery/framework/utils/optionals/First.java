@@ -15,54 +15,51 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery.framework.location.model;
-
-import android.text.TextUtils;
-
-import com.schedjoules.client.eventsdiscovery.Location;
+package com.schedjoules.eventdiscovery.framework.utils.optionals;
 
 import org.dmfs.optional.Optional;
 
+import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 
 /**
- * The location name (venue name).
+ * {@link Optional} for taking out the first element from an {@link Iterator}.
  *
  * @author Gabor Keszthelyi
  */
-public final class VenueName implements Optional<CharSequence>
+public final class First<T> implements Optional<T>
 {
-    private final Iterable<Location> mLocations;
+    private T mValue;
 
 
-    public VenueName(Iterable<Location> locations)
+    public First(Iterator<T> iterator)
     {
-        mLocations = locations;
+        mValue = iterator.hasNext() ? iterator.next() : null;
     }
 
 
     @Override
     public boolean isPresent()
     {
-        return mLocations.iterator().hasNext() && !TextUtils.isEmpty(mLocations.iterator().next().name());
+        return mValue != null;
     }
 
 
     @Override
-    public CharSequence value(CharSequence defaultValue)
+    public T value(T defaultValue)
     {
-        return isPresent() ? value() : defaultValue;
+        return mValue != null ? mValue : defaultValue;
     }
 
 
     @Override
-    public CharSequence value() throws NoSuchElementException
+    public T value() throws NoSuchElementException
     {
-        if (!isPresent())
+        if (mValue != null)
         {
-            throw new NoSuchElementException("No location name");
+            return mValue;
         }
-        return mLocations.iterator().next().name();
+        throw new NoSuchElementException("Iterator is empty");
     }
 }

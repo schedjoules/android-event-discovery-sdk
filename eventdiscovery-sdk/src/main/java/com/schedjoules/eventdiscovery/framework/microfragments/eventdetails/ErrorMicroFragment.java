@@ -161,7 +161,7 @@ public final class ErrorMicroFragment implements MicroFragment<ErrorMicroFragmen
         @Override
         public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
         {
-            View view = inflater.inflate(R.layout.schedjoules_fragment_error, container, false);
+            View view = inflater.inflate(R.layout.schedjoules_fragment_event_details_error, container, false);
             Error error = new FragmentEnvironment<Error>(this).microFragment().parameters();
             String title = error.title();
             String message = error.message();

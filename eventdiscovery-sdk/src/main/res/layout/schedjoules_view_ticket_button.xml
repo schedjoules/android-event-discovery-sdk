@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <FrameLayout
+            android:id="@+id/schedjoules_event_details_ticket_button_area"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/schedjoules_event_details_ticket_button_area_height">
+
+        <Button
+                android:id="@+id/schedjoules_event_details_ticket_button"
+                app:backgroundTint="@color/schedjoules_colorAccent"
+                android:textColor="@android:color/white"
+                android:textSize="14sp"
+                android:paddingRight="48dp"
+                android:paddingLeft="48dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/schedjoules_event_details_ticket_button_title"/>
+    </FrameLayout>
+</layout>

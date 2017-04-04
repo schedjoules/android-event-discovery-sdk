@@ -31,7 +31,8 @@ import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
 import com.schedjoules.client.eventsdiscovery.Event;
-import com.schedjoules.eventdiscovery.databinding.SchedjoulesEventDetailContentLoadingActionsBinding;
+import com.schedjoules.eventdiscovery.R;
+import com.schedjoules.eventdiscovery.databinding.SchedjoulesFragmentEventDetailsActionLoadingBinding;
 import com.schedjoules.eventdiscovery.framework.model.ParcelableEvent;
 import com.schedjoules.eventdiscovery.framework.model.SchedJoulesLinks;
 import com.schedjoules.eventdiscovery.framework.services.ActionService;
@@ -57,8 +58,6 @@ import java.net.URISyntaxException;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeoutException;
-
-import static com.schedjoules.eventdiscovery.R.layout.schedjoules_event_detail_content_loading_actions;
 
 
 /**
@@ -159,16 +158,16 @@ public final class ActionLoaderMicroFragment implements MicroFragment<Event>
         @Override
         public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
         {
-            SchedjoulesEventDetailContentLoadingActionsBinding mViews = DataBindingUtil.inflate(inflater, schedjoules_event_detail_content_loading_actions,
-                    container, false);
+            SchedjoulesFragmentEventDetailsActionLoadingBinding views = DataBindingUtil.inflate(inflater,
+                    R.layout.schedjoules_fragment_event_details_action_loading, container, false);
 
-            mViews.schedjoulesDetailsHeader.schedjoulesEventDetailToolbarLayout.setTitle(mEvent.title());
+            views.schedjoulesDetailsHeader.schedjoulesEventDetailToolbarLayout.setTitle(mEvent.title());
 
             // we already have the event, so load and show the image right away
             Glide.with(getActivity())
                     .load(new SchedJoulesLinks(mEvent.links()).bannerUri())
-                    .into(mViews.schedjoulesDetailsHeader.schedjoulesEventDetailBanner);
-            return mViews.getRoot();
+                    .into(views.schedjoulesDetailsHeader.schedjoulesEventDetailBanner);
+            return views.getRoot();
         }
 
 

@@ -20,9 +20,9 @@ package com.schedjoules.eventdiscovery.framework.microfragments.eventdetails.fra
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.support.v7.widget.AppCompatTextView;
 import android.util.AttributeSet;
 import android.view.View;
-import android.widget.TextView;
 
 
 /**
@@ -30,7 +30,7 @@ import android.widget.TextView;
  *
  * @author Gabor Keszthelyi
  */
-public final class SchedJoulesFooterView extends TextView implements View.OnClickListener
+public final class SchedJoulesFooterView extends AppCompatTextView implements View.OnClickListener
 {
     public SchedJoulesFooterView(Context context, AttributeSet attrs)
     {

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <RelativeLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            style="@style/SchedJoules_EventDetailsItem"
+            android:background="?android:attr/selectableItemBackground">
+
+        <ImageView
+                android:id="@+id/schedjoules_venue_icon"
+                style="@style/SchedJoules_EventDetailItemIcon"
+                android:src="@drawable/schedjoules_ic_location"/>
+
+        <TextView
+                android:id="@+id/schedjoules_venue_name_center_align"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/schedjoules_event_detail_item_icon_size"
+                style="@style/SchedJoules_TextContent.Title"
+                android:gravity="center_vertical"
+                android:text=""
+                android:visibility="invisible"/>
+
+        <TextView
+                android:id="@+id/schedjoules_venue_name"
+                android:layout_toRightOf="@id/schedjoules_venue_icon"
+                android:layout_alignBaseline="@id/schedjoules_venue_name_center_align"
+                style="@style/SchedJoules_TextContent.Title"/>
+
+    </RelativeLayout>
+</layout>
