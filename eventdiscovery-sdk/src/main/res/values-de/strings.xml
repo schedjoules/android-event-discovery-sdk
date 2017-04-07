@@ -51,7 +51,7 @@
     <string name="schedjoules_location_picker_current_location">Mein Standort</string>
     <string name="schedjoules_location_picker_current_location_permission_rationale">Bitte erlaube den Zugriff auf deinen Standort um diese Funkionen nutzen zu können.</string>
     <string name="schedjoules_location_picker_current_location_permission_inform_about_phone_settings">Bitte erteile die Standort Berechtigung in den Systemeinstellungen um diese Funktion später nutzen zu können.</string>
-    <string name="schedjoules_location_picker_current_location_error">Dein Standort konnte nicht ermittelt werden. Hier tippen um es erneut zu versuchen.</string>
+    <string name="schedjoules_location_picker_current_location_error">Dein Standort konnte nicht ermittelt werden.</string>
     <string name="schedjoules_location_picker_caption_place_suggestions">Vorschläge</string>
     <string name="schedjoules_location_picker_caption_recent_locations">Zuletzt gesucht</string>
 
