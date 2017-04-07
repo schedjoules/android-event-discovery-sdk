@@ -74,7 +74,6 @@ public final class CurrentLocationModule implements SearchModule
     private final Lazy<Geocoder> mGeocoderFactory;
     private final GoogleApis mGoogleApis;
     private final ExecutorService mExecutorService;
-    private final GetCityTaskCallback mGetCityTaskCallback;
     private final Cache<ParcelableGeoLocation, GeoPlace> mCurrentCityCache;
 
 
@@ -92,7 +91,6 @@ public final class CurrentLocationModule implements SearchModule
 
         mExecutorService = Executors.newSingleThreadExecutor();
 
-        mGetCityTaskCallback = new GetCityTaskCallback();
         mCurrentCityCache = new TimedSingleValueCache<>(CACHE_CITY_MINUTES, TimeUnit.MINUTES);
     }
 
@@ -107,22 +105,54 @@ public final class CurrentLocationModule implements SearchModule
     @Override
     public void onSearchQueryChange(String newQuery)
     {
-        if (!newQuery.isEmpty())
+        if (newQuery.isEmpty())
         {
-            mUpdateListener.onUpdate(new Clear<ListItem>(newQuery));
+            cacheCurrentLocation();
+
+            ListItem item = new Clickable<>(
+                    new MessageItem(mActivity.getString(R.string.schedjoules_location_picker_current_location)),
+                    new OnClickAction()
+                    {
+                        @Override
+                        public void onClick()
+                        {
+                            loadCurrentLocation();
+                        }
+                    });
+            mUpdateListener.onUpdate(new ShowSingle<>(item, newQuery));
         }
         else
         {
-            loadCurrentLocation();
+            mUpdateListener.onUpdate(new Clear<ListItem>(newQuery));
         }
+    }
+
+
+    private void cacheCurrentLocation()
+    {
+        //noinspection MissingPermission
+        new GoogleApiTask<>(new GetLastLocationRequest(), new GoogleApiTask.Callback<GeoLocation>()
+        {
+            @Override
+            public void onTaskFinish(GoogleApiTask.Result<GeoLocation> result)
+            {
+                try
+                {
+                    new GetCityTask<>(new ParcelableGeoLocation(result.value()), /* no callback needed */ null, mCurrentCityCache)
+                            .executeOnExecutor(mExecutorService, mGeocoderFactory.get());
+                }
+                catch (Exception e)
+                {
+                    // Do nothing, we couldn't cache the value, but there will be proper error handling when user taps on the items
+                }
+
+            }
+        }).executeOnExecutor(mExecutorService, mGoogleApis);
     }
 
 
     private void loadCurrentLocation()
     {
-        ListItem loadingItem = new MessageItem(mActivity.getString(R.string.schedjoules_location_picker_current_location_locating));
-        mUpdateListener.onUpdate(new ShowSingle<>(loadingItem, ""));
-
         //noinspection MissingPermission
         new GoogleApiTask<>(new GetLastLocationRequest(), new GoogleApiTask.Callback<GeoLocation>()
         {
@@ -168,24 +198,22 @@ public final class CurrentLocationModule implements SearchModule
 
     private void onLastLocationReceived(GeoLocation result)
     {
-        ParcelableGeoLocation geoLocation = new ParcelableGeoLocation(result);
-        new GetCityTask<>(geoLocation, mGetCityTaskCallback, mCurrentCityCache).executeOnExecutor(mExecutorService, mGeocoderFactory.get());
-    }
-
-
-    private void onCityReceived(final GeoPlace city)
-    {
-        ListItem item = new Clickable<>(
-                new MessageItem(mActivity.getString(R.string.schedjoules_location_picker_current_location)),
-                new OnClickAction()
+        new GetCityTask<>(new ParcelableGeoLocation(result), new GetCityTask.Client<ParcelableGeoLocation>()
+        {
+            @Override
+            public void onTaskFinish(SafeAsyncTaskResult<GeoPlace> result, ParcelableGeoLocation location)
+            {
+                try
                 {
-                    @Override
-                    public void onClick()
-                    {
-                        mItemChosenAction.onItemChosen(city);
-                    }
-                });
-        mUpdateListener.onUpdate(new ShowSingle<>(item, ""));
+                    mItemChosenAction.onItemChosen(result.value());
+                }
+                catch (Exception e)
+                {
+                    Log.e(TAG, "GetCityTask failed", e);
+                    onFailedToGetLocation();
+                }
+            }
+        }, mCurrentCityCache).executeOnExecutor(mExecutorService, mGeocoderFactory.get());
     }
 
 
@@ -196,25 +224,6 @@ public final class CurrentLocationModule implements SearchModule
                 mActivity.getString(R.string.schedjoules_retry),
                 new RetryAction());
         mUpdateListener.onUpdate(new ShowSingle<>(errorItem, ""));
-    }
-
-
-    private final class GetCityTaskCallback implements GetCityTask.Client<ParcelableGeoLocation>
-    {
-
-        @Override
-        public void onTaskFinish(SafeAsyncTaskResult<GeoPlace> result, ParcelableGeoLocation location)
-        {
-            try
-            {
-                onCityReceived(result.value());
-            }
-            catch (Exception e)
-            {
-                Log.e(TAG, "GetCityTask failed", e);
-                onFailedToGetLocation();
-            }
-        }
     }
 
 
