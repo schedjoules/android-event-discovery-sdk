@@ -26,6 +26,7 @@ import android.support.v4.content.ContextCompat;
 
 import com.schedjoules.eventdiscovery.framework.utils.charsequence.CharSequenceFactory;
 import com.schedjoules.eventdiscovery.framework.utils.charsequence.ResourceCharSequenceFactory;
+import com.schedjoules.eventdiscovery.framework.utils.charsequence.UpperCased;
 
 
 /**
@@ -50,7 +51,7 @@ public final class SimpleAction implements Action
 
     public SimpleAction(@StringRes int labelResId, @DrawableRes int iconResId, @NonNull ActionExecutable actionExecutable)
     {
-        this(new ResourceCharSequenceFactory(labelResId), iconResId, actionExecutable);
+        this(new UpperCased(new ResourceCharSequenceFactory(labelResId)), iconResId, actionExecutable);
     }
 
 

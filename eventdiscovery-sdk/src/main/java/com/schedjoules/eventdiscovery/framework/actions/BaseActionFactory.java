@@ -33,6 +33,7 @@ import org.dmfs.httpessentials.types.Link;
  */
 public final class BaseActionFactory implements ActionFactory
 {
+
     @Nullable
     @Override
     public Action action(@NonNull Link actionLink, @NonNull Event event)
@@ -41,42 +42,42 @@ public final class BaseActionFactory implements ActionFactory
         switch (relType)
         {
             // Not shown as Action currently but may be useful later:
-//            case "http://schedjoules.com/rel/action/book":
+//            case ActionLinkRelTypes.BOOK:
 //                return new BookAction(actionLink, event);
 
-            case "http://schedjoules.com/rel/action/add-to-calendar":
+            case ActionLinkRelTypes.ADD_TO_CALENDAR:
                 return new SimpleAction(R.string.schedjoules_action_add_to_calendar, R.drawable.schedjoules_ic_action_add_to_calendar,
                         new AddToCalendarActionExecutable(actionLink, event));
 
-            case "http://schedjoules.com/rel/action/share":
+            case ActionLinkRelTypes.SHARE:
                 return new SimpleAction(R.string.schedjoules_action_share, R.drawable.schedjoules_ic_action_share,
                         new ShareActionExecutable(actionLink, event));
 
-            case "http://schedjoules.com/rel/action/directions":
+            case ActionLinkRelTypes.DIRECTIONS:
                 return new SimpleAction(new DirectionsLabelFactory(event.locations()), R.drawable.schedjoules_ic_action_directions,
                         new ViewIntentActionExecutable(actionLink, event));
 
-            case "http://schedjoules.com/rel/action/info":
+            case ActionLinkRelTypes.INFO:
                 return new SimpleAction(R.string.schedjoules_action_info, R.drawable.schedjoules_ic_action_info,
                         new ViewIntentActionExecutable(actionLink, event));
 
-            case "http://schedjoules.com/rel/action/call":
+            case ActionLinkRelTypes.CALL:
                 return new SimpleAction(R.string.schedjoules_action_call, R.drawable.schedjoules_ic_action_call,
                         new ViewIntentActionExecutable(actionLink, event));
 
-            case "http://schedjoules.com/rel/action/buy":
+            case ActionLinkRelTypes.BUY:
                 return new SimpleAction(R.string.schedjoules_action_buy, R.drawable.schedjoules_ic_action_buy,
                         new ViewIntentActionExecutable(actionLink, event));
 
-            case "http://schedjoules.com/rel/action/remind":
+            case ActionLinkRelTypes.REMIND:
                 return new SimpleAction(R.string.schedjoules_action_remind, R.drawable.schedjoules_ic_action_remind,
                         new ViewIntentActionExecutable(actionLink, event));
 
-            case "http://schedjoules.com/rel/action/watch":
+            case ActionLinkRelTypes.WATCH:
                 return new SimpleAction(R.string.schedjoules_action_watch_live, R.drawable.schedjoules_ic_action_watch_live,
                         new ViewIntentActionExecutable(actionLink, event));
 
-            case "http://schedjoules.com/rel/action/invite":
+            case ActionLinkRelTypes.INVITE:
                 return new SimpleAction(R.string.schedjoules_action_invite, R.drawable.schedjoules_ic_action_invite,
                         new ViewIntentActionExecutable(actionLink, event));
 

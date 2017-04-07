@@ -54,17 +54,23 @@ public class LinkifyingExpandableTextView implements SmartView<String>
 
 
     @Override
-    public void update(String text)
+    public void update(String textInput)
     {
-        if (text.contains("</")) // only parse as HTML if the string contains HTML
+        CharSequence text;
+        if (textInput == null)
         {
-            mExpandableTextView.setText(Html.fromHtml(text));
+            text = null;
+        }
+        else if (textInput.contains("</")) // only parse as HTML if the string contains HTML
+        {
+            text = Html.fromHtml(textInput);
         }
         else
         {
-            SpannableString spannableString = new SpannableString(text);
+            SpannableString spannableString = new SpannableString(textInput);
             Linkify.addLinks(spannableString, Linkify.ALL);
-            mExpandableTextView.setText(spannableString);
+            text = spannableString;
         }
+        mExpandableTextView.setText(text);
     }
 }

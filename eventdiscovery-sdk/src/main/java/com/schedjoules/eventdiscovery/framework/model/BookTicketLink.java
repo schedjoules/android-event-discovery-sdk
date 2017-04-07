@@ -21,13 +21,13 @@ import org.dmfs.httpessentials.converters.PlainStringHeaderConverter;
 import org.dmfs.httpessentials.parameters.BasicParameterType;
 import org.dmfs.httpessentials.parameters.ParameterType;
 import org.dmfs.httpessentials.types.Link;
-import org.dmfs.rfc3986.utils.Optional;
+import org.dmfs.optional.Optional;
 
 import java.util.NoSuchElementException;
 
 
 /**
- * The {@link Link} for the book/ticket type.
+ * The {@link Link} for the book reltype with ticket subtype.
  *
  * @author Gabor Keszthelyi
  */

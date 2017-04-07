@@ -24,26 +24,51 @@
             <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:paddingTop="8dp"
                     android:orientation="vertical">
 
-                <LinearLayout
-                        android:id="@+id/schedjoules_event_detail_vertical_items"
-                        android:orientation="vertical"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"/>
+                <include
+                        layout="@layout/schedjoules_view_event_details_venue"
+                        android:id="@+id/schedjoules_event_details_venue_name"/>
+
+                <include
+                        layout="@layout/schedjoules_view_event_details_datetime"
+                        android:id="@+id/schedjoules_event_details_datetime"/>
+
+                <include
+                        layout="@layout/schedjoules_view_event_details_description"
+                        android:id="@+id/schedjoules_event_details_description"/>
+
+                <include
+                        layout="@layout/schedjoules_view_event_details_action"
+                        android:id="@+id/schedjoules_event_details_action_share"/>
+
+                <include
+                        layout="@layout/schedjoules_view_event_details_action"
+                        android:id="@+id/schedjoules_event_details_action_add_to_calendar"/>
+
+                <!--<View-->
+                <!--android:id="@+id/schedjoules_event_details_address_divider"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="1px"-->
+                <!--android:background="@color/schedjoules_divider"-->
+                <!--android:layout_marginTop="8dp"-->
+                <!--android:layout_marginBottom="8dp"/>-->
+
+                <include
+                        layout="@layout/schedjoules_view_event_details_action"
+                        android:id="@+id/schedjoules_event_details_action_directions"/>
 
                 <android.support.v4.widget.Space
                         android:id="@+id/schedjoules_event_details_ticket_button_space"
-                        android:visibility="gone"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/schedjoules_event_details_ticket_button_area_height"/>
 
-                <View
+                <android.support.v4.widget.Space
                         android:id="@+id/schedjoules_footer_placeholder"
-                        android:visibility="invisible"
                         android:layout_height="24dp"
                         android:layout_width="match_parent"/>
+
             </LinearLayout>
 
         </android.support.v4.widget.NestedScrollView>
@@ -70,27 +95,14 @@
                 app:layout_behavior="com.schedjoules.eventdiscovery.framework.widgets.FooterBehavior"
                 android:textSize="0sp"/>
 
-        <FrameLayout
-                android:id="@+id/schedjoules_event_details_ticket_button_area"
+        <include
+                layout="@layout/schedjoules_view_ticket_button"
+                android:id="@+id/schedjoules_event_details_ticket_button"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/schedjoules_event_details_ticket_button_area_height"
-                android:visibility="gone"
+                android:layout_gravity="center|top"
                 app:layout_anchor="@+id/schedjoules_footer"
-                app:layout_anchorGravity="top|center_horizontal"
-                android:layout_gravity="center|top">
-
-            <Button
-                    android:id="@+id/schedjoules_event_details_ticket_button"
-                    app:backgroundTint="@color/schedjoules_colorAccent"
-                    android:textColor="@android:color/white"
-                    android:textSize="14sp"
-                    android:paddingRight="48dp"
-                    android:paddingLeft="48dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"/>
-        </FrameLayout>
-
+                app:layout_anchorGravity="top|center_horizontal"/>
 
     </android.support.design.widget.CoordinatorLayout>
 </layout>

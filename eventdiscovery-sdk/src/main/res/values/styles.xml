@@ -20,7 +20,7 @@
     </style>
 
     <style name="SchedJoules_TextContent">
-        <item name="android:textColor">@color/schedjoules_text_content</item>
+        <item name="android:textColor">@color/schedjoules_text_primary</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">wrap_content</item>
     </style>
@@ -35,16 +35,16 @@
 
     <style name="SchedJoules_EventDetailsItem">
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_marginLeft">18dp</item>
-        <item name="android:layout_marginRight">18dp</item>
-        <item name="android:layout_marginTop">8dp</item>
-        <item name="android:layout_marginBottom">8dp</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:paddingLeft">16dp</item>
+        <item name="android:paddingRight">16dp</item>
+        <item name="android:paddingTop">8dp</item>
+        <item name="android:paddingBottom">8dp</item>
     </style>
 
     <style name="SchedJoules_EventDetailItemIcon">
-        <item name="android:layout_width">@dimen/schedjoules_event_detail_item_icon</item>
-        <item name="android:layout_height">@dimen/schedjoules_event_detail_item_icon</item>
+        <item name="android:layout_width">@dimen/schedjoules_event_detail_item_icon_size</item>
+        <item name="android:layout_height">@dimen/schedjoules_event_detail_item_icon_size</item>
         <item name="android:tint">@color/schedjoules_content_icon</item>
         <item name="android:layout_marginRight">18dp</item>
     </style>
