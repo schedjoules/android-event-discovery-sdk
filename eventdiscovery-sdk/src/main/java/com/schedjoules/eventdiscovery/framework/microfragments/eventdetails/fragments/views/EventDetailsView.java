@@ -17,16 +17,28 @@
 
 package com.schedjoules.eventdiscovery.framework.microfragments.eventdetails.fragments.views;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.schedjoules.client.eventsdiscovery.Event;
+import com.schedjoules.client.eventsdiscovery.GeoLocation;
+import com.schedjoules.eventdiscovery.R;
 import com.schedjoules.eventdiscovery.databinding.SchedjoulesFragmentEventDetailsBinding;
 import com.schedjoules.eventdiscovery.framework.actions.Action;
+import com.schedjoules.eventdiscovery.framework.actions.ActionClickListener;
 import com.schedjoules.eventdiscovery.framework.actions.ActionLinkRelTypes;
 import com.schedjoules.eventdiscovery.framework.actions.BaseActionFactory;
 import com.schedjoules.eventdiscovery.framework.actions.OptionalAction;
 import com.schedjoules.eventdiscovery.framework.actions.TicketButtonAction;
+import com.schedjoules.eventdiscovery.framework.common.BaseFragment;
 import com.schedjoules.eventdiscovery.framework.location.model.VenueName;
 import com.schedjoules.eventdiscovery.framework.microfragments.eventdetails.ShowEventMicroFragment;
+import com.schedjoules.eventdiscovery.framework.utils.OptionalView;
 import com.schedjoules.eventdiscovery.framework.utils.smartview.SmartView;
+import com.schedjoules.eventdiscovery.framework.widgets.NoOpOnClickListener;
 
 import org.dmfs.httpessentials.types.Link;
 import org.dmfs.optional.NullSafe;
@@ -43,10 +55,12 @@ import java.util.List;
 public final class EventDetailsView implements SmartView<ShowEventMicroFragment.EventParams>
 {
     private final SchedjoulesFragmentEventDetailsBinding mViews;
+    private final BaseFragment mFragment;
 
 
-    public EventDetailsView(SchedjoulesFragmentEventDetailsBinding views)
+    public EventDetailsView(BaseFragment fragment, SchedjoulesFragmentEventDetailsBinding views)
     {
+        mFragment = fragment;
         mViews = views;
     }
 
@@ -55,7 +69,7 @@ public final class EventDetailsView implements SmartView<ShowEventMicroFragment.
     public void update(ShowEventMicroFragment.EventParams eventParams)
     {
         List<Link> actionLinks = eventParams.actions();
-        Event event = eventParams.event();
+        final Event event = eventParams.event();
 
         new VenueNameView(mViews.schedjoulesEventDetailsVenueName).update(new VenueName(event.locations()));
 
@@ -70,9 +84,28 @@ public final class EventDetailsView implements SmartView<ShowEventMicroFragment.
                 .update(new OptionalAction(ActionLinkRelTypes.ADD_TO_CALENDAR, actionLinks, actionFactory, event));
 
         Optional<Action> directionsAction = new OptionalAction(ActionLinkRelTypes.DIRECTIONS, actionLinks, actionFactory, event);
-//        new OptionalView(mViews.schedjoulesEventDetailsAddressDivider).update(directionsAction);
         new ActionView(mViews.schedjoulesEventDetailsActionDirections).update(directionsAction);
+        new OptionalView(mViews.schedjoulesEventDetailsAddressDivider.schedjoulesEventDetailsDividerHolder)
+                .update(directionsAction);
 
         new TicketButtonView(mViews).update(new TicketButtonAction(actionLinks, event));
+
+        final SupportMapFragment mapFragment = (SupportMapFragment) mFragment.getChildFragmentManager().findFragmentById(R.id.schedjoules_event_details_map);
+        mapFragment.getMapAsync(new OnMapReadyCallback()
+        {
+            @Override
+            public void onMapReady(GoogleMap googleMap)
+            {
+                GeoLocation geoLocation = event.locations().iterator().next().geoLocation();
+                LatLng latLng = new LatLng(geoLocation.latitude(), geoLocation.longitude());
+                googleMap.addMarker(new MarkerOptions().position(latLng));
+                googleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+            }
+        });
+        mViews.schedjoulesEventDetailsMapHolder.schedjoulesEventDetailsMapTransparentOverlay
+                .setOnClickListener(directionsAction.isPresent() ?
+                        new ActionClickListener(directionsAction.value().actionExecutable())
+                        : new NoOpOnClickListener() // Needed, otherwise the map is still 'usable'
+                );
     }
 }

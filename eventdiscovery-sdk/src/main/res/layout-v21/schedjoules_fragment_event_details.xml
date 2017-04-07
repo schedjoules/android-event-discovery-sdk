@@ -43,17 +43,17 @@
                         layout="@layout/schedjoules_view_event_details_action"
                         android:id="@+id/schedjoules_event_details_action_add_to_calendar"/>
 
-                <!--<View-->
-                <!--android:id="@+id/schedjoules_event_details_address_divider"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="1px"-->
-                <!--android:background="@color/schedjoules_divider"-->
-                <!--android:layout_marginTop="8dp"-->
-                <!--android:layout_marginBottom="8dp"/>-->
+                <include
+                        layout="@layout/schedjoules_view_event_details_divider"
+                        android:id="@+id/schedjoules_event_details_address_divider"/>
 
                 <include
                         layout="@layout/schedjoules_view_event_details_action"
                         android:id="@+id/schedjoules_event_details_action_directions"/>
+
+                <include
+                        layout="@layout/schedjoules_view_event_details_map"
+                        android:id="@+id/schedjoules_event_details_map_holder"/>
 
                 <android.support.v4.widget.Space
                         android:id="@+id/schedjoules_event_details_ticket_button_space"

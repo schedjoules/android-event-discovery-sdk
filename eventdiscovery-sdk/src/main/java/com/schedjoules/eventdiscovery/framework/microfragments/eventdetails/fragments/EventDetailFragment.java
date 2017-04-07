@@ -89,7 +89,7 @@ public final class EventDetailFragment extends BaseFragment implements EventDeta
         });
 
         new EventHeaderView(getActivity(), views.schedjoulesDetailsHeader).update(parameters.event());
-        new EventDetailsView(views).update(parameters);
+        new EventDetailsView(this, views).update(parameters);
 
         ((BaseActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         return views.getRoot();
