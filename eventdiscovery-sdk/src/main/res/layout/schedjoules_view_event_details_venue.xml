@@ -6,25 +6,21 @@
             style="@style/SchedJoules_EventDetailsItem"
             android:background="?android:attr/selectableItemBackground">
 
-        <ImageView
-                android:id="@+id/schedjoules_venue_icon"
-                style="@style/SchedJoules_EventDetailItemIcon"
-                android:src="@drawable/schedjoules_ic_location"/>
-
         <TextView
-                android:id="@+id/schedjoules_venue_name_center_align"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/schedjoules_event_detail_item_icon_size"
+                android:id="@+id/schedjoules_venue_name_icon_anchor"
                 style="@style/SchedJoules_TextContent.Title"
+                android:drawableLeft="@drawable/schedjoules_ic_location_on_white_24dp"
+                android:drawablePadding="@dimen/schedjoules_event_details_item_icon_and_text_distance"
                 android:gravity="center_vertical"
-                android:text=""
-                android:visibility="invisible"/>
+                android:textSize="@dimen/schedjoules_event_details_venue_name_text_size"
+                android:text=""/>
 
         <TextView
+                style="@style/SchedJoules_TextContent.Title"
                 android:id="@+id/schedjoules_venue_name"
-                android:layout_toRightOf="@id/schedjoules_venue_icon"
-                android:layout_alignBaseline="@id/schedjoules_venue_name_center_align"
-                style="@style/SchedJoules_TextContent.Title"/>
+                android:drawableLeft="@drawable/schedjoules_ic_location_on_white_24dp"
+                android:drawablePadding="@dimen/schedjoules_event_details_item_icon_and_text_distance"
+                android:textSize="@dimen/schedjoules_event_details_venue_name_text_size"/>
 
     </RelativeLayout>
 </layout>
