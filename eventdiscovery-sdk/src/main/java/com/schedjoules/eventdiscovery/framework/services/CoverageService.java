@@ -33,8 +33,8 @@ import com.schedjoules.eventdiscovery.service.ApiService;
 import org.dmfs.httpessentials.exceptions.ProtocolError;
 import org.dmfs.httpessentials.exceptions.ProtocolException;
 import org.dmfs.httpessentials.types.Token;
+import org.dmfs.optional.Optional;
 import org.dmfs.pigeonpost.Cage;
-import org.dmfs.rfc3986.utils.Optional;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
