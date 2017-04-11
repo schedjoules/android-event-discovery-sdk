@@ -6,11 +6,11 @@
     <dimen name="schedjoules_app_bar_height">256dp</dimen>
     <dimen name="schedjoules_item_width">320dp</dimen>
 
-    <dimen name="schedjoules_list_item_padding_top">14dp</dimen>
+    <dimen name="schedjoules_list_item_padding_top">16dp</dimen>
     <dimen name="schedjoules_list_item_padding_bottom">16dp</dimen>
-    <dimen name="schedjoules_list_item_padding_horizontal">22dp</dimen>
-    <dimen name="schedjoules_list_item_image_height">64dp</dimen>
-    <dimen name="schedjoules_list_item_image_width">64dp</dimen>
+    <dimen name="schedjoules_list_item_padding_horizontal">16dp</dimen>
+    <dimen name="schedjoules_list_item_image_height">72dp</dimen>
+    <dimen name="schedjoules_list_item_image_width">72dp</dimen>
     <dimen name="schedjoules_list_item_default_height">96dp</dimen>
     <dimen name="schedjoules_event_list_progress_bar">36dp</dimen>
     <dimen name="schedjoules_event_detail_item_icon_size">24dp</dimen>

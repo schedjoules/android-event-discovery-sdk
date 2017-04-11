@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:background="@color/schedjoules_background_cards"
+        android:textColor="@color/schedjoules_text_secondary"
+        android:paddingLeft="@dimen/schedjoules_location_list_item_horizontal_margin"
+        android:paddingRight="@dimen/schedjoules_location_list_item_horizontal_margin"
+        android:gravity="center_vertical|start|left"
+        android:textSize="14sp"
+        android:fontFamily="@string/schedjoules_font_medium"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/schedjoules_list_subheader_height"/>

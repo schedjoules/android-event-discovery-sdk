@@ -14,9 +14,12 @@
     <color name="schedjoules_colorPrimaryDark">@color/schedjoules_silver_chalice</color>
     <color name="schedjoules_colorAccent">@color/schedjoules_green_haze</color>
 
-    <color name="schedjoules_text_primary">@color/schedjoules_abbey</color>
-    <color name="schedjoules_text_secondary">@color/schedjoules_oslo_grey</color>
+    <color name="schedjoules_text_primary">#d8000000</color>
+    <color name="schedjoules_text_secondary">#88000000</color>
+    <color name="schedjoules_text_ternary">#60000000</color>
     <color name="schedjoules_content_icon">@color/schedjoules_colorAccent</color>
+
+    <color name="schedjoules_background_cards">#f3f3f4</color>
 
     <color name="schedjoules_empty_thumbnail_background">#dbdbdb</color>
     <color name="schedjoules_empty_thumbnail_draw">#bababa</color>

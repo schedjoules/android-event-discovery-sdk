@@ -20,9 +20,9 @@ package com.schedjoules.eventdiscovery.framework.eventlist.items;
 import android.content.Context;
 import android.net.Uri;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.CardView;
 import android.util.AttributeSet;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -34,7 +34,7 @@ import com.schedjoules.eventdiscovery.R;
  *
  * @author Gabor Keszthelyi
  */
-public final class EventItemView extends LinearLayout
+public final class EventItemView extends CardView
 {
     private TextView mTitle;
     private TextView mTime;
