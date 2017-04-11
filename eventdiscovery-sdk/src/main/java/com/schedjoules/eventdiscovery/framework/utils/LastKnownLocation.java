@@ -27,7 +27,7 @@ import com.schedjoules.client.eventsdiscovery.locations.StructuredGeoLocation;
 import com.schedjoules.eventdiscovery.framework.permissions.AppPermissions;
 import com.schedjoules.eventdiscovery.framework.permissions.BasicAppPermissions;
 
-import org.dmfs.rfc3986.utils.Optional;
+import org.dmfs.optional.Optional;
 
 import java.util.List;
 import java.util.NoSuchElementException;

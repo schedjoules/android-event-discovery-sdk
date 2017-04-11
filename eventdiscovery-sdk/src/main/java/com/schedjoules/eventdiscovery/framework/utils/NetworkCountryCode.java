@@ -23,7 +23,7 @@ import android.text.TextUtils;
 
 import org.dmfs.httpessentials.types.StringToken;
 import org.dmfs.httpessentials.types.Token;
-import org.dmfs.rfc3986.utils.Optional;
+import org.dmfs.optional.Optional;
 
 import java.util.NoSuchElementException;
 

@@ -26,7 +26,7 @@ import org.dmfs.iterables.Repeatable;
 import org.dmfs.iterators.ArrayIterator;
 import org.dmfs.iterators.FilteredIterator;
 import org.dmfs.iterators.filters.NoneOf;
-import org.dmfs.rfc3986.utils.Optional;
+import org.dmfs.optional.Optional;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
