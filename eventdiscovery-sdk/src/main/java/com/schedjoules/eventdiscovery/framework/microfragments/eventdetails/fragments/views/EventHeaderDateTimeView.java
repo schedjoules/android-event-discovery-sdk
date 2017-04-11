@@ -20,9 +20,8 @@ package com.schedjoules.eventdiscovery.framework.microfragments.eventdetails.fra
 import android.widget.TextView;
 
 import com.schedjoules.client.eventsdiscovery.Event;
-import com.schedjoules.eventdiscovery.databinding.SchedjoulesViewEventDetailsDatetimeBinding;
-import com.schedjoules.eventdiscovery.framework.datetime.LongDate;
-import com.schedjoules.eventdiscovery.framework.datetime.StartAndEndTime;
+import com.schedjoules.eventdiscovery.databinding.SchedjoulesDetailsHeaderBinding;
+import com.schedjoules.eventdiscovery.framework.datetime.DateTimeRange;
 import com.schedjoules.eventdiscovery.framework.utils.smartview.SmartView;
 
 
@@ -31,23 +30,25 @@ import com.schedjoules.eventdiscovery.framework.utils.smartview.SmartView;
  *
  * @author Gabor Keszthelyi
  */
-public final class EventDetailsDateTimeView implements SmartView<Event>
+public final class EventHeaderDateTimeView implements SmartView<Event>
 {
-    private final TextView mDateView;
-    private final TextView mTimeView;
+    private final TextView mDateTimeViewLight;
+    private final TextView mDateTimeViewDark;
 
 
-    public EventDetailsDateTimeView(SchedjoulesViewEventDetailsDatetimeBinding binding)
+    public EventHeaderDateTimeView(SchedjoulesDetailsHeaderBinding binding)
     {
-        mDateView = binding.schedjoulesEventDetailsDate;
-        mTimeView = binding.schedjoulesEventDetailsTime;
+        mDateTimeViewLight = binding.datetimeLight;
+        mDateTimeViewDark = binding.datetimeDark;
     }
 
 
     @Override
     public void update(Event event)
     {
-        mDateView.setText(new LongDate(event.start()).value(mDateView.getContext()));
-        mTimeView.setText(new StartAndEndTime(event).value(mTimeView.getContext()));
+        CharSequence rangeCharSequence = new DateTimeRange(event).value(mDateTimeViewDark.getContext());
+        // update the dark and the light version of the date
+        mDateTimeViewLight.setText(rangeCharSequence);
+        mDateTimeViewDark.setText(rangeCharSequence);
     }
 }

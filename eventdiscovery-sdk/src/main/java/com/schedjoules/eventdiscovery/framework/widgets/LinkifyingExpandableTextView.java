@@ -49,7 +49,6 @@ public class LinkifyingExpandableTextView implements SmartView<String>
          */
         TextView textView = (TextView) mExpandableTextView.findViewById(R.id.expandable_text);
         textView.setOnTouchListener(new LinkOpeningTouchListener());
-        textView.setLinkTextColor(ContextCompat.getColor(mExpandableTextView.getContext(), R.color.schedjoules_colorPrimary));
     }
 
 

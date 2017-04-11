@@ -1,0 +1,104 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <android.support.design.widget.CoordinatorLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fitsSystemWindows="true"
+            android:background="@android:color/white"
+            tools:context=".framework.activities.MicroFragmentHostActivity"
+            tools:ignore="MergeRootFrame">
+
+        <include
+                android:id="@+id/schedjoules_details_header"
+                layout="@layout/schedjoules_details_header"/>
+
+
+        <android.support.v4.widget.NestedScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/schedjoules_event_detail_container"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="8dp"
+                    android:orientation="vertical">
+
+                <include
+                        layout="@layout/schedjoules_view_event_details_venue"
+                        android:id="@+id/schedjoules_event_details_venue_name"/>
+
+                <include
+                        layout="@layout/schedjoules_view_event_details_description"
+                        android:id="@+id/schedjoules_event_details_description"/>
+
+                <include
+                        layout="@layout/schedjoules_view_event_details_action"
+                        android:id="@+id/schedjoules_event_details_action_share"/>
+
+                <include
+                        layout="@layout/schedjoules_view_event_details_action"
+                        android:id="@+id/schedjoules_event_details_action_add_to_calendar"/>
+
+                <!--<View-->
+                <!--android:id="@+id/schedjoules_event_details_address_divider"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="1px"-->
+                <!--android:background="@color/schedjoules_divider"-->
+                <!--android:layout_marginTop="8dp"-->
+                <!--android:layout_marginBottom="8dp"/>-->
+
+                <include
+                        layout="@layout/schedjoules_view_event_details_action"
+                        android:id="@+id/schedjoules_event_details_action_directions"/>
+
+                <android.support.v4.widget.Space
+                        android:id="@+id/schedjoules_event_details_ticket_button_space"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/schedjoules_event_details_ticket_button_area_height"/>
+
+                <android.support.v4.widget.Space
+                        android:id="@+id/schedjoules_footer_placeholder"
+                        android:layout_height="24dp"
+                        android:layout_width="match_parent"/>
+
+            </LinearLayout>
+
+        </android.support.v4.widget.NestedScrollView>
+
+        <com.schedjoules.eventdiscovery.framework.microfragments.eventdetails.fragments.views.SchedJoulesFooterView
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/schedjoules_footer"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:paddingLeft="@dimen/schedjoules_activity_horizontal_margin"
+                android:paddingRight="@dimen/schedjoules_activity_horizontal_margin"
+                android:paddingStart="@dimen/schedjoules_activity_horizontal_margin"
+                android:paddingEnd="@dimen/schedjoules_activity_horizontal_margin"
+                android:paddingTop="6dp"
+                android:paddingBottom="6dp"
+                android:background="#f0f0f0"
+                android:gravity="right|end|center"
+                android:layout_gravity="top|end|right"
+                android:drawableRight="@drawable/schedjoules_footer_powered_by"
+                android:drawableEnd="@drawable/schedjoules_footer_powered_by"
+                app:layout_anchor="@id/schedjoules_footer_placeholder"
+                app:layout_anchorGravity="bottom|center_horizontal"
+                app:layout_behavior="com.schedjoules.eventdiscovery.framework.widgets.FooterBehavior"
+                android:textSize="0sp"/>
+
+        <include
+                layout="@layout/schedjoules_view_ticket_button"
+                android:id="@+id/schedjoules_event_details_ticket_button"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/schedjoules_event_details_ticket_button_area_height"
+                android:layout_gravity="center|top"
+                app:layout_anchor="@+id/schedjoules_footer"
+                app:layout_anchorGravity="top|center_horizontal"/>
+
+    </android.support.design.widget.CoordinatorLayout>
+</layout>

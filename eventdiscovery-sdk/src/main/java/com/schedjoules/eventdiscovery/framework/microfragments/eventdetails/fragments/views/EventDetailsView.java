@@ -17,9 +17,6 @@
 
 package com.schedjoules.eventdiscovery.framework.microfragments.eventdetails.fragments.views;
 
-import android.app.Activity;
-
-import com.bumptech.glide.Glide;
 import com.schedjoules.client.eventsdiscovery.Event;
 import com.schedjoules.eventdiscovery.databinding.SchedjoulesFragmentEventDetailsBinding;
 import com.schedjoules.eventdiscovery.framework.actions.Action;
@@ -29,7 +26,6 @@ import com.schedjoules.eventdiscovery.framework.actions.OptionalAction;
 import com.schedjoules.eventdiscovery.framework.actions.TicketButtonAction;
 import com.schedjoules.eventdiscovery.framework.location.model.VenueName;
 import com.schedjoules.eventdiscovery.framework.microfragments.eventdetails.ShowEventMicroFragment;
-import com.schedjoules.eventdiscovery.framework.model.SchedJoulesLinks;
 import com.schedjoules.eventdiscovery.framework.utils.smartview.SmartView;
 
 import org.dmfs.httpessentials.types.Link;
@@ -61,15 +57,7 @@ public final class EventDetailsView implements SmartView<ShowEventMicroFragment.
         List<Link> actionLinks = eventParams.actions();
         Event event = eventParams.event();
 
-        Glide.with((Activity) mViews.getRoot().getContext())
-                .load(new SchedJoulesLinks(event.links()).bannerUri())
-                .into(mViews.schedjoulesDetailsHeader.schedjoulesEventDetailBanner);
-
-        mViews.schedjoulesDetailsHeader.schedjoulesEventDetailToolbarLayout.setTitle(event.title());
-
         new VenueNameView(mViews.schedjoulesEventDetailsVenueName).update(new VenueName(event.locations()));
-
-        new EventDetailsDateTimeView(mViews.schedjoulesEventDetailsDatetime).update(event);
 
         new EventDescriptionView(mViews.schedjoulesEventDetailsDescription).update(new NullSafe<>(event.description()));
 

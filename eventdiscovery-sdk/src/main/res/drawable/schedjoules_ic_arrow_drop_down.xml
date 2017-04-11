@@ -4,6 +4,6 @@
         android:viewportWidth="24.0"
         android:viewportHeight="24.0">
     <path
-            android:fillColor="#ffffff"
+            android:fillColor="@color/schedjoules_text_secondary"
             android:pathData="M6,6l6,6 6,-6z"/>
 </vector>

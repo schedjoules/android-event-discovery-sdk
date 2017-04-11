@@ -1,6 +1,6 @@
 <resources>
-    <string name="app_name">SchedJoules Event Discovery Demo</string>
-    <string name="event_discover_now">Event Discovery\nfor today</string>
-    <string name="event_discover_later">Event Discovery\nin 10 days from now</string>
-    <string name="eventdetails_by_uid">Event Details by UID</string>
+    <string name="app_name" translatable="false">SchedJoules Event Discovery Demo</string>
+    <string name="event_discover_now" translatable="false">Event Discovery\nfor today</string>
+    <string name="event_discover_later" translatable="false">Event Discovery\nin 10 days from now</string>
+    <string name="eventdetails_by_uid" translatable="false">Event Details by UID</string>
 </resources>

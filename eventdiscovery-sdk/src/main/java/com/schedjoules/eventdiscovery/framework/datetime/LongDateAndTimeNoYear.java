@@ -21,33 +21,22 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.text.format.DateUtils;
 
-import com.schedjoules.client.eventsdiscovery.Event;
-
 import org.dmfs.rfc5545.DateTime;
-import org.dmfs.rfc5545.Duration;
 
 
 /**
- * Formatted start and end time, e.g.: "11:00 - 13:00" or "Jan 20, 20:00 - Jan 21, 03:00" when start and end is not on the same local day.
+ * Long date and time format, e.g.: "Friday, December 30, 23:00"; "Friday, December 30, 2017, 23:00"
  *
- * @author Gabor Keszthelyi
+ * @author Marten Gajda
  */
-public final class StartAndEndTime implements FormattedDateTime
+public final class LongDateAndTimeNoYear implements FormattedDateTime
 {
-    private final DateTime mStartTime;
-    private final Duration mDuration;
+    private final DateTime mDateTime;
 
 
-    public StartAndEndTime(DateTime startTime, Duration duration)
+    public LongDateAndTimeNoYear(DateTime dateTime)
     {
-        mStartTime = startTime;
-        mDuration = duration;
-    }
-
-
-    public StartAndEndTime(Event event)
-    {
-        this(event.start(), event.duration());
+        mDateTime = dateTime;
     }
 
 
@@ -55,9 +44,13 @@ public final class StartAndEndTime implements FormattedDateTime
     @Override
     public CharSequence value(@NonNull Context context)
     {
-        return DateUtils.formatDateRange(context,
-                mStartTime.getTimestamp(), mStartTime.addDuration(mDuration).getTimestamp(),
-                DateUtils.FORMAT_SHOW_TIME | DateUtils.FORMAT_NO_YEAR | DateUtils.FORMAT_ABBREV_ALL);
-    }
+        int format = DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_TIME | DateUtils.FORMAT_SHOW_WEEKDAY | DateUtils.FORMAT_ABBREV_WEEKDAY;
+        if (mDateTime.getYear() == DateTime.nowAndHere().getYear())
+        {
+            // don't show year if it's this year
+            format |= DateUtils.FORMAT_NO_YEAR;
+        }
 
+        return DateUtils.formatDateTime(context, mDateTime.getTimestamp(), format);
+    }
 }

@@ -21,6 +21,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.databinding.DataBindingUtil;
+import android.graphics.PorterDuff;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -152,6 +154,13 @@ public final class EventListFragment extends BaseFragment implements EventListMe
         });
         new SimpleCoverageTest(mCoverageDoveCote).execute(getActivity());
 
+        if (Build.VERSION.SDK_INT < 21)
+        {
+            // on older Version the progressbar won't pick up the accent color, so we have to set it manually
+            mViews.schedjoulesEventListProgressBar.getIndeterminateDrawable()
+                    .setColorFilter(getResources().getColor(R.color.schedjoules_colorAccent),
+                            PorterDuff.Mode.MULTIPLY);
+        }
         return mViews.getRoot();
     }
 
@@ -251,7 +260,7 @@ public final class EventListFragment extends BaseFragment implements EventListMe
         initAdapterAndRecyclerView(freshList);
         mToolbarTitle.setText(
                 new TextWithIcon(getContext(), new SharedPrefLastSelectedPlace(getContext()).get().namedPlace().name(),
-                        R.drawable.schedjoules_ic_arrow_drop_down_white));
+                        R.drawable.schedjoules_ic_arrow_drop_down));
         if (freshList)
         {
             mListItemsController.loadEvents(location(), startAfter());

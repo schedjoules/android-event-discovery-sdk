@@ -18,6 +18,8 @@
 package com.schedjoules.eventdiscovery.framework.microfragments.eventdetails;
 
 import android.content.Context;
+import android.graphics.PorterDuff;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.support.annotation.NonNull;
@@ -26,6 +28,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import com.schedjoules.client.eventsdiscovery.Event;
 import com.schedjoules.client.eventsdiscovery.queries.EventByUid;
@@ -164,6 +167,15 @@ public final class EventLoaderMicroFragment implements MicroFragment<String>
             View view = inflater.inflate(R.layout.schedjoules_fragment_event_details_loading, container, false);
             view.findViewById(android.R.id.message).animate().setStartDelay(1500).alpha(1).start();
             ((CollapsingToolbarLayout) view.findViewById(R.id.schedjoules_event_detail_toolbar_layout)).setTitle("Loading event …");
+
+            if (Build.VERSION.SDK_INT < 21)
+            {
+                // on older Version the progressbar won't pick up the accent color, so we have to set it manually
+                ((ProgressBar) view.findViewById(R.id.schedjoules_event_details_horizontal_actions_progressbar)).getIndeterminateDrawable()
+                        .setColorFilter(getResources().getColor(R.color.schedjoules_colorAccent),
+                                PorterDuff.Mode.MULTIPLY);
+            }
+
             return view;
         }
 

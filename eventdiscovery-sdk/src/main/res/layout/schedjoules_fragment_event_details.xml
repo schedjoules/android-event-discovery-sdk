@@ -14,67 +14,72 @@
                 android:id="@+id/schedjoules_details_header"
                 layout="@layout/schedjoules_details_header"/>
 
-
-        <android.support.v4.widget.NestedScrollView
+        <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:id="@+id/schedjoules_event_detail_container"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-            <LinearLayout
+            <android.support.v4.widget.NestedScrollView
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="8dp"
-                    android:orientation="vertical">
+                    android:layout_height="match_parent"
+                    android:id="@+id/schedjoules_event_detail_container">
 
-                <include
-                        layout="@layout/schedjoules_view_event_details_venue"
-                        android:id="@+id/schedjoules_event_details_venue_name"/>
-
-                <include
-                        layout="@layout/schedjoules_view_event_details_datetime"
-                        android:id="@+id/schedjoules_event_details_datetime"/>
-
-                <include
-                        layout="@layout/schedjoules_view_event_details_description"
-                        android:id="@+id/schedjoules_event_details_description"/>
-
-                <include
-                        layout="@layout/schedjoules_view_event_details_action"
-                        android:id="@+id/schedjoules_event_details_action_share"/>
-
-                <include
-                        layout="@layout/schedjoules_view_event_details_action"
-                        android:id="@+id/schedjoules_event_details_action_add_to_calendar"/>
-
-                <!--<View-->
-                <!--android:id="@+id/schedjoules_event_details_address_divider"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="1px"-->
-                <!--android:background="@color/schedjoules_divider"-->
-                <!--android:layout_marginTop="8dp"-->
-                <!--android:layout_marginBottom="8dp"/>-->
-
-                <include
-                        layout="@layout/schedjoules_view_event_details_action"
-                        android:id="@+id/schedjoules_event_details_action_directions"/>
-
-                <android.support.v4.widget.Space
-                        android:id="@+id/schedjoules_event_details_ticket_button_space"
+                <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/schedjoules_event_details_ticket_button_area_height"/>
+                        android:layout_height="wrap_content"
+                        android:paddingTop="8dp"
+                        android:orientation="vertical">
 
-                <android.support.v4.widget.Space
-                        android:id="@+id/schedjoules_footer_placeholder"
-                        android:layout_height="24dp"
-                        android:layout_width="match_parent"/>
+                    <include
+                            layout="@layout/schedjoules_view_event_details_venue"
+                            android:id="@+id/schedjoules_event_details_venue_name"/>
 
-            </LinearLayout>
+                    <include
+                            layout="@layout/schedjoules_view_event_details_description"
+                            android:id="@+id/schedjoules_event_details_description"/>
 
-        </android.support.v4.widget.NestedScrollView>
+                    <include
+                            layout="@layout/schedjoules_view_event_details_action"
+                            android:id="@+id/schedjoules_event_details_action_share"/>
 
-        <com.schedjoules.eventdiscovery.framework.microfragments.eventdetails.fragments.views.SchedJoulesFooterView
-                xmlns:app="http://schemas.android.com/apk/res-auto"
+                    <include
+                            layout="@layout/schedjoules_view_event_details_action"
+                            android:id="@+id/schedjoules_event_details_action_add_to_calendar"/>
+
+                    <!--<View-->
+                    <!--android:id="@+id/schedjoules_event_details_address_divider"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="1px"-->
+                    <!--android:background="@color/schedjoules_divider"-->
+                    <!--android:layout_marginTop="8dp"-->
+                    <!--android:layout_marginBottom="8dp"/>-->
+
+                    <include
+                            layout="@layout/schedjoules_view_event_details_action"
+                            android:id="@+id/schedjoules_event_details_action_directions"/>
+
+                    <android.support.v4.widget.Space
+                            android:id="@+id/schedjoules_event_details_ticket_button_space"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/schedjoules_event_details_ticket_button_area_height"/>
+
+                    <android.support.v4.widget.Space
+                            android:id="@+id/schedjoules_footer_placeholder"
+                            android:layout_height="24dp"
+                            android:layout_width="match_parent"/>
+
+                </LinearLayout>
+
+            </android.support.v4.widget.NestedScrollView>
+
+            <View
+                    android:layout_gravity="top"
+                    android:layout_width="match_parent"
+                    android:layout_height="4dp"
+                    android:background="@drawable/schedjoules_legacy_appbar_schadow"/>
+        </FrameLayout>
+
+        <com.schedjoules.eventdiscovery.framework.microfragments.eventdetails.fragments.views.SchedJoulesFooterView xmlns:app="http://schemas.android.com/apk/res-auto"
                 xmlns:android="http://schemas.android.com/apk/res/android"
                 android:id="@+id/schedjoules_footer"
                 android:layout_height="wrap_content"

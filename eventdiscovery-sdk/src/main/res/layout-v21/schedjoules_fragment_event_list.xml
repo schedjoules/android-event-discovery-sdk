@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <android.support.design.widget.CoordinatorLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+    <android.support.design.widget.CoordinatorLayout
+            xmlns:app="http://schemas.android.com/apk/res-auto"
             xmlns:tools="http://schemas.android.com/tools"
             android:layout_width="match_parent"
             android:background="@android:color/white"
@@ -39,7 +40,6 @@
                 android:layout_height="match_parent"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-
             <include
                     android:id="@+id/schedjoules_event_list_include"
                     layout="@layout/schedjoules_event_list"/>
@@ -62,11 +62,6 @@
                     android:layout_width="@dimen/schedjoules_event_list_progress_bar"
                     android:layout_height="@dimen/schedjoules_event_list_progress_bar"/>
 
-            <View
-                    android:layout_gravity="top"
-                    android:layout_width="match_parent"
-                    android:layout_height="4dp"
-                    android:background="@drawable/schedjoules_legacy_appbar_schadow"/>
         </FrameLayout>
 
     </android.support.design.widget.CoordinatorLayout>
