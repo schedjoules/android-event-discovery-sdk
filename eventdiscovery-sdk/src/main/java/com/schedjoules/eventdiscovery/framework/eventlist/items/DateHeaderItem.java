@@ -59,7 +59,7 @@ public final class DateHeaderItem implements ListItem<TextView>
     @Override
     public int layoutResId()
     {
-        return R.layout.schedjoules_list_item_header;
+        return R.layout.schedjoules_list_item_header_cards;
     }
 
 
