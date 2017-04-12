@@ -68,7 +68,10 @@
     <string name="schedjoules_location_picker_suggestion_placelookup_error">Could not get data for\n\'%s\'</string>
     <!-- General "Retry" button label -->
     <string name="schedjoules_retry">Retry</string>
+    <!-- The text on the button that asks for a permission to be granted -->
+    <string name="schedjoules_button_grant_permission">Grant Permission</string>
 
     <!-- A brief message that's presented to the user if there is no (official) API coverage for his country. -->
     <string name="schedjoules_message_country_not_supported">Event discovery is currently not supported in your country.</string>
+
 </resources>
