@@ -69,7 +69,7 @@
                 android:label=""
                 android:exported="false"
                 android:enabled="true"
-                android:windowSoftInputMode="adjustPan|stateAlwaysVisible"
+                android:windowSoftInputMode="adjustPan"
                 android:hardwareAccelerated="true"
                 android:theme="@style/SchedJoules_AppTheme.NoActionBar"/>
 
