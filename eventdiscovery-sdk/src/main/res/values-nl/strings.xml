@@ -51,6 +51,7 @@
     <string name="schedjoules_location_picker_suggestion_error">Suggesties konden niet worden geladen</string>
     <string name="schedjoules_location_picker_suggestion_placelookup_error">Resultaten voor\n\'%s\' konden niet worden geladen</string>
     <string name="schedjoules_retry">Opnieuw proberen</string>
+    <string name="schedjoules_button_grant_permission">Toestemming geven</string>
 
 
 </resources>

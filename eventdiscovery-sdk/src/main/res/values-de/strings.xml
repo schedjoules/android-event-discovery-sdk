@@ -57,7 +57,7 @@
 
     <string name="schedjoules_message_country_not_supported">Event Discovery ist in deinem Land noch nicht verfügbar.</string>
 
-    <string name="schedjoules_wait_message">Dies könnte einen Moment dauern</string>
+    <string name="schedjoules_wait_message">Dies kann einen Moment dauern</string>
     <string name="schedjoules_title_error">Fehler</string>
     <string name="schedjoules_generic_error">Etwas ist schief gelaufen.\nBitte versuche es später noch einmal.</string>
     <string name="schedjoules_menu_feedback">Feedback</string>
@@ -67,5 +67,6 @@
     <string name="schedjoules_location_picker_suggestion_error">Konnte keine Vorschläge laden</string>
     <string name="schedjoules_location_picker_suggestion_placelookup_error">Konnte Daten für \'%s\' nicht laden</string>
     <string name="schedjoules_retry">Wiederholen</string>
+    <string name="schedjoules_button_grant_permission">Berechtigung erteilen</string>
 
 </resources>

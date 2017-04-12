@@ -18,10 +18,12 @@
 package com.schedjoules.eventdiscovery.framework.searchlist.permissionproxy;
 
 import android.app.Activity;
-import android.support.annotation.Nullable;
 
+import com.schedjoules.eventdiscovery.R;
 import com.schedjoules.eventdiscovery.framework.list.ListItem;
 import com.schedjoules.eventdiscovery.framework.list.smart.Clickable;
+import com.schedjoules.eventdiscovery.framework.location.listitems.ButtonItem;
+import com.schedjoules.eventdiscovery.framework.location.listitems.ButtonedMessageItem;
 import com.schedjoules.eventdiscovery.framework.location.listitems.MessageItem;
 import com.schedjoules.eventdiscovery.framework.permissions.Permission;
 import com.schedjoules.eventdiscovery.framework.searchlist.SearchModule;
@@ -118,27 +120,24 @@ public final class PermissionProxy implements SearchModule
                     Activity activity = mActivity;
                     if (activity != null && mPermission.isRequestable(activity))
                     {
-                        showMessageItem(mDeniedMessage, new PermissionRequestOnClick(), newQuery);
+                        mUpdateListener.onUpdate(
+                                new ShowSingle<ListItem>(
+                                        new ButtonedMessageItem(mDeniedMessage, mActivity.getString(R.string.schedjoules_button_grant_permission),
+                                                new PermissionRequestOnClick()),
+                                        newQuery));
                     }
                     else
                     {
-                        showMessageItem(mDeniedWithNeverAskAgainMessage, null, newQuery);
+                        mUpdateListener.onUpdate(new ShowSingle<ListItem>(new MessageItem(mDeniedWithNeverAskAgainMessage), newQuery));
                     }
                 }
                 else
                 {
-                    showMessageItem(mNotAskedYetMessage, new PermissionRequestOnClick(), newQuery);
+                    mUpdateListener.onUpdate(
+                            new ShowSingle<ListItem>(new Clickable<>(new ButtonItem(mNotAskedYetMessage), new PermissionRequestOnClick()), newQuery));
                 }
             }
         }
-    }
-
-
-    private void showMessageItem(String message, @Nullable OnClickAction onClickAction, String query)
-    {
-        ListItem messageItem = onClickAction == null ?
-                new MessageItem(message) : new Clickable<>(new MessageItem(message), onClickAction);
-        mUpdateListener.onUpdate(new ShowSingle<>(messageItem, query));
     }
 
 

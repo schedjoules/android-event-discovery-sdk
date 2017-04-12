@@ -35,8 +35,8 @@ import com.schedjoules.eventdiscovery.framework.googleapis.requests.GoogleApiTas
 import com.schedjoules.eventdiscovery.framework.list.ItemChosenAction;
 import com.schedjoules.eventdiscovery.framework.list.ListItem;
 import com.schedjoules.eventdiscovery.framework.list.smart.Clickable;
+import com.schedjoules.eventdiscovery.framework.location.listitems.ButtonItem;
 import com.schedjoules.eventdiscovery.framework.location.listitems.ButtonedMessageItem;
-import com.schedjoules.eventdiscovery.framework.location.listitems.MessageItem;
 import com.schedjoules.eventdiscovery.framework.location.model.GeoPlace;
 import com.schedjoules.eventdiscovery.framework.location.tasks.GetCityTask;
 import com.schedjoules.eventdiscovery.framework.model.ParcelableGeoLocation;
@@ -110,7 +110,7 @@ public final class CurrentLocationModule implements SearchModule
             cacheCurrentLocation();
 
             ListItem item = new Clickable<>(
-                    new MessageItem(mActivity.getString(R.string.schedjoules_location_picker_current_location)),
+                    new ButtonItem(mActivity.getString(R.string.schedjoules_location_picker_current_location)),
                     new OnClickAction()
                     {
                         @Override
