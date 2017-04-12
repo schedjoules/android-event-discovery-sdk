@@ -15,21 +15,31 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery.framework.utils.strings;
+package com.schedjoules.eventdiscovery.framework.utils.spanned;
 
-import android.content.Context;
-import android.support.annotation.StringRes;
+import android.text.Spanned;
+import android.widget.TextView;
+
+import com.schedjoules.eventdiscovery.framework.utils.factory.Factory;
 
 
 /**
- * Accesses string resources.
+ * Represents a Html 'formatted' text to be displayed with a {@link TextView}.
  *
  * @author Gabor Keszthelyi
  */
-public interface Strings
+public final class Html extends AbstractSpanned
 {
-    /**
-     * See {@link Context#getString(int)}
-     */
-    String get(@StringRes int resId);
+    public Html(final String inputSource)
+    {
+        super(new Factory<Spanned>()
+        {
+            @Override
+            public Spanned create()
+            {
+                return new EmptyLinesTrimmed(android.text.Html.fromHtml(inputSource));
+            }
+        });
+    }
+
 }

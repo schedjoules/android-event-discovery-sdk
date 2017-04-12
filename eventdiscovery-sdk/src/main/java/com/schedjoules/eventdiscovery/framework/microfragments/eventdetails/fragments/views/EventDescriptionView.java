@@ -47,6 +47,6 @@ public final class EventDescriptionView implements SmartView<Optional<String>>
     public void update(Optional<String> description)
     {
         mRoot.update(description);
-        mTitleView.update(description.value(null));
+        mTitleView.update(description);
     }
 }
