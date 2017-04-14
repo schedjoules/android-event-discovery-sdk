@@ -30,6 +30,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -258,9 +259,10 @@ public final class EventListFragment extends BaseFragment implements EventListMe
     {
         // Log.d("OnResumeStates", freshList ? "ClearingUpdate" : "NonClearingUpdate");
         initAdapterAndRecyclerView(freshList);
-        mToolbarTitle.setText(
-                new TextWithIcon(getContext(), new SharedPrefLastSelectedPlace(getContext()).get().namedPlace().name(),
-                        R.drawable.schedjoules_ic_arrow_drop_down));
+        TypedValue typedValue = new TypedValue();
+        getActivity().getTheme().resolveAttribute(R.attr.schedjoules_dropdownArrow, typedValue, true);
+
+        mToolbarTitle.setText(new TextWithIcon(getContext(), new SharedPrefLastSelectedPlace(getContext()).get().namedPlace().name(), typedValue.resourceId));
         if (freshList)
         {
             mListItemsController.loadEvents(location(), startAfter());

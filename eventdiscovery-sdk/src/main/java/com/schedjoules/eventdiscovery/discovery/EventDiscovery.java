@@ -19,6 +19,7 @@ package com.schedjoules.eventdiscovery.discovery;
 
 import android.app.Activity;
 import android.support.annotation.NonNull;
+import android.support.annotation.StyleRes;
 
 import com.schedjoules.client.eventsdiscovery.GeoLocation;
 
@@ -66,6 +67,17 @@ public interface EventDiscovery
      */
     @NonNull
     EventDiscovery withLocation(@NonNull GeoLocation location, int radius);
+
+    /**
+     * Starts the event discovery with a specific theme. This should be either {@code SchedJoules_Theme.Default}, {@code SchedJoules_Theme.Light},
+     * {@code SchedJoules_Theme.Dark} or any theme that inherits from these.
+     *
+     * @param theme
+     *         The resource id of the theme to use.
+     *
+     * @return A new {@link EventDiscovery} using the given theme.
+     */
+    EventDiscovery withTheme(@StyleRes int theme);
 
     /**
      * Starts this {@link EventDiscovery}.

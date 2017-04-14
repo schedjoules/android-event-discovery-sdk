@@ -1,26 +1,15 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
+    <!-- This is merely the theme of the main demo activity. It's not used by the SDK -->
+    <style name="DemoTheme" parent="SchedJoules_BaseTheme.Light">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <style name="AppTheme.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
+    <!-- this is how you customize the default theme -->
+    <style name="SchedJoules_Theme.Default" tools:override="true" parent="SchedJoules_Theme.Light">
+        <item name="colorAccent">#2196F3</item>
     </style>
-
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
-
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
-
-    <!-- SchedJoules Event Discovery customization -->
-    <!-- You can override the SDKs material palette if you would like: -->
-    <!--<color name="schedjoules_colorPrimary">...</color>-->
-    <!--<color name="schedjoules_colorPrimaryDark">...</color>-->
-    <!--<color name="schedjoules_colorAccent">...</color>-->
 
 </resources>

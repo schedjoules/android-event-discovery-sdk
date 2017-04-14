@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
 
-    <FrameLayout
-            xmlns:android="http://schemas.android.com/apk/res/android"
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/schedjoules_event_details_divider_holder"
+            style="@style/SchedJoules_EventDetailsItem"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingRight="0dp"
-            android:paddingLeft="0dp"
-            style="@style/SchedJoules_EventDetailsItem">
+            android:paddingLeft="0dp">
 
         <include layout="@layout/schedjoules_list_item_divider"/>
     </FrameLayout>

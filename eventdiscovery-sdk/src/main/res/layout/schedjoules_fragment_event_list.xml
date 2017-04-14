@@ -4,22 +4,20 @@
     <android.support.design.widget.CoordinatorLayout xmlns:app="http://schemas.android.com/apk/res-auto"
             xmlns:tools="http://schemas.android.com/tools"
             android:layout_width="match_parent"
-            android:background="@color/schedjoules_background_cards"
+            android:background="?attr/schedjoules_cardListBackground"
             android:layout_height="match_parent"
-            android:fitsSystemWindows="true"
+            android:fitsSystemWindows="false"
             tools:context=".framework.eventlist.EventListActivity">
 
         <android.support.design.widget.AppBarLayout
                 android:id="@+id/schedjoules_event_list_app_bar"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:theme="@style/SchedJoules_AppTheme.AppBarOverlay">
+                android:layout_height="wrap_content">
 
             <android.support.v7.widget.Toolbar
                     android:id="@+id/schedjoules_event_list_toolbar"
                     android:layout_width="match_parent"
-                    android:layout_height="?attr/actionBarSize"
-                    app:popupTheme="@style/SchedJoules_AppTheme.PopupOverlay">
+                    android:layout_height="?attr/actionBarSize">
 
                 <TextView
                         android:id="@+id/schedjoules_event_list_toolbar_title"

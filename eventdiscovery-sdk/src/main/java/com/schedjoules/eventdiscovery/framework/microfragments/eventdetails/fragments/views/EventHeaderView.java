@@ -27,6 +27,7 @@ import com.schedjoules.client.eventsdiscovery.Event;
 import com.schedjoules.eventdiscovery.R;
 import com.schedjoules.eventdiscovery.databinding.SchedjoulesDetailsHeaderBinding;
 import com.schedjoules.eventdiscovery.framework.model.SchedJoulesLinks;
+import com.schedjoules.eventdiscovery.framework.utils.AttributeColor;
 import com.schedjoules.eventdiscovery.framework.utils.smartview.SmartView;
 
 
@@ -58,14 +59,15 @@ public final class EventHeaderView implements SmartView<Event>
                 .into(mHeader.schedjoulesEventDetailBanner);
 
         mHeader.schedjoulesEventDetailToolbarLayout.setTitle(event.title());
+        // the expanded title is always white
         mHeader.schedjoulesEventDetailToolbarLayout.setExpandedTitleColor(ContextCompat.getColor(mActivity, R.color.schedjoules_white));
-        mHeader.schedjoulesEventDetailToolbarLight.setTitle("");
+        mHeader.schedjoulesEventDetailToolbarCollapsed.setTitle("");
 
         mDateTimeView.update(event);
 
-        // set home icon of the light toolbar
+        // set home icon of the collapsed toolbar
         Drawable arrow = DrawableCompat.wrap(ContextCompat.getDrawable(mActivity, R.drawable.abc_ic_ab_back_material)).mutate();
-        DrawableCompat.setTint(arrow, ContextCompat.getColor(mActivity, R.color.schedjoules_text_secondary));
-        mHeader.schedjoulesEventDetailToolbarLight.setNavigationIcon(arrow);
+        DrawableCompat.setTint(arrow, new AttributeColor(mActivity, R.attr.schedjoules_appBarIconColor).argb());
+        mHeader.schedjoulesEventDetailToolbarCollapsed.setNavigationIcon(arrow);
     }
 }

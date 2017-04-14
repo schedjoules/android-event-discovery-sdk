@@ -20,6 +20,7 @@ package com.schedjoules.eventdiscovery.discovery;
 import android.app.Activity;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.annotation.StyleRes;
 
 import com.schedjoules.client.eventsdiscovery.GeoLocation;
 import com.schedjoules.eventdiscovery.framework.model.ParcelableGeoLocation;
@@ -29,6 +30,7 @@ import org.dmfs.rfc5545.DateTime;
 import static com.schedjoules.eventdiscovery.framework.EventIntents.EXTRA_GEOLOCATION;
 import static com.schedjoules.eventdiscovery.framework.EventIntents.EXTRA_RADIUS;
 import static com.schedjoules.eventdiscovery.framework.EventIntents.EXTRA_START_AFTER_TIMESTAMP;
+import static com.schedjoules.eventdiscovery.framework.EventIntents.EXTRA_THEME;
 
 
 /**
@@ -75,6 +77,13 @@ public final class BasicEventDiscovery implements EventDiscovery
     public EventDiscovery withLocation(@NonNull GeoLocation location, int radius)
     {
         return new BasicEventDiscovery(new Intent(mIntent).putExtra(EXTRA_GEOLOCATION, new ParcelableGeoLocation(location)).putExtra(EXTRA_RADIUS, radius));
+    }
+
+
+    @Override
+    public EventDiscovery withTheme(@StyleRes int theme)
+    {
+        return new BasicEventDiscovery(new Intent(mIntent).putExtra(EXTRA_THEME, theme));
     }
 
 

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Colors of the dark theme -->
+
+    <color name="schedjoules_dark_colorPrimary">#212121</color>
+    <color name="schedjoules_dark_colorPrimaryDark">#000000</color>
+    <color name="schedjoules_dark_colorAccent">@color/schedjoules_green_haze</color>
+
+    <color name="schedjoules_dark_text_primary">#ffffffff</color>
+    <color name="schedjoules_dark_text_secondary">#b2ffffff</color>
+    <color name="schedjoules_dark_text_tertiary">#80ffffff</color>
+
+    <color name="schedjoules_dark_empty_thumbnail_background">#dbdbdb</color>
+    <color name="schedjoules_dark_empty_thumbnail_draw">#bababa</color>
+
+    <color name="schedjoules_background_cards_dark">#303030</color>
+    <color name="schedjoules_background_panel_dark">#424242</color>
+
+    <!-- Color of the divider -->
+
+    <color name="schedjoules_dark_divider">#20ffffff</color>
+</resources>

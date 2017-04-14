@@ -65,11 +65,11 @@ public final class EventDetailFragment extends BaseFragment implements EventDeta
 
         SchedjoulesFragmentEventDetailsBinding views = DataBindingUtil.inflate(inflater, R.layout.schedjoules_fragment_event_details, container, false);
 
-        ((BaseActivity) getActivity()).setSupportActionBar(views.schedjoulesDetailsHeader.schedjoulesEventDetailToolbarDark);
+        ((BaseActivity) getActivity()).setSupportActionBar(views.schedjoulesDetailsHeader.schedjoulesEventDetailToolbarExpanded);
         setHasOptionsMenu(true);
         mMenu = new EventDetailsMenu(this);
         // only one toolbar can serve as the "supportactionbar" so we need to set up the other one manually
-        Toolbar toolbar = views.schedjoulesDetailsHeader.schedjoulesEventDetailToolbarLight;
+        Toolbar toolbar = views.schedjoulesDetailsHeader.schedjoulesEventDetailToolbarCollapsed;
         toolbar.inflateMenu(R.menu.schedjoules_event_details_menu);
         toolbar.setNavigationOnClickListener(new View.OnClickListener()
         {

@@ -18,7 +18,7 @@
     <Button
             android:id="@+id/schedjoules_place_message_item_button"
             style="@style/Widget.AppCompat.Button.Borderless"
-            android:textColor="@color/schedjoules_colorAccent"
+            android:textColor="?attr/colorAccent"
             android:layout_below="@id/schedjoules_place_message_item_title"
             android:layout_marginLeft="@dimen/schedjoules_location_list_item_horizontal_margin"
             android:layout_marginRight="@dimen/schedjoules_location_list_item_horizontal_margin"

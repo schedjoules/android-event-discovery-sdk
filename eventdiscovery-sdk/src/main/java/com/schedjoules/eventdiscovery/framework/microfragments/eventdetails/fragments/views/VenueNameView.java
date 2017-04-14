@@ -18,13 +18,11 @@
 package com.schedjoules.eventdiscovery.framework.microfragments.eventdetails.fragments.views;
 
 import android.graphics.drawable.Drawable;
-import android.support.annotation.ColorRes;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.widget.TextView;
 
-import com.schedjoules.eventdiscovery.R;
 import com.schedjoules.eventdiscovery.databinding.SchedjoulesViewEventDetailsVenueBinding;
+import com.schedjoules.eventdiscovery.framework.utils.AttributeColor;
 import com.schedjoules.eventdiscovery.framework.utils.OptionalView;
 import com.schedjoules.eventdiscovery.framework.utils.smartview.SmartView;
 
@@ -59,14 +57,15 @@ public final class VenueNameView implements SmartView<Optional<CharSequence>>
 
         if (venueName.isPresent())
         {
-            applyCompoundDrawableTint(mIconAnchorTextView, R.color.schedjoules_colorAccent);
-            applyCompoundDrawableTint(mTextView, android.R.color.transparent);
+            applyCompoundDrawableTint(mIconAnchorTextView,
+                    new AttributeColor(mIconAnchorTextView.getContext(), android.support.v7.appcompat.R.attr.colorAccent).argb());
+            applyCompoundDrawableTint(mTextView, 0 /* transparent */);
         }
     }
 
 
     // TODO Something like this could be created: DrawableTintCompatTextView extends AppCompatTextView with attr compat:drawableTint
-    private void applyCompoundDrawableTint(TextView textView, @ColorRes int color)
+    private void applyCompoundDrawableTint(TextView textView, int color)
     {
         Drawable[] oldDrawables = textView.getCompoundDrawables();
         Drawable[] newDrawables = new Drawable[4];
@@ -76,7 +75,7 @@ public final class VenueNameView implements SmartView<Optional<CharSequence>>
             {
                 Drawable mutated = DrawableCompat.wrap(oldDrawables[i]);
                 mutated.mutate();
-                DrawableCompat.setTint(mutated, ContextCompat.getColor(mTextView.getContext(), color));
+                DrawableCompat.setTint(mutated, color);
                 newDrawables[i] = mutated;
             }
         }

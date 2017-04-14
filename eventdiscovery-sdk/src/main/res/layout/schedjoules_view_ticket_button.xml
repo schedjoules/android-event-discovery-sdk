@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <FrameLayout
             android:id="@+id/schedjoules_event_details_ticket_button_area"
@@ -9,9 +8,7 @@
 
         <Button
                 android:id="@+id/schedjoules_event_details_ticket_button"
-                app:backgroundTint="@color/schedjoules_colorAccent"
-                android:textColor="@android:color/white"
-                android:textSize="14sp"
+                style="@style/Base.Widget.AppCompat.Button.Colored"
                 android:paddingRight="48dp"
                 android:paddingLeft="48dp"
                 android:layout_width="wrap_content"

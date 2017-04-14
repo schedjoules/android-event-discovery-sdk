@@ -19,8 +19,7 @@
                 tools:context=".framework.eventlist.EventListActivity"
                 tools:listitem="@layout/schedjoules_list_item_event"/>
 
-        <com.schedjoules.eventdiscovery.framework.microfragments.eventdetails.fragments.views.SchedJoulesFooterView
-                xmlns:app="http://schemas.android.com/apk/res-auto"
+        <com.schedjoules.eventdiscovery.framework.microfragments.eventdetails.fragments.views.SchedJoulesFooterView xmlns:app="http://schemas.android.com/apk/res-auto"
                 xmlns:android="http://schemas.android.com/apk/res/android"
                 android:id="@+id/schedjoules_footer"
                 android:layout_height="wrap_content"
@@ -31,11 +30,11 @@
                 android:paddingEnd="@dimen/schedjoules_activity_horizontal_margin"
                 android:paddingTop="6dp"
                 android:paddingBottom="6dp"
-                android:background="#ffffffff"
+                android:background="?attr/schedjoules_cardBackgroundColor"
                 android:gravity="right|end|center"
                 android:layout_gravity="bottom|end|right"
-                android:drawableRight="@drawable/schedjoules_footer_powered_by"
-                android:drawableEnd="@drawable/schedjoules_footer_powered_by"
+                android:drawableRight="?attr/schedjoules_schedJoulesAttribution"
+                android:drawableEnd="?attr/schedjoules_schedJoulesAttribution"
                 android:textSize="0sp"/>
     </FrameLayout>
 </layout>

@@ -14,7 +14,7 @@
             android:layout_marginRight="@dimen/schedjoules_location_list_item_horizontal_margin"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="1dp"
-            android:textColor="@color/schedjoules_text_primary"
+            android:textColor="?android:attr/textColorPrimary"
             android:textSize="18sp"/>
 
     <TextView
@@ -26,7 +26,7 @@
             android:layout_marginRight="@dimen/schedjoules_location_list_item_horizontal_margin"
             android:layout_marginTop="1dp"
             android:layout_marginBottom="10dp"
-            android:textColor="@color/schedjoules_text_secondary"
+            android:textColor="?android:attr/textColorSecondary"
             android:textSize="14sp"/>
 
 </com.schedjoules.eventdiscovery.framework.location.listitems.PlaceSuggestionItemView>

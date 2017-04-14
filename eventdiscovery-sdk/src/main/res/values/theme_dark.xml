@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- The default dark theme. Use this as the parent of your theme to customize it. -->
+    <style name="SchedJoules_Theme.Dark" parent="SchedJoules_BaseTheme.Dark.NoActionBar"/>
+
+    <style name="SchedJoules_BaseTheme.Dark.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="SchedJoules_BaseTheme.Dark" parent="Theme.AppCompat">
+        <item name="colorPrimary">@color/schedjoules_dark_colorPrimary</item>
+        <item name="colorPrimaryDark">@color/schedjoules_dark_colorPrimaryDark</item>
+        <item name="colorAccent">@color/schedjoules_dark_colorAccent</item>
+        <item name="android:textColorPrimary">@color/schedjoules_dark_text_primary</item>
+        <!-- TODO: check if we need this value -->
+        <item name="android:textColorPrimaryInverse">@color/schedjoules_white</item>
+        <item name="android:textColorSecondary">@color/schedjoules_dark_text_secondary</item>
+        <item name="android:textColorTertiary">@color/schedjoules_dark_text_tertiary</item>
+        <item name="android:divider">@color/schedjoules_dark_divider</item>
+        <item name="android:windowBackground">?attr/colorPrimary</item>
+
+        <item name="schedjoules_appBarIconColor">@color/schedjoules_dark_text_primary</item>
+        <item name="schedjoules_cardListBackground">@color/schedjoules_background_cards_dark</item>
+        <item name="schedjoules_dropdownArrow">@drawable/schedjoules_ic_arrow_drop_down_light</item>
+        <item name="schedjoules_cardBackgroundColor">@color/schedjoules_background_panel_dark</item>
+        <item name="schedjoules_googleAttribution">@drawable/powered_by_google_dark</item>
+        <item name="schedjoules_schedJoulesAttribution">@drawable/schedjoules_footer_powered_by_dark</item>
+    </style>
+
+</resources>

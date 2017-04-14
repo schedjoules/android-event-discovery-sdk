@@ -32,23 +32,23 @@ import com.schedjoules.eventdiscovery.framework.utils.smartview.SmartView;
  */
 public final class EventHeaderDateTimeView implements SmartView<Event>
 {
-    private final TextView mDateTimeViewLight;
-    private final TextView mDateTimeViewDark;
+    private final TextView mDateTimeViewExpanded;
+    private final TextView mDateTimeViewCollapsed;
 
 
     public EventHeaderDateTimeView(SchedjoulesDetailsHeaderBinding binding)
     {
-        mDateTimeViewLight = binding.datetimeLight;
-        mDateTimeViewDark = binding.datetimeDark;
+        mDateTimeViewExpanded = binding.datetimeExpanded;
+        mDateTimeViewCollapsed = binding.datetimeCollapsed;
     }
 
 
     @Override
     public void update(Event event)
     {
-        CharSequence rangeCharSequence = new LongDateAndTimeNoYear(event.start()).value(mDateTimeViewDark.getContext());
+        CharSequence rangeCharSequence = new LongDateAndTimeNoYear(event.start()).value(mDateTimeViewCollapsed.getContext());
         // update the dark and the light version of the date
-        mDateTimeViewLight.setText(rangeCharSequence);
-        mDateTimeViewDark.setText(rangeCharSequence);
+        mDateTimeViewExpanded.setText(rangeCharSequence);
+        mDateTimeViewCollapsed.setText(rangeCharSequence);
     }
 }

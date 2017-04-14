@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
 
     <!--
@@ -15,10 +16,8 @@
 
     -->
 
-    <!-- The standard Material design color trio used by the SDK: -->
-    <public name="schedjoules_colorPrimary" type="color"/>
-    <public name="schedjoules_colorPrimaryDark" type="color"/>
-    <public name="schedjoules_colorAccent" type="color"/>
+    <public name="SchedJoules_Theme.Light.NoActionBar" type="style"/>
+    <public name="SchedJoules_Theme.Dark.NoActionBar" type="style"/>
 
     <!-- Enables/disables showing the UP navigation button (back arrow) on the Event List screen.
     The button simply finishes the Activity. The default value is true. -->
