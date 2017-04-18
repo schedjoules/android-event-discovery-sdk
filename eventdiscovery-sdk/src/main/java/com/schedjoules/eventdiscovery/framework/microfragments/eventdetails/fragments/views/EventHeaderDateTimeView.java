@@ -21,7 +21,7 @@ import android.widget.TextView;
 
 import com.schedjoules.client.eventsdiscovery.Event;
 import com.schedjoules.eventdiscovery.databinding.SchedjoulesDetailsHeaderBinding;
-import com.schedjoules.eventdiscovery.framework.datetime.DateTimeRange;
+import com.schedjoules.eventdiscovery.framework.datetime.LongDateAndTimeNoYear;
 import com.schedjoules.eventdiscovery.framework.utils.smartview.SmartView;
 
 
@@ -46,7 +46,7 @@ public final class EventHeaderDateTimeView implements SmartView<Event>
     @Override
     public void update(Event event)
     {
-        CharSequence rangeCharSequence = new DateTimeRange(event).value(mDateTimeViewDark.getContext());
+        CharSequence rangeCharSequence = new LongDateAndTimeNoYear(event.start()).value(mDateTimeViewDark.getContext());
         // update the dark and the light version of the date
         mDateTimeViewLight.setText(rangeCharSequence);
         mDateTimeViewDark.setText(rangeCharSequence);
