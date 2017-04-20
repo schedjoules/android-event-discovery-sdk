@@ -90,7 +90,12 @@ public final class EventDetailsView implements SmartView<ShowEventMicroFragment.
 
         new TicketButtonView(mViews).update(new TicketButtonAction(actionLinks, event));
 
-        final SupportMapFragment mapFragment = (SupportMapFragment) mFragment.getChildFragmentManager().findFragmentById(R.id.schedjoules_event_details_map);
+        SupportMapFragment mapFragment = SupportMapFragment.newInstance();
+        mFragment.getChildFragmentManager()
+                .beginTransaction()
+                .add(R.id.schedjoules_event_details_map_frame, mapFragment)
+                .commit();
+
         mapFragment.getMapAsync(new OnMapReadyCallback()
         {
             @Override
@@ -99,7 +104,7 @@ public final class EventDetailsView implements SmartView<ShowEventMicroFragment.
                 GeoLocation geoLocation = event.locations().iterator().next().geoLocation();
                 LatLng latLng = new LatLng(geoLocation.latitude(), geoLocation.longitude());
                 googleMap.addMarker(new MarkerOptions().position(latLng));
-                googleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+                googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
             }
         });
         mViews.schedjoulesEventDetailsMapHolder.schedjoulesEventDetailsMapTransparentOverlay
