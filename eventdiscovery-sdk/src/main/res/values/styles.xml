@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="SchedJoules_AppTheme.AppBarOverlay.Dark" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
+    <style name="SchedJoules_AppTheme.AppBarOverlay.Dark"
+            parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
 
-    <style name="SchedJoules_AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
+    <style name="SchedJoules_AppTheme.PopupOverlay"
+            parent="ThemeOverlay.AppCompat.Light"/>
 
-    <style name="SchedJoules_ExpandedTitle" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
+    <style name="SchedJoules_ExpandedTitle"
+            parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
         <item name="android:textSize">26sp</item>
     </style>
 
@@ -32,16 +35,10 @@
         <item name="android:paddingBottom">8dp</item>
     </style>
 
-    <style name="SchedJoules_EventDetailItemIcon">
-        <item name="android:layout_width">@dimen/schedjoules_event_detail_item_icon_size</item>
-        <item name="android:layout_height">@dimen/schedjoules_event_detail_item_icon_size</item>
-        <item name="android:tint">?attr/colorAccent</item>
-        <item name="android:layout_marginRight">24dp</item>
-    </style>
-
     <!-- Needed to override toolbar style fix bug of small title in landscape (theme resource sets it 14sp in land)
     See: http://stackoverflow.com/a/28056935/4247460 -->
-    <style name="SchedJoules_ToolbarTitle" parent="@style/TextAppearance.Widget.AppCompat.Toolbar.Title">
+    <style name="SchedJoules_ToolbarTitle"
+            parent="@style/TextAppearance.Widget.AppCompat.Toolbar.Title">
         <item name="android:textSize">@dimen/schedjoules_toolbar_title_font_size</item>
     </style>
 
