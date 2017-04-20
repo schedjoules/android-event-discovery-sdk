@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.schedjoules.eventdiscovery.framework.location.listitems.ButtonedMessageItemView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.schedjoules.eventdiscovery.framework.location.listitems.ActionMessageItemView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:minHeight="@dimen/schedjoules_location_list_item_height"
@@ -28,4 +28,4 @@
 
     <include layout="@layout/schedjoules_list_item_divider"/>
 
-</com.schedjoules.eventdiscovery.framework.location.listitems.ButtonedMessageItemView>
+</com.schedjoules.eventdiscovery.framework.location.listitems.ActionMessageItemView>

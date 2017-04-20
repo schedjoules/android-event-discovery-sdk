@@ -35,8 +35,8 @@ import com.schedjoules.eventdiscovery.framework.googleapis.requests.GoogleApiTas
 import com.schedjoules.eventdiscovery.framework.list.ItemChosenAction;
 import com.schedjoules.eventdiscovery.framework.list.ListItem;
 import com.schedjoules.eventdiscovery.framework.list.smart.Clickable;
+import com.schedjoules.eventdiscovery.framework.location.listitems.ActionMessageItem;
 import com.schedjoules.eventdiscovery.framework.location.listitems.ButtonItem;
-import com.schedjoules.eventdiscovery.framework.location.listitems.ButtonedMessageItem;
 import com.schedjoules.eventdiscovery.framework.location.model.GeoPlace;
 import com.schedjoules.eventdiscovery.framework.location.tasks.GetCityTask;
 import com.schedjoules.eventdiscovery.framework.model.ParcelableGeoLocation;
@@ -176,7 +176,7 @@ public final class CurrentLocationModule implements SearchModule
                 catch (GoogleApiRecoverableException e)
                 {
                     Log.e(TAG, "Failed to get last location", e);
-                    ListItem errorItem = new ButtonedMessageItem(
+                    ListItem errorItem = new ActionMessageItem(
                             mActivity.getText(R.string.schedjoules_location_picker_googleapi_error_recovarable),
                             mActivity.getText(R.string.schedjoules_retry),
                             new ActivityReloadAction(mActivity));
@@ -219,7 +219,7 @@ public final class CurrentLocationModule implements SearchModule
 
     private void onFailedToGetLocation()
     {
-        ListItem errorItem = new ButtonedMessageItem(
+        ListItem errorItem = new ActionMessageItem(
                 mActivity.getString(R.string.schedjoules_location_picker_current_location_error),
                 mActivity.getString(R.string.schedjoules_retry),
                 new RetryAction());
