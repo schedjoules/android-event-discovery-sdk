@@ -26,46 +26,46 @@ import com.schedjoules.eventdiscovery.framework.utils.smartview.OnClickAction;
 
 
 /**
- * A {@link ListItem} on the location picker that displays a message and a button.
+ * A {@link ListItem} on the location picker that displays a message and a button for an action.
  *
  * @author Gabor Keszthelyi
  */
-public final class ButtonedMessageItem implements ListItem<ButtonedMessageItemView>
+public final class ActionMessageItem implements ListItem<ActionMessageItemView>
 {
 
-    private final CharSequence mMessageText;
-    private final CharSequence mButtonText;
-    private final OnClickAction mButtonClickAction;
+    private final CharSequence mMessage;
+    private final CharSequence mActionLabel;
+    private final OnClickAction mAction;
 
 
-    public ButtonedMessageItem(CharSequence messageText, CharSequence buttonText, OnClickAction buttonClickAction)
+    public ActionMessageItem(CharSequence message, CharSequence actionLabel, OnClickAction action)
     {
-        mMessageText = messageText;
-        mButtonText = buttonText;
-        mButtonClickAction = buttonClickAction;
+        mMessage = message;
+        mActionLabel = actionLabel;
+        mAction = action;
     }
 
 
     @Override
     public int layoutResId()
     {
-        return R.layout.schedjoules_list_item_location_buttoned_message;
+        return R.layout.schedjoules_list_item_location_action_message;
     }
 
 
     @Override
-    public void bindDataTo(ButtonedMessageItemView view)
+    public void bindDataTo(ActionMessageItemView view)
     {
-        view.update(mMessageText);
+        view.update(mMessage);
 
-        Button button = (Button) view.findViewById(ButtonedMessageItemView.ID_BUTTON);
-        button.setText(mButtonText);
+        Button button = (Button) view.findViewById(ActionMessageItemView.ID_ACTION_BUTTON);
+        button.setText(mActionLabel);
         button.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
-                mButtonClickAction.onClick();
+                mAction.onClick();
             }
         });
     }

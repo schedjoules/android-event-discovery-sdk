@@ -22,8 +22,8 @@ import android.app.Activity;
 import com.schedjoules.eventdiscovery.R;
 import com.schedjoules.eventdiscovery.framework.list.ListItem;
 import com.schedjoules.eventdiscovery.framework.list.smart.Clickable;
+import com.schedjoules.eventdiscovery.framework.location.listitems.ActionMessageItem;
 import com.schedjoules.eventdiscovery.framework.location.listitems.ButtonItem;
-import com.schedjoules.eventdiscovery.framework.location.listitems.ButtonedMessageItem;
 import com.schedjoules.eventdiscovery.framework.location.listitems.MessageItem;
 import com.schedjoules.eventdiscovery.framework.permissions.Permission;
 import com.schedjoules.eventdiscovery.framework.searchlist.SearchModule;
@@ -122,7 +122,7 @@ public final class PermissionProxy implements SearchModule
                     {
                         mUpdateListener.onUpdate(
                                 new ShowSingle<ListItem>(
-                                        new ButtonedMessageItem(mDeniedMessage, mActivity.getString(R.string.schedjoules_button_grant_permission),
+                                        new ActionMessageItem(mDeniedMessage, mActivity.getString(R.string.schedjoules_button_grant_permission),
                                                 new PermissionRequestOnClick()),
                                         newQuery));
                     }

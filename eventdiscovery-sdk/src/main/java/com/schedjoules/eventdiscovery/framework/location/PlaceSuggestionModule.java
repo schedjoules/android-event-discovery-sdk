@@ -34,7 +34,7 @@ import com.schedjoules.eventdiscovery.framework.list.ItemChosenAction;
 import com.schedjoules.eventdiscovery.framework.list.ListItem;
 import com.schedjoules.eventdiscovery.framework.list.changes.nonnotifying.ClearAll;
 import com.schedjoules.eventdiscovery.framework.list.smart.Clickable;
-import com.schedjoules.eventdiscovery.framework.location.listitems.ButtonedMessageItem;
+import com.schedjoules.eventdiscovery.framework.location.listitems.ActionMessageItem;
 import com.schedjoules.eventdiscovery.framework.location.listitems.MessageItem;
 import com.schedjoules.eventdiscovery.framework.location.listitems.PlaceSuggestionItem;
 import com.schedjoules.eventdiscovery.framework.location.model.GeoPlace;
@@ -139,7 +139,7 @@ public final class PlaceSuggestionModule implements SearchModule
                 catch (GoogleApiRecoverableException e)
                 {
                     Log.e(TAG, "Failed to get suggestions", e);
-                    ListItem errorItem = new ButtonedMessageItem(
+                    ListItem errorItem = new ActionMessageItem(
                             mActivity.getText(R.string.schedjoules_location_picker_googleapi_error_recovarable),
                             mActivity.getText(R.string.schedjoules_retry),
                             new ActivityReloadAction(mActivity));
@@ -148,7 +148,7 @@ public final class PlaceSuggestionModule implements SearchModule
                 catch (GoogleApiExecutionException e)
                 {
                     Log.e(TAG, "Failed to get suggestions", e);
-                    ListItem errorItem = new ButtonedMessageItem(
+                    ListItem errorItem = new ActionMessageItem(
                             mActivity.getString(R.string.schedjoules_location_picker_suggestion_error),
                             mActivity.getString(R.string.schedjoules_retry),
                             new OnClickAction()
@@ -218,7 +218,7 @@ public final class PlaceSuggestionModule implements SearchModule
                     }
                     catch (Exception e)
                     {
-                        ListItem errorItem = new ButtonedMessageItem(
+                        ListItem errorItem = new ActionMessageItem(
                                 mActivity.getString(R.string.schedjoules_location_picker_suggestion_placelookup_error, new CommaSeparated(mNamedPlace)),
                                 mActivity.getString(R.string.schedjoules_retry),
                                 new PlaceLookUpAction(mNamedPlace)
