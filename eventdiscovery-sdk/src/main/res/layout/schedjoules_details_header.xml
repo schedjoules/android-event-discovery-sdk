@@ -7,14 +7,13 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/schedjoules_app_bar_height"
             android:fitsSystemWindows="true"
-            android:stateListAnimator="@animator/schedjoules_appbar_elevation"
-            android:theme="@style/SchedJoules_AppTheme.AppBarOverlay">
+            android:stateListAnimator="@animator/schedjoules_appbar_elevation">
 
         <net.opacapp.multilinecollapsingtoolbar.CollapsingToolbarLayout
                 android:id="@+id/schedjoules_event_detail_toolbar_layout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:fitsSystemWindows="false"
+                android:fitsSystemWindows="true"
                 app:expandedTitleGravity="bottom|left"
                 app:expandedTitleTextAppearance="@style/SchedJoules_ExpandedTitle"
                 app:expandedTitleMarginStart="@dimen/schedjoules_activity_horizontal_margin"
@@ -22,7 +21,7 @@
                 app:scrimAnimationDuration="600"
                 app:scrimVisibleHeightTrigger="160dp"
                 app:expandedTitleMarginBottom="48dp"
-                app:contentScrim="@color/schedjoules_colorPrimary"
+                app:contentScrim="?attr/colorPrimary"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed"
                 app:toolbarId="@+id/schedjoules_toolbar"
                 app:autoAnimate="none">
@@ -51,7 +50,7 @@
                     android:layout_gravity="center_horizontal|bottom"/>
 
             <android.support.v7.widget.Toolbar
-                    android:id="@+id/schedjoules_event_detail_toolbar_dark"
+                    android:id="@+id/schedjoules_event_detail_toolbar_expanded"
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
                     app:layout_collapseMode="pin"
@@ -64,22 +63,23 @@
             <android.support.v7.widget.Toolbar
                     android:alpha="0"
                     app:contentInsetStartWithNavigation="0dp"
-                    android:id="@+id/schedjoules_event_detail_toolbar_light"
+                    android:id="@+id/schedjoules_event_detail_toolbar_collapsed"
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
                     app:layout_collapseMode="pin"
-                    app:popupTheme="@style/SchedJoules_AppTheme.PopupOverlay"
                     app:layout_scrimMode="in"
                     android:layout_marginBottom="20dp"/>
 
+            <!-- Note the text below is always white, no matter which theme is in use -->
+
             <TextView
-                    android:id="@+id/datetime_dark"
+                    android:id="@+id/datetime_expanded"
                     android:layout_width="match_parent"
                     android:layout_gravity="bottom"
                     android:padding="12dp"
                     android:layout_marginLeft="4dp"
                     android:layout_marginStart="4dp"
-                    android:textColor="#ffffffff"
+                    android:textColor="@android:color/white"
                     android:layout_height="wrap_content"
                     app:layout_scrimMode="out"
                     android:textSize="20sp"
@@ -87,13 +87,13 @@
 
             <TextView
                     android:alpha="0"
-                    android:id="@+id/datetime_light"
+                    android:id="@+id/datetime_collapsed"
                     android:layout_width="match_parent"
                     android:layout_gravity="bottom"
                     android:padding="12dp"
                     android:layout_marginLeft="48dp"
                     android:layout_marginStart="48dp"
-                    android:textColor="#a0000000"
+                    android:textColor="?android:attr/textColorSecondary"
                     android:layout_height="wrap_content"
                     app:layout_scrimMode="in"
                     android:textSize="12sp"

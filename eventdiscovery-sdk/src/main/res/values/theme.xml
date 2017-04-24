@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- This sets the default theme to light -->
+    <style name="SchedJoules_Theme.Default" parent="SchedJoules_Theme.Light"/>
+
+</resources>

@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
 
-    <com.ms.square.android.expandabletextview.ExpandableTextView
-            xmlns:android="http://schemas.android.com/apk/res/android"
+    <com.ms.square.android.expandabletextview.ExpandableTextView xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:expandableTextView="http://schemas.android.com/apk/res-auto"
             android:id="@+id/schedjoules_event_details_item_title"
             style="@style/SchedJoules_EventDetailsItem"
             android:layout_width="match_parent"
             expandableTextView:animAlphaStart="1"
             expandableTextView:maxCollapsedLines="4"
-            expandableTextView:animDuration="200">
+            expandableTextView:animDuration="@android:integer/config_shortAnimTime">
 
         <!-- Note: the ids are used by ExpandableTextView-->
 
@@ -18,7 +17,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="16sp"
-                android:textColor="@color/schedjoules_text_secondary"/>
+                android:textColor="?android:attr/textColorSecondary"/>
 
         <ImageButton
                 android:id="@id/expand_collapse"

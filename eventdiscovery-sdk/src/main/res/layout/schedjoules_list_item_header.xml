@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
-        android:background="@color/schedjoules_colorPrimary"
-        android:textColor="@color/schedjoules_text_secondary"
+        android:background="?attr/colorPrimary"
+        android:textColor="?android:attr/textColorSecondary"
         android:paddingLeft="@dimen/schedjoules_location_list_item_horizontal_margin"
         android:paddingRight="@dimen/schedjoules_location_list_item_horizontal_margin"
         android:gravity="center_vertical|start|left"

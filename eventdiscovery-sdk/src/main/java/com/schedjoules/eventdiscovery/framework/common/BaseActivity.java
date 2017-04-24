@@ -17,13 +17,18 @@
 
 package com.schedjoules.eventdiscovery.framework.common;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
 
+import com.schedjoules.eventdiscovery.R;
 import com.schedjoules.eventdiscovery.framework.services.BasicActionsService;
 import com.schedjoules.eventdiscovery.framework.services.BasicInsightsService;
+
+import static com.schedjoules.eventdiscovery.framework.EventIntents.EXTRA_THEME;
 
 
 /**
@@ -43,8 +48,56 @@ public abstract class BaseActivity extends AppCompatActivity
     protected void onCreate(@Nullable Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+        Intent intent = getIntent();
+        if (intent.hasExtra(EXTRA_THEME))
+        {
+            setTheme(intent.getIntExtra(EXTRA_THEME, R.style.SchedJoules_Theme_Light));
+        }
         // Start the insight service if not started yet. No need to stop it manually, it will stop automatically.
         BasicInsightsService.start(this);
         BasicActionsService.start(this);
+    }
+
+
+    @Override
+    public final void startActivity(Intent intent)
+    {
+        // make sure to launch the activity with our custom theme
+        super.startActivity(withTheme(intent));
+    }
+
+
+    @Override
+    public final void startActivityForResult(Intent intent, int requestCode)
+    {
+        // make sure to launch the activity with our custom theme
+        super.startActivityForResult(withTheme(intent), requestCode);
+    }
+
+
+    @Override
+    public final void startActivityFromFragment(Fragment fragment, Intent intent, int requestCode)
+    {
+        // make sure to launch the activity with our custom theme
+        super.startActivityFromFragment(fragment, withTheme(intent), requestCode);
+    }
+
+
+    @Override
+    public final void startActivityFromFragment(Fragment fragment, Intent intent, int requestCode, @Nullable Bundle options)
+    {
+        // make sure to launch the activity with our custom theme
+        super.startActivityFromFragment(fragment, withTheme(intent), requestCode, options);
+    }
+
+
+    private Intent withTheme(Intent intent)
+    {
+        Intent currentIntent = getIntent();
+        if (currentIntent.hasExtra(EXTRA_THEME))
+        {
+            intent.putExtra(EXTRA_THEME, currentIntent.getIntExtra(EXTRA_THEME, R.style.SchedJoules_Theme_Light));
+        }
+        return intent;
     }
 }

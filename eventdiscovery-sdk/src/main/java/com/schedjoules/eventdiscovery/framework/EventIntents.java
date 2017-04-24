@@ -39,6 +39,10 @@ public final class EventIntents
     public static final String EXTRA_RADIUS = "schedjoules.event.intent.extra.RADIUS";
 
     /**
+     */
+    public static final String EXTRA_THEME = "schedjoules.event.intent.extra.THEME";
+
+    /**
      * Extra for the event uid field sent in the add to calendar intent.
      */
     public static final String EXTRA_SCHEDJOULES_EVENT_UID = "schedjoules.event.intent.extra.UID";

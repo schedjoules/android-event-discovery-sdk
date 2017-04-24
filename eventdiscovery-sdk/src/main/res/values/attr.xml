@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- The color of the icons on the appbar -->
+    <attr name="schedjoules_appBarIconColor" format="reference|color"/>
+
+    <!-- The background of a list of cards -->
+    <attr name="schedjoules_cardListBackground" format="reference|color"/>
+
+    <!-- The background color of a card -->
+    <attr name="schedjoules_cardBackgroundColor" format="color"/>
+
+    <!-- A drop down arrow -->
+    <attr name="schedjoules_dropdownArrow" format="reference"/>
+
+    <!-- The Google attribution in the location picker -->
+    <attr name="schedjoules_googleAttribution" format="reference"/>
+
+    <!-- The powered by SchedJoules footer -->
+    <attr name="schedjoules_schedJoulesAttribution" format="reference"/>
+
+</resources>

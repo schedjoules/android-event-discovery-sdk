@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Colors of the light theme -->
+
+    <color name="schedjoules_colorPrimary">@color/schedjoules_white</color>
+    <color name="schedjoules_colorPrimaryDark">#c0c0c0</color>
+    <color name="schedjoules_colorAccent">@color/schedjoules_green_haze</color>
+
+    <color name="schedjoules_text_primary">#dd000000</color>
+    <color name="schedjoules_text_secondary">#88000000</color>
+    <color name="schedjoules_text_tertiary">#60000000</color>
+
+    <color name="schedjoules_background_cards_light">#f3f3f3</color>
+
+    <color name="schedjoules_empty_thumbnail_background">#dbdbdb</color>
+    <color name="schedjoules_empty_thumbnail_draw">#bababa</color>
+
+    <!-- Color of the divider -->
+
+    <color name="schedjoules_divider">#20000000</color>
+</resources>

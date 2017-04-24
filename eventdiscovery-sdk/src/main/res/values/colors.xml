@@ -1,28 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Color palette for the project: -->
+    <!-- Colors common to all themes -->
+
     <color name="schedjoules_green_haze">#0CAF60</color>
-    <color name="schedjoules_abbey">#515457</color>
-    <color name="schedjoules_shark">#2E3135</color>
-    <color name="schedjoules_oslo_grey">#8F9192</color>
-    <color name="schedjoules_silver_chalice">#b0b0b0</color>
     <color name="schedjoules_white">#ffffff</color>
-    <!-- (Names come from here: http://chir.ag/projects/name-that-color/) -->
-
-    <!-- Colors by point of usage: -->
-    <color name="schedjoules_colorPrimary">@color/schedjoules_white</color>
-    <color name="schedjoules_colorPrimaryDark">@color/schedjoules_silver_chalice</color>
-    <color name="schedjoules_colorAccent">@color/schedjoules_green_haze</color>
-
-    <color name="schedjoules_text_primary">#d8000000</color>
-    <color name="schedjoules_text_secondary">#88000000</color>
-    <color name="schedjoules_text_ternary">#60000000</color>
-    <color name="schedjoules_content_icon">@color/schedjoules_colorAccent</color>
-
-    <color name="schedjoules_background_cards">#f3f3f4</color>
-
-    <color name="schedjoules_empty_thumbnail_background">#dbdbdb</color>
-    <color name="schedjoules_empty_thumbnail_draw">#bababa</color>
-
-    <color name="schedjoules_divider">#20000000</color>
 </resources>
