@@ -1,15 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
 
-    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            style="@style/SchedJoules_EventDetailsItem"
-            android:background="?android:attr/selectableItemBackground">
+    <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/schedjoules_event_details_action_label"
+            android:background="?android:attr/selectableItemBackground"
+            android:layout_height="wrap_content"
+            android:minHeight="@dimen/schedjoules_event_details_item_height"
+            android:layout_width="match_parent"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:paddingLeft="@dimen/schedjoules_activity_horizontal_margin"
+            android:paddingRight="@dimen/schedjoules_activity_horizontal_margin"
+            android:gravity="center_vertical"
+            android:textColor="?android:attr/textColorPrimary"
+            android:textSize="14sp"
+            android:textAllCaps="true"
+            android:drawablePadding="@dimen/schedjoules_event_details_item_icon_and_text_distance"/>
 
-        <TextView
-                android:id="@+id/schedjoules_event_details_action_label"
-                style="@style/SchedJoules_TextContent.Title"
-                android:drawablePadding="@dimen/schedjoules_event_details_item_icon_and_text_distance"
-                android:layout_gravity="center_vertical"/>
-
-    </FrameLayout>
 </layout>

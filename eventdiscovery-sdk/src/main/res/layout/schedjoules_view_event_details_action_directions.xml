@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="?android:attr/selectableItemBackground">
+
+        <View style="@style/SchedJoules_Divider"/>
+
+        <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/schedjoules_event_details_directions_label"
+                android:layout_height="wrap_content"
+                android:minHeight="64dp"
+                android:layout_width="match_parent"
+                android:paddingTop="16dp"
+                android:paddingBottom="16dp"
+                android:paddingLeft="@dimen/schedjoules_activity_horizontal_margin"
+                android:paddingRight="@dimen/schedjoules_activity_horizontal_margin"
+                android:gravity="center_vertical"
+                android:textColor="?android:attr/textColorPrimary"
+                android:textSize="16sp"
+                android:drawablePadding="@dimen/schedjoules_event_details_item_icon_and_text_distance"/>
+
+    </LinearLayout>
+</layout>

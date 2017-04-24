@@ -47,11 +47,7 @@
                             android:id="@+id/schedjoules_event_details_action_add_to_calendar"/>
 
                     <include
-                            layout="@layout/schedjoules_view_event_details_divider"
-                            android:id="@+id/schedjoules_event_details_address_divider"/>
-
-                    <include
-                            layout="@layout/schedjoules_view_event_details_action"
+                            layout="@layout/schedjoules_view_event_details_action_directions"
                             android:id="@+id/schedjoules_event_details_action_directions"/>
 
                     <include

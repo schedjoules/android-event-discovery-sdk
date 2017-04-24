@@ -4,8 +4,10 @@
     <com.ms.square.android.expandabletextview.ExpandableTextView xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:expandableTextView="http://schemas.android.com/apk/res-auto"
             android:id="@+id/schedjoules_event_details_item_title"
-            style="@style/SchedJoules_EventDetailsItem"
+            android:layout_height="wrap_content"
             android:layout_width="match_parent"
+            android:paddingLeft="@dimen/schedjoules_activity_horizontal_margin"
+            android:paddingRight="@dimen/schedjoules_activity_horizontal_margin"
             expandableTextView:animAlphaStart="1"
             expandableTextView:maxCollapsedLines="4"
             expandableTextView:animDuration="@android:integer/config_shortAnimTime">
