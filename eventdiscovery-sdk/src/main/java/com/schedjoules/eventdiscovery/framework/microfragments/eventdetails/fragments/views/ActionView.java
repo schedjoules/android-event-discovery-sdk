@@ -17,13 +17,17 @@
 
 package com.schedjoules.eventdiscovery.framework.microfragments.eventdetails.fragments.views;
 
+import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.schedjoules.eventdiscovery.R;
 import com.schedjoules.eventdiscovery.databinding.SchedjoulesViewEventDetailsActionBinding;
 import com.schedjoules.eventdiscovery.framework.actions.Action;
 import com.schedjoules.eventdiscovery.framework.actions.ActionClickListener;
+import com.schedjoules.eventdiscovery.framework.utils.AttributeColor;
+import com.schedjoules.eventdiscovery.framework.utils.TintedDrawable;
 import com.schedjoules.eventdiscovery.framework.utils.smartview.SmartView;
 
 import org.dmfs.optional.Optional;
@@ -37,15 +41,13 @@ import org.dmfs.optional.Optional;
 public final class ActionView implements SmartView<Optional<Action>>
 {
     private final View mRoot;
-    private final TextView mTitleView;
-    private final ImageView mIcon;
+    private final TextView mTextView;
 
 
     public ActionView(SchedjoulesViewEventDetailsActionBinding binding)
     {
         mRoot = binding.getRoot();
-        mTitleView = binding.schedjoulesEventDetailsActionTitle;
-        mIcon = binding.schedjoulesEventDetailsActionIcon;
+        mTextView = binding.schedjoulesEventDetailsActionLabel;
     }
 
 
@@ -55,8 +57,14 @@ public final class ActionView implements SmartView<Optional<Action>>
         if (optAction.isPresent())
         {
             final Action action = optAction.value();
-            mTitleView.setText(action.label(mTitleView.getContext()));
-            mIcon.setImageDrawable(action.icon(mIcon.getContext()));
+
+            Context context = mTextView.getContext();
+
+            mTextView.setText(action.label(context));
+
+            Drawable icon = TintedDrawable.tint(action.icon(context), new AttributeColor(context, R.attr.colorAccent));
+            mTextView.setCompoundDrawablesWithIntrinsicBounds(icon, null, null, null);
+
             mRoot.setOnClickListener(new ActionClickListener(action.actionExecutable()));
             mRoot.setVisibility(View.VISIBLE);
         }

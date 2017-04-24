@@ -8,7 +8,6 @@
         <TextView
                 android:id="@+id/schedjoules_venue_name_icon_anchor"
                 style="@style/SchedJoules_TextContent.Title"
-                android:drawableLeft="@drawable/schedjoules_ic_location_on_white_24dp"
                 android:drawablePadding="@dimen/schedjoules_event_details_item_icon_and_text_distance"
                 android:gravity="center_vertical"
                 android:textSize="@dimen/schedjoules_event_details_venue_name_text_size"
@@ -17,7 +16,6 @@
         <TextView
                 style="@style/SchedJoules_TextContent.Title"
                 android:id="@+id/schedjoules_venue_name"
-                android:drawableLeft="@drawable/schedjoules_ic_location_on_white_24dp"
                 android:drawablePadding="@dimen/schedjoules_event_details_item_icon_and_text_distance"
                 android:textSize="@dimen/schedjoules_event_details_venue_name_text_size"/>
 
