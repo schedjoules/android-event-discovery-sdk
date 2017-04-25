@@ -32,7 +32,7 @@ import com.schedjoules.eventdiscovery.framework.utils.smartview.SmartView;
  *
  * @author Gabor Keszthelyi
  */
-public final class PlaceSuggestionItemView<T extends NamedPlace> extends RelativeLayout implements SmartView<T>
+public final class PlaceSuggestionItemView extends RelativeLayout implements SmartView<NamedPlace>
 {
 
     private TextView mName;
@@ -55,7 +55,7 @@ public final class PlaceSuggestionItemView<T extends NamedPlace> extends Relativ
 
 
     @Override
-    public void update(T namedPlace)
+    public void update(NamedPlace namedPlace)
     {
         mName.setText(namedPlace.name());
         mExtraContext.setText(namedPlace.extraContext());

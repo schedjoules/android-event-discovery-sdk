@@ -17,10 +17,12 @@
 
 package com.schedjoules.eventdiscovery.framework.eventlist.items;
 
+import android.support.annotation.NonNull;
 import android.view.View;
 
 import com.schedjoules.eventdiscovery.R;
 import com.schedjoules.eventdiscovery.framework.list.ListItem;
+import com.schedjoules.eventdiscovery.framework.model.Equalable;
 
 
 /**
@@ -42,4 +44,13 @@ public final class LoadingIndicatorItem implements ListItem<View>
     {
 
     }
+
+
+    @NonNull
+    @Override
+    public Equalable id()
+    {
+        throw new UnsupportedOperationException("ListItem id is not supported in Event List currently");
+    }
+
 }

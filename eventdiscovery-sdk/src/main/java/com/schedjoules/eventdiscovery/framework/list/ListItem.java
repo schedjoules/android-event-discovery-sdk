@@ -18,8 +18,12 @@
 package com.schedjoules.eventdiscovery.framework.list;
 
 import android.support.annotation.LayoutRes;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+
+import com.schedjoules.eventdiscovery.framework.model.Equalable;
+import com.schedjoules.eventdiscovery.framework.utils.Frequent;
 
 
 /**
@@ -42,5 +46,12 @@ public interface ListItem<V extends View>
      *         the item view
      */
     void bindDataTo(V view);
+
+    /**
+     * Provides the id for this item which is used to assess whether two {@link ListItem}s instances are considered same.
+     */
+    @Frequent
+    @NonNull
+    Equalable id();
 
 }

@@ -56,4 +56,14 @@ public final class GooglePredictionNamedPlace implements NamedPlace
     {
         return mPrediction.getSecondaryText(null);
     }
+
+
+    @Override
+    public String toString()
+    {
+        return "GooglePredictionNamedPlace{" +
+                "name=" + name() +
+                "extraContext=" + extraContext() +
+                '}';
+    }
 }

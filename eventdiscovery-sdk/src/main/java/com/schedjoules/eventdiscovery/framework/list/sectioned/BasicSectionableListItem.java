@@ -17,9 +17,12 @@
 
 package com.schedjoules.eventdiscovery.framework.list.sectioned;
 
+import android.support.annotation.NonNull;
 import android.view.View;
 
 import com.schedjoules.eventdiscovery.framework.list.ListItem;
+import com.schedjoules.eventdiscovery.framework.model.Equalable;
+import com.schedjoules.eventdiscovery.framework.utils.equalables.Composite;
 
 
 /**
@@ -31,12 +34,14 @@ public final class BasicSectionableListItem<V extends View> implements Sectionab
 {
     private final ListItem<V> mDelegate;
     private final int mSectionNumber;
+    private final Equalable mId;
 
 
     public BasicSectionableListItem(ListItem<V> delegate, int sectionNumber)
     {
         mDelegate = delegate;
         mSectionNumber = sectionNumber;
+        mId = new Composite(delegate.id(), sectionNumber);
     }
 
 
@@ -68,35 +73,11 @@ public final class BasicSectionableListItem<V extends View> implements Sectionab
     }
 
 
+    @NonNull
     @Override
-    public boolean equals(Object o)
+    public Equalable id()
     {
-        if (this == o)
-        {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass())
-        {
-            return false;
-        }
-
-        BasicSectionableListItem<?> that = (BasicSectionableListItem<?>) o;
-
-        if (mSectionNumber != that.mSectionNumber)
-        {
-            return false;
-        }
-        return mDelegate.equals(that.mDelegate);
-
-    }
-
-
-    @Override
-    public int hashCode()
-    {
-        int result = mDelegate.hashCode();
-        result = 31 * result + mSectionNumber;
-        return result;
+        return mId;
     }
 
 

@@ -17,10 +17,13 @@
 
 package com.schedjoules.eventdiscovery.framework.common;
 
+import android.support.annotation.NonNull;
 import android.widget.TextView;
 
 import com.schedjoules.eventdiscovery.R;
 import com.schedjoules.eventdiscovery.framework.list.ListItem;
+import com.schedjoules.eventdiscovery.framework.model.Equalable;
+import com.schedjoules.eventdiscovery.framework.utils.equalables.LazyToStringEqualable;
 
 
 /**
@@ -32,11 +35,13 @@ public final class TextHeaderItem implements ListItem<TextView>
 {
 
     private final CharSequence mTitle;
+    private final Equalable mId;
 
 
     public TextHeaderItem(CharSequence title)
     {
         mTitle = title;
+        mId = new LazyToStringEqualable(title);
     }
 
 
@@ -54,29 +59,11 @@ public final class TextHeaderItem implements ListItem<TextView>
     }
 
 
+    @NonNull
     @Override
-    public boolean equals(Object o)
+    public Equalable id()
     {
-        if (this == o)
-        {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass())
-        {
-            return false;
-        }
-
-        TextHeaderItem that = (TextHeaderItem) o;
-
-        return mTitle.equals(that.mTitle);
-
-    }
-
-
-    @Override
-    public int hashCode()
-    {
-        return mTitle.hashCode();
+        return mId;
     }
 
 

@@ -17,9 +17,12 @@
 
 package com.schedjoules.eventdiscovery.framework.location.listitems;
 
+import android.support.annotation.NonNull;
+
 import com.schedjoules.eventdiscovery.R;
 import com.schedjoules.eventdiscovery.framework.list.ListItem;
-import com.schedjoules.eventdiscovery.framework.list.smart.AbstractSmartListItem;
+import com.schedjoules.eventdiscovery.framework.model.Equalable;
+import com.schedjoules.eventdiscovery.framework.utils.equalables.LazyToStringEqualable;
 
 
 /**
@@ -27,18 +30,47 @@ import com.schedjoules.eventdiscovery.framework.list.smart.AbstractSmartListItem
  *
  * @author Gabor Keszthelyi
  */
-public final class MessageItem extends AbstractSmartListItem<CharSequence, MessageItemView>
+public final class MessageItem implements ListItem<MessageItemView>
 {
+
+    private final CharSequence mText;
+    private final Equalable mId;
+
 
     public MessageItem(CharSequence text)
     {
-        super(text, R.layout.schedjoules_list_item_location_message);
+        mText = text;
+        mId = new LazyToStringEqualable(text);
     }
 
 
     @Override
-    protected String toStringLabel()
+    public int layoutResId()
     {
-        return "MessageItem";
+        return R.layout.schedjoules_list_item_location_message;
+    }
+
+
+    @Override
+    public void bindDataTo(MessageItemView view)
+    {
+        view.update(mText);
+    }
+
+
+    @NonNull
+    @Override
+    public Equalable id()
+    {
+        return mId;
+    }
+
+
+    @Override
+    public String toString()
+    {
+        return "MessageItem{" +
+                "mText=" + mText +
+                '}';
     }
 }

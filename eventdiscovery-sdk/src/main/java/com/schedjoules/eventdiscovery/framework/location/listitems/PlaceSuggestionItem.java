@@ -17,11 +17,14 @@
 
 package com.schedjoules.eventdiscovery.framework.location.listitems;
 
+import android.support.annotation.NonNull;
+
 import com.schedjoules.eventdiscovery.R;
 import com.schedjoules.eventdiscovery.framework.list.ListItem;
-import com.schedjoules.eventdiscovery.framework.list.smart.AbstractSmartListItem;
 import com.schedjoules.eventdiscovery.framework.location.model.namedplace.NamedPlace;
 import com.schedjoules.eventdiscovery.framework.model.Equalable;
+import com.schedjoules.eventdiscovery.framework.utils.equalables.LazyObjectEqualable;
+import com.schedjoules.eventdiscovery.framework.utils.factory.Factory;
 
 
 /**
@@ -29,18 +32,55 @@ import com.schedjoules.eventdiscovery.framework.model.Equalable;
  *
  * @author Gabor Keszthelyi
  */
-public final class PlaceSuggestionItem<D extends NamedPlace & Equalable> extends AbstractSmartListItem<D, PlaceSuggestionItemView<D>>
+public final class PlaceSuggestionItem implements ListItem<PlaceSuggestionItemView>
 {
-    public PlaceSuggestionItem(D namedPlace)
+    private final NamedPlace mNamedPlace;
+
+    private final Equalable mId;
+
+
+    public PlaceSuggestionItem(final NamedPlace namedPlace)
     {
-        super(namedPlace, R.layout.schedjoules_list_item_place_suggestion);
+        mNamedPlace = namedPlace;
+
+        mId = new LazyObjectEqualable(new Factory<Object>()
+        {
+            @Override
+            public Object create()
+            {
+                return namedPlace.id();
+            }
+        });
     }
 
 
     @Override
-    protected String toStringLabel()
+    public int layoutResId()
     {
-        return "PlaceSuggestionItem";
+        return R.layout.schedjoules_list_item_place_suggestion;
     }
 
+
+    @Override
+    public void bindDataTo(PlaceSuggestionItemView view)
+    {
+        view.update(mNamedPlace);
+    }
+
+
+    @NonNull
+    @Override
+    public Equalable id()
+    {
+        return mId;
+    }
+
+
+    @Override
+    public String toString()
+    {
+        return "PlaceSuggestionItem{" +
+                "mNamedPlace=" + mNamedPlace +
+                '}';
+    }
 }
