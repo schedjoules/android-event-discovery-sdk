@@ -17,11 +17,13 @@
 
 package com.schedjoules.eventdiscovery.framework.eventlist.items;
 
+import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.widget.TextView;
 
 import com.schedjoules.eventdiscovery.R;
 import com.schedjoules.eventdiscovery.framework.list.ListItem;
+import com.schedjoules.eventdiscovery.framework.model.Equalable;
 
 
 /**
@@ -52,4 +54,13 @@ public final class NoMoreEventsItem implements ListItem<TextView>
     {
         view.setText(mText);
     }
+
+
+    @NonNull
+    @Override
+    public Equalable id()
+    {
+        throw new UnsupportedOperationException("ListItem id is not supported in Event List currently");
+    }
+
 }

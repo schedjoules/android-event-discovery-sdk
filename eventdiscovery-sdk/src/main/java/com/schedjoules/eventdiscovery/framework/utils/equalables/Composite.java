@@ -15,59 +15,28 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery.framework.list.sectioned;
+package com.schedjoules.eventdiscovery.framework.utils.equalables;
 
 import android.support.annotation.NonNull;
-import android.view.View;
 
-import com.schedjoules.eventdiscovery.framework.list.ListItem;
 import com.schedjoules.eventdiscovery.framework.model.Equalable;
-import com.schedjoules.eventdiscovery.framework.utils.equalables.ObjectEqualable;
 
 
 /**
- * {@link ListItem} that can be used in tests.
+ * {@link Equalable} that evaluates to equal if both given objects are equal to their counterparts.
  *
  * @author Gabor Keszthelyi
  */
-public final class TestListItem implements ListItem
+public final class Composite implements Equalable
 {
-    private final int mId;
-    private final Equalable mEqualableId;
+    private final Object mObj1;
+    private final Object mObj2;
 
 
-    public static ListItem testItem(int id)
+    public Composite(@NonNull Object obj1, @NonNull Object obj2)
     {
-        return new TestListItem(id);
-    }
-
-
-    public TestListItem(int id)
-    {
-        mId = id;
-        mEqualableId = new ObjectEqualable(id);
-    }
-
-
-    @Override
-    public int layoutResId()
-    {
-        throw new RuntimeException("Should not be called");
-    }
-
-
-    @Override
-    public void bindDataTo(View view)
-    {
-        throw new RuntimeException("Should not be called");
-    }
-
-
-    @NonNull
-    @Override
-    public Equalable id()
-    {
-        return mEqualableId;
+        mObj1 = obj1;
+        mObj2 = obj2;
     }
 
 
@@ -83,9 +52,13 @@ public final class TestListItem implements ListItem
             return false;
         }
 
-        TestListItem that = (TestListItem) o;
+        Composite and = (Composite) o;
 
-        return mId == that.mId;
+        if (!mObj1.equals(and.mObj1))
+        {
+            return false;
+        }
+        return mObj2.equals(and.mObj2);
 
     }
 
@@ -93,15 +66,18 @@ public final class TestListItem implements ListItem
     @Override
     public int hashCode()
     {
-        return mId;
+        int result = mObj1.hashCode();
+        result = 31 * result + mObj2.hashCode();
+        return result;
     }
 
 
     @Override
     public String toString()
     {
-        return "TestListItem{" +
-                "mId=" + mId +
+        return "Composite{" +
+                "mObj1=" + mObj1 +
+                ", mObj2=" + mObj2 +
                 '}';
     }
 }

@@ -17,6 +17,7 @@
 
 package com.schedjoules.eventdiscovery.framework.eventlist.items;
 
+import android.support.annotation.NonNull;
 import android.view.View;
 
 import com.schedjoules.client.eventsdiscovery.Event;
@@ -27,6 +28,7 @@ import com.schedjoules.eventdiscovery.framework.common.BaseActivity;
 import com.schedjoules.eventdiscovery.framework.datetime.FormattedDateTime;
 import com.schedjoules.eventdiscovery.framework.datetime.ShortTime;
 import com.schedjoules.eventdiscovery.framework.list.ListItem;
+import com.schedjoules.eventdiscovery.framework.model.Equalable;
 import com.schedjoules.eventdiscovery.framework.model.SchedJoulesLinks;
 import com.schedjoules.eventdiscovery.framework.utils.InsightsTask;
 
@@ -82,6 +84,14 @@ public final class EventItem implements ListItem<EventItemView>
             }
         });
 
+    }
+
+
+    @NonNull
+    @Override
+    public Equalable id()
+    {
+        throw new UnsupportedOperationException("ListItem id is not supported in Event List currently");
     }
 
 

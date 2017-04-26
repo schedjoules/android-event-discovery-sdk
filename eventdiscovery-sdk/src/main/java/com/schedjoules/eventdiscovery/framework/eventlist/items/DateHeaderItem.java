@@ -17,12 +17,14 @@
 
 package com.schedjoules.eventdiscovery.framework.eventlist.items;
 
+import android.support.annotation.NonNull;
 import android.widget.TextView;
 
 import com.schedjoules.eventdiscovery.R;
 import com.schedjoules.eventdiscovery.framework.datetime.FormattedDateTime;
 import com.schedjoules.eventdiscovery.framework.datetime.SmartFormattedDay;
 import com.schedjoules.eventdiscovery.framework.list.ListItem;
+import com.schedjoules.eventdiscovery.framework.model.Equalable;
 
 import org.dmfs.rfc5545.DateTime;
 
@@ -67,6 +69,14 @@ public final class DateHeaderItem implements ListItem<TextView>
     public void bindDataTo(TextView view)
     {
         view.setText(formattedDay.value(view.getContext()));
+    }
+
+
+    @NonNull
+    @Override
+    public Equalable id()
+    {
+        throw new UnsupportedOperationException("ListItem id is not supported in Event List currently");
     }
 
 

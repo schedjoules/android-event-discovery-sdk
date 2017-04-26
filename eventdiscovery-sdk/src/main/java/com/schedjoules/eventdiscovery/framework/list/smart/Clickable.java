@@ -17,9 +17,11 @@
 
 package com.schedjoules.eventdiscovery.framework.list.smart;
 
+import android.support.annotation.NonNull;
 import android.view.View;
 
 import com.schedjoules.eventdiscovery.framework.list.ListItem;
+import com.schedjoules.eventdiscovery.framework.model.Equalable;
 import com.schedjoules.eventdiscovery.framework.utils.smartview.OnClickAction;
 
 
@@ -63,4 +65,20 @@ public final class Clickable<V extends View> implements ListItem<V>
         });
     }
 
+
+    @NonNull
+    @Override
+    public Equalable id()
+    {
+        return mDelegate.id();
+    }
+
+
+    @Override
+    public String toString()
+    {
+        return "Clickable{" +
+                "mDelegate=" + mDelegate +
+                '}';
+    }
 }

@@ -39,7 +39,6 @@ import com.schedjoules.eventdiscovery.framework.location.listitems.MessageItem;
 import com.schedjoules.eventdiscovery.framework.location.listitems.PlaceSuggestionItem;
 import com.schedjoules.eventdiscovery.framework.location.model.GeoPlace;
 import com.schedjoules.eventdiscovery.framework.location.model.namedplace.CommaSeparated;
-import com.schedjoules.eventdiscovery.framework.location.model.namedplace.Equalable;
 import com.schedjoules.eventdiscovery.framework.location.model.namedplace.NamedPlace;
 import com.schedjoules.eventdiscovery.framework.searchlist.SearchModule;
 import com.schedjoules.eventdiscovery.framework.searchlist.resultupdates.Clear;
@@ -182,10 +181,7 @@ public final class PlaceSuggestionModule implements SearchModule
         List<ListItem> newItems = new ArrayList<>();
         for (final NamedPlace namedPlace : newSuggestions)
         {
-            ListItem item = new Clickable<>(
-                    new PlaceSuggestionItem<>(new Equalable(namedPlace)),
-                    new PlaceLookUpAction(namedPlace)
-            );
+            ListItem item = new Clickable<>(new PlaceSuggestionItem(namedPlace), new PlaceLookUpAction(namedPlace));
             newItems.add(item);
         }
         mUpdateListener.onUpdate(new ReplaceAll<>(newItems, query));
