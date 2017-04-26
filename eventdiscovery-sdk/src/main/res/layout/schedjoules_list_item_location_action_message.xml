@@ -26,6 +26,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
-    <include layout="@layout/schedjoules_list_item_divider"/>
+    <View style="@style/SchedJoules_Divider.Bottom"/>
 
 </com.schedjoules.eventdiscovery.framework.location.listitems.ActionMessageItemView>

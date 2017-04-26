@@ -24,6 +24,7 @@ import android.widget.TextView;
 
 import com.schedjoules.eventdiscovery.R;
 import com.schedjoules.eventdiscovery.databinding.SchedjoulesViewEventDetailsActionBinding;
+import com.schedjoules.eventdiscovery.databinding.SchedjoulesViewEventDetailsActionDirectionsBinding;
 import com.schedjoules.eventdiscovery.framework.actions.Action;
 import com.schedjoules.eventdiscovery.framework.actions.ActionClickListener;
 import com.schedjoules.eventdiscovery.framework.utils.AttributeColor;
@@ -44,10 +45,22 @@ public final class ActionView implements SmartView<Optional<Action>>
     private final TextView mTextView;
 
 
+    private ActionView(View root, TextView textView)
+    {
+        mRoot = root;
+        mTextView = textView;
+    }
+
+
     public ActionView(SchedjoulesViewEventDetailsActionBinding binding)
     {
-        mRoot = binding.getRoot();
-        mTextView = binding.schedjoulesEventDetailsActionLabel;
+        this(binding.getRoot(), binding.schedjoulesEventDetailsActionLabel);
+    }
+
+
+    public ActionView(SchedjoulesViewEventDetailsActionDirectionsBinding directionsBinding)
+    {
+        this(directionsBinding.getRoot(), directionsBinding.schedjoulesEventDetailsDirectionsLabel);
     }
 
 

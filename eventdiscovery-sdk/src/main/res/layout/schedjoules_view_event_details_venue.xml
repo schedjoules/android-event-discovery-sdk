@@ -2,22 +2,34 @@
 <layout>
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            style="@style/SchedJoules_EventDetailsItem"
-            android:background="?android:attr/selectableItemBackground">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/schedjoules_activity_horizontal_margin"
+            android:paddingRight="@dimen/schedjoules_activity_horizontal_margin">
 
         <TextView
                 android:id="@+id/schedjoules_venue_name_icon_anchor"
-                style="@style/SchedJoules_TextContent.Title"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
                 android:drawablePadding="@dimen/schedjoules_event_details_item_icon_and_text_distance"
                 android:gravity="center_vertical"
                 android:textSize="@dimen/schedjoules_event_details_venue_name_text_size"
                 android:text=""/>
 
         <TextView
-                style="@style/SchedJoules_TextContent.Title"
                 android:id="@+id/schedjoules_venue_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:minHeight="@dimen/schedjoules_event_details_item_height"
                 android:drawablePadding="@dimen/schedjoules_event_details_item_icon_and_text_distance"
-                android:textSize="@dimen/schedjoules_event_details_venue_name_text_size"/>
+                android:gravity="center_vertical"
+                android:layout_alignBaseline="@id/schedjoules_venue_name_icon_anchor"
+                android:textSize="@dimen/schedjoules_event_details_venue_name_text_size"
+                android:textColor="?android:attr/textColorPrimary"/>
 
     </RelativeLayout>
 </layout>

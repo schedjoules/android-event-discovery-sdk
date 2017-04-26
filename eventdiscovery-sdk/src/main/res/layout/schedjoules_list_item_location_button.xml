@@ -17,6 +17,6 @@
             android:gravity="left|start|center_vertical"
             android:layout_centerVertical="true"/>
 
-    <include layout="@layout/schedjoules_list_item_divider"/>
+    <View style="@style/SchedJoules_Divider.Bottom"/>
 
 </com.schedjoules.eventdiscovery.framework.location.listitems.MessageItemView>
