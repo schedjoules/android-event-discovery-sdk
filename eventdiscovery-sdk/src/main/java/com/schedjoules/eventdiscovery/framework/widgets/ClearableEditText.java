@@ -18,6 +18,7 @@
 package com.schedjoules.eventdiscovery.framework.widgets;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.support.v4.view.GestureDetectorCompat;
 import android.text.Editable;
 import android.util.AttributeSet;
@@ -26,6 +27,8 @@ import android.view.MotionEvent;
 import android.widget.EditText;
 
 import com.schedjoules.eventdiscovery.R;
+import com.schedjoules.eventdiscovery.framework.utils.AttributeColor;
+import com.schedjoules.eventdiscovery.framework.utils.TintedDrawable;
 
 
 /**
@@ -37,6 +40,7 @@ public final class ClearableEditText extends EditText
 {
 
     private GestureDetectorCompat mGestureDetector;
+    private Drawable mClearIcon;
 
 
     public ClearableEditText(Context context)
@@ -56,13 +60,16 @@ public final class ClearableEditText extends EditText
     {
         super.onFinishInflate();
 
+        mClearIcon = TintedDrawable.create(getContext(), R.drawable.schedjoules_ic_clear_black_24dp,
+                new AttributeColor(getContext(), R.attr.schedjoules_appBarIconColor));
+
         addTextChangedListener(new AbstractTextWatcher()
         {
             @Override
             public void afterTextChanged(Editable text)
             {
-                int clearIcon = text.length() > 0 ? R.drawable.schedjoules_ic_clear : 0;
-                setCompoundDrawablesWithIntrinsicBounds(0, 0, clearIcon, 0);
+                Drawable clearIcon = text.length() > 0 ? mClearIcon : null;
+                setCompoundDrawablesWithIntrinsicBounds(null, null, clearIcon, null);
             }
         });
 
