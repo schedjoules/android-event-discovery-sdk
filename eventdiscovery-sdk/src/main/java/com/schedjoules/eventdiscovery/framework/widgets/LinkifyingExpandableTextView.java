@@ -60,8 +60,14 @@ public class LinkifyingExpandableTextView implements SmartView<Optional<String>>
         {
             String input = optInput.value();
             // only parse as HTML if the string contains HTML
-            mExpandableTextView.setText(input.contains("</") ?
+            mExpandableTextView.setText(isHtml(input) ?
                     new Html(input) : new Linkified(new Trimmed(input)));
         }
+    }
+
+
+    private boolean isHtml(String input)
+    {
+        return input.contains("</") || input.contains("/>") || input.contains("<br>");
     }
 }
