@@ -17,15 +17,16 @@
 
 package com.schedjoules.eventdiscovery.framework.widgets;
 
-import android.support.v4.content.ContextCompat;
-import android.text.Html;
-import android.text.SpannableString;
-import android.text.util.Linkify;
 import android.widget.TextView;
 
 import com.ms.square.android.expandabletextview.ExpandableTextView;
 import com.schedjoules.eventdiscovery.R;
+import com.schedjoules.eventdiscovery.framework.utils.charsequence.Trimmed;
 import com.schedjoules.eventdiscovery.framework.utils.smartview.SmartView;
+import com.schedjoules.eventdiscovery.framework.utils.spanned.Html;
+import com.schedjoules.eventdiscovery.framework.utils.spanned.Linkified;
+
+import org.dmfs.optional.Optional;
 
 
 /**
@@ -33,7 +34,7 @@ import com.schedjoules.eventdiscovery.framework.utils.smartview.SmartView;
  *
  * @author Gabor Keszthelyi
  */
-public class LinkifyingExpandableTextView implements SmartView<String>
+public class LinkifyingExpandableTextView implements SmartView<Optional<String>>
 {
     private final ExpandableTextView mExpandableTextView;
 
@@ -53,23 +54,14 @@ public class LinkifyingExpandableTextView implements SmartView<String>
 
 
     @Override
-    public void update(String textInput)
+    public void update(Optional<String> optInput)
     {
-        CharSequence text;
-        if (textInput == null)
+        if (optInput.isPresent())
         {
-            text = null;
+            String input = optInput.value();
+            // only parse as HTML if the string contains HTML
+            mExpandableTextView.setText(input.contains("</") ?
+                    new Html(input) : new Linkified(new Trimmed(input)));
         }
-        else if (textInput.contains("</")) // only parse as HTML if the string contains HTML
-        {
-            text = Html.fromHtml(textInput);
-        }
-        else
-        {
-            SpannableString spannableString = new SpannableString(textInput);
-            Linkify.addLinks(spannableString, Linkify.ALL);
-            text = spannableString;
-        }
-        mExpandableTextView.setText(text);
     }
 }
