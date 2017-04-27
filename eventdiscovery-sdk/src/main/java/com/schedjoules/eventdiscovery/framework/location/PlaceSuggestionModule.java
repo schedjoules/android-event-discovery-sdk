@@ -181,7 +181,7 @@ public final class PlaceSuggestionModule implements SearchModule
         List<ListItem> newItems = new ArrayList<>();
         for (final NamedPlace namedPlace : newSuggestions)
         {
-            ListItem item = new Clickable<>(new PlaceSuggestionItem(namedPlace), new PlaceLookUpAction(namedPlace));
+            ListItem item = new Clickable<>(new PlaceSuggestionItem(namedPlace), new PlaceLookUpAction(namedPlace), "placeLookUp");
             newItems.add(item);
         }
         mUpdateListener.onUpdate(new ReplaceAll<>(newItems, query));
