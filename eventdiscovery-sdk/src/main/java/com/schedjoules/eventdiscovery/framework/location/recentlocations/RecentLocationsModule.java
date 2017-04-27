@@ -98,14 +98,16 @@ public final class RecentLocationsModule implements SearchModule
         int count = 0;
         for (final Recent<GeoPlace> recentPlace : mRecents)
         {
-            ListItem listItem = new Clickable<>(new PlaceSuggestionItem(recentPlace.value().namedPlace()), new OnClickAction()
-            {
-                @Override
-                public void onClick()
-                {
-                    mSelectionAction.onItemChosen(recentPlace.value());
-                }
-            });
+            ListItem listItem = new Clickable<>(
+                    new PlaceSuggestionItem(recentPlace.value().namedPlace()),
+                    new OnClickAction()
+                    {
+                        @Override
+                        public void onClick()
+                        {
+                            mSelectionAction.onItemChosen(recentPlace.value());
+                        }
+                    }, "selectItem");
             places.add(listItem);
             if (count++ > 5)
             {

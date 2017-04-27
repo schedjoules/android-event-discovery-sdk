@@ -134,7 +134,11 @@ public final class PermissionProxy implements SearchModule
                 else
                 {
                     mUpdateListener.onUpdate(
-                            new ShowSingle<ListItem>(new Clickable<>(new ButtonItem(mNotAskedYetMessage), new PermissionRequestOnClick()), newQuery));
+                            new ShowSingle<ListItem>(
+                                    new Clickable<>(
+                                            new ButtonItem(mNotAskedYetMessage),
+                                            new PermissionRequestOnClick(), "permissionRequest"),
+                                    newQuery));
                 }
             }
         }

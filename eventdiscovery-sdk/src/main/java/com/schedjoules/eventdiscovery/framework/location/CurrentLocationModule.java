@@ -118,7 +118,7 @@ public final class CurrentLocationModule implements SearchModule
                         {
                             loadCurrentLocation();
                         }
-                    });
+                    }, "loadCurrentLocation");
             mUpdateListener.onUpdate(new ShowSingle<>(item, newQuery));
         }
         else
