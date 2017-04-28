@@ -161,7 +161,7 @@ public final class EventLoaderMicroFragment implements MicroFragment<String>
         @Override
         public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
         {
-            View view = inflater.inflate(R.layout.schedjoules_fragment_event_details_loading, container, false);
+            View view = inflater.inflate(R.layout.schedjoules_fragment_event_details_loader, container, false);
             view.findViewById(android.R.id.message).animate().setStartDelay(1500).alpha(1).start();
             ((CollapsingToolbarLayout) view.findViewById(R.id.schedjoules_event_detail_toolbar_layout)).setTitle("Loading event …");
 

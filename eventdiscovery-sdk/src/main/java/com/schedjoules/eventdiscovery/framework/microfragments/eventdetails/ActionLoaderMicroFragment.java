@@ -31,7 +31,7 @@ import android.view.ViewGroup;
 
 import com.schedjoules.client.eventsdiscovery.Event;
 import com.schedjoules.eventdiscovery.R;
-import com.schedjoules.eventdiscovery.databinding.SchedjoulesFragmentEventDetailsActionLoadingBinding;
+import com.schedjoules.eventdiscovery.databinding.SchedjoulesFragmentEventDetailsContentLoadingActionsBinding;
 import com.schedjoules.eventdiscovery.framework.microfragments.eventdetails.fragments.views.EventHeaderView;
 import com.schedjoules.eventdiscovery.framework.model.ParcelableEvent;
 import com.schedjoules.eventdiscovery.framework.services.ActionService;
@@ -157,8 +157,8 @@ public final class ActionLoaderMicroFragment implements MicroFragment<Event>
         @Override
         public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
         {
-            SchedjoulesFragmentEventDetailsActionLoadingBinding views = DataBindingUtil.inflate(inflater,
-                    R.layout.schedjoules_fragment_event_details_action_loading, container, false);
+            SchedjoulesFragmentEventDetailsContentLoadingActionsBinding views = DataBindingUtil.inflate(inflater,
+                    R.layout.schedjoules_fragment_event_details_content_loading_actions, container, false);
 
             new EventHeaderView(getActivity(), views.schedjoulesDetailsHeader).update(mEvent);
 
