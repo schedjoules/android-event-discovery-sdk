@@ -19,8 +19,8 @@ package com.schedjoules.eventdiscovery.framework.model.recent.places;
 
 import com.schedjoules.client.eventsdiscovery.GeoLocation;
 import com.schedjoules.client.eventsdiscovery.locations.UriGeoLocation;
-import com.schedjoules.eventdiscovery.framework.location.model.GeoPlace;
-import com.schedjoules.eventdiscovery.framework.location.model.namedplace.NamedPlace;
+import com.schedjoules.eventdiscovery.framework.model.location.geoplace.GeoPlace;
+import com.schedjoules.eventdiscovery.framework.model.location.namedplace.NamedPlace;
 
 import org.dmfs.rfc3986.Uri;
 import org.dmfs.rfc3986.parameters.ParameterList;

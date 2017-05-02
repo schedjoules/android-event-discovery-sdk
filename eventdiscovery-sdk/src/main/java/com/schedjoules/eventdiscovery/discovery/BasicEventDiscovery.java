@@ -23,7 +23,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.StyleRes;
 
 import com.schedjoules.client.eventsdiscovery.GeoLocation;
-import com.schedjoules.eventdiscovery.framework.model.ParcelableGeoLocation;
+import com.schedjoules.eventdiscovery.framework.model.location.geolocation.ParcelableGeoLocation;
 
 import org.dmfs.rfc5545.DateTime;
 

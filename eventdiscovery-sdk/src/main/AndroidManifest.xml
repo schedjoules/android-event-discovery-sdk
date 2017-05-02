@@ -63,7 +63,7 @@
         </activity>
 
         <activity
-                android:name=".framework.location.LocationSelectionActivity"
+                android:name=".framework.locationpicker.LocationPickerActivity"
                 android:label=""
                 android:exported="false"
                 android:enabled="true"

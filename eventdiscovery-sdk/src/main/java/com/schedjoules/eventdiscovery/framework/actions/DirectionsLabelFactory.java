@@ -21,7 +21,7 @@ import android.content.Context;
 
 import com.schedjoules.client.eventsdiscovery.Location;
 import com.schedjoules.eventdiscovery.R;
-import com.schedjoules.eventdiscovery.framework.location.model.AddressName;
+import com.schedjoules.eventdiscovery.framework.utils.AddressName;
 import com.schedjoules.eventdiscovery.framework.utils.charsequence.CharSequenceFactory;
 
 

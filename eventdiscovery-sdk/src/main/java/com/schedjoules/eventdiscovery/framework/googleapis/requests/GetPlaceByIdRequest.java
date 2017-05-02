@@ -24,10 +24,10 @@ import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.PlaceBuffer;
 import com.google.android.gms.location.places.Places;
 import com.schedjoules.eventdiscovery.framework.googleapis.GoogleApiRequest;
-import com.schedjoules.eventdiscovery.framework.location.model.GeoPlace;
-import com.schedjoules.eventdiscovery.framework.location.model.GoogleGeoLocation;
-import com.schedjoules.eventdiscovery.framework.location.model.StructuredGeoPlace;
-import com.schedjoules.eventdiscovery.framework.location.model.namedplace.NamedPlace;
+import com.schedjoules.eventdiscovery.framework.model.location.geolocation.GoogleGeoLocation;
+import com.schedjoules.eventdiscovery.framework.model.location.geoplace.GeoPlace;
+import com.schedjoules.eventdiscovery.framework.model.location.geoplace.StructuredGeoPlace;
+import com.schedjoules.eventdiscovery.framework.model.location.namedplace.NamedPlace;
 
 
 /**

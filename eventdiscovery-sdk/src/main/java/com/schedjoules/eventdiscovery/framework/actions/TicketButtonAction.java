@@ -23,7 +23,7 @@ import android.support.annotation.NonNull;
 
 import com.schedjoules.client.eventsdiscovery.Event;
 import com.schedjoules.eventdiscovery.R;
-import com.schedjoules.eventdiscovery.framework.model.BookTicketLink;
+import com.schedjoules.eventdiscovery.framework.utils.BookTicketLink;
 import com.schedjoules.eventdiscovery.framework.utils.Converter;
 import com.schedjoules.eventdiscovery.framework.utils.factory.Factory;
 import com.schedjoules.eventdiscovery.framework.utils.optionals.AbstractCachingOptional;

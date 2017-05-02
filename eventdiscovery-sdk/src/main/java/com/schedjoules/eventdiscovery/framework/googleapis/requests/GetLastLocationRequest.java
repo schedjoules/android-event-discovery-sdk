@@ -26,7 +26,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
 import com.schedjoules.client.eventsdiscovery.GeoLocation;
 import com.schedjoules.eventdiscovery.framework.googleapis.GoogleApiRequest;
-import com.schedjoules.eventdiscovery.framework.location.model.AndroidGeoLocation;
+import com.schedjoules.eventdiscovery.framework.model.location.geolocation.AndroidGeoLocation;
 
 
 /**

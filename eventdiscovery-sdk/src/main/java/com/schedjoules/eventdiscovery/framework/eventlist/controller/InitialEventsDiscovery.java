@@ -25,7 +25,7 @@ import com.schedjoules.client.eventsdiscovery.EventsDiscovery;
 import com.schedjoules.client.eventsdiscovery.GeoLocation;
 import com.schedjoules.client.eventsdiscovery.ResultPage;
 import com.schedjoules.client.eventsdiscovery.queries.SimpleEventsDiscovery;
-import com.schedjoules.eventdiscovery.framework.model.UndefinedGeoLocation;
+import com.schedjoules.eventdiscovery.framework.model.location.geolocation.UndefinedGeoLocation;
 
 import org.dmfs.httpessentials.exceptions.ProtocolError;
 import org.dmfs.httpessentials.exceptions.ProtocolException;
