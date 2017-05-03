@@ -22,7 +22,7 @@
                 android:id="@+id/schedjoules_event_detail_container"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-            <ProgressBar
+            <com.schedjoules.eventdiscovery.framework.widgets.AccentColoredProgressBar
                     android:id="@+id/schedjoules_event_details_horizontal_actions_progressbar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

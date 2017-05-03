@@ -39,14 +39,14 @@ public final class TintedDrawable
      */
     public static Drawable create(Context context, @DrawableRes int drawableResId, Color color)
     {
-        return tint(ContextCompat.getDrawable(context, drawableResId), color);
+        return tinted(ContextCompat.getDrawable(context, drawableResId), color);
     }
 
 
     /**
      * Returns a tinted version of the given drawable.
      */
-    public static Drawable tint(Drawable drawable, Color color)
+    public static Drawable tinted(Drawable drawable, Color color)
     {
         Drawable mutated = DrawableCompat.wrap(drawable).mutate();
         DrawableCompat.setTint(mutated, color.argb());

@@ -75,7 +75,7 @@ public final class ActionView implements SmartView<Optional<Action>>
 
             mTextView.setText(action.label(context));
 
-            Drawable icon = TintedDrawable.tint(action.icon(context), new AttributeColor(context, R.attr.colorAccent));
+            Drawable icon = TintedDrawable.tinted(action.icon(context), new AttributeColor(context, R.attr.colorAccent));
             mTextView.setCompoundDrawablesWithIntrinsicBounds(icon, null, null, null);
 
             mRoot.setOnClickListener(new ActionClickListener(action.actionExecutable()));

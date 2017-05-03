@@ -9,7 +9,7 @@
 
     <!-- this is how you customize the default theme -->
     <style name="SchedJoules_Theme.Default" tools:override="true" parent="SchedJoules_Theme.Light">
-        <item name="colorAccent">#2196F3</item>
+        <item name="colorAccent">#f57f17</item>
     </style>
 
 </resources>

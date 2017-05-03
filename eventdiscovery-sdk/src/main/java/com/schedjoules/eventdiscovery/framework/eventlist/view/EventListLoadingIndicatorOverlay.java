@@ -18,7 +18,6 @@
 package com.schedjoules.eventdiscovery.framework.eventlist.view;
 
 import android.view.View;
-import android.widget.ProgressBar;
 
 
 /**
@@ -28,10 +27,10 @@ import android.widget.ProgressBar;
  */
 public final class EventListLoadingIndicatorOverlay
 {
-    private final ProgressBar mProgressBar;
+    private final View mProgressBar;
 
 
-    public EventListLoadingIndicatorOverlay(ProgressBar progressBar)
+    public EventListLoadingIndicatorOverlay(View progressBar)
     {
         mProgressBar = progressBar;
     }
