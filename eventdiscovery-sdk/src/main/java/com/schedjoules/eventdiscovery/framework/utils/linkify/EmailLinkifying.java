@@ -15,39 +15,33 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery.framework.utils.spanned;
+package com.schedjoules.eventdiscovery.framework.utils.linkify;
 
-import android.text.SpannableString;
-import android.text.Spanned;
+import android.support.v4.text.util.LinkifyCompat;
+import android.text.Spannable;
 import android.text.util.Linkify;
 
-import com.schedjoules.eventdiscovery.framework.utils.factory.Factory;
+import com.schedjoules.eventdiscovery.framework.utils.spanned.AbstractSpannable;
 
 
 /**
- * Linkified text.
+ * A {@link Spannable} that linkifies email addresses in the input {@link Spannable}.
  *
  * @author Gabor Keszthelyi
  */
-public final class Linkified extends AbstractSpanned
+public final class EmailLinkifying extends AbstractSpannable
 {
-    public Linkified(final CharSequence input, final int mask)
+    public EmailLinkifying(final Spannable input)
     {
-        super(new Factory<Spanned>()
+        super(new com.schedjoules.eventdiscovery.framework.utils.factory.Factory<Spannable>()
         {
             @Override
-            public Spanned create()
+            public Spannable create()
             {
-                SpannableString spannableString = new SpannableString(input);
-                Linkify.addLinks(spannableString, mask);
-                return spannableString;
+                LinkifyCompat.addLinks(input, Linkify.EMAIL_ADDRESSES);
+                return input;
             }
         });
     }
 
-
-    public Linkified(final CharSequence input)
-    {
-        this(input, Linkify.ALL);
-    }
 }
