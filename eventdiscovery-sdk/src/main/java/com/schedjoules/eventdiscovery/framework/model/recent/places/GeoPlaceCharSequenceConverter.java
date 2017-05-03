@@ -18,7 +18,7 @@
 package com.schedjoules.eventdiscovery.framework.model.recent.places;
 
 import com.schedjoules.client.eventsdiscovery.locations.GeoLocationText;
-import com.schedjoules.eventdiscovery.framework.location.model.GeoPlace;
+import com.schedjoules.eventdiscovery.framework.model.location.geoplace.GeoPlace;
 import com.schedjoules.eventdiscovery.framework.model.recent.CharSequenceConverter;
 
 import org.dmfs.rfc3986.Scheme;

@@ -22,6 +22,7 @@ import android.os.Parcelable;
 
 import com.schedjoules.client.eventsdiscovery.Event;
 import com.schedjoules.client.eventsdiscovery.Location;
+import com.schedjoules.eventdiscovery.framework.model.location.ParcelableLocation;
 
 import org.dmfs.httpessentials.types.Link;
 import org.dmfs.iterators.AbstractConvertedIterator;

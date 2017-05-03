@@ -29,8 +29,8 @@ import com.schedjoules.eventdiscovery.framework.datetime.FormattedDateTime;
 import com.schedjoules.eventdiscovery.framework.datetime.ShortTime;
 import com.schedjoules.eventdiscovery.framework.list.ListItem;
 import com.schedjoules.eventdiscovery.framework.model.Equalable;
-import com.schedjoules.eventdiscovery.framework.model.SchedJoulesLinks;
 import com.schedjoules.eventdiscovery.framework.utils.InsightsTask;
+import com.schedjoules.eventdiscovery.framework.utils.SchedJoulesLinks;
 
 import org.dmfs.httpessentials.types.StringToken;
 

@@ -34,8 +34,8 @@ import com.schedjoules.eventdiscovery.framework.actions.BaseActionFactory;
 import com.schedjoules.eventdiscovery.framework.actions.OptionalAction;
 import com.schedjoules.eventdiscovery.framework.actions.TicketButtonAction;
 import com.schedjoules.eventdiscovery.framework.common.BaseFragment;
-import com.schedjoules.eventdiscovery.framework.location.model.VenueName;
 import com.schedjoules.eventdiscovery.framework.microfragments.eventdetails.ShowEventMicroFragment;
+import com.schedjoules.eventdiscovery.framework.utils.VenueName;
 import com.schedjoules.eventdiscovery.framework.utils.smartview.SmartView;
 import com.schedjoules.eventdiscovery.framework.widgets.NoOpOnClickListener;
 

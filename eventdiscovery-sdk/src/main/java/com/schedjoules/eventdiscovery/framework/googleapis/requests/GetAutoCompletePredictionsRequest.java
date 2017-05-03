@@ -24,8 +24,8 @@ import com.google.android.gms.location.places.AutocompletePrediction;
 import com.google.android.gms.location.places.AutocompletePredictionBuffer;
 import com.google.android.gms.location.places.Places;
 import com.schedjoules.eventdiscovery.framework.googleapis.GoogleApiRequest;
-import com.schedjoules.eventdiscovery.framework.location.model.GooglePredictionNamedPlace;
-import com.schedjoules.eventdiscovery.framework.location.model.namedplace.NamedPlace;
+import com.schedjoules.eventdiscovery.framework.model.location.namedplace.GooglePredictionNamedPlace;
+import com.schedjoules.eventdiscovery.framework.model.location.namedplace.NamedPlace;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -18,9 +18,9 @@
 package com.schedjoules.eventdiscovery.framework.model.recent.places;
 
 import com.schedjoules.client.eventsdiscovery.locations.StructuredGeoLocation;
-import com.schedjoules.eventdiscovery.framework.location.model.GeoPlace;
-import com.schedjoules.eventdiscovery.framework.location.model.StructuredGeoPlace;
-import com.schedjoules.eventdiscovery.framework.location.model.StructuredNamedPlace;
+import com.schedjoules.eventdiscovery.framework.model.location.geoplace.GeoPlace;
+import com.schedjoules.eventdiscovery.framework.model.location.geoplace.StructuredGeoPlace;
+import com.schedjoules.eventdiscovery.framework.model.location.namedplace.StructuredNamedPlace;
 import com.schedjoules.eventdiscovery.framework.model.recent.CharSequenceConverter;
 
 import org.junit.Test;

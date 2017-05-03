@@ -56,8 +56,8 @@ import com.schedjoules.eventdiscovery.framework.eventlist.view.EdgeReachScrollLi
 import com.schedjoules.eventdiscovery.framework.eventlist.view.EventListBackgroundMessage;
 import com.schedjoules.eventdiscovery.framework.eventlist.view.EventListLoadingIndicatorOverlay;
 import com.schedjoules.eventdiscovery.framework.eventlist.view.EventListMenu;
-import com.schedjoules.eventdiscovery.framework.location.LocationPickerPlaceSelection;
-import com.schedjoules.eventdiscovery.framework.location.SharedPrefLastSelectedPlace;
+import com.schedjoules.eventdiscovery.framework.locationpicker.LocationPickerPlaceSelection;
+import com.schedjoules.eventdiscovery.framework.locationpicker.SharedPrefLastSelectedPlace;
 import com.schedjoules.eventdiscovery.framework.utils.FutureServiceConnection;
 import com.schedjoules.eventdiscovery.framework.utils.InsightsTask;
 import com.schedjoules.eventdiscovery.framework.utils.factory.Factory;

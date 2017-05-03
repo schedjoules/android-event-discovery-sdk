@@ -21,7 +21,7 @@ import android.app.Activity;
 
 import com.schedjoules.eventdiscovery.framework.list.ItemChosenAction;
 import com.schedjoules.eventdiscovery.framework.list.ListItem;
-import com.schedjoules.eventdiscovery.framework.location.PlaceSuggestionModule;
+import com.schedjoules.eventdiscovery.framework.locationpicker.modules.placesuggestion.PlaceSuggestionModule;
 import com.schedjoules.eventdiscovery.framework.searchlist.resultupdates.ResultUpdateListener;
 
 
