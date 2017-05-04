@@ -28,12 +28,12 @@ def gitCommitNo = { ->
 }
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion "25.0.0"
+    compileSdkVersion COMPILE_SDK_VERSION.toInteger()
+    buildToolsVersion BUILD_TOOLS_VERSION
     defaultConfig {
         applicationId "com.schedjoules.eventdiscovery.demo"
-        minSdkVersion 14
-        targetSdkVersion 23
+        minSdkVersion MIN_SDK_VERSION.toInteger()
+        targetSdkVersion TARGET_SDK_VERSION.toInteger()
         versionCode gitCommitNo() * 10 // spread the version number so we can insert versions if necessary
         versionName gitVersion()
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -82,6 +82,6 @@ android {
 }
 
 dependencies {
-    compile 'com.android.support:appcompat-v7:23.4.0'
+    compile 'com.android.support:appcompat-v7:' + SUPPORT_LIBRARY_VERSION
     compile project(path: ':eventdiscovery-sdk')
 }
