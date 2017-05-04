@@ -27,8 +27,8 @@ import android.view.MotionEvent;
 import android.widget.EditText;
 
 import com.schedjoules.eventdiscovery.R;
-import com.schedjoules.eventdiscovery.framework.utils.AttributeColor;
 import com.schedjoules.eventdiscovery.framework.utils.TintedDrawable;
+import com.schedjoules.eventdiscovery.framework.utils.colors.AttributeColor;
 
 
 /**

@@ -22,7 +22,7 @@ import android.os.Build;
 import android.view.Window;
 import android.view.WindowManager;
 
-import com.schedjoules.eventdiscovery.framework.utils.Color;
+import com.schedjoules.eventdiscovery.framework.utils.colors.Color;
 import com.schedjoules.eventdiscovery.framework.utils.smartview.SmartView;
 
 

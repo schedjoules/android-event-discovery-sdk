@@ -15,34 +15,26 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery.framework.utils;
-
-import android.content.Context;
-import android.support.annotation.ColorRes;
-import android.support.v4.content.ContextCompat;
-
+package com.schedjoules.eventdiscovery.framework.utils.colors;
 
 /**
- * A {@link Color} for a given color resource.
+ * Transparent color.
  *
  * @author Gabor Keszthelyi
  */
-public final class ResourceColor implements Color
+public final class Transparent implements Color
 {
-    private final Context mContext;
-    private final int mColorResId;
+    public static final Color INSTANCE = new Transparent();
 
 
-    public ResourceColor(Context context, @ColorRes int colorResId)
+    private Transparent()
     {
-        mContext = context;
-        mColorResId = colorResId;
     }
 
 
     @Override
     public int argb()
     {
-        return ContextCompat.getColor(mContext, mColorResId);
+        return 0;
     }
 }
