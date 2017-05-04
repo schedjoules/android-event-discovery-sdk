@@ -18,6 +18,7 @@
 package com.schedjoules.eventdiscovery.framework.microfragments.eventdetails.fragments.views;
 
 import com.schedjoules.eventdiscovery.databinding.SchedjoulesViewEventDetailsDescriptionBinding;
+import com.schedjoules.eventdiscovery.framework.microfragments.eventdetails.EventDescriptionText;
 import com.schedjoules.eventdiscovery.framework.utils.OptionalView;
 import com.schedjoules.eventdiscovery.framework.utils.smartview.SmartView;
 import com.schedjoules.eventdiscovery.framework.widgets.LinkifyingExpandableTextView;
@@ -46,7 +47,8 @@ public final class EventDescriptionView implements SmartView<Optional<String>>
     @Override
     public void update(Optional<String> description)
     {
-        mRoot.update(description);
-        mTitleView.update(description);
+        EventDescriptionText formattedDescription = new EventDescriptionText(description);
+        mRoot.update(formattedDescription);
+        mTitleView.update(formattedDescription);
     }
 }

@@ -21,10 +21,7 @@ import android.widget.TextView;
 
 import com.ms.square.android.expandabletextview.ExpandableTextView;
 import com.schedjoules.eventdiscovery.R;
-import com.schedjoules.eventdiscovery.framework.utils.charsequence.Trimmed;
 import com.schedjoules.eventdiscovery.framework.utils.smartview.SmartView;
-import com.schedjoules.eventdiscovery.framework.utils.spanned.Html;
-import com.schedjoules.eventdiscovery.framework.utils.spanned.Linkified;
 
 import org.dmfs.optional.Optional;
 
@@ -34,7 +31,7 @@ import org.dmfs.optional.Optional;
  *
  * @author Gabor Keszthelyi
  */
-public class LinkifyingExpandableTextView implements SmartView<Optional<String>>
+public class LinkifyingExpandableTextView implements SmartView<Optional<CharSequence>>
 {
     private final ExpandableTextView mExpandableTextView;
 
@@ -54,20 +51,9 @@ public class LinkifyingExpandableTextView implements SmartView<Optional<String>>
 
 
     @Override
-    public void update(Optional<String> optInput)
+    public void update(Optional<CharSequence> formattedDescription)
     {
-        if (optInput.isPresent())
-        {
-            String input = optInput.value();
-            // only parse as HTML if the string contains HTML
-            mExpandableTextView.setText(isHtml(input) ?
-                    new Html(input) : new Linkified(new Trimmed(input)));
-        }
+        mExpandableTextView.setText(formattedDescription.value(null));
     }
 
-
-    private boolean isHtml(String input)
-    {
-        return input.contains("</") || input.contains("/>") || input.contains("<br>");
-    }
 }
