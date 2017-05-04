@@ -24,8 +24,8 @@ import android.util.AttributeSet;
 import android.widget.ProgressBar;
 
 import com.schedjoules.eventdiscovery.R;
-import com.schedjoules.eventdiscovery.framework.utils.AttributeColor;
 import com.schedjoules.eventdiscovery.framework.utils.TintedDrawable;
+import com.schedjoules.eventdiscovery.framework.utils.colors.AttributeColor;
 
 
 /**

@@ -23,6 +23,8 @@ import android.support.annotation.DrawableRes;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
 
+import com.schedjoules.eventdiscovery.framework.utils.colors.Color;
+
 
 /**
  * Util method for creating tinted drawable.

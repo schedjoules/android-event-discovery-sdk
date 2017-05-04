@@ -27,8 +27,8 @@ import com.schedjoules.eventdiscovery.databinding.SchedjoulesViewEventDetailsAct
 import com.schedjoules.eventdiscovery.databinding.SchedjoulesViewEventDetailsActionDirectionsBinding;
 import com.schedjoules.eventdiscovery.framework.actions.Action;
 import com.schedjoules.eventdiscovery.framework.actions.ActionClickListener;
-import com.schedjoules.eventdiscovery.framework.utils.AttributeColor;
 import com.schedjoules.eventdiscovery.framework.utils.TintedDrawable;
+import com.schedjoules.eventdiscovery.framework.utils.colors.AttributeColor;
 import com.schedjoules.eventdiscovery.framework.utils.smartview.SmartView;
 
 import org.dmfs.optional.Optional;

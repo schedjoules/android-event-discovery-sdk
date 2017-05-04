@@ -23,10 +23,10 @@ import android.widget.TextView;
 
 import com.schedjoules.eventdiscovery.R;
 import com.schedjoules.eventdiscovery.databinding.SchedjoulesViewEventDetailsVenueBinding;
-import com.schedjoules.eventdiscovery.framework.utils.AttributeColor;
 import com.schedjoules.eventdiscovery.framework.utils.OptionalView;
 import com.schedjoules.eventdiscovery.framework.utils.TintedDrawable;
-import com.schedjoules.eventdiscovery.framework.utils.Transparent;
+import com.schedjoules.eventdiscovery.framework.utils.colors.AttributeColor;
+import com.schedjoules.eventdiscovery.framework.utils.colors.Transparent;
 import com.schedjoules.eventdiscovery.framework.utils.smartview.SmartView;
 
 import org.dmfs.optional.Optional;
