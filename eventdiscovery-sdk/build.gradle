@@ -66,8 +66,8 @@ dependencies {
     compile 'com.github.schedjoules:java-api-client:0.6'
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'com.github.dmfs:multiline-collapsingtoolbar:79a3e4520261300cf32f2954832173bef2a43a40'
-    compile 'com.google.android.gms:play-services-places:9.8.0'
-    compile 'com.google.android.gms:play-services-location:9.8.0'
+    compile 'com.google.android.gms:play-services-places:' + PLAY_SERVICES_VERSION
+    compile 'com.google.android.gms:play-services-location:' + PLAY_SERVICES_VERSION
     compile('eu.davidea:flexible-adapter:5.0.0-rc1') {
         exclude group: 'com.android.support'
     }
