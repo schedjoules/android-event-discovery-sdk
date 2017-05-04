@@ -15,6 +15,7 @@
             android:textColor="?android:attr/textColorPrimary"
             android:textSize="14sp"
             android:textAllCaps="true"
+            android:fontFamily="@string/schedjoules_font_medium"
             android:drawablePadding="@dimen/schedjoules_event_details_item_icon_and_text_distance"/>
 
 </layout>
