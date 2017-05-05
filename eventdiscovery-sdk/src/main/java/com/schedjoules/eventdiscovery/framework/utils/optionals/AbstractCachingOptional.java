@@ -36,7 +36,7 @@ public abstract class AbstractCachingOptional<T> implements Optional<T>
     private final Lazy<Optional<T>> mLazyValue;
 
 
-    protected AbstractCachingOptional(Factory<Optional<T>> factory)
+    public AbstractCachingOptional(Factory<Optional<T>> factory)
     {
         mLazyValue = new SimpleLazy<>(factory);
     }
