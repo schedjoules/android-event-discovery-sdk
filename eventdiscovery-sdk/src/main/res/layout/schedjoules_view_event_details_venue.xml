@@ -5,7 +5,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingLeft="@dimen/schedjoules_activity_horizontal_margin"
-            android:paddingRight="@dimen/schedjoules_activity_horizontal_margin">
+            android:paddingRight="@dimen/schedjoules_activity_horizontal_margin_with_icon_padding_inset">
 
         <TextView
                 android:id="@+id/schedjoules_venue_name_icon_anchor"

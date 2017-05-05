@@ -7,7 +7,7 @@
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
             android:paddingLeft="@dimen/schedjoules_activity_horizontal_margin"
-            android:paddingRight="@dimen/schedjoules_activity_horizontal_margin"
+            android:paddingRight="@dimen/schedjoules_activity_horizontal_margin_with_icon_padding_inset"
             expandableTextView:animAlphaStart="1"
             expandableTextView:maxCollapsedLines="4"
             expandableTextView:animDuration="@android:integer/config_shortAnimTime">
