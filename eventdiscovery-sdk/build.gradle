@@ -1,12 +1,12 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion "25.0.0"
+    compileSdkVersion COMPILE_SDK_VERSION.toInteger()
+    buildToolsVersion BUILD_TOOLS_VERSION
 
     defaultConfig {
-        minSdkVersion 14
-        targetSdkVersion 23
+        minSdkVersion MIN_SDK_VERSION.toInteger()
+        targetSdkVersion TARGET_SDK_VERSION.toInteger()
         versionCode 1
         versionName "0.1"
 
@@ -53,10 +53,10 @@ android {
 }
 
 dependencies {
-    compile 'com.android.support:appcompat-v7:23.4.0'
-    compile 'com.android.support:design:23.4.0'
-    compile 'com.android.support:cardview-v7:23.4.0'
-    compile 'com.android.support:recyclerview-v7:23.4.0'
+    compile 'com.android.support:appcompat-v7:' + SUPPORT_LIBRARY_VERSION
+    compile 'com.android.support:design:' + SUPPORT_LIBRARY_VERSION
+    compile 'com.android.support:cardview-v7:' + SUPPORT_LIBRARY_VERSION
+    compile 'com.android.support:recyclerview-v7:' + SUPPORT_LIBRARY_VERSION
     compile 'org.dmfs:rfc5545-datetime:0.2.4'
     compile 'org.dmfs:rfc3986-uri:0.7'
     compile 'org.dmfs:http-client-types:' + HTTP_CLIENT_ESSENTIALS_VERSION
@@ -79,7 +79,7 @@ dependencies {
     testCompile 'org.powermock:powermock-module-junit4:1.7.0RC2'
     testCompile 'org.powermock:powermock-api-mockito2:1.7.0RC2'
 
-    androidTestCompile 'com.android.support:support-annotations:23.4.0'
+    androidTestCompile 'com.android.support:support-annotations:' + SUPPORT_LIBRARY_VERSION
     androidTestCompile 'com.android.support.test:runner:0.5'
     androidTestCompile 'com.android.support.test:rules:0.5'
     androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2'
