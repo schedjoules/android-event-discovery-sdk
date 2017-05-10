@@ -17,49 +17,36 @@
 
 package com.schedjoules.eventdiscovery.framework.utils.charsequence;
 
+import android.text.Spanned;
+
 import com.schedjoules.eventdiscovery.framework.utils.factory.Factory;
+import com.schedjoules.eventdiscovery.framework.utils.spanned.AbstractSpanned;
+import com.schedjoules.eventdiscovery.framework.utils.spanned.Html;
+import com.schedjoules.eventdiscovery.framework.utils.spanned.Linkified;
 
 
 /**
- * Trimming {@link CharSequence} decorator.
+ * {@link Spanned} that 'styles' the input string, i.e. 'format' html input or linkify plain text.
  *
  * @author Gabor Keszthelyi
  */
-public final class Trimmed extends AbstractCharSequence
+public final class Styled extends AbstractSpanned
 {
-    public Trimmed(final CharSequence input)
+    public Styled(final String input)
     {
-        super(new Factory<CharSequence>()
+        super(new Factory<Spanned>()
         {
             @Override
-            public CharSequence create()
+            public Spanned create()
             {
-                return trim(input);
+                return isHtml(input) ? new Html(input) : new Linkified(new Trimmed(input));
             }
         });
     }
 
 
-    // Implementation based on String.trim():
-    private static CharSequence trim(CharSequence input)
+    private static boolean isHtml(String input)
     {
-        int last = input.length() - 1;
-
-        int start = 0;
-        int end = last;
-
-        while ((start <= last) && (input.charAt(start) <= ' '))
-        {
-            start++;
-        }
-        while ((end >= start) && (input.charAt(end) <= ' '))
-        {
-            end--;
-        }
-        if (start == 0 && end == last)
-        {
-            return input;
-        }
-        return input.subSequence(start, end + 1);
+        return input.contains("</") || input.contains("/>") || input.contains("<br>");
     }
 }
