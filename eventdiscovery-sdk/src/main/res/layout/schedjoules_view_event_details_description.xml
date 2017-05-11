@@ -6,7 +6,7 @@
             android:id="@+id/schedjoules_event_details_item_title"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
-            android:paddingLeft="@dimen/schedjoules_activity_horizontal_margin"
+            android:paddingLeft="@dimen/schedjoules_activity_horizontal_margin_with_icon_padding_inset"
             android:paddingRight="@dimen/schedjoules_activity_horizontal_margin_with_icon_padding_inset"
             expandableTextView:animAlphaStart="1"
             expandableTextView:maxCollapsedLines="4"
