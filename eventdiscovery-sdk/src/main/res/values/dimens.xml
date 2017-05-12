@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="schedjoules_activity_horizontal_margin">16dp</dimen>
+    <dimen name="schedjoules_activity_horizontal_margin_with_icon_padding_inset">18dp</dimen>
     <dimen name="schedjoules_activity_vertical_margin">16dp</dimen>
     <dimen name="schedjoules_appbar_padding_top">8dp</dimen>
 
@@ -16,7 +17,7 @@
     <dimen name="schedjoules_event_list_progress_bar">36dp</dimen>
     <dimen name="schedjoules_event_details_ticket_button_area_height">72dp</dimen>
     <dimen name="schedjoules_event_details_venue_name_text_size">20sp</dimen>
-    <dimen name="schedjoules_event_details_item_icon_and_text_distance">16dp</dimen>
+    <dimen name="schedjoules_event_details_item_icon_and_text_distance">20dp</dimen>
     <dimen name="schedjoules_event_details_item_height">48dp</dimen>
 
     <dimen name="schedjoules_list_subheader_height">48dp</dimen>
