@@ -26,10 +26,6 @@ public interface Lazy<T>
 {
     /**
      * Returns the instance which is created on first access.
-     * <p>
-     * Note:
-     * If <code>T</code> is mutable, the returned object is always the same instance.
-     * If <code>T</code> is immutable, the instance can be different (as there is no need for it to be the same).
      */
     T get();
 }
