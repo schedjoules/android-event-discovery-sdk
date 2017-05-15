@@ -7,8 +7,9 @@ import android.support.annotation.NonNull;
 import com.schedjoules.client.Api;
 import com.schedjoules.client.SchedJoulesApi;
 import com.schedjoules.client.utils.StringAccessToken;
-import com.schedjoules.eventdiscovery.framework.http.RequestUriAndTimeLogging;
+import com.schedjoules.eventdiscovery.demo.utils.ResponseLogging;
 import com.schedjoules.eventdiscovery.framework.http.DefaultExecutor;
+import com.schedjoules.eventdiscovery.framework.http.RequestUriAndTimeLogging;
 import com.schedjoules.eventdiscovery.service.AbstractApiService;
 
 
@@ -31,7 +32,7 @@ public final class ApiService extends AbstractApiService
                         context,
                         new StringAccessToken("0443a55244bb2b6224fd48e0416f0d9c"),
                         new RequestUriAndTimeLogging(
-                                new DefaultExecutor(context),
+                                new ResponseLogging(new DefaultExecutor(context), true, "EventDiscovery-Request"),
                                 BuildConfig.LOG_REQUESTS, "EventDiscovery-Request"));
             }
         });
