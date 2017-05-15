@@ -22,8 +22,8 @@ import android.text.SpannableString;
 import android.text.Spanned;
 
 import com.schedjoules.eventdiscovery.framework.utils.factory.Factory;
-import com.schedjoules.eventdiscovery.framework.utils.linkify.CompleteWebUrlLinkifying;
-import com.schedjoules.eventdiscovery.framework.utils.linkify.EmailLinkifying;
+import com.schedjoules.eventdiscovery.framework.utils.linkify.EmailLinkified;
+import com.schedjoules.eventdiscovery.framework.utils.linkify.HttpUrlLinkified;
 import com.schedjoules.eventdiscovery.framework.utils.spanned.AbstractSpanned;
 import com.schedjoules.eventdiscovery.framework.utils.spanned.Html;
 
@@ -58,7 +58,7 @@ public final class Styled extends AbstractSpanned
     {
         Spannable trimmed = new SpannableString(new Trimmed(input));
         // Note: Only this oder of decoration works:
-        return new CompleteWebUrlLinkifying(new EmailLinkifying(trimmed));
+        return new HttpUrlLinkified(new EmailLinkified(trimmed));
     }
 
 }

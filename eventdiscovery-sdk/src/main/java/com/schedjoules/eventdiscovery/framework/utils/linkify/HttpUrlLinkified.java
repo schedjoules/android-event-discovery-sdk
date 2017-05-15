@@ -32,14 +32,14 @@ import java.util.regex.Matcher;
  *
  * @author Gabor Keszthelyi
  */
-public final class CompleteWebUrlLinkifying extends AbstractSpannable
+public final class HttpUrlLinkified extends AbstractSpannable
 {
 
     private static final Linkify.MatchFilter MATCH_FILTER = new HttpMatchFilter();
     private static final Linkify.TransformFilter TRANSFORM_FILTER = new ToLowerCaseHttp();
 
 
-    public CompleteWebUrlLinkifying(final Spannable input)
+    public HttpUrlLinkified(final Spannable input)
     {
         super(new com.schedjoules.eventdiscovery.framework.utils.factory.Factory<Spannable>()
         {

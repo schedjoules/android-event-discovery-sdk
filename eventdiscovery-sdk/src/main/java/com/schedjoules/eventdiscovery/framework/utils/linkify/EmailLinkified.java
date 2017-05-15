@@ -29,9 +29,9 @@ import com.schedjoules.eventdiscovery.framework.utils.spanned.AbstractSpannable;
  *
  * @author Gabor Keszthelyi
  */
-public final class EmailLinkifying extends AbstractSpannable
+public final class EmailLinkified extends AbstractSpannable
 {
-    public EmailLinkifying(final Spannable input)
+    public EmailLinkified(final Spannable input)
     {
         super(new com.schedjoules.eventdiscovery.framework.utils.factory.Factory<Spannable>()
         {
