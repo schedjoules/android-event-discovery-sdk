@@ -30,8 +30,6 @@ import org.dmfs.rfc5545.DateTime;
  */
 public final class Keys
 {
-    public static final String NESTED_BUNDLE = new SchedJoulesKey<>("NESTED_BUNDLE").name();
-
     public static final Key<DateTime> DATE_TIME_START_AFTER = new SchedJoulesKey<>("START_AFTER");
 
     public static final Key<GeoLocation> GEO_LOCATION = new SchedJoulesKey<>("GEO_LOCATION");

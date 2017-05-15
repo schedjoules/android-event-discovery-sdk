@@ -20,18 +20,26 @@ package com.schedjoules.eventdiscovery.framework.serialization.commons;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.schedjoules.eventdiscovery.framework.serialization.Keys;
 import com.schedjoules.eventdiscovery.framework.utils.factory.AbstractLazy;
 import com.schedjoules.eventdiscovery.framework.utils.factory.Factory;
 
 
 /**
- * Represents the nested {@link Bundle} in an {@link Intent}.
+ * Lazy access to an {@link Intent}s nested {@link Bundle} if it's present, or to a new empty {@link Bundle} if it's not.
+ * <p>
+ * (Note: Nested {@link Bundle} are used inside {@link Intent}s as a practice to avoid crashes when the system would try to
+ * unparcel custom classes outside of the app.)
  *
  * @author Gabor Keszthelyi
  */
 public final class NestedBundle extends AbstractLazy<Bundle>
 {
+    /**
+     * The key for the nested Bundle Intent extra.
+     */
+    public static final String NESTED_BUNDLE_KEY = "intent.extra.NESTED_BUNDLE";
+
+
     public NestedBundle(final Intent intent)
     {
         super(new Factory<Bundle>()
@@ -39,7 +47,7 @@ public final class NestedBundle extends AbstractLazy<Bundle>
             @Override
             public Bundle create()
             {
-                Bundle nestedBundle = intent.getBundleExtra(Keys.NESTED_BUNDLE);
+                Bundle nestedBundle = intent.getBundleExtra(NESTED_BUNDLE_KEY);
                 return nestedBundle == null ? new Bundle() : nestedBundle;
             }
         });

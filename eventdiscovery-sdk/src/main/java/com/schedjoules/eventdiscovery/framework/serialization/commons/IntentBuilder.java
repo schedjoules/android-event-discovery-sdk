@@ -21,7 +21,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
-import com.schedjoules.eventdiscovery.framework.serialization.Keys;
 import com.schedjoules.eventdiscovery.framework.serialization.core.Box;
 import com.schedjoules.eventdiscovery.framework.serialization.core.Boxable;
 import com.schedjoules.eventdiscovery.framework.serialization.core.FluentBuilder;
@@ -75,7 +74,7 @@ public final class IntentBuilder implements FluentBuilder<Intent>
     @Override
     public Intent build()
     {
-        mIntent.putExtra(Keys.NESTED_BUNDLE, mNestedBundleBuilder.build());
+        mIntent.putExtra(NestedBundle.NESTED_BUNDLE_KEY, mNestedBundleBuilder.build());
         return new Intent(mIntent);
     }
 
