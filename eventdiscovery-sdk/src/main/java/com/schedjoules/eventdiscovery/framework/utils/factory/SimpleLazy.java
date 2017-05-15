@@ -22,26 +22,11 @@ package com.schedjoules.eventdiscovery.framework.utils.factory;
  *
  * @author Gabor Keszthelyi
  */
-public final class SimpleLazy<T> implements Lazy<T>
+public final class SimpleLazy<T> extends AbstractLazy<T>
 {
-    private final Factory<T> mFactory;
-
-    private T mValue;
-
-
     public SimpleLazy(Factory<T> factory)
     {
-        mFactory = factory;
+        super(factory);
     }
 
-
-    @Override
-    public T get()
-    {
-        if (mValue == null)
-        {
-            mValue = mFactory.create();
-        }
-        return mValue;
-    }
 }
