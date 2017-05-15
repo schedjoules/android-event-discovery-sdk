@@ -16,6 +16,8 @@
     <color name="schedjoules_background_cards_dark">#303030</color>
     <color name="schedjoules_background_panel_dark">#424242</color>
 
+    <color name="schedjoules_dark_disabled_button_background">#8e8e8e</color>
+
     <!-- Color of the divider -->
 
     <color name="schedjoules_dark_divider">#20ffffff</color>

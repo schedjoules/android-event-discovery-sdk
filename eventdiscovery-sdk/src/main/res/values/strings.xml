@@ -30,6 +30,7 @@
 
     <!-- Label for the tickets button on the Event Details screen. -->
     <string name="schedjoules_event_details_ticket_button_title">Get Tickets</string>
+    <string name="schedjoules_event_details_ticket_button_title_not_available">No tickets available</string>
 
     <!-- Message displayed in the middle of the screen when loading event details takes long. -->
     <string name="schedjoules_wait_message">This might take a moment</string>

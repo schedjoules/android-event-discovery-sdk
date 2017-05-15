@@ -17,14 +17,23 @@
 
 package com.schedjoules.eventdiscovery.framework.microfragments.eventdetails.fragments.views;
 
+import android.content.Context;
 import android.widget.Button;
 
+import com.schedjoules.eventdiscovery.R;
 import com.schedjoules.eventdiscovery.databinding.SchedjoulesFragmentEventDetailsBinding;
-import com.schedjoules.eventdiscovery.framework.actions.Action;
 import com.schedjoules.eventdiscovery.framework.actions.ActionClickListener;
+import com.schedjoules.eventdiscovery.framework.actions.ViewIntentActionExecutable;
+import com.schedjoules.eventdiscovery.framework.microfragments.eventdetails.ShowEventMicroFragment;
+import com.schedjoules.eventdiscovery.framework.model.BasicTicketInfo;
+import com.schedjoules.eventdiscovery.framework.model.TicketInfo;
+import com.schedjoules.eventdiscovery.framework.utils.BookTicketLink;
+import com.schedjoules.eventdiscovery.framework.utils.ButtonCompat;
 import com.schedjoules.eventdiscovery.framework.utils.OptionalView;
+import com.schedjoules.eventdiscovery.framework.utils.colors.AttributeColor;
 import com.schedjoules.eventdiscovery.framework.utils.smartview.SmartView;
 
+import org.dmfs.httpessentials.types.Link;
 import org.dmfs.optional.Optional;
 
 
@@ -33,7 +42,7 @@ import org.dmfs.optional.Optional;
  *
  * @author Gabor Keszthelyi
  */
-public final class TicketButtonView implements SmartView<Optional<Action>>
+public final class TicketButtonView implements SmartView<ShowEventMicroFragment.EventParams>
 {
     private final OptionalView mButtonArea;
     private final Button mButton;
@@ -49,14 +58,30 @@ public final class TicketButtonView implements SmartView<Optional<Action>>
 
 
     @Override
-    public void update(Optional<Action> bookAction)
+    public void update(ShowEventMicroFragment.EventParams eventParams)
     {
-        mButtonArea.update(bookAction);
-        mSpace.update(bookAction);
+        Optional<Link> bookTicketLink = new BookTicketLink(eventParams.actions());
 
-        if (bookAction.isPresent())
+        mButtonArea.update(bookTicketLink);
+        mSpace.update(bookTicketLink);
+
+        if (bookTicketLink.isPresent())
         {
-            mButton.setOnClickListener(new ActionClickListener(bookAction.value().actionExecutable()));
+            mButton.setOnClickListener(
+                    new ActionClickListener(new ViewIntentActionExecutable(bookTicketLink.value(), eventParams.event())));
+
+            TicketInfo ticketInfo = new BasicTicketInfo(bookTicketLink.value());
+
+            Context context = mButton.getContext();
+            mButton.setText(ticketInfo.isAvailable() ?
+                    context.getText(R.string.schedjoules_event_details_ticket_button_title) :
+                    context.getText(R.string.schedjoules_event_details_ticket_button_title_not_available));
+
+            if (!ticketInfo.isAvailable())
+            {
+                ButtonCompat.setBackgroundTint(mButton,
+                        new AttributeColor(context, R.attr.schedjoules_disabledButtonColor));
+            }
         }
     }
 }

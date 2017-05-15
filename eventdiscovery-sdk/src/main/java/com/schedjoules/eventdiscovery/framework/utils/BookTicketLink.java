@@ -17,13 +17,17 @@
 
 package com.schedjoules.eventdiscovery.framework.utils;
 
+import com.schedjoules.eventdiscovery.framework.utils.factory.Factory;
+import com.schedjoules.eventdiscovery.framework.utils.optionals.AbstractCachingOptional;
+import com.schedjoules.eventdiscovery.framework.utils.optionals.First;
+
 import org.dmfs.httpessentials.converters.PlainStringHeaderConverter;
 import org.dmfs.httpessentials.parameters.BasicParameterType;
 import org.dmfs.httpessentials.parameters.ParameterType;
 import org.dmfs.httpessentials.types.Link;
+import org.dmfs.iterators.AbstractFilteredIterator;
+import org.dmfs.iterators.FilteredIterator;
 import org.dmfs.optional.Optional;
-
-import java.util.NoSuchElementException;
 
 
 /**
@@ -31,64 +35,34 @@ import java.util.NoSuchElementException;
  *
  * @author Gabor Keszthelyi
  */
-public class BookTicketLink implements Optional<Link>
+public class BookTicketLink extends AbstractCachingOptional<Link>
 {
-    private final static ParameterType<String> TYPE = new BasicParameterType<>("http://schedjoules.com/booking/type", new PlainStringHeaderConverter());
+    private static final String BOOK_REL_TYPE = "http://schedjoules.com/rel/action/book";
+    private static final String TICKET_SUB_TYPE = "ticket";
+    private static final ParameterType<String> SUB_TYPE_PARAMETER =
+            new BasicParameterType<>("http://schedjoules.com/props/booking/type", new PlainStringHeaderConverter());
 
-    private final Iterable<Link> mLinks;
 
-    private Link mCachedValue;
-
-
-    public BookTicketLink(Iterable<Link> links)
+    public BookTicketLink(final Iterable<Link> links)
     {
-        mLinks = links;
-    }
-
-
-    @Override
-    public boolean isPresent()
-    {
-        return bookTicketLink() != null;
-    }
-
-
-    @Override
-    public Link value(Link defaultValue)
-    {
-        return bookTicketLink() != null ? bookTicketLink() : defaultValue;
-    }
-
-
-    @Override
-    public Link value() throws NoSuchElementException
-    {
-        if (bookTicketLink() == null)
+        super(new Factory<Optional<Link>>()
         {
-            throw new NoSuchElementException("No 'book' link with type 'ticket'");
-        }
-        return bookTicketLink();
-    }
-
-
-    private Link bookTicketLink()
-    {
-        if (mCachedValue == null)
-        {
-            for (Link link : mLinks)
+            @Override
+            public Optional<Link> create()
             {
-                if (link.relationTypes().contains("http://schedjoules.com/rel/action/book"))
-                {
-                    String ticket = link.firstParameter(TYPE, "ticket").value();
-                    if (ticket.equals("ticket"))
-                    {
-                        mCachedValue = link;
-                        break;
-                    }
-                }
+                return new First<>(
+                        new FilteredIterator<>(links.iterator(),
+                                new AbstractFilteredIterator.IteratorFilter<Link>()
+                                {
+                                    @Override
+                                    public boolean iterate(Link link)
+                                    {
+                                        return link.relationTypes().contains(BOOK_REL_TYPE)
+                                                && link.firstParameter(SUB_TYPE_PARAMETER, "not-used").value().equals(TICKET_SUB_TYPE);
+                                    }
+                                }));
             }
-        }
-        return mCachedValue;
+        });
     }
 
 }

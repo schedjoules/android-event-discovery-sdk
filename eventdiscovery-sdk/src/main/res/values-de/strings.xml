@@ -43,6 +43,7 @@
     <string name="schedjoules_action_add_to_calendar">Termin speichern</string>
 
     <string name="schedjoules_event_details_ticket_button_title">Tickets Bestellen</string>
+    <string name="schedjoules_event_details_ticket_button_title_not_available">Keine Tickets verfügbar</string>
 
     <string name="schedjoules_today">Heute</string>
     <string name="schedjoules_tomorrow">Morgen</string>

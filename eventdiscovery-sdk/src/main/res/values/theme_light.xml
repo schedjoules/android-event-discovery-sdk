@@ -25,6 +25,7 @@
         <item name="schedjoules_cardBackgroundColor">@color/schedjoules_white</item>
         <item name="schedjoules_googleAttribution">@drawable/powered_by_google_light</item>
         <item name="schedjoules_schedJoulesAttribution">@drawable/schedjoules_footer_powered_by_light</item>
+        <item name="schedjoules_disabledButtonColor">@color/schedjoules_disabled_button_background</item>
     </style>
 
 </resources>

@@ -32,7 +32,6 @@ import com.schedjoules.eventdiscovery.framework.actions.ActionClickListener;
 import com.schedjoules.eventdiscovery.framework.actions.ActionLinkRelTypes;
 import com.schedjoules.eventdiscovery.framework.actions.BaseActionFactory;
 import com.schedjoules.eventdiscovery.framework.actions.OptionalAction;
-import com.schedjoules.eventdiscovery.framework.actions.TicketButtonAction;
 import com.schedjoules.eventdiscovery.framework.common.BaseFragment;
 import com.schedjoules.eventdiscovery.framework.microfragments.eventdetails.ShowEventMicroFragment;
 import com.schedjoules.eventdiscovery.framework.utils.VenueName;
@@ -85,7 +84,7 @@ public final class EventDetailsView implements SmartView<ShowEventMicroFragment.
         Optional<Action> directionsAction = new OptionalAction(ActionLinkRelTypes.DIRECTIONS, actionLinks, actionFactory, event);
         new ActionView(mViews.schedjoulesEventDetailsActionDirections).update(directionsAction);
 
-        new TicketButtonView(mViews).update(new TicketButtonAction(actionLinks, event));
+        new TicketButtonView(mViews).update(eventParams);
 
         SupportMapFragment mapFragment = SupportMapFragment.newInstance();
         mFragment.getChildFragmentManager()
