@@ -83,7 +83,7 @@ public final class BundleBuilder implements FluentBuilder<Bundle>
 
 
     @Override
-    public <T extends Boxable> FluentBuilder<Bundle> withOptionalBoxable(Key<T> key, Optional<T> optBoxable)
+    public <T extends Boxable> FluentBuilder<Bundle> withBoxable(Key<T> key, Optional<T> optBoxable)
     {
         if (!optBoxable.isPresent())
         {

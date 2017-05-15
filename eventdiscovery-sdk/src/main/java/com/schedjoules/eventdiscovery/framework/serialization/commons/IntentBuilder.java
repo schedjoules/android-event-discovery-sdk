@@ -99,7 +99,7 @@ public final class IntentBuilder implements FluentBuilder<Intent>
 
 
     @Override
-    public <T extends Boxable> FluentBuilder<Intent> withOptionalBoxable(Key<T> key, Optional<T> optBoxable)
+    public <T extends Boxable> FluentBuilder<Intent> withBoxable(Key<T> key, Optional<T> optBoxable)
     {
         if (!optBoxable.isPresent())
         {

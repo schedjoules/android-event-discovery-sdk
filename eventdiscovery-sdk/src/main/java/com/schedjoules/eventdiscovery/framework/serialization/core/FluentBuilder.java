@@ -58,5 +58,5 @@ public interface FluentBuilder<R>
      * Same as {@link #with(Key, Box)} but with taking an {@link Optional<Boxable>} to take the {@link Box} from.
      * If that is absent, no change is applied.
      */
-    <T extends Boxable> FluentBuilder<R> withOptionalBoxable(Key<T> key, Optional<T> optBoxable);
+    <T extends Boxable> FluentBuilder<R> withBoxable(Key<T> key, Optional<T> optBoxable);
 }
