@@ -20,10 +20,13 @@ package com.schedjoules.eventdiscovery.framework.serialization.commons;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 
 import com.schedjoules.eventdiscovery.framework.serialization.core.Key;
 import com.schedjoules.eventdiscovery.framework.utils.factory.AbstractLazy;
 import com.schedjoules.eventdiscovery.framework.utils.factory.Factory;
+
+import org.dmfs.optional.NullSafe;
 
 
 /**
@@ -55,5 +58,11 @@ public final class Argument<T> extends AbstractLazy<T>
     public Argument(Key<T> key, Activity activity)
     {
         this(key, activity.getIntent());
+    }
+
+
+    public Argument(Key<T> key, Fragment fragment)
+    {
+        this(key, new NullSafe<>(fragment.getArguments()).value(Bundle.EMPTY));
     }
 }

@@ -25,6 +25,7 @@ import android.support.v4.app.Fragment;
 import com.schedjoules.eventdiscovery.framework.serialization.core.Box;
 import com.schedjoules.eventdiscovery.framework.serialization.core.Key;
 
+import org.dmfs.optional.NullSafe;
 import org.dmfs.optional.Optional;
 
 import java.util.NoSuchElementException;
@@ -50,7 +51,7 @@ public final class OptionalArgument<T> implements Optional<T>
 
     public OptionalArgument(Key<T> key, Fragment fragment)
     {
-        this(key, fragment.getArguments());
+        this(key, new NullSafe<>(fragment.getArguments()).value(Bundle.EMPTY));
     }
 
 
