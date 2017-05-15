@@ -15,18 +15,17 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery.framework.utils.factory;
+package com.schedjoules.eventdiscovery.framework.serialization.core;
 
 /**
- * Simple, non-thread safe implementation of {@link Lazy}.
+ * Interface for representing a String key bound to a value type.
  *
  * @author Gabor Keszthelyi
  */
-public final class SimpleLazy<T> extends AbstractLazy<T>
+public interface Key<T>
 {
-    public SimpleLazy(Factory<T> factory)
-    {
-        super(factory);
-    }
-
+    /**
+     * Returns the actual String key.
+     */
+    String name();
 }

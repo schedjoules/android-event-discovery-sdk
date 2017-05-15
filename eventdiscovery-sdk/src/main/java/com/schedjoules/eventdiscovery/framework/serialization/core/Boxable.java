@@ -15,18 +15,17 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery.framework.utils.factory;
+package com.schedjoules.eventdiscovery.framework.serialization.core;
 
 /**
- * Simple, non-thread safe implementation of {@link Lazy}.
+ * Interface for objects that can return a 'parcelable version' of themselves as a {@link Box}, so that they can be serialized.
  *
  * @author Gabor Keszthelyi
  */
-public final class SimpleLazy<T> extends AbstractLazy<T>
+public interface Boxable<T>
 {
-    public SimpleLazy(Factory<T> factory)
-    {
-        super(factory);
-    }
-
+    /**
+     * Returns the {@link Box} for this object.
+     */
+    Box<T> boxed();
 }

@@ -18,15 +18,30 @@
 package com.schedjoules.eventdiscovery.framework.utils.factory;
 
 /**
- * Simple, non-thread safe implementation of {@link Lazy}.
+ * Simple, non-thread safe base implementation for {@link Lazy}.
  *
  * @author Gabor Keszthelyi
  */
-public final class SimpleLazy<T> extends AbstractLazy<T>
+public abstract class AbstractLazy<T> implements Lazy<T>
 {
-    public SimpleLazy(Factory<T> factory)
+    private final Factory<T> mFactory;
+
+    private T mValue;
+
+
+    public AbstractLazy(Factory<T> factory)
     {
-        super(factory);
+        mFactory = factory;
     }
 
+
+    @Override
+    public final T get()
+    {
+        if (mValue == null)
+        {
+            mValue = mFactory.create();
+        }
+        return mValue;
+    }
 }

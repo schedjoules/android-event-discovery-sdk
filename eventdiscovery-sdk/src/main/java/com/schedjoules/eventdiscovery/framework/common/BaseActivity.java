@@ -24,11 +24,14 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
 
-import com.schedjoules.eventdiscovery.R;
+import com.schedjoules.eventdiscovery.framework.serialization.Keys;
+import com.schedjoules.eventdiscovery.framework.serialization.commons.IntentBuilder;
+import com.schedjoules.eventdiscovery.framework.serialization.commons.OptionalArgument;
+import com.schedjoules.eventdiscovery.framework.serialization.commons.OptionalBoxArgument;
 import com.schedjoules.eventdiscovery.framework.services.BasicActionsService;
 import com.schedjoules.eventdiscovery.framework.services.BasicInsightsService;
 
-import static com.schedjoules.eventdiscovery.framework.EventIntents.EXTRA_THEME;
+import org.dmfs.optional.Optional;
 
 
 /**
@@ -48,10 +51,10 @@ public abstract class BaseActivity extends AppCompatActivity
     protected void onCreate(@Nullable Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        Intent intent = getIntent();
-        if (intent.hasExtra(EXTRA_THEME))
+        Optional<Integer> themeExtra = new OptionalArgument<>(Keys.THEME, getIntent());
+        if (themeExtra.isPresent())
         {
-            setTheme(intent.getIntExtra(EXTRA_THEME, R.style.SchedJoules_Theme_Light));
+            setTheme(themeExtra.value());
         }
         // Start the insight service if not started yet. No need to stop it manually, it will stop automatically.
         BasicInsightsService.start(this);
@@ -93,11 +96,6 @@ public abstract class BaseActivity extends AppCompatActivity
 
     private Intent withTheme(Intent intent)
     {
-        Intent currentIntent = getIntent();
-        if (currentIntent.hasExtra(EXTRA_THEME))
-        {
-            intent.putExtra(EXTRA_THEME, currentIntent.getIntExtra(EXTRA_THEME, R.style.SchedJoules_Theme_Light));
-        }
-        return intent;
+        return new IntentBuilder(intent).with(Keys.THEME, new OptionalBoxArgument<>(Keys.THEME, getIntent())).build();
     }
 }

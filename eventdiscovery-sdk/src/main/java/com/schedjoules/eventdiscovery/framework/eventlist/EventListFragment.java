@@ -56,6 +56,8 @@ import com.schedjoules.eventdiscovery.framework.eventlist.view.EventListLoadingI
 import com.schedjoules.eventdiscovery.framework.eventlist.view.EventListMenu;
 import com.schedjoules.eventdiscovery.framework.locationpicker.LocationPickerPlaceSelection;
 import com.schedjoules.eventdiscovery.framework.locationpicker.SharedPrefLastSelectedPlace;
+import com.schedjoules.eventdiscovery.framework.serialization.Keys;
+import com.schedjoules.eventdiscovery.framework.serialization.commons.OptionalArgument;
 import com.schedjoules.eventdiscovery.framework.utils.FutureServiceConnection;
 import com.schedjoules.eventdiscovery.framework.utils.InsightsTask;
 import com.schedjoules.eventdiscovery.framework.utils.factory.Factory;
@@ -69,9 +71,6 @@ import org.dmfs.rfc5545.DateTime;
 
 import eu.davidea.flexibleadapter.FlexibleAdapter;
 import eu.davidea.flexibleadapter.items.IFlexible;
-
-import static com.schedjoules.eventdiscovery.framework.EventIntents.EXTRA_GEOLOCATION;
-import static com.schedjoules.eventdiscovery.framework.EventIntents.EXTRA_START_AFTER_TIMESTAMP;
 
 
 /**
@@ -300,28 +299,17 @@ public final class EventListFragment extends BaseFragment implements EventListMe
 
     private GeoLocation location()
     {
-        if (getArguments() != null && getArguments().containsKey(EXTRA_GEOLOCATION))
+        if (new OptionalArgument<>(Keys.GEO_LOCATION, getArguments()).isPresent())
         {
             // TODO Save location and update Toolbar title with name when Event Discovery for input geo-location is actually supported
-            return getArguments().getParcelable(EXTRA_GEOLOCATION);
+            throw new UnsupportedOperationException("Discovery for a geo location not supported yet.");
         }
-        else
-        {
-            return new SharedPrefLastSelectedPlace(getContext()).get().geoLocation();
-        }
+        return new SharedPrefLastSelectedPlace(getContext()).get().geoLocation();
     }
 
 
     private DateTime startAfter()
     {
-        if (getArguments() != null && getArguments().containsKey(EXTRA_START_AFTER_TIMESTAMP))
-        {
-            long startAfterTimeStamp = getArguments().getLong(EXTRA_START_AFTER_TIMESTAMP, 0);
-            return new DateTime(startAfterTimeStamp);
-        }
-        else
-        {
-            return DateTime.nowAndHere();
-        }
+        return new OptionalArgument<>(Keys.DATE_TIME_START_AFTER, this).value(DateTime.nowAndHere());
     }
 }

@@ -15,18 +15,24 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery.framework.utils.factory;
+package com.schedjoules.eventdiscovery.framework.serialization.core;
+
+import android.os.Parcelable;
+
 
 /**
- * Simple, non-thread safe implementation of {@link Lazy}.
+ * Represents a parcelable container holding an object of type <code>T</code>.
+ * <p>
+ * Implementations serves to define the parcelling for a type.
  *
  * @author Gabor Keszthelyi
  */
-public final class SimpleLazy<T> extends AbstractLazy<T>
+public interface Box<T> extends Parcelable
 {
-    public SimpleLazy(Factory<T> factory)
-    {
-        super(factory);
-    }
+
+    /**
+     * Returns the content object.
+     */
+    T content();
 
 }

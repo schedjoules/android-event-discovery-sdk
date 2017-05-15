@@ -26,26 +26,8 @@ public final class EventIntents
 {
 
     /**
-     * UTC timestamp for starting date-time for fetching events.
-     */
-    public static final String EXTRA_START_AFTER_TIMESTAMP = "schedjoules.event.intent.extra.START_AFTER";
-
-    /**
-     */
-    public static final String EXTRA_GEOLOCATION = "schedjoules.event.intent.extra.GEOLOCATION";
-
-    /**
-     */
-    public static final String EXTRA_RADIUS = "schedjoules.event.intent.extra.RADIUS";
-
-    /**
-     */
-    public static final String EXTRA_THEME = "schedjoules.event.intent.extra.THEME";
-
-    /**
      * Extra for the event uid field sent in the add to calendar intent.
      */
     public static final String EXTRA_SCHEDJOULES_EVENT_UID = "schedjoules.event.intent.extra.UID";
 
-    public static final String EXTRA_GEO_PLACE = "schedjoules.event.intent.extra.GEO_PLACE";
 }

@@ -15,18 +15,32 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery.framework.utils.factory;
+package com.schedjoules.eventdiscovery.framework.serialization;
+
+import com.schedjoules.eventdiscovery.framework.serialization.core.Key;
+
 
 /**
- * Simple, non-thread safe implementation of {@link Lazy}.
+ * {@link Key} that applies an SDK specific prefix to the name to avoid clashes.
+ * This should be used for all keys in the SDK.
  *
  * @author Gabor Keszthelyi
  */
-public final class SimpleLazy<T> extends AbstractLazy<T>
+public final class SchedJoulesKey<V> implements Key<V>
 {
-    public SimpleLazy(Factory<T> factory)
+    private final String mName;
+
+
+    public SchedJoulesKey(String name)
     {
-        super(factory);
+        mName = "schedjoules." + name;
+    }
+
+
+    @Override
+    public String name()
+    {
+        return mName;
     }
 
 }

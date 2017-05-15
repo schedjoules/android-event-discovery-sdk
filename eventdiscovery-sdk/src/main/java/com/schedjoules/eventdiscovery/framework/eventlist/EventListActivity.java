@@ -21,6 +21,7 @@ import android.os.Bundle;
 
 import com.schedjoules.eventdiscovery.R;
 import com.schedjoules.eventdiscovery.framework.common.BaseActivity;
+import com.schedjoules.eventdiscovery.framework.serialization.commons.NestedBundle;
 
 
 /**
@@ -41,7 +42,7 @@ public final class EventListActivity extends BaseActivity
         if (savedInstanceState == null)
         {
             getSupportFragmentManager().beginTransaction().add(R.id.schedjoules_activity_content,
-                    EventListFragment.newInstance(getIntent().getExtras())).commit();
+                    EventListFragment.newInstance(new NestedBundle(getIntent()).get())).commit();
         }
     }
 
