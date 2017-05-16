@@ -26,7 +26,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -37,7 +36,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.schedjoules.client.eventsdiscovery.GeoLocation;
 import com.schedjoules.client.insights.steps.Screen;
 import com.schedjoules.eventdiscovery.R;
 import com.schedjoules.eventdiscovery.databinding.SchedjoulesFragmentEventListBinding;
@@ -45,32 +43,15 @@ import com.schedjoules.eventdiscovery.discovery.SimpleCoverageTest;
 import com.schedjoules.eventdiscovery.framework.common.BaseActivity;
 import com.schedjoules.eventdiscovery.framework.common.BaseFragment;
 import com.schedjoules.eventdiscovery.framework.common.ExternalUrlFeedbackForm;
-import com.schedjoules.eventdiscovery.framework.eventlist.controller.EventListController;
-import com.schedjoules.eventdiscovery.framework.eventlist.controller.EventListControllerImpl;
-import com.schedjoules.eventdiscovery.framework.eventlist.controller.FlexibleAdapterEventListItems;
-import com.schedjoules.eventdiscovery.framework.eventlist.flexibleadapter.Copying;
-import com.schedjoules.eventdiscovery.framework.eventlist.flexibleadapter.FlexibleAdapterFactory;
-import com.schedjoules.eventdiscovery.framework.eventlist.view.EdgeReachScrollListener;
-import com.schedjoules.eventdiscovery.framework.eventlist.view.EventListBackgroundMessage;
-import com.schedjoules.eventdiscovery.framework.eventlist.view.EventListLoadingIndicatorOverlay;
 import com.schedjoules.eventdiscovery.framework.eventlist.view.EventListMenu;
 import com.schedjoules.eventdiscovery.framework.locationpicker.LocationPickerPlaceSelection;
 import com.schedjoules.eventdiscovery.framework.locationpicker.SharedPrefLastSelectedPlace;
-import com.schedjoules.eventdiscovery.framework.serialization.Keys;
-import com.schedjoules.eventdiscovery.framework.serialization.commons.OptionalArgument;
-import com.schedjoules.eventdiscovery.framework.utils.FutureServiceConnection;
 import com.schedjoules.eventdiscovery.framework.utils.InsightsTask;
-import com.schedjoules.eventdiscovery.framework.utils.factory.Factory;
 import com.schedjoules.eventdiscovery.framework.widgets.TextWithIcon;
-import com.schedjoules.eventdiscovery.service.ApiService;
 
 import org.dmfs.httpessentials.types.StringToken;
 import org.dmfs.pigeonpost.Dovecote;
 import org.dmfs.pigeonpost.localbroadcast.SerializableDovecote;
-import org.dmfs.rfc5545.DateTime;
-
-import eu.davidea.flexibleadapter.FlexibleAdapter;
-import eu.davidea.flexibleadapter.items.IFlexible;
 
 
 /**
@@ -78,22 +59,12 @@ import eu.davidea.flexibleadapter.items.IFlexible;
  *
  * @author Gabor Keszthelyi
  */
-
 public final class EventListFragment extends BaseFragment implements EventListMenu.Listener
 {
-    private FutureServiceConnection<ApiService> mApiService;
-    private EventListController mListItemsController;
-
     private TextView mToolbarTitle;
     private EventListMenu mMenu;
-
-    private FlexibleAdapter<IFlexible> mAdapter;
     private SchedjoulesFragmentEventListBinding mViews;
-
     private Dovecote<Boolean> mCoverageDoveCote;
-
-    private boolean mInitialized;
-    private boolean mRestored;
     private boolean mHasOnActivityResult;
 
 
@@ -109,13 +80,14 @@ public final class EventListFragment extends BaseFragment implements EventListMe
     public void onCreate(@Nullable Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setRetainInstance(true);
-
-        mApiService = new ApiService.FutureConnection(getActivity());
-
-        mListItemsController = new EventListControllerImpl(mApiService, new FlexibleAdapterEventListItems());
 
         new InsightsTask(getActivity()).execute(new Screen(new StringToken("list")));
+
+        if (savedInstanceState == null)
+        {
+            getChildFragmentManager().beginTransaction().add(R.id.schedjoules_event_list_list_holder,
+                    EventListListFragment.newInstance(getArguments())).commit();
+        }
     }
 
 
@@ -123,21 +95,12 @@ public final class EventListFragment extends BaseFragment implements EventListMe
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
     {
-        mInitialized = false;
-        mRestored = savedInstanceState != null;
-
-        mViews = DataBindingUtil.inflate(inflater,
-                R.layout.schedjoules_fragment_event_list, container, false);
+        mViews = DataBindingUtil.inflate(inflater, R.layout.schedjoules_fragment_event_list, container, false);
 
         mMenu = new EventListMenu(this);
         setHasOptionsMenu(true);
 
         setupToolbar(mViews);
-
-        mListItemsController.setBackgroundMessageUI(
-                new EventListBackgroundMessage(mViews.schedjoulesEventListBackgroundMessage));
-        mListItemsController.setLoadingIndicatorUI(
-                new EventListLoadingIndicatorOverlay(mViews.schedjoulesEventListProgressBar));
 
         mCoverageDoveCote = new SerializableDovecote<>(getActivity(), "coveragetest", new Dovecote.OnPigeonReturnCallback<Boolean>()
         {
@@ -175,13 +138,43 @@ public final class EventListFragment extends BaseFragment implements EventListMe
         activity.setSupportActionBar(toolbar);
 
         Resources res = activity.getResources();
-        toolbar.setContentInsetsAbsolute(res.getDimensionPixelSize(R.dimen.schedjoules_list_item_padding_horizontal),
-                toolbar.getContentInsetRight());
+        toolbar.setContentInsetsAbsolute(res.getDimensionPixelSize(R.dimen.schedjoules_list_item_padding_horizontal), toolbar.getContentInsetRight());
 
         if (res.getBoolean(R.bool.schedjoules_enableBackArrowOnEventListScreen))
         {
             //noinspection ConstantConditions
             activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+
+        updateToolbarTitle();
+    }
+
+
+    private void updateToolbarTitle()
+    {
+        TypedValue typedValue = new TypedValue();
+        getActivity().getTheme().resolveAttribute(R.attr.schedjoules_dropdownArrow, typedValue, true);
+        mToolbarTitle.setText(new TextWithIcon(getContext(), new SharedPrefLastSelectedPlace(getContext()).get().namedPlace().name(), typedValue.resourceId));
+    }
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        mHasOnActivityResult = resultCode == Activity.RESULT_OK;
+    }
+
+
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        if (mHasOnActivityResult)
+        {
+            mHasOnActivityResult = false;
+            updateToolbarTitle();
+            getChildFragmentManager().beginTransaction().replace(R.id.schedjoules_event_list_list_holder,
+                    EventListListFragment.newInstance(getArguments())).commit();
         }
     }
 
@@ -219,97 +212,10 @@ public final class EventListFragment extends BaseFragment implements EventListMe
 
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data)
-    {
-        mHasOnActivityResult = resultCode == Activity.RESULT_OK;
-    }
-
-
-    @Override
-    public void onResume()
-    {
-        super.onResume();
-        // Log.d("OnResumeStates", String.format("Initialized = %s | Restored = %s | HasActivityResult = %s", mInitialized, mRestored, mHasOnActivityResult));
-
-        if ((!mInitialized && !mRestored) || mHasOnActivityResult)
-        {
-            mInitialized = true;
-            mHasOnActivityResult = false;
-            update(true);
-        }
-        else if (!mInitialized && mRestored)
-        {
-            mInitialized = true;
-            update(false);
-        }
-    }
-
-
-    private void update(boolean freshList)
-    {
-        // Log.d("OnResumeStates", freshList ? "ClearingUpdate" : "NonClearingUpdate");
-        initAdapterAndRecyclerView(freshList);
-        TypedValue typedValue = new TypedValue();
-        getActivity().getTheme().resolveAttribute(R.attr.schedjoules_dropdownArrow, typedValue, true);
-
-        mToolbarTitle.setText(new TextWithIcon(getContext(), new SharedPrefLastSelectedPlace(getContext()).get().namedPlace().name(), typedValue.resourceId));
-        if (freshList)
-        {
-            mListItemsController.loadEvents(location(), startAfter());
-        }
-    }
-
-
-    private void initAdapterAndRecyclerView(boolean freshList)
-    {
-        Factory<FlexibleAdapter<IFlexible>> adapterFactory = new FlexibleAdapterFactory();
-        if (!freshList && mAdapter != null)
-        {
-            adapterFactory = new Copying(adapterFactory, mAdapter);
-        }
-        FlexibleAdapter<IFlexible> adapter = adapterFactory.create();
-
-        RecyclerView recyclerView = mViews.schedjoulesEventListInclude.schedjoulesEventList;
-        recyclerView.setAdapter(adapter);
-        adapter.setStickyHeaders(true); // Better to set it after adapter has been set to RecyclerView
-        recyclerView.addOnScrollListener(
-                new EdgeReachScrollListener(recyclerView, mListItemsController,
-                        EventListControllerImpl.CLOSE_TO_TOP_OR_BOTTOM_THRESHOLD));
-
-        mListItemsController.setAdapter(adapter);
-        mAdapter = adapter;
-    }
-
-
-    @Override
     public void onDestroyView()
     {
         mCoverageDoveCote.dispose();
         super.onDestroyView();
     }
 
-
-    @Override
-    public void onDestroy()
-    {
-        super.onDestroy();
-        mApiService.disconnect();
-    }
-
-
-    private GeoLocation location()
-    {
-        if (new OptionalArgument<>(Keys.GEO_LOCATION, getArguments()).isPresent())
-        {
-            // TODO Save location and update Toolbar title with name when Event Discovery for input geo-location is actually supported
-            throw new UnsupportedOperationException("Discovery for a geo location not supported yet.");
-        }
-        return new SharedPrefLastSelectedPlace(getContext()).get().geoLocation();
-    }
-
-
-    private DateTime startAfter()
-    {
-        return new OptionalArgument<>(Keys.DATE_TIME_START_AFTER, this).value(DateTime.nowAndHere());
-    }
 }
