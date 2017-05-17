@@ -35,6 +35,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.schedjoules.client.eventsdiscovery.Envelope;
+import com.schedjoules.client.eventsdiscovery.Event;
+import com.schedjoules.client.eventsdiscovery.ResultPage;
 import com.schedjoules.client.insights.steps.Screen;
 import com.schedjoules.eventdiscovery.R;
 import com.schedjoules.eventdiscovery.databinding.SchedjoulesFragmentEventListBinding;
@@ -45,12 +48,20 @@ import com.schedjoules.eventdiscovery.framework.common.ExternalUrlFeedbackForm;
 import com.schedjoules.eventdiscovery.framework.eventlist.view.EventListMenu;
 import com.schedjoules.eventdiscovery.framework.locationpicker.LocationPickerPlaceSelection;
 import com.schedjoules.eventdiscovery.framework.locationpicker.SharedPrefLastSelectedPlace;
+import com.schedjoules.eventdiscovery.framework.serialization.Keys;
+import com.schedjoules.eventdiscovery.framework.serialization.commons.Argument;
+import com.schedjoules.eventdiscovery.framework.serialization.commons.OptionalArgument;
 import com.schedjoules.eventdiscovery.framework.utils.InsightsTask;
+import com.schedjoules.eventdiscovery.framework.utils.fragment.ChildFragmentContainer;
+import com.schedjoules.eventdiscovery.framework.utils.fragment.FragmentContainer;
+import com.schedjoules.eventdiscovery.framework.utils.loadresult.LoadResult;
 import com.schedjoules.eventdiscovery.framework.widgets.TextWithIcon;
 
 import org.dmfs.android.microfragments.FragmentEnvironment;
+import org.dmfs.android.microfragments.utils.BooleanDovecote;
 import org.dmfs.httpessentials.types.StringToken;
 import org.dmfs.pigeonpost.Dovecote;
+import org.dmfs.pigeonpost.localbroadcast.ParcelableDovecote;
 import org.dmfs.pigeonpost.localbroadcast.SerializableDovecote;
 
 
@@ -65,7 +76,10 @@ public final class EventListFragment extends BaseFragment implements EventListMe
     private EventListMenu mMenu;
     private SchedjoulesFragmentEventListBinding mViews;
     private Dovecote<Boolean> mCoverageDoveCote;
+    private Dovecote<LoadResult<ResultPage<Envelope<Event>>>> mEventsLoadDoveCote;
+    private Dovecote<Boolean> mRetryDoveCote;
     private boolean mHasOnActivityResult;
+    private FragmentContainer mListFragmentContainer;
 
 
     @Override
@@ -75,12 +89,20 @@ public final class EventListFragment extends BaseFragment implements EventListMe
 
         new InsightsTask(getActivity()).execute(new Screen(new StringToken("list")));
 
+        mListFragmentContainer = new ChildFragmentContainer(this, R.id.schedjoules_event_list_list_holder);
+
         if (savedInstanceState == null)
         {
-            Bundle args = new FragmentEnvironment<Bundle>(this).microFragment().parameter();
-            getChildFragmentManager().beginTransaction().add(R.id.schedjoules_event_list_list_holder,
-                    EventListListFragment.newInstance(args)).commit();
+            showResultPage(new Argument<>(Keys.EVENTS_RESULT_PAGE,
+                    new FragmentEnvironment<Bundle>(this).microFragment().parameter()).get());
         }
+    }
+
+
+    private void showResultPage(ResultPage<Envelope<Event>> resultPage)
+    {
+        mListFragmentContainer.replace(resultPage.items().iterator().hasNext() ?
+                EventListListShowFragment.newInstance(resultPage) : EventListListNoEventsFragment.newInstance());
     }
 
 
@@ -95,18 +117,45 @@ public final class EventListFragment extends BaseFragment implements EventListMe
 
         setupToolbar(mViews);
 
-        mCoverageDoveCote = new SerializableDovecote<>(getActivity(), "coveragetest", new Dovecote.OnPigeonReturnCallback<Boolean>()
+        mCoverageDoveCote = new SerializableDovecote<>(getActivity(), "coverage-test", new Dovecote.OnPigeonReturnCallback<Boolean>()
         {
             @Override
-            public void onPigeonReturn(@NonNull Boolean serializable)
+            public void onPigeonReturn(@NonNull Boolean isCovered)
             {
-                if (!serializable)
+                if (!isCovered)
                 {
                     Snackbar.make(mViews.getRoot(), R.string.schedjoules_message_country_not_supported, Snackbar.LENGTH_INDEFINITE).show();
                 }
             }
         });
         new SimpleCoverageTest(mCoverageDoveCote).execute(getActivity());
+
+        mEventsLoadDoveCote = new ParcelableDovecote<>(getActivity(), "events-load",
+                new Dovecote.OnPigeonReturnCallback<LoadResult<ResultPage<Envelope<Event>>>>()
+                {
+                    @Override
+                    public void onPigeonReturn(@NonNull LoadResult<ResultPage<Envelope<Event>>> loadResult)
+                    {
+                        if (loadResult.isSuccess())
+                        {
+                            showResultPage(loadResult.result());
+                        }
+                        else
+                        {
+                            mListFragmentContainer.replace(EventListListErrorFragment.newInstance(mRetryDoveCote.cage()));
+                        }
+
+                    }
+                });
+
+        mRetryDoveCote = new BooleanDovecote(getContext(), "retry-events-load", new Dovecote.OnPigeonReturnCallback<Boolean>()
+        {
+            @Override
+            public void onPigeonReturn(@NonNull Boolean notUsed)
+            {
+                reloadList();
+            }
+        });
 
         return mViews.getRoot();
     }
@@ -166,9 +215,17 @@ public final class EventListFragment extends BaseFragment implements EventListMe
         {
             mHasOnActivityResult = false;
             updateToolbarTitle();
-            getChildFragmentManager().beginTransaction().replace(R.id.schedjoules_event_list_list_holder,
-                    EventListListFragment.newInstance(getArguments())).commit();
+            reloadList();
         }
+    }
+
+
+    private void reloadList()
+    {
+        mListFragmentContainer.replace(
+                EventListListLoaderFragment.newInstance(
+                        new OptionalArgument<>(Keys.DATE_TIME_START_AFTER, new FragmentEnvironment<Bundle>(this).microFragment().parameter()),
+                        mEventsLoadDoveCote.cage()));
     }
 
 
@@ -216,6 +273,8 @@ public final class EventListFragment extends BaseFragment implements EventListMe
     public void onDestroyView()
     {
         mCoverageDoveCote.dispose();
+        mEventsLoadDoveCote.dispose();
+        mRetryDoveCote.dispose();
         super.onDestroyView();
     }
 

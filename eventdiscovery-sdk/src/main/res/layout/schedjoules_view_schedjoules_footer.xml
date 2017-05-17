@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.schedjoules.eventdiscovery.framework.microfragments.eventdetails.fragments.views.SchedJoulesFooterView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/schedjoules_footer"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:paddingLeft="@dimen/schedjoules_activity_horizontal_margin"
+        android:paddingRight="@dimen/schedjoules_activity_horizontal_margin"
+        android:paddingStart="@dimen/schedjoules_activity_horizontal_margin"
+        android:paddingEnd="@dimen/schedjoules_activity_horizontal_margin"
+        android:paddingTop="6dp"
+        android:paddingBottom="6dp"
+        android:background="?attr/schedjoules_cardBackgroundColor"
+        android:gravity="right|end|center"
+        android:layout_gravity="bottom|end|right"
+        android:drawableRight="?attr/schedjoules_schedJoulesAttribution"
+        android:drawableEnd="?attr/schedjoules_schedJoulesAttribution"
+        android:textSize="0sp"/>
