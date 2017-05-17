@@ -56,7 +56,7 @@ public final class InsightsTask extends AsyncTask<Step, Void, Void>
         FutureServiceConnection<InsightsService> connection = new FutureLocalServiceConnection<>(context, new Intent(context, BasicInsightsService.class));
         try
         {
-            connection.service(1000).post(params);
+            connection.service(5000).post(params);
         }
         catch (TimeoutException | InterruptedException e)
         {

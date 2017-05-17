@@ -63,7 +63,7 @@ public final class EventListDownloadTask extends
     {
         //noinspection unchecked
         FutureServiceConnection<ApiService> apiService = futureServiceConnection[0];
-        ResultPage<Envelope<Event>> resultPage = apiService.service(1000).apiResponse(taskParam.mQuery);
+        ResultPage<Envelope<Event>> resultPage = apiService.service(5000).apiResponse(taskParam.mQuery);
 
         List<IFlexible> listItems = EventListItemsComposer.INSTANCE.compose(resultPage);
 
