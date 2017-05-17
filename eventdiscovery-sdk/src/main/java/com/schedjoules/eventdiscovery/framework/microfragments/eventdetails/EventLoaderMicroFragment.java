@@ -38,7 +38,6 @@ import com.schedjoules.eventdiscovery.service.ApiService;
 
 import net.opacapp.multilinecollapsingtoolbar.CollapsingToolbarLayout;
 
-import org.dmfs.android.microfragments.BasicMicroFragmentEnvironment;
 import org.dmfs.android.microfragments.FragmentEnvironment;
 import org.dmfs.android.microfragments.MicroFragment;
 import org.dmfs.android.microfragments.MicroFragmentHost;
@@ -100,17 +99,13 @@ public final class EventLoaderMicroFragment implements MicroFragment<String>
     @Override
     public Fragment fragment(@NonNull Context context, MicroFragmentHost host)
     {
-        Fragment result = new LoaderFragment();
-        Bundle args = new Bundle(2);
-        args.putParcelable(MicroFragment.ARG_ENVIRONMENT, new BasicMicroFragmentEnvironment<>(this, host));
-        result.setArguments(args);
-        return result;
+        return new LoaderFragment();
     }
 
 
     @NonNull
     @Override
-    public String parameters()
+    public String parameter()
     {
         return mEventUid;
     }
@@ -153,7 +148,7 @@ public final class EventLoaderMicroFragment implements MicroFragment<String>
             super.onCreate(savedInstanceState);
             mActionServiceJobQueue = new SimpleServiceJobQueue<>(new ActionService.FutureConnection(getActivity()));
             mApiServiceJobQueue = new SimpleServiceJobQueue<>(new ApiService.FutureConnection(getActivity()));
-            mEventUid = new FragmentEnvironment<String>(this).microFragment().parameters();
+            mEventUid = new FragmentEnvironment<String>(this).microFragment().parameter();
         }
 
 

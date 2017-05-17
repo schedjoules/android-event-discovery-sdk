@@ -62,7 +62,7 @@ dependencies {
     compile 'org.dmfs:http-client-types:' + HTTP_CLIENT_ESSENTIALS_VERSION
     compile 'org.dmfs:http-executor-decorators:' + HTTP_CLIENT_ESSENTIALS_VERSION
     compile 'org.dmfs:httpurlconnection-executor:' + HTTP_CLIENT_ESSENTIALS_VERSION
-    compile 'com.github.dmfs:MicroFragments:e12ac1615e07fb0a9012f32267696a48fda0f69b'
+    compile 'com.github.dmfs:MicroFragments:aa52c346c7be35b207b8619924ee049e52516cae'
     compile 'com.github.schedjoules:java-api-client:0.6'
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'com.github.dmfs:multiline-collapsingtoolbar:79a3e4520261300cf32f2954832173bef2a43a40'

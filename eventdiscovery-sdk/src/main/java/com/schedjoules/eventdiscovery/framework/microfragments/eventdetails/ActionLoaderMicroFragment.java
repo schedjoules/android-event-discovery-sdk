@@ -39,7 +39,6 @@ import com.schedjoules.eventdiscovery.framework.utils.ServiceJob;
 import com.schedjoules.eventdiscovery.framework.utils.ServiceJobQueue;
 import com.schedjoules.eventdiscovery.framework.utils.SimpleServiceJobQueue;
 
-import org.dmfs.android.microfragments.BasicMicroFragmentEnvironment;
 import org.dmfs.android.microfragments.FragmentEnvironment;
 import org.dmfs.android.microfragments.MicroFragment;
 import org.dmfs.android.microfragments.MicroFragmentHost;
@@ -100,17 +99,13 @@ public final class ActionLoaderMicroFragment implements MicroFragment<Event>
     @Override
     public Fragment fragment(@NonNull Context context, MicroFragmentHost host)
     {
-        Fragment result = new LoaderFragment();
-        Bundle args = new Bundle(1);
-        args.putParcelable(MicroFragment.ARG_ENVIRONMENT, new BasicMicroFragmentEnvironment<>(this, host));
-        result.setArguments(args);
-        return result;
+        return new LoaderFragment();
     }
 
 
     @NonNull
     @Override
-    public Event parameters()
+    public Event parameter()
     {
         return mEvent;
     }
@@ -149,7 +144,7 @@ public final class ActionLoaderMicroFragment implements MicroFragment<Event>
         {
             super.onCreate(savedInstanceState);
             mActionServiceJobQueue = new SimpleServiceJobQueue<>(new ActionService.FutureConnection(getActivity()));
-            mEvent = new FragmentEnvironment<Event>(this).microFragment().parameters();
+            mEvent = new FragmentEnvironment<Event>(this).microFragment().parameter();
         }
 
 

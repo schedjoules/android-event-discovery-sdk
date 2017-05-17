@@ -18,7 +18,6 @@
 package com.schedjoules.eventdiscovery.framework.microfragments.eventdetails;
 
 import android.content.Context;
-import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
@@ -29,7 +28,6 @@ import com.schedjoules.eventdiscovery.framework.microfragments.eventdetails.frag
 import com.schedjoules.eventdiscovery.framework.model.ParcelableEvent;
 import com.schedjoules.eventdiscovery.framework.model.ParcelableLink;
 
-import org.dmfs.android.microfragments.BasicMicroFragmentEnvironment;
 import org.dmfs.android.microfragments.MicroFragment;
 import org.dmfs.android.microfragments.MicroFragmentHost;
 import org.dmfs.httpessentials.types.Link;
@@ -93,17 +91,13 @@ public final class ShowEventMicroFragment implements MicroFragment<ShowEventMicr
     @Override
     public Fragment fragment(@NonNull Context context, MicroFragmentHost host)
     {
-        Fragment result = new EventDetailFragment();
-        Bundle args = new Bundle(2);
-        args.putParcelable(MicroFragment.ARG_ENVIRONMENT, new BasicMicroFragmentEnvironment<>(this, host));
-        result.setArguments(args);
-        return result;
+        return new EventDetailFragment();
     }
 
 
     @NonNull
     @Override
-    public EventParams parameters()
+    public EventParams parameter()
     {
         return new EventParams()
         {

@@ -18,12 +18,17 @@
 package com.schedjoules.eventdiscovery.framework.activities;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 
 import com.schedjoules.eventdiscovery.R;
 import com.schedjoules.eventdiscovery.framework.common.BaseActivity;
 
 import org.dmfs.android.microfragments.MicroFragment;
+import org.dmfs.android.microfragments.MicroFragmentHost;
 import org.dmfs.android.microfragments.SimpleMicroFragmentFlow;
+import org.dmfs.android.microfragments.transitions.BackTransition;
+import org.dmfs.android.microfragments.utils.BooleanDovecote;
+import org.dmfs.pigeonpost.Dovecote;
 
 
 /**
@@ -33,18 +38,64 @@ import org.dmfs.android.microfragments.SimpleMicroFragmentFlow;
  */
 public final class MicroFragmentHostActivity extends BaseActivity
 {
+    private Dovecote<Boolean> mBackDovecote;
+    private MicroFragmentHost mMicroFragmentHost;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.schedjoules_activity_frame);
 
+        // the BackDovecote receives Pigeons with the result of the BackTransition.
+        mBackDovecote = new BooleanDovecote(this, "backresult", new Dovecote.OnPigeonReturnCallback<Boolean>()
+        {
+            @Override
+            public void onPigeonReturn(@NonNull Boolean wentback)
+            {
+                if (!wentback)
+                {
+                    // there was not other MicroFragment in the stack, so close this activity.
+                    finish();
+                }
+            }
+        });
+
         if (savedInstanceState == null)
         {
             // load the initial MicroFragment
             Bundle nestedExtras = getIntent().getBundleExtra("com.schedjoules.nestedExtras");
             MicroFragment initialMicroFragment = nestedExtras.getParcelable("MicroFragment");
-            new SimpleMicroFragmentFlow(initialMicroFragment, R.id.schedjoules_activity_content).start(this);
+            mMicroFragmentHost = new SimpleMicroFragmentFlow(initialMicroFragment, R.id.schedjoules_activity_content).start(this);
         }
+        else
+        {
+            mMicroFragmentHost = savedInstanceState.getParcelable("host");
+        }
+    }
+
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState)
+    {
+        super.onSaveInstanceState(outState);
+        // retain the MicroFragmentHost because we still need it after a configuration change (to fire BackTransitions)
+        outState.putParcelable("host", mMicroFragmentHost);
+    }
+
+
+    @Override
+    protected void onDestroy()
+    {
+        mBackDovecote.dispose();
+        super.onDestroy();
+    }
+
+
+    @Override
+    public void onBackPressed()
+    {
+        mMicroFragmentHost.execute(this, new BackTransition(mBackDovecote.cage()));
     }
 }

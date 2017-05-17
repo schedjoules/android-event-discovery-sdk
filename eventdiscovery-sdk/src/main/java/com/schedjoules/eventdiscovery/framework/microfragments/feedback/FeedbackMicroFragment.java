@@ -37,7 +37,6 @@ import com.schedjoules.eventdiscovery.framework.utils.ServiceJobQueue;
 import com.schedjoules.eventdiscovery.framework.utils.SimpleServiceJobQueue;
 import com.schedjoules.eventdiscovery.service.ApiService;
 
-import org.dmfs.android.microfragments.BasicMicroFragmentEnvironment;
 import org.dmfs.android.microfragments.FragmentEnvironment;
 import org.dmfs.android.microfragments.MicroFragment;
 import org.dmfs.android.microfragments.MicroFragmentEnvironment;
@@ -96,19 +95,15 @@ public final class FeedbackMicroFragment implements MicroFragment<Void>
     @Override
     public Fragment fragment(@NonNull Context context, MicroFragmentHost host)
     {
-        Fragment result = new LoaderFragment();
-        Bundle args = new Bundle(1);
-        args.putParcelable(MicroFragment.ARG_ENVIRONMENT, new BasicMicroFragmentEnvironment<>(this, host));
-        result.setArguments(args);
-        return result;
+        return new LoaderFragment();
     }
 
 
     @NonNull
     @Override
-    public Void parameters()
+    public Void parameter()
     {
-        return null;
+        throw new UnsupportedOperationException("FeedbackMicroFragment has no parameters.");
     }
 
 
