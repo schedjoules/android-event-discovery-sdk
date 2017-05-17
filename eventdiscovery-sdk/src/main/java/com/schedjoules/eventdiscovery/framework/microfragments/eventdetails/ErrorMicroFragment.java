@@ -32,7 +32,6 @@ import com.schedjoules.eventdiscovery.R;
 
 import net.opacapp.multilinecollapsingtoolbar.CollapsingToolbarLayout;
 
-import org.dmfs.android.microfragments.BasicMicroFragmentEnvironment;
 import org.dmfs.android.microfragments.FragmentEnvironment;
 import org.dmfs.android.microfragments.MicroFragment;
 import org.dmfs.android.microfragments.MicroFragmentHost;
@@ -95,17 +94,13 @@ public final class ErrorMicroFragment implements MicroFragment<ErrorMicroFragmen
     @Override
     public Fragment fragment(@NonNull Context context, @NonNull MicroFragmentHost microFragmentHost)
     {
-        Fragment result = new ErrorFragment();
-        Bundle args = new Bundle(1);
-        args.putParcelable(MicroFragment.ARG_ENVIRONMENT, new BasicMicroFragmentEnvironment<>(this, microFragmentHost));
-        result.setArguments(args);
-        return result;
+        return new ErrorFragment();
     }
 
 
     @NonNull
     @Override
-    public Error parameters()
+    public Error parameter()
     {
         return new Error()
         {
@@ -162,7 +157,7 @@ public final class ErrorMicroFragment implements MicroFragment<ErrorMicroFragmen
         public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
         {
             View view = inflater.inflate(R.layout.schedjoules_fragment_event_details_error, container, false);
-            Error error = new FragmentEnvironment<Error>(this).microFragment().parameters();
+            Error error = new FragmentEnvironment<Error>(this).microFragment().parameter();
             String title = error.title();
             String message = error.message();
             if (message != null)

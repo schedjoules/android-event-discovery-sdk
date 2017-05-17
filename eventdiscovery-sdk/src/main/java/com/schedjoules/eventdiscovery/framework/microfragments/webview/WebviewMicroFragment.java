@@ -40,7 +40,6 @@ import android.widget.ProgressBar;
 
 import com.schedjoules.eventdiscovery.R;
 
-import org.dmfs.android.microfragments.BasicMicroFragmentEnvironment;
 import org.dmfs.android.microfragments.FragmentEnvironment;
 import org.dmfs.android.microfragments.MicroFragment;
 import org.dmfs.android.microfragments.MicroFragmentEnvironment;
@@ -95,17 +94,13 @@ public final class WebviewMicroFragment implements MicroFragment<URI>
     @Override
     public Fragment fragment(@NonNull Context context, @NonNull MicroFragmentHost host)
     {
-        Fragment result = new WebviewFragment();
-        Bundle args = new Bundle();
-        args.putParcelable(MicroFragment.ARG_ENVIRONMENT, new BasicMicroFragmentEnvironment<>(this, host));
-        result.setArguments(args);
-        return result;
+        return new WebviewFragment();
     }
 
 
     @NonNull
     @Override
-    public URI parameters()
+    public URI parameter()
     {
         return mUrl;
     }
@@ -169,7 +164,7 @@ public final class WebviewMicroFragment implements MicroFragment<URI>
 
             if (savedInstanceState == null)
             {
-                mWebView.loadUrl(mEnvironment.microFragment().parameters().toASCIIString());
+                mWebView.loadUrl(mEnvironment.microFragment().parameter().toASCIIString());
                 // TODO: make this optional
                 // wipe cookies to enforce a new login
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1)

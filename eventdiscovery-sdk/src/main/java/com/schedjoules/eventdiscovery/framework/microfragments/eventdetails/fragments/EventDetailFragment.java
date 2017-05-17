@@ -56,7 +56,7 @@ public final class EventDetailFragment extends BaseFragment implements EventDeta
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
-        ShowEventMicroFragment.EventParams parameters = new FragmentEnvironment<ShowEventMicroFragment.EventParams>(this).microFragment().parameters();
+        ShowEventMicroFragment.EventParams parameters = new FragmentEnvironment<ShowEventMicroFragment.EventParams>(this).microFragment().parameter();
 
         if (savedInstanceState == null)
         {
