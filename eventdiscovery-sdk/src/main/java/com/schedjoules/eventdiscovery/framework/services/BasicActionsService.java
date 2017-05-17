@@ -115,7 +115,7 @@ public final class BasicActionsService extends Service implements ActionService
         {
             return actions;
         }
-        Iterator<Link> links = mApiServiceConnection.service(1000).apiResponse(new ActionsQuery(eventUid));
+        Iterator<Link> links = mApiServiceConnection.service(5000).apiResponse(new ActionsQuery(eventUid));
         List<Link> result = new ArrayList<>(16);
         while (links.hasNext())
         {

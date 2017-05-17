@@ -146,7 +146,7 @@ public final class BasicInsightsService extends Service implements InsightsServi
                     }
                     try
                     {
-                        if (mApiServiceConnection.service(1000)
+                        if (mApiServiceConnection.service(5000)
                                 .apiResponse(
                                         new InsightsRequest(
                                                 mSession,

@@ -80,7 +80,7 @@ public final class CoverageService extends IntentService
         ApiService.FutureConnection apiConnection = new ApiService.FutureConnection(this);
         try
         {
-            ApiService apiService = apiConnection.service(1000);
+            ApiService apiService = apiConnection.service(5000);
             // build the coverage api query
             FluentCoverage coverageQuery = new Coverage(Locale.getDefault());
 
