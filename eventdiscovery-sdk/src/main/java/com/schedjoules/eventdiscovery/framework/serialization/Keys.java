@@ -20,6 +20,8 @@ package com.schedjoules.eventdiscovery.framework.serialization;
 import com.schedjoules.client.eventsdiscovery.GeoLocation;
 import com.schedjoules.eventdiscovery.framework.serialization.core.Key;
 
+import org.dmfs.android.microfragments.MicroFragment;
+import org.dmfs.android.microfragments.MicroFragmentHost;
 import org.dmfs.rfc5545.DateTime;
 
 
@@ -37,6 +39,10 @@ public final class Keys
     public static final Key<Integer> LOCATION_RADIUS = new SchedJoulesKey<>("LOCATION_RADIUS");
 
     public static final Key<Integer> THEME = new SchedJoulesKey<>("THEME");
+
+    public static final Key<MicroFragment> MICRO_FRAGMENT = new SchedJoulesKey<>("MICRO_FRAGMENT");
+
+    public static final Key<MicroFragmentHost> MICRO_FRAGMENT_HOST = new SchedJoulesKey<>("MICRO_FRAGMENT_HOST");
 
 
     private Keys()

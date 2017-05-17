@@ -18,22 +18,26 @@
 package com.schedjoules.eventdiscovery.eventdetails;
 
 import android.app.Activity;
-import android.content.Intent;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
 
 import com.schedjoules.client.eventsdiscovery.Event;
-import com.schedjoules.eventdiscovery.framework.activities.MicroFragmentHostActivity;
+import com.schedjoules.eventdiscovery.framework.actions.LoadActionsFromCacheTask;
+import com.schedjoules.eventdiscovery.framework.async.SafeAsyncTaskCallback;
+import com.schedjoules.eventdiscovery.framework.async.SafeAsyncTaskResult;
 import com.schedjoules.eventdiscovery.framework.microfragments.eventdetails.ActionLoaderMicroFragment;
 import com.schedjoules.eventdiscovery.framework.microfragments.eventdetails.ShowEventMicroFragment;
+import com.schedjoules.eventdiscovery.framework.serialization.Keys;
+import com.schedjoules.eventdiscovery.framework.serialization.commons.OptionalArgument;
 import com.schedjoules.eventdiscovery.framework.services.ActionService;
-import com.schedjoules.eventdiscovery.framework.utils.FutureServiceConnection;
 
+import org.dmfs.android.microfragments.MicroFragment;
+import org.dmfs.android.microfragments.MicroFragmentHost;
+import org.dmfs.android.microfragments.transitions.ForwardTransition;
+import org.dmfs.android.microfragments.transitions.Swiped;
 import org.dmfs.httpessentials.types.Link;
+import org.dmfs.optional.Optional;
 
 import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.concurrent.TimeoutException;
 
 
 /**
@@ -55,54 +59,43 @@ public final class BasicEventDetails implements EventDetails
     @Override
     public void show(@NonNull final Activity activity)
     {
-        new Thread(new StartEventDetailsRunnable(activity, mEvent)).start();
-    }
+        final OptionalArgument<MicroFragmentHost> host = new OptionalArgument<>(Keys.MICRO_FRAGMENT_HOST, activity);
 
-
-    /**
-     * A {@link Runnable} that starts the details activity in the background after trying to load any actions from the cache.
-     */
-    private final static class StartEventDetailsRunnable implements Runnable
-    {
-        private final Activity mActivity;
-        private final Event mEvent;
-
-
-        private StartEventDetailsRunnable(@NonNull Activity activity, @NonNull Event event)
+        if (!host.isPresent())
         {
-            mActivity = activity;
-            mEvent = event;
+            throw new UnsupportedOperationException("Opening EventDetails with already loaded Event, from non-host Activity is not implemented.");
         }
 
-
-        @Override
-        public void run()
+        new LoadActionsFromCacheTask(mEvent, new SafeAsyncTaskCallback<Event, Optional<List<Link>>>()
         {
-            Intent intent = new Intent(mActivity, MicroFragmentHostActivity.class);
-            Bundle nestedBundle = new Bundle();
+            @Override
+            public void onTaskFinish(SafeAsyncTaskResult<Optional<List<Link>>> result, Event event)
+            {
+                Optional<List<Link>> actions = safeResult(result);
 
-            FutureServiceConnection<ActionService> actionService = new ActionService.FutureConnection(mActivity);
-            try
-            {
-                List<Link> actions = actionService.service(40).cachedActions(mEvent.uid());
-                // Start the details with the actions from the cache.
-                nestedBundle.putParcelable("MicroFragment", new ShowEventMicroFragment(mEvent, actions));
+                MicroFragment microFragment = actions.isPresent() ?
+                        new ShowEventMicroFragment(mEvent, actions.value()) : new ActionLoaderMicroFragment(mEvent);
+
+                // TODO This couldn't be called from background thread because ForwardTransition's TimeStamp has to be created on main thread.
+                // Should we create TimeStamp beforehand to be able to fire the transtion without calling back to main?
+                host.value().execute(activity, new Swiped(new ForwardTransition<>(microFragment)));
             }
-            catch (InterruptedException | TimeoutException | NoSuchElementException e)
+
+
+            private Optional<List<Link>> safeResult(SafeAsyncTaskResult<Optional<List<Link>>> result)
             {
-                // An error occurred or the actions are not in the cache yet, let the details activity load the actions.
-                nestedBundle.putParcelable("MicroFragment", new ActionLoaderMicroFragment(mEvent));
-            }
-            finally
-            {
-                if (actionService.isConnected())
+                try
                 {
-                    actionService.disconnect();
+                    return result.value();
+                }
+                catch (Exception e)
+                {
+                    // Should not happen
+                    throw new RuntimeException(e);
                 }
             }
-            intent.putExtra("com.schedjoules.nestedExtras", nestedBundle);
 
-            mActivity.startActivity(intent);
-        }
+        }).execute(new ActionService.FutureConnection(activity));
     }
+
 }

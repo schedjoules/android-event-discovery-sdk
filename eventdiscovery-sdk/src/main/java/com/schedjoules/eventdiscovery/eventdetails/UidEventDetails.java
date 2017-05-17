@@ -18,13 +18,16 @@
 package com.schedjoules.eventdiscovery.eventdetails;
 
 import android.app.Activity;
-import android.content.Intent;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
 
 import com.schedjoules.client.eventsdiscovery.Event;
 import com.schedjoules.eventdiscovery.framework.activities.MicroFragmentHostActivity;
 import com.schedjoules.eventdiscovery.framework.microfragments.eventdetails.EventLoaderMicroFragment;
+import com.schedjoules.eventdiscovery.framework.serialization.Keys;
+import com.schedjoules.eventdiscovery.framework.serialization.boxes.ParcelableBox;
+import com.schedjoules.eventdiscovery.framework.serialization.commons.IntentBuilder;
+
+import org.dmfs.android.microfragments.MicroFragment;
 
 
 /**
@@ -46,10 +49,11 @@ public final class UidEventDetails implements EventDetails
     @Override
     public void show(@NonNull Activity activity)
     {
-        Intent intent = new Intent(activity, MicroFragmentHostActivity.class);
-        Bundle nestedBundle = new Bundle(1);
-        nestedBundle.putParcelable("MicroFragment", new EventLoaderMicroFragment(mEventUid));
-        intent.putExtra("com.schedjoules.nestedExtras", nestedBundle);
-        activity.startActivity(intent);
+        activity.startActivity(
+                // TODO Use action intent instead?
+                new IntentBuilder(activity, MicroFragmentHostActivity.class)
+                        .with(Keys.MICRO_FRAGMENT, new ParcelableBox<MicroFragment>(new EventLoaderMicroFragment(mEventUid)))
+                        .build());
     }
+
 }

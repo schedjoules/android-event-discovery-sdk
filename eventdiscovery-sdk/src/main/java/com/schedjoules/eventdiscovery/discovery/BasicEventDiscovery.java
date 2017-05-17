@@ -23,13 +23,17 @@ import android.support.annotation.NonNull;
 import android.support.annotation.StyleRes;
 
 import com.schedjoules.client.eventsdiscovery.GeoLocation;
+import com.schedjoules.eventdiscovery.framework.eventlist.EventListMicroFragment;
 import com.schedjoules.eventdiscovery.framework.serialization.Keys;
 import com.schedjoules.eventdiscovery.framework.serialization.boxes.DateTimeBox;
 import com.schedjoules.eventdiscovery.framework.serialization.boxes.GeoLocationBox;
 import com.schedjoules.eventdiscovery.framework.serialization.boxes.IntBox;
+import com.schedjoules.eventdiscovery.framework.serialization.boxes.ParcelableBox;
 import com.schedjoules.eventdiscovery.framework.serialization.commons.IntentBuilder;
+import com.schedjoules.eventdiscovery.framework.serialization.commons.NestedBundle;
 import com.schedjoules.eventdiscovery.framework.serialization.core.FluentBuilder;
 
+import org.dmfs.android.microfragments.MicroFragment;
 import org.dmfs.rfc5545.DateTime;
 
 
@@ -91,6 +95,9 @@ public final class BasicEventDiscovery implements EventDiscovery
     @Override
     public void start(@NonNull Activity activity)
     {
-        activity.startActivity(mIntentBuilder.build().setPackage(activity.getPackageName()));
+        Intent intent = mIntentBuilder.with(Keys.MICRO_FRAGMENT, new ParcelableBox<MicroFragment>(
+                new EventListMicroFragment(new NestedBundle(mIntentBuilder.build()).get()))).build();
+
+        activity.startActivity(intent.setPackage(activity.getPackageName()));
     }
 }

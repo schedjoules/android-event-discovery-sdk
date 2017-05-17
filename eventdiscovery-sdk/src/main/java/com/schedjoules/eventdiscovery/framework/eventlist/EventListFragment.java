@@ -25,7 +25,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -49,6 +48,7 @@ import com.schedjoules.eventdiscovery.framework.locationpicker.SharedPrefLastSel
 import com.schedjoules.eventdiscovery.framework.utils.InsightsTask;
 import com.schedjoules.eventdiscovery.framework.widgets.TextWithIcon;
 
+import org.dmfs.android.microfragments.FragmentEnvironment;
 import org.dmfs.httpessentials.types.StringToken;
 import org.dmfs.pigeonpost.Dovecote;
 import org.dmfs.pigeonpost.localbroadcast.SerializableDovecote;
@@ -68,14 +68,6 @@ public final class EventListFragment extends BaseFragment implements EventListMe
     private boolean mHasOnActivityResult;
 
 
-    public static Fragment newInstance(Bundle args)
-    {
-        EventListFragment fragment = new EventListFragment();
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState)
     {
@@ -85,8 +77,9 @@ public final class EventListFragment extends BaseFragment implements EventListMe
 
         if (savedInstanceState == null)
         {
+            Bundle args = new FragmentEnvironment<Bundle>(this).microFragment().parameter();
             getChildFragmentManager().beginTransaction().add(R.id.schedjoules_event_list_list_holder,
-                    EventListListFragment.newInstance(getArguments())).commit();
+                    EventListListFragment.newInstance(args)).commit();
         }
     }
 
@@ -207,7 +200,7 @@ public final class EventListFragment extends BaseFragment implements EventListMe
     @Override
     public void onFeedbackMenuClick()
     {
-        new ExternalUrlFeedbackForm().show(getActivity());
+        new ExternalUrlFeedbackForm().show(getActivity(), new FragmentEnvironment<>(this).host());
     }
 
 
