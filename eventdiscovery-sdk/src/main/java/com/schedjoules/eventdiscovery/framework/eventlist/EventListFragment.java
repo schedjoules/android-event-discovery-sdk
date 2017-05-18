@@ -200,7 +200,15 @@ public final class EventListFragment extends BaseFragment implements EventListMe
     @Override
     public void onFeedbackMenuClick()
     {
-        new ExternalUrlFeedbackForm().show(getActivity(), new FragmentEnvironment<>(this).host());
+        getView().post(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                new ExternalUrlFeedbackForm().show(getActivity(),
+                        new FragmentEnvironment<>(EventListFragment.this).host());
+            }
+        });
     }
 
 

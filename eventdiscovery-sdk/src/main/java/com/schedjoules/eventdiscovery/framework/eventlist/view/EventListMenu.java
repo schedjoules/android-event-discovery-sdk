@@ -35,7 +35,6 @@ public final class EventListMenu implements OnCreateOptionsMenuFragment, OnOptio
 {
 
     private final Listener mListener;
-    private Menu mMenu;
 
 
     public EventListMenu(Listener listener)
@@ -48,7 +47,6 @@ public final class EventListMenu implements OnCreateOptionsMenuFragment, OnOptio
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
     {
         inflater.inflate(R.menu.schedjoules_event_list_menu, menu);
-        mMenu = menu;
     }
 
 
@@ -62,8 +60,6 @@ public final class EventListMenu implements OnCreateOptionsMenuFragment, OnOptio
         }
         else if (item.getItemId() == R.id.schedjoules_event_list_menu_feedback)
         {
-            // TODO Needed to close the menu explicitly, otherwise the popup was there when came back from Feedback. Why is this, remove if possible.
-            mMenu.close();
             mListener.onFeedbackMenuClick();
             return true;
         }
