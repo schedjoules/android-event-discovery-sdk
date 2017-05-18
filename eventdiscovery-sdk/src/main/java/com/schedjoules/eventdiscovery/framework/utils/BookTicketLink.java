@@ -17,9 +17,8 @@
 
 package com.schedjoules.eventdiscovery.framework.utils;
 
-import org.dmfs.httpessentials.converters.PlainStringHeaderConverter;
-import org.dmfs.httpessentials.parameters.BasicParameterType;
-import org.dmfs.httpessentials.parameters.ParameterType;
+import com.schedjoules.eventdiscovery.framework.model.ApiLink;
+
 import org.dmfs.httpessentials.types.Link;
 import org.dmfs.optional.Optional;
 
@@ -33,8 +32,6 @@ import java.util.NoSuchElementException;
  */
 public class BookTicketLink implements Optional<Link>
 {
-    private final static ParameterType<String> TYPE = new BasicParameterType<>("http://schedjoules.com/booking/type", new PlainStringHeaderConverter());
-
     private final Iterable<Link> mLinks;
 
     private Link mCachedValue;
@@ -77,10 +74,10 @@ public class BookTicketLink implements Optional<Link>
         {
             for (Link link : mLinks)
             {
-                if (link.relationTypes().contains("http://schedjoules.com/rel/action/book"))
+                if (link.relationTypes().contains(ApiLink.Rel.Action.BOOK))
                 {
-                    String ticket = link.firstParameter(TYPE, "ticket").value();
-                    if (ticket.equals("ticket"))
+                    String ticket = link.firstParameter(ApiLink.Prop.Booking.TYPE, "not-used-default").value();
+                    if (ticket.equals(ApiLink.Prop.Booking.TYPE_VALUE_TICKET))
                     {
                         mCachedValue = link;
                         break;

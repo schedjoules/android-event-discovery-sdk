@@ -20,11 +20,8 @@ package com.schedjoules.eventdiscovery.framework.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import org.dmfs.httpessentials.converters.PlainStringHeaderConverter;
-import org.dmfs.httpessentials.parameters.BasicParameterType;
 import org.dmfs.httpessentials.parameters.Parameter;
 import org.dmfs.httpessentials.parameters.ParameterType;
-import org.dmfs.httpessentials.typedentity.EntityConverter;
 import org.dmfs.httpessentials.types.Link;
 import org.dmfs.httpessentials.types.MediaType;
 import org.dmfs.iterators.EmptyIterator;
@@ -48,12 +45,6 @@ import java.util.Set;
  */
 public final class ParcelableLink implements Link, Parcelable
 {
-    private final static EntityConverter<String> STRING_CONVERTER = new PlainStringHeaderConverter();
-    private final static ParameterType<String> PARAM_ACTION_TYPE = new BasicParameterType<>("http://schedjoules.com/booking/type", STRING_CONVERTER);
-    private final static ParameterType<String> PARAM_ACTION_MIN_PRICE = new BasicParameterType<>("http://schedjoules.com/booking/min-price", STRING_CONVERTER);
-    private final static ParameterType<String> PARAM_ACTION_MAX_PRICE = new BasicParameterType<>("http://schedjoules.com/booking/max-price", STRING_CONVERTER);
-    private final static ParameterType<String> PARAM_IMAGE_WIDTH = new BasicParameterType<>("http://schedjoules.com/prop/width", STRING_CONVERTER);
-    private final static ParameterType<String> PARAM_IMAGE_HEIGHT = new BasicParameterType<>("http://schedjoules.com/prop/height", STRING_CONVERTER);
     public static final Creator<ParcelableLink> CREATOR = new Creator<ParcelableLink>()
     {
         @Override
@@ -67,11 +58,11 @@ public final class ParcelableLink implements Link, Parcelable
             in.readStringList(reverseRelationTypes);
 
             Map<String, String> propertyMap = new HashMap<>(16);
-            loadProperty(in, PARAM_ACTION_TYPE, propertyMap);
-            loadProperty(in, PARAM_ACTION_MIN_PRICE, propertyMap);
-            loadProperty(in, PARAM_ACTION_MAX_PRICE, propertyMap);
-            loadProperty(in, PARAM_IMAGE_WIDTH, propertyMap);
-            loadProperty(in, PARAM_IMAGE_HEIGHT, propertyMap);
+            loadProperty(in, ApiLink.Prop.Booking.TYPE, propertyMap);
+            loadProperty(in, ApiLink.Prop.Booking.MIN_PRICE, propertyMap);
+            loadProperty(in, ApiLink.Prop.Booking.MAX_PRICE, propertyMap);
+            loadProperty(in, ApiLink.Prop.WIDTH, propertyMap);
+            loadProperty(in, ApiLink.Prop.HEIGHT, propertyMap);
             return new ParcelableLink(new UnparcelledLink(target, title, relationTypes, reverseRelationTypes, propertyMap));
         }
 
@@ -189,11 +180,11 @@ public final class ParcelableLink implements Link, Parcelable
         dest.writeStringList(new ArrayList<>(relationTypes()));
         dest.writeStringList(new ArrayList<>(reverseRelationTypes()));
 
-        dest.writeString(firstParameter(PARAM_ACTION_TYPE, null).value());
-        dest.writeString(firstParameter(PARAM_ACTION_MIN_PRICE, null).value());
-        dest.writeString(firstParameter(PARAM_ACTION_MAX_PRICE, null).value());
-        dest.writeString(firstParameter(PARAM_IMAGE_WIDTH, null).value());
-        dest.writeString(firstParameter(PARAM_IMAGE_HEIGHT, null).value());
+        dest.writeString(firstParameter(ApiLink.Prop.Booking.TYPE, null).value());
+        dest.writeString(firstParameter(ApiLink.Prop.Booking.MIN_PRICE, null).value());
+        dest.writeString(firstParameter(ApiLink.Prop.Booking.MAX_PRICE, null).value());
+        dest.writeString(firstParameter(ApiLink.Prop.WIDTH, null).value());
+        dest.writeString(firstParameter(ApiLink.Prop.HEIGHT, null).value());
     }
 
 
