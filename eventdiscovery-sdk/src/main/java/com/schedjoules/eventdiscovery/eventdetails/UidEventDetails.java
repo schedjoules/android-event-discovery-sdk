@@ -50,7 +50,6 @@ public final class UidEventDetails implements EventDetails
     public void show(@NonNull Activity activity)
     {
         activity.startActivity(
-                // TODO Use action intent instead?
                 new IntentBuilder(activity, MicroFragmentHostActivity.class)
                         .with(Keys.MICRO_FRAGMENT, new ParcelableBox<MicroFragment>(new EventLoaderMicroFragment(mEventUid)))
                         .build());
