@@ -21,23 +21,27 @@ import android.app.Activity;
 import android.support.annotation.NonNull;
 
 import com.schedjoules.client.eventsdiscovery.Event;
-import com.schedjoules.eventdiscovery.framework.actions.LoadActionsFromCacheTask;
-import com.schedjoules.eventdiscovery.framework.async.SafeAsyncTaskCallback;
-import com.schedjoules.eventdiscovery.framework.async.SafeAsyncTaskResult;
 import com.schedjoules.eventdiscovery.framework.microfragments.eventdetails.ActionLoaderMicroFragment;
 import com.schedjoules.eventdiscovery.framework.microfragments.eventdetails.ShowEventMicroFragment;
 import com.schedjoules.eventdiscovery.framework.serialization.Keys;
 import com.schedjoules.eventdiscovery.framework.serialization.commons.OptionalArgument;
 import com.schedjoules.eventdiscovery.framework.services.ActionService;
+import com.schedjoules.eventdiscovery.framework.utils.FutureServiceConnection;
 
 import org.dmfs.android.microfragments.MicroFragment;
 import org.dmfs.android.microfragments.MicroFragmentHost;
+import org.dmfs.android.microfragments.Timestamp;
+import org.dmfs.android.microfragments.timestamps.UiTimestamp;
 import org.dmfs.android.microfragments.transitions.ForwardTransition;
 import org.dmfs.android.microfragments.transitions.Swiped;
 import org.dmfs.httpessentials.types.Link;
+import org.dmfs.optional.Absent;
 import org.dmfs.optional.Optional;
+import org.dmfs.optional.Present;
 
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.concurrent.TimeoutException;
 
 
 /**
@@ -66,36 +70,41 @@ public final class BasicEventDetails implements EventDetails
             throw new UnsupportedOperationException("Opening EventDetails with already loaded Event, from non-host Activity is not implemented.");
         }
 
-        new LoadActionsFromCacheTask(mEvent, new SafeAsyncTaskCallback<Event, Optional<List<Link>>>()
+        final Timestamp timestamp = new UiTimestamp();
+        new Thread(new Runnable()
         {
             @Override
-            public void onTaskFinish(SafeAsyncTaskResult<Optional<List<Link>>> result, Event event)
+            public void run()
             {
-                Optional<List<Link>> actions = safeResult(result);
+                Optional<List<Link>> actions = loadActionsFromCache(new ActionService.FutureConnection(activity));
 
                 MicroFragment microFragment = actions.isPresent() ?
                         new ShowEventMicroFragment(mEvent, actions.value()) : new ActionLoaderMicroFragment(mEvent);
 
-                // TODO This couldn't be called from background thread because ForwardTransition's TimeStamp has to be created on main thread.
-                // Should we create TimeStamp beforehand to be able to fire the transtion without calling back to main?
-                host.value().execute(activity, new Swiped(new ForwardTransition<>(microFragment)));
+                host.value().execute(activity, new Swiped(new ForwardTransition<>(microFragment, timestamp)));
             }
 
 
-            private Optional<List<Link>> safeResult(SafeAsyncTaskResult<Optional<List<Link>>> result)
+            private Optional<List<Link>> loadActionsFromCache(FutureServiceConnection<ActionService> actionService)
             {
                 try
                 {
-                    return result.value();
+                    List<Link> actions = actionService.service(40).cachedActions(mEvent.uid());
+                    return new Present<>(actions);
                 }
-                catch (Exception e)
+                catch (InterruptedException | TimeoutException | NoSuchElementException e)
                 {
-                    // Should not happen
-                    throw new RuntimeException(e);
+                    return Absent.absent();
+                }
+                finally
+                {
+                    if (actionService.isConnected())
+                    {
+                        actionService.disconnect();
+                    }
                 }
             }
-
-        }).execute(new ActionService.FutureConnection(activity));
+        }).start();
     }
 
 }
