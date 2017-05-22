@@ -23,6 +23,7 @@ import android.text.format.DateUtils;
 
 import com.schedjoules.client.eventsdiscovery.Event;
 
+import org.dmfs.optional.Optional;
 import org.dmfs.rfc5545.DateTime;
 import org.dmfs.rfc5545.Duration;
 
@@ -35,10 +36,10 @@ import org.dmfs.rfc5545.Duration;
 public final class DateTimeRange implements FormattedDateTime
 {
     private final DateTime mStartTime;
-    private final Duration mDuration;
+    private final Optional<Duration> mDuration;
 
 
-    public DateTimeRange(DateTime startTime, Duration duration)
+    public DateTimeRange(DateTime startTime, Optional<Duration> duration)
     {
         mStartTime = startTime;
         mDuration = duration;
@@ -68,7 +69,8 @@ public final class DateTimeRange implements FormattedDateTime
             format |= DateUtils.FORMAT_NO_YEAR;
         }
 
-        return DateUtils.formatDateRange(context, mStartTime.getTimestamp(), mStartTime.addDuration(mDuration).getTimestamp(), format);
+        return DateUtils.formatDateRange(context, mStartTime.getTimestamp(), mStartTime.addDuration(mDuration.value(new Duration(1, 0, 0))).getTimestamp(),
+                format);
 
     }
 

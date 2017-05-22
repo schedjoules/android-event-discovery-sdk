@@ -30,6 +30,7 @@ import com.schedjoules.eventdiscovery.framework.EventIntents;
 import com.schedjoules.eventdiscovery.framework.utils.InsightsTask;
 
 import org.dmfs.httpessentials.types.Link;
+import org.dmfs.rfc5545.Duration;
 
 import static com.schedjoules.eventdiscovery.framework.utils.LocationFormatter.longLocationFormat;
 
@@ -72,7 +73,7 @@ public final class AddToCalendarActionExecutable implements ActionExecutable
         Bundle bundle = new Bundle(8);
         bundle.putLong(CalendarContract.EXTRA_EVENT_BEGIN_TIME, mEvent.start().getTimestamp());
         bundle.putLong(CalendarContract.EXTRA_EVENT_END_TIME,
-                mEvent.start().addDuration(mEvent.duration()).getTimestamp());
+                mEvent.start().addDuration(mEvent.duration().value(mEvent.start().isAllDay() ? new Duration(1, 1, 0) : Duration.parse("PT2H"))).getTimestamp());
         bundle.putBoolean(CalendarContract.EXTRA_EVENT_ALL_DAY, mEvent.start().isAllDay());
         bundle.putString(CalendarContract.Events.TITLE, mEvent.title());
         bundle.putString(CalendarContract.Events.DESCRIPTION, mEvent.description());

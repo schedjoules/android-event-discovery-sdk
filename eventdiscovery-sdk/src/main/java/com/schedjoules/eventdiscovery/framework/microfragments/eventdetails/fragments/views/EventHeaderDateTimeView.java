@@ -46,6 +46,8 @@ public final class EventHeaderDateTimeView implements SmartView<Event>
     @Override
     public void update(Event event)
     {
+        // TODO: go back to this version once the API stops to return "estimated" end times:
+        // CharSequence rangeCharSequence = new DateTimeRange(event).value(mDateTimeViewCollapsed.getContext());
         CharSequence rangeCharSequence = new LongDateAndTimeNoYear(event.start()).value(mDateTimeViewCollapsed.getContext());
         // update the dark and the light version of the date
         mDateTimeViewExpanded.setText(rangeCharSequence);

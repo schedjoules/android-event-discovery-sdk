@@ -21,6 +21,8 @@ import com.schedjoules.client.eventsdiscovery.Event;
 import com.schedjoules.client.eventsdiscovery.Location;
 
 import org.dmfs.httpessentials.types.Link;
+import org.dmfs.optional.Optional;
+import org.dmfs.optional.Present;
 import org.dmfs.rfc5545.DateTime;
 import org.dmfs.rfc5545.Duration;
 
@@ -65,9 +67,9 @@ public final class DummyEvent implements Event
 
 
     @Override
-    public Duration duration()
+    public Optional<Duration> duration()
     {
-        return new Duration(1, 0, 2, 0, 0);
+        return new Present<>(new Duration(1, 0, 2, 0, 0));
     }
 
 

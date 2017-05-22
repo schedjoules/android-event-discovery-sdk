@@ -28,6 +28,9 @@ import org.dmfs.httpessentials.types.Link;
 import org.dmfs.iterators.AbstractConvertedIterator;
 import org.dmfs.iterators.ArrayIterator;
 import org.dmfs.iterators.ConvertedIterator;
+import org.dmfs.optional.Absent;
+import org.dmfs.optional.Optional;
+import org.dmfs.optional.Present;
 import org.dmfs.rfc5545.DateTime;
 import org.dmfs.rfc5545.Duration;
 
@@ -86,7 +89,7 @@ public final class ParcelableEvent implements Event, Parcelable
 
 
     @Override
-    public Duration duration()
+    public Optional<Duration> duration()
     {
         return mDelegate.duration();
     }
@@ -134,7 +137,8 @@ public final class ParcelableEvent implements Event, Parcelable
         dest.writeLong(start().getTimestamp());
         dest.writeString(start().getTimeZone().getID());
         dest.writeInt(start().isAllDay() ? 1 : 0);
-        dest.writeString(duration().toString());
+        Optional<Duration> duration = duration();
+        dest.writeString(duration.isPresent() ? duration().value().toString() : null);
         dest.writeString(title());
         dest.writeString(description());
 
@@ -201,9 +205,9 @@ public final class ParcelableEvent implements Event, Parcelable
 
 
         @Override
-        public Duration duration()
+        public Optional<Duration> duration()
         {
-            return Duration.parse(mDuration);
+            return mDuration == null ? Absent.<Duration>absent() : new Present<>(Duration.parse(mDuration));
         }
 
 

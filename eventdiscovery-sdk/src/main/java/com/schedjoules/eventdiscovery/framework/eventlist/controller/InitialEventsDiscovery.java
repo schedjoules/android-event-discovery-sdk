@@ -19,6 +19,7 @@ package com.schedjoules.eventdiscovery.framework.eventlist.controller;
 
 import com.schedjoules.client.Api;
 import com.schedjoules.client.ApiQuery;
+import com.schedjoules.client.State;
 import com.schedjoules.client.eventsdiscovery.Envelope;
 import com.schedjoules.client.eventsdiscovery.Event;
 import com.schedjoules.client.eventsdiscovery.EventsDiscovery;
@@ -69,5 +70,12 @@ public final class InitialEventsDiscovery implements ApiQuery<ResultPage<Envelop
         }
 
         return query.queryResult(api);
+    }
+
+
+    @Override
+    public State<ApiQuery<ResultPage<Envelope<Event>>>> serializable()
+    {
+        throw new UnsupportedOperationException("InitialEventsDiscovery doesn't support a serializable state yet.");
     }
 }
