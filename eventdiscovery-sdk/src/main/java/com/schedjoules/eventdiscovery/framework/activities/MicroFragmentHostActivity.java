@@ -70,15 +70,26 @@ public final class MicroFragmentHostActivity extends BaseActivity
             mMicroFragmentHost = new SimpleMicroFragmentFlow(
                     new Argument<>(Keys.MICRO_FRAGMENT, this).get(), android.R.id.content)
                     .start(this);
-
-            setIntent(new IntentBuilder(getIntent())
-                    .with(Keys.MICRO_FRAGMENT_HOST, new ParcelableBox<>(mMicroFragmentHost))
-                    .build());
         }
         else
         {
-            mMicroFragmentHost = new Argument<>(Keys.MICRO_FRAGMENT_HOST, this).get();
+            mMicroFragmentHost = new Argument<>(Keys.MICRO_FRAGMENT_HOST, savedInstanceState).get();
         }
+
+        setIntent(new IntentBuilder(getIntent())
+                .with(Keys.MICRO_FRAGMENT_HOST, new ParcelableBox<>(mMicroFragmentHost))
+                .build());
+    }
+
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState)
+    {
+        super.onSaveInstanceState(outState);
+
+        // TODO Possibly create mutable State abstraction that holds all state for the Activity.
+        // TODO Key should not be used like this:
+        outState.putParcelable(Keys.MICRO_FRAGMENT_HOST.name(), new ParcelableBox<>(mMicroFragmentHost));
     }
 
 
