@@ -20,7 +20,6 @@ package com.schedjoules.eventdiscovery.framework.activities;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 
-import com.schedjoules.eventdiscovery.R;
 import com.schedjoules.eventdiscovery.framework.common.BaseActivity;
 import com.schedjoules.eventdiscovery.framework.serialization.Keys;
 import com.schedjoules.eventdiscovery.framework.serialization.boxes.ParcelableBox;
@@ -51,9 +50,6 @@ public final class MicroFragmentHostActivity extends BaseActivity
     {
         super.onCreate(savedInstanceState);
 
-        // TODO No need to set layout, android.R.id.content can be used for the fragment containerId
-        setContentView(R.layout.schedjoules_activity_frame);
-
         // the BackDovecote receives Pigeons with the result of the BackTransition.
         mBackDovecote = new BooleanDovecote(this, "backresult", new Dovecote.OnPigeonReturnCallback<Boolean>()
         {
@@ -72,7 +68,7 @@ public final class MicroFragmentHostActivity extends BaseActivity
         {
             // load the initial MicroFragment
             mMicroFragmentHost = new SimpleMicroFragmentFlow(
-                    new Argument<>(Keys.MICRO_FRAGMENT, this).get(), R.id.schedjoules_activity_content)
+                    new Argument<>(Keys.MICRO_FRAGMENT, this).get(), android.R.id.content)
                     .start(this);
 
             setIntent(new IntentBuilder(getIntent())

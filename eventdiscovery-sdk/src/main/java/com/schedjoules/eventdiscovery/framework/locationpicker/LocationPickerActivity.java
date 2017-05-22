@@ -19,10 +19,7 @@ package com.schedjoules.eventdiscovery.framework.locationpicker;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 
-import com.schedjoules.eventdiscovery.R;
 import com.schedjoules.eventdiscovery.framework.common.BaseActivity;
 
 
@@ -39,14 +36,10 @@ public final class LocationPickerActivity extends BaseActivity
     {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.schedjoules_activity_frame);
-
-        FragmentManager fm = getSupportFragmentManager();
-        Fragment fragment = fm.findFragmentById(R.id.schedjoules_activity_content);
-        if (fragment == null)
+        if (savedInstanceState == null)
         {
-            fm.beginTransaction()
-                    .add(R.id.schedjoules_activity_content, LocationPickerFragment.newInstance())
+            getSupportFragmentManager().beginTransaction()
+                    .add(android.R.id.content, LocationPickerFragment.newInstance())
                     .commit();
         }
     }
