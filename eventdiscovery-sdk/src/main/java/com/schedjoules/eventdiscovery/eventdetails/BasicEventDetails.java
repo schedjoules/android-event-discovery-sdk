@@ -21,15 +21,13 @@ import android.app.Activity;
 import android.support.annotation.NonNull;
 
 import com.schedjoules.client.eventsdiscovery.Event;
+import com.schedjoules.eventdiscovery.framework.activities.ActivityMicroFragmentHost;
 import com.schedjoules.eventdiscovery.framework.microfragments.eventdetails.ActionLoaderMicroFragment;
 import com.schedjoules.eventdiscovery.framework.microfragments.eventdetails.ShowEventMicroFragment;
-import com.schedjoules.eventdiscovery.framework.serialization.Keys;
-import com.schedjoules.eventdiscovery.framework.serialization.commons.OptionalArgument;
 import com.schedjoules.eventdiscovery.framework.services.ActionService;
 import com.schedjoules.eventdiscovery.framework.utils.FutureServiceConnection;
 
 import org.dmfs.android.microfragments.MicroFragment;
-import org.dmfs.android.microfragments.MicroFragmentHost;
 import org.dmfs.android.microfragments.Timestamp;
 import org.dmfs.android.microfragments.timestamps.UiTimestamp;
 import org.dmfs.android.microfragments.transitions.ForwardTransition;
@@ -63,13 +61,6 @@ public final class BasicEventDetails implements EventDetails
     @Override
     public void show(@NonNull final Activity activity)
     {
-        final OptionalArgument<MicroFragmentHost> host = new OptionalArgument<>(Keys.MICRO_FRAGMENT_HOST, activity);
-
-        if (!host.isPresent())
-        {
-            throw new UnsupportedOperationException("Opening EventDetails with already loaded Event, from non-host Activity is not implemented.");
-        }
-
         final Timestamp timestamp = new UiTimestamp();
         new Thread(new Runnable()
         {
@@ -81,7 +72,8 @@ public final class BasicEventDetails implements EventDetails
                 MicroFragment microFragment = actions.isPresent() ?
                         new ShowEventMicroFragment(mEvent, actions.value()) : new ActionLoaderMicroFragment(mEvent);
 
-                host.value().execute(activity, new Swiped(new ForwardTransition<>(microFragment, timestamp)));
+                new ActivityMicroFragmentHost(activity).get()
+                        .execute(activity, new Swiped(new ForwardTransition<>(microFragment, timestamp)));
             }
 
 
@@ -89,8 +81,7 @@ public final class BasicEventDetails implements EventDetails
             {
                 try
                 {
-                    List<Link> actions = actionService.service(40).cachedActions(mEvent.uid());
-                    return new Present<>(actions);
+                    return new Present<>(actionService.service(40).cachedActions(mEvent.uid()));
                 }
                 catch (InterruptedException | TimeoutException | NoSuchElementException e)
                 {
