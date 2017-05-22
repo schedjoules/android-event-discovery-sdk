@@ -20,6 +20,7 @@ package com.schedjoules.eventdiscovery.framework.utils;
 import android.net.Uri;
 
 import com.schedjoules.client.eventsdiscovery.Event;
+import com.schedjoules.eventdiscovery.framework.model.ApiLink;
 
 import org.dmfs.httpessentials.types.Link;
 
@@ -44,13 +45,13 @@ public final class SchedJoulesLinks
 
     public Uri thumbnailUri()
     {
-        return uriForRel("http://schedjoules.com/rel/thumbnail");
+        return uriForRel(ApiLink.Rel.THUMBNAIL);
     }
 
 
     public Uri bannerUri()
     {
-        return uriForRel("http://schedjoules.com/rel/banner");
+        return uriForRel(ApiLink.Rel.BANNER);
     }
 
 

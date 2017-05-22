@@ -29,12 +29,12 @@ import com.schedjoules.eventdiscovery.R;
 import com.schedjoules.eventdiscovery.databinding.SchedjoulesFragmentEventDetailsBinding;
 import com.schedjoules.eventdiscovery.framework.actions.Action;
 import com.schedjoules.eventdiscovery.framework.actions.ActionClickListener;
-import com.schedjoules.eventdiscovery.framework.actions.ActionLinkRelTypes;
 import com.schedjoules.eventdiscovery.framework.actions.BaseActionFactory;
 import com.schedjoules.eventdiscovery.framework.actions.OptionalAction;
 import com.schedjoules.eventdiscovery.framework.actions.TicketButtonAction;
 import com.schedjoules.eventdiscovery.framework.common.BaseFragment;
 import com.schedjoules.eventdiscovery.framework.microfragments.eventdetails.ShowEventMicroFragment;
+import com.schedjoules.eventdiscovery.framework.model.ApiLink;
 import com.schedjoules.eventdiscovery.framework.utils.VenueName;
 import com.schedjoules.eventdiscovery.framework.utils.smartview.SmartView;
 import com.schedjoules.eventdiscovery.framework.widgets.NoOpOnClickListener;
@@ -77,12 +77,12 @@ public final class EventDetailsView implements SmartView<ShowEventMicroFragment.
         BaseActionFactory actionFactory = new BaseActionFactory();
 
         new ActionView(mViews.schedjoulesEventDetailsActionShare)
-                .update(new OptionalAction(ActionLinkRelTypes.SHARE, actionLinks, actionFactory, event));
+                .update(new OptionalAction(ApiLink.Rel.Action.SHARE, actionLinks, actionFactory, event));
 
         new ActionView(mViews.schedjoulesEventDetailsActionAddToCalendar)
-                .update(new OptionalAction(ActionLinkRelTypes.ADD_TO_CALENDAR, actionLinks, actionFactory, event));
+                .update(new OptionalAction(ApiLink.Rel.Action.ADD_TO_CALENDAR, actionLinks, actionFactory, event));
 
-        Optional<Action> directionsAction = new OptionalAction(ActionLinkRelTypes.DIRECTIONS, actionLinks, actionFactory, event);
+        Optional<Action> directionsAction = new OptionalAction(ApiLink.Rel.Action.DIRECTIONS, actionLinks, actionFactory, event);
         new ActionView(mViews.schedjoulesEventDetailsActionDirections).update(directionsAction);
 
         new TicketButtonView(mViews).update(new TicketButtonAction(actionLinks, event));
