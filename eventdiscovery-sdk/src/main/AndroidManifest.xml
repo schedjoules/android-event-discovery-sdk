@@ -11,21 +11,7 @@
                 android:exported="false"
                 android:enabled="true"
                 android:hardwareAccelerated="true"
-                android:theme="@style/SchedJoules_Theme.Default"/>
-        <activity
-                android:name=".framework.activities.FeedbackMicroFragmentHostActivity"
-                android:exported="false"
-                android:enabled="true"
-                android:hardwareAccelerated="true"
-                android:theme="@style/SchedJoules_Theme.Default"/>
-
-        <activity
-                android:name=".framework.eventlist.EventListActivity"
-                android:theme="@style/SchedJoules_Theme.Default"
-                android:exported="false"
-                android:enabled="true"
-                android:hardwareAccelerated="true"
-                android:label="@string/schedjoules_title_event_list">
+                android:theme="@style/SchedJoules_Theme.Default">
             <intent-filter>
                 <action android:name="schedjoules.intent.action.EVENT_DISCOVERY"/>
                 <category android:name="android.intent.category.DEFAULT"/>

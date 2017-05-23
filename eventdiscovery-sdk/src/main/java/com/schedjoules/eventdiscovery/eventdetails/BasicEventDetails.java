@@ -18,18 +18,24 @@
 package com.schedjoules.eventdiscovery.eventdetails;
 
 import android.app.Activity;
-import android.content.Intent;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
 
 import com.schedjoules.client.eventsdiscovery.Event;
-import com.schedjoules.eventdiscovery.framework.activities.MicroFragmentHostActivity;
+import com.schedjoules.eventdiscovery.framework.activities.ActivityMicroFragmentHost;
 import com.schedjoules.eventdiscovery.framework.microfragments.eventdetails.ActionLoaderMicroFragment;
 import com.schedjoules.eventdiscovery.framework.microfragments.eventdetails.ShowEventMicroFragment;
 import com.schedjoules.eventdiscovery.framework.services.ActionService;
 import com.schedjoules.eventdiscovery.framework.utils.FutureServiceConnection;
 
+import org.dmfs.android.microfragments.MicroFragment;
+import org.dmfs.android.microfragments.Timestamp;
+import org.dmfs.android.microfragments.timestamps.UiTimestamp;
+import org.dmfs.android.microfragments.transitions.ForwardTransition;
+import org.dmfs.android.microfragments.transitions.Swiped;
 import org.dmfs.httpessentials.types.Link;
+import org.dmfs.optional.Absent;
+import org.dmfs.optional.Optional;
+import org.dmfs.optional.Present;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -55,54 +61,41 @@ public final class BasicEventDetails implements EventDetails
     @Override
     public void show(@NonNull final Activity activity)
     {
-        new Thread(new StartEventDetailsRunnable(activity, mEvent)).start();
-    }
-
-
-    /**
-     * A {@link Runnable} that starts the details activity in the background after trying to load any actions from the cache.
-     */
-    private final static class StartEventDetailsRunnable implements Runnable
-    {
-        private final Activity mActivity;
-        private final Event mEvent;
-
-
-        private StartEventDetailsRunnable(@NonNull Activity activity, @NonNull Event event)
+        final Timestamp timestamp = new UiTimestamp();
+        new Thread(new Runnable()
         {
-            mActivity = activity;
-            mEvent = event;
-        }
-
-
-        @Override
-        public void run()
-        {
-            Intent intent = new Intent(mActivity, MicroFragmentHostActivity.class);
-            Bundle nestedBundle = new Bundle();
-
-            FutureServiceConnection<ActionService> actionService = new ActionService.FutureConnection(mActivity);
-            try
+            @Override
+            public void run()
             {
-                List<Link> actions = actionService.service(40).cachedActions(mEvent.uid());
-                // Start the details with the actions from the cache.
-                nestedBundle.putParcelable("MicroFragment", new ShowEventMicroFragment(mEvent, actions));
+                Optional<List<Link>> actions = loadActionsFromCache(new ActionService.FutureConnection(activity));
+
+                MicroFragment microFragment = actions.isPresent() ?
+                        new ShowEventMicroFragment(mEvent, actions.value()) : new ActionLoaderMicroFragment(mEvent);
+
+                new ActivityMicroFragmentHost(activity).get()
+                        .execute(activity, new Swiped(new ForwardTransition<>(microFragment, timestamp)));
             }
-            catch (InterruptedException | TimeoutException | NoSuchElementException e)
+
+
+            private Optional<List<Link>> loadActionsFromCache(FutureServiceConnection<ActionService> actionService)
             {
-                // An error occurred or the actions are not in the cache yet, let the details activity load the actions.
-                nestedBundle.putParcelable("MicroFragment", new ActionLoaderMicroFragment(mEvent));
-            }
-            finally
-            {
-                if (actionService.isConnected())
+                try
                 {
-                    actionService.disconnect();
+                    return new Present<>(actionService.service(40).cachedActions(mEvent.uid()));
+                }
+                catch (InterruptedException | TimeoutException | NoSuchElementException e)
+                {
+                    return Absent.absent();
+                }
+                finally
+                {
+                    if (actionService.isConnected())
+                    {
+                        actionService.disconnect();
+                    }
                 }
             }
-            intent.putExtra("com.schedjoules.nestedExtras", nestedBundle);
-
-            mActivity.startActivity(intent);
-        }
+        }).start();
     }
+
 }
