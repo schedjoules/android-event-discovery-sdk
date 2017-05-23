@@ -17,6 +17,7 @@
 
 package com.schedjoules.eventdiscovery.framework.serialization.commons;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -43,6 +44,12 @@ public final class IntentBuilder implements FluentBuilder<Intent>
     public IntentBuilder(Intent intent)
     {
         this(intent, new BundleBuilder(new NestedBundle(intent).get()));
+    }
+
+
+    public IntentBuilder(Context packageContext, Class<?> cls)
+    {
+        this(new Intent(packageContext, cls));
     }
 
 

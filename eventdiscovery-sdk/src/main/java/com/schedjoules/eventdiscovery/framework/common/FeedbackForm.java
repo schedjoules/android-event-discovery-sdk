@@ -17,7 +17,6 @@
 
 package com.schedjoules.eventdiscovery.framework.common;
 
-import android.app.Activity;
 import android.content.Context;
 
 import org.dmfs.android.microfragments.MicroFragmentHost;
@@ -33,10 +32,7 @@ public interface FeedbackForm
     /**
      * Show the feedback form to the user.
      */
-    void show(Activity activity);
-
-    /**
-     * Show the feedback form to the user.
-     */
     void show(Context context, MicroFragmentHost host);
+
+    // TODO Possibly change this as well to use just Activity as EventDiscovery
 }
