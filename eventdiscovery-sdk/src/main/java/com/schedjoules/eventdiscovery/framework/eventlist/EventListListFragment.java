@@ -63,6 +63,8 @@ public final class EventListListFragment extends BaseFragment
     private FlexibleAdapter<IFlexible> mAdapter;
     private SchedjoulesEventListBinding mViews;
 
+    private boolean mIsInitializing = true;
+
 
     public static Fragment newInstance(Bundle args)
     {
@@ -95,26 +97,21 @@ public final class EventListListFragment extends BaseFragment
         mListItemsController.setLoadingIndicatorUI(
                 new EventListLoadingIndicatorOverlay(mViews.schedjoulesEventListProgressBar));
 
-        update(savedInstanceState == null);
+        initAdapterAndRecyclerView(mIsInitializing);
+        if (mIsInitializing)
+        {
+            mListItemsController.loadEvents(location(), startAfter());
+        }
 
+        mIsInitializing = false;
         return mViews.getRoot();
     }
 
 
-    private void update(boolean freshList)
-    {
-        initAdapterAndRecyclerView(freshList);
-        if (freshList)
-        {
-            mListItemsController.loadEvents(location(), startAfter());
-        }
-    }
-
-
-    private void initAdapterAndRecyclerView(boolean freshList)
+    private void initAdapterAndRecyclerView(boolean isInitializing)
     {
         Factory<FlexibleAdapter<IFlexible>> adapterFactory = new FlexibleAdapterFactory();
-        if (!freshList && mAdapter != null)
+        if (!isInitializing && mAdapter != null)
         {
             adapterFactory = new Copying(adapterFactory, mAdapter);
         }
