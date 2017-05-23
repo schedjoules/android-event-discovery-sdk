@@ -56,12 +56,6 @@ public final class DateTimeRange implements FormattedDateTime
     @Override
     public CharSequence value(@NonNull Context context)
     {
-        if (mDuration == null)
-        {
-            // duration is unknown, return just the date and time
-            return new LongDateAndTimeNoYear(mStartTime).value(context);
-        }
-
         int format = DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_TIME | DateUtils.FORMAT_SHOW_WEEKDAY | DateUtils.FORMAT_ABBREV_WEEKDAY;
         if (mStartTime.getYear() == DateTime.nowAndHere().getYear())
         {
@@ -71,7 +65,6 @@ public final class DateTimeRange implements FormattedDateTime
 
         return DateUtils.formatDateRange(context, mStartTime.getTimestamp(), mStartTime.addDuration(mDuration.value(new Duration(1, 0, 0))).getTimestamp(),
                 format);
-
     }
 
 }
