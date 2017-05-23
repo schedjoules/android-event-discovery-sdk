@@ -20,8 +20,11 @@ package com.schedjoules.eventdiscovery.framework.activities;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 
-import com.schedjoules.eventdiscovery.R;
 import com.schedjoules.eventdiscovery.framework.common.BaseActivity;
+import com.schedjoules.eventdiscovery.framework.serialization.Keys;
+import com.schedjoules.eventdiscovery.framework.serialization.boxes.ParcelableBox;
+import com.schedjoules.eventdiscovery.framework.serialization.commons.Argument;
+import com.schedjoules.eventdiscovery.framework.serialization.commons.IntentBuilder;
 
 import org.dmfs.android.microfragments.MicroFragment;
 import org.dmfs.android.microfragments.MicroFragmentHost;
@@ -46,7 +49,6 @@ public final class MicroFragmentHostActivity extends BaseActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.schedjoules_activity_frame);
 
         // the BackDovecote receives Pigeons with the result of the BackTransition.
         mBackDovecote = new BooleanDovecote(this, "backresult", new Dovecote.OnPigeonReturnCallback<Boolean>()
@@ -65,14 +67,18 @@ public final class MicroFragmentHostActivity extends BaseActivity
         if (savedInstanceState == null)
         {
             // load the initial MicroFragment
-            Bundle nestedExtras = getIntent().getBundleExtra("com.schedjoules.nestedExtras");
-            MicroFragment initialMicroFragment = nestedExtras.getParcelable("MicroFragment");
-            mMicroFragmentHost = new SimpleMicroFragmentFlow(initialMicroFragment, R.id.schedjoules_activity_content).start(this);
+            mMicroFragmentHost = new SimpleMicroFragmentFlow(
+                    new Argument<>(Keys.MICRO_FRAGMENT, this).get(), android.R.id.content)
+                    .start(this);
         }
         else
         {
-            mMicroFragmentHost = savedInstanceState.getParcelable("host");
+            mMicroFragmentHost = new Argument<>(Keys.MICRO_FRAGMENT_HOST, savedInstanceState).get();
         }
+
+        setIntent(new IntentBuilder(getIntent())
+                .with(Keys.MICRO_FRAGMENT_HOST, new ParcelableBox<>(mMicroFragmentHost))
+                .build());
     }
 
 
@@ -80,8 +86,10 @@ public final class MicroFragmentHostActivity extends BaseActivity
     protected void onSaveInstanceState(Bundle outState)
     {
         super.onSaveInstanceState(outState);
-        // retain the MicroFragmentHost because we still need it after a configuration change (to fire BackTransitions)
-        outState.putParcelable("host", mMicroFragmentHost);
+
+        // TODO Possibly create mutable State abstraction that holds all state for the Activity.
+        // TODO Key should not be used like this:
+        outState.putParcelable(Keys.MICRO_FRAGMENT_HOST.name(), new ParcelableBox<>(mMicroFragmentHost));
     }
 
 
