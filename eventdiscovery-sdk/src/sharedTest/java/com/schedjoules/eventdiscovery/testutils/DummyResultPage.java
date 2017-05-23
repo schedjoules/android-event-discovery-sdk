@@ -19,6 +19,7 @@ package com.schedjoules.eventdiscovery.testutils;
 
 import com.schedjoules.client.Api;
 import com.schedjoules.client.ApiQuery;
+import com.schedjoules.client.State;
 import com.schedjoules.client.eventsdiscovery.Envelope;
 import com.schedjoules.client.eventsdiscovery.Event;
 import com.schedjoules.client.eventsdiscovery.ResultPage;
@@ -93,6 +94,13 @@ public final class DummyResultPage implements ResultPage<Envelope<Event>>
             {
                 return api.queryResult(URI_TOP, null);
             }
+
+
+            @Override
+            public State<ApiQuery<ResultPage<Envelope<Event>>>> serializable()
+            {
+                throw new UnsupportedOperationException();
+            }
         };
     }
 
@@ -110,6 +118,13 @@ public final class DummyResultPage implements ResultPage<Envelope<Event>>
             public ResultPage<Envelope<Event>> queryResult(Api api) throws IOException, URISyntaxException, ProtocolError, ProtocolException
             {
                 return api.queryResult(URI_BOTTOM, null);
+            }
+
+
+            @Override
+            public State<ApiQuery<ResultPage<Envelope<Event>>>> serializable()
+            {
+                throw new UnsupportedOperationException();
             }
         };
     }
