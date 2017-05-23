@@ -40,6 +40,8 @@ import com.schedjoules.eventdiscovery.framework.microfragments.eventdetails.frag
 import com.schedjoules.eventdiscovery.framework.utils.InsightsTask;
 
 import org.dmfs.android.microfragments.FragmentEnvironment;
+import org.dmfs.android.microfragments.MicroFragmentEnvironment;
+import org.dmfs.android.microfragments.transitions.BackTransition;
 import org.dmfs.httpessentials.types.StringToken;
 
 
@@ -56,7 +58,8 @@ public final class EventDetailFragment extends BaseFragment implements EventDeta
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
-        ShowEventMicroFragment.EventParams parameters = new FragmentEnvironment<ShowEventMicroFragment.EventParams>(this).microFragment().parameter();
+        final MicroFragmentEnvironment<ShowEventMicroFragment.EventParams> environment = new FragmentEnvironment<>(this);
+        ShowEventMicroFragment.EventParams parameters = environment.microFragment().parameter();
 
         if (savedInstanceState == null)
         {
@@ -76,7 +79,7 @@ public final class EventDetailFragment extends BaseFragment implements EventDeta
             @Override
             public void onClick(View view)
             {
-                getActivity().finish();
+                environment.host().execute(getActivity(), new BackTransition());
             }
         });
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener()
