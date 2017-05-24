@@ -53,7 +53,7 @@ public final class Keys
 
     public static final Key<Cage<LoadResult<ResultPage<Envelope<Event>>>>> EVENTS_LOAD_RESULT_CAGE = new SchedJoulesKey<>("EVENTS_LOAD_RESULT_CAGE");
 
-    public static final Key<Cage<Boolean>> RETRY_TAP_CAGE = new SchedJoulesKey<>("RETRY_TAP_CAGE");
+    public static final Key<Cage<Boolean>> RELOAD_CAGE = new SchedJoulesKey<>("RELOAD_CAGE");
 
 
     private Keys()
