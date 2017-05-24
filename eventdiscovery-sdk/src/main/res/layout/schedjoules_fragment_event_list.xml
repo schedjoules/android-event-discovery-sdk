@@ -14,32 +14,21 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-            <android.support.v7.widget.Toolbar
-                    android:id="@+id/schedjoules_event_list_toolbar"
+            <FrameLayout
+                    android:id="@+id/schedjoules_event_list_header_container"
                     android:layout_width="match_parent"
-                    android:layout_height="?attr/actionBarSize">
-
-                <TextView
-                        android:id="@+id/schedjoules_event_list_toolbar_title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:maxLines="1"
-                        android:ellipsize="middle"
-                        style="@style/SchedJoules_ToolbarTitle"/>
-
-            </android.support.v7.widget.Toolbar>
+                    android:layout_height="?attr/actionBarSize"/>
 
         </android.support.design.widget.AppBarLayout>
 
         <FrameLayout
-                android:id="@+id/schedjoules_event_list_container"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
 
             <FrameLayout
-                    android:id="@+id/schedjoules_event_list_list_holder"
+                    android:id="@+id/schedjoules_event_list_list_container"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"/>
 
