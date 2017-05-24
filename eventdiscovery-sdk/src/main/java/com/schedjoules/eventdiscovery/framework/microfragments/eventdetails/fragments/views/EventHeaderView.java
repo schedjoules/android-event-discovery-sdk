@@ -26,10 +26,8 @@ import com.bumptech.glide.Glide;
 import com.schedjoules.client.eventsdiscovery.Event;
 import com.schedjoules.eventdiscovery.R;
 import com.schedjoules.eventdiscovery.databinding.SchedjoulesDetailsHeaderBinding;
-import com.schedjoules.eventdiscovery.framework.common.StatusBar;
 import com.schedjoules.eventdiscovery.framework.utils.SchedJoulesLinks;
 import com.schedjoules.eventdiscovery.framework.utils.colors.AttributeColor;
-import com.schedjoules.eventdiscovery.framework.utils.colors.Transparent;
 import com.schedjoules.eventdiscovery.framework.utils.smartview.SmartView;
 
 
@@ -56,8 +54,6 @@ public final class EventHeaderView implements SmartView<Event>
     @Override
     public void update(Event event)
     {
-        new StatusBar(mActivity).update(Transparent.INSTANCE);
-
         Glide.with(mActivity)
                 .load(new SchedJoulesLinks(event.links()).bannerUri())
                 .into(mHeader.schedjoulesEventDetailBanner);

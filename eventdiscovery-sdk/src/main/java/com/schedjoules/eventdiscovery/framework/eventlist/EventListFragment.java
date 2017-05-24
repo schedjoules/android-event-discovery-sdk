@@ -85,6 +85,8 @@ public final class EventListFragment extends BaseFragment implements EventListMe
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
     {
+        setStatusBarCoverEnabled(false);
+
         mViews = DataBindingUtil.inflate(inflater, R.layout.schedjoules_fragment_event_list, container, false);
 
         mMenu = new EventListMenu(this);
