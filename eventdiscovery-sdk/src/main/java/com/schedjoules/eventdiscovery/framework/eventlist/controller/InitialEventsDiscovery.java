@@ -66,7 +66,7 @@ public final class InitialEventsDiscovery implements ApiQuery<ResultPage<Envelop
 
         if (!(mLocation instanceof UndefinedGeoLocation))
         {
-            query = query.withGeoLocation(mLocation, 25000 /*meters*/);
+            query = query.withGeoLocation(mLocation, 10000 /*meters*/);
         }
 
         return query.queryResult(api);
