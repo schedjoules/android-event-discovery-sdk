@@ -61,7 +61,10 @@ public final class EventEnvelopeBox implements Box<Envelope<Event>>
         dest.writeString(mEnvelope.etag());
         dest.writeString(mEnvelope.uid());
         dest.writeInt(mEnvelope.hasPayload() ? 1 : 0);
-        dest.writeParcelable(new EventBox(mEnvelope.payload()), flags);
+        if (mEnvelope.hasPayload())
+        {
+            dest.writeParcelable(new EventBox(mEnvelope.payload()), flags);
+        }
     }
 
 
@@ -73,8 +76,8 @@ public final class EventEnvelopeBox implements Box<Envelope<Event>>
             String etag = in.readString();
             String uid = in.readString();
             boolean hasPayload = in.readInt() == 1;
-            Box<Event> eventBox = in.readParcelable(getClass().getClassLoader());
-            return new EventEnvelopeBox(new StructuredEnvelope<>(etag, uid, hasPayload, eventBox.content()));
+            Event event = hasPayload ? ((Box<Event>) in.readParcelable(getClass().getClassLoader())).content() : null;
+            return new EventEnvelopeBox(new StructuredEnvelope<>(etag, uid, hasPayload, event));
         }
 
 
