@@ -71,7 +71,7 @@ public final class EventResultPageBox implements Box<ResultPage<Envelope<Event>>
         {
             envelopeBoxes.add(new EventEnvelopeBox(envelope));
         }
-        dest.writeList(envelopeBoxes);
+        dest.writeTypedList(envelopeBoxes);
 
         dest.writeInt(mResultPage.isFirstPage() ? 1 : 0);
         dest.writeInt(mResultPage.isLastPage() ? 1 : 0);
@@ -93,7 +93,7 @@ public final class EventResultPageBox implements Box<ResultPage<Envelope<Event>>
         public EventResultPageBox createFromParcel(Parcel in)
         {
             List<Box<Envelope<Event>>> envelopeBoxes = new LinkedList<>();
-            in.readList(envelopeBoxes, getClass().getClassLoader());
+            in.readTypedList(envelopeBoxes, EventEnvelopeBox.CREATOR);
             List<Envelope<Event>> envelopes = new ArrayList<>();
             for (Box<Envelope<Event>> envelopeBox : envelopeBoxes)
             {

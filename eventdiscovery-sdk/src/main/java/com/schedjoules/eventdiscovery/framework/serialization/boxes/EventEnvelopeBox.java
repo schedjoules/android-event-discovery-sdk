@@ -68,7 +68,7 @@ public final class EventEnvelopeBox implements Box<Envelope<Event>>
     }
 
 
-    public static final Creator<EventEnvelopeBox> CREATOR = new Creator<EventEnvelopeBox>()
+    public static final Creator<Box<Envelope<Event>>> CREATOR = new Creator<Box<Envelope<Event>>>()
     {
         @Override
         public EventEnvelopeBox createFromParcel(Parcel in)
