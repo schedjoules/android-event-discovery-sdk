@@ -73,7 +73,7 @@ public final class StructuredResultPage<T> implements ResultPage<T>
     @Override
     public ApiQuery<ResultPage<T>> previousPageQuery() throws IllegalStateException
     {
-        if (mPrevPageQuery == null)
+        if (mIsFirstPage)
         {
             throw new IllegalStateException("No previous page query");
         }
@@ -84,7 +84,7 @@ public final class StructuredResultPage<T> implements ResultPage<T>
     @Override
     public ApiQuery<ResultPage<T>> nextPageQuery() throws IllegalStateException
     {
-        if (mNextPageQuery == null)
+        if (mIsLastPage)
         {
             throw new IllegalStateException("No next page query");
         }
