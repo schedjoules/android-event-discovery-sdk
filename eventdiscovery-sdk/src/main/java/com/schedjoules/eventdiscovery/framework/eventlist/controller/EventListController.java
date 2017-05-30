@@ -19,13 +19,11 @@ package com.schedjoules.eventdiscovery.framework.eventlist.controller;
 
 import android.support.v7.widget.RecyclerView;
 
-import com.schedjoules.client.eventsdiscovery.GeoLocation;
+import com.schedjoules.client.eventsdiscovery.Envelope;
+import com.schedjoules.client.eventsdiscovery.Event;
+import com.schedjoules.client.eventsdiscovery.ResultPage;
 import com.schedjoules.eventdiscovery.framework.eventlist.view.EdgeReachScrollListener;
-import com.schedjoules.eventdiscovery.framework.eventlist.view.EventListBackgroundMessage;
-import com.schedjoules.eventdiscovery.framework.eventlist.view.EventListLoadingIndicatorOverlay;
 import com.schedjoules.eventdiscovery.framework.list.ListItems;
-
-import org.dmfs.rfc5545.DateTime;
 
 
 /**
@@ -37,15 +35,8 @@ import org.dmfs.rfc5545.DateTime;
 public interface EventListController extends EdgeReachScrollListener.Listener
 {
 
-    /**
-     * Initiate loading events for the given location and start time.
-     */
-    void loadEvents(GeoLocation geoLocation, DateTime dateTime);
+    void showEvents(ResultPage<Envelope<Event>> resultPage);
 
     void setAdapter(RecyclerView.Adapter adapter);
-
-    void setBackgroundMessageUI(EventListBackgroundMessage backgroundMessage);
-
-    void setLoadingIndicatorUI(EventListLoadingIndicatorOverlay loadingIndicatorOverlay);
 
 }

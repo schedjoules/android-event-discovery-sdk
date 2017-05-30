@@ -17,11 +17,16 @@
 
 package com.schedjoules.eventdiscovery.framework.serialization;
 
+import com.schedjoules.client.eventsdiscovery.Envelope;
+import com.schedjoules.client.eventsdiscovery.Event;
 import com.schedjoules.client.eventsdiscovery.GeoLocation;
+import com.schedjoules.client.eventsdiscovery.ResultPage;
 import com.schedjoules.eventdiscovery.framework.serialization.core.Key;
+import com.schedjoules.eventdiscovery.framework.utils.loadresult.LoadResult;
 
 import org.dmfs.android.microfragments.MicroFragment;
 import org.dmfs.android.microfragments.MicroFragmentHost;
+import org.dmfs.pigeonpost.Cage;
 import org.dmfs.rfc5545.DateTime;
 
 
@@ -43,6 +48,12 @@ public final class Keys
     public static final Key<MicroFragment> MICRO_FRAGMENT = new SchedJoulesKey<>("MICRO_FRAGMENT");
 
     public static final Key<MicroFragmentHost> MICRO_FRAGMENT_HOST = new SchedJoulesKey<>("MICRO_FRAGMENT_HOST");
+
+    public static final Key<ResultPage<Envelope<Event>>> EVENTS_RESULT_PAGE = new SchedJoulesKey<>("EVENTS_RESULT_PAGE");
+
+    public static final Key<Cage<LoadResult<ResultPage<Envelope<Event>>>>> EVENTS_LOAD_RESULT_CAGE = new SchedJoulesKey<>("EVENTS_LOAD_RESULT_CAGE");
+
+    public static final Key<Cage<Boolean>> RELOAD_CAGE = new SchedJoulesKey<>("RELOAD_CAGE");
 
 
     private Keys()

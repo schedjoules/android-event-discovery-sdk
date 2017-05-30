@@ -17,26 +17,22 @@
 
 package com.schedjoules.eventdiscovery.framework.eventlist.controller;
 
+import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
 import com.schedjoules.client.ApiQuery;
 import com.schedjoules.client.eventsdiscovery.Envelope;
 import com.schedjoules.client.eventsdiscovery.Event;
-import com.schedjoules.client.eventsdiscovery.GeoLocation;
 import com.schedjoules.client.eventsdiscovery.ResultPage;
 import com.schedjoules.eventdiscovery.framework.async.SafeAsyncTaskResult;
 import com.schedjoules.eventdiscovery.framework.eventlist.controller.EventListDownloadTask.TaskParam;
 import com.schedjoules.eventdiscovery.framework.eventlist.controller.EventListDownloadTask.TaskResult;
-import com.schedjoules.eventdiscovery.framework.eventlist.view.EventListBackgroundMessage;
-import com.schedjoules.eventdiscovery.framework.eventlist.view.EventListLoadingIndicatorOverlay;
 import com.schedjoules.eventdiscovery.framework.utils.FutureServiceConnection;
-import com.schedjoules.eventdiscovery.framework.utils.Objects;
 import com.schedjoules.eventdiscovery.service.ApiService;
 
-import org.dmfs.rfc5545.DateTime;
-
 import java.util.EnumMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -53,7 +49,7 @@ import static com.schedjoules.eventdiscovery.framework.eventlist.controller.Scro
  *
  * @author Gabor Keszthelyi
  */
-public final class EventListControllerImpl implements EventListController, EventListBackgroundMessage.OnClickListener
+public final class EventListControllerImpl implements EventListController
 {
     public static final int CLOSE_TO_TOP_OR_BOTTOM_THRESHOLD = 30;
 
@@ -64,9 +60,6 @@ public final class EventListControllerImpl implements EventListController, Event
     private final ExecutorService mExecutorService;
     private final EventListItems<IFlexible, FlexibleAdapter<IFlexible>> mItems;
     private final EnumMap<ScrollDirection, ResultPage<Envelope<Event>>> mLastResultPages;
-    private EventListBackgroundMessage mBackgroundMessage;
-    private EventListLoadingIndicatorOverlay mLoadingIndicatorOverlay;
-    private GeoLocation mLocation;
     private Map<ScrollDirection, Boolean> mIsLoading;
 
     private DownloadTaskClient mDownloadTaskClient;
@@ -96,13 +89,9 @@ public final class EventListControllerImpl implements EventListController, Event
 
 
     @Override
-    public void loadEvents(GeoLocation geoLocation, DateTime dateTime)
+    public void showEvents(ResultPage<Envelope<Event>> resultPage)
     {
-        clearEverything();
-
-        mLocation = geoLocation;
-
-        queueDownloadTask(new InitialEventsDiscovery(dateTime, mLocation), BOTTOM);
+        new ComposeListAndShowTask(resultPage).executeOnExecutor(mExecutorService);
     }
 
 
@@ -113,27 +102,12 @@ public final class EventListControllerImpl implements EventListController, Event
     }
 
 
-    @Override
-    public void setBackgroundMessageUI(EventListBackgroundMessage backgroundMessage)
-    {
-        mBackgroundMessage = backgroundMessage;
-        mBackgroundMessage.setOnClickListener(this);
-    }
-
-
-    @Override
-    public void setLoadingIndicatorUI(EventListLoadingIndicatorOverlay loadingIndicatorOverlay)
-    {
-        mLoadingIndicatorOverlay = loadingIndicatorOverlay;
-    }
-
-
     private void queueDownloadTask(ApiQuery<ResultPage<Envelope<Event>>> query, ScrollDirection scrollDirection)
     {
         //noinspection unchecked
-        new EventListDownloadTask(new TaskParam(mLocation, query, scrollDirection), mDownloadTaskClient)
+        new EventListDownloadTask(new TaskParam(query, scrollDirection), mDownloadTaskClient)
                 .executeOnExecutor(mExecutorService, mApiService);
-        markLoadStarted(mItems.isEmpty(), scrollDirection);
+        markLoadStarted(scrollDirection);
     }
 
 
@@ -141,7 +115,7 @@ public final class EventListControllerImpl implements EventListController, Event
     {
         //noinspection unchecked
         new EventListDownloadTask(taskParam, mDownloadTaskClient).executeOnExecutor(mExecutorService, mApiService);
-        markLoadStarted(mItems.isEmpty(), taskParam.mDirection);
+        markLoadStarted(taskParam.mDirection);
     }
 
 
@@ -151,13 +125,6 @@ public final class EventListControllerImpl implements EventListController, Event
         {
             queueDownloadTask(direction.comingPageQuery(mLastResultPages), direction);
         }
-    }
-
-
-    @Override
-    public void onBackgroundMessageClick()
-    {
-        onScrolledCloseToEdge(BOTTOM);
     }
 
 
@@ -178,72 +145,31 @@ public final class EventListControllerImpl implements EventListController, Event
     }
 
 
-    private void clearEverything()
-    {
-        mItems.clear();
-
-        mIsInErrorMode.put(TOP, false);
-        mIsInErrorMode.put(BOTTOM, false);
-        mIsLoading.put(TOP, false);
-        mIsLoading.put(BOTTOM, false);
-        mErrorTaskParam.clear();
-        mLastResultPages.clear();
-    }
-
-
-    private void markLoadStarted(boolean isEmpty, ScrollDirection direction)
+    private void markLoadStarted(ScrollDirection direction)
     {
         mIsLoading.put(direction, true);
-        if (isEmpty)
+        // This request will result in empty first page, so not worth showing the loading
+        if (!(direction == TOP && mItems.isTodayShown()))
         {
-            mLoadingIndicatorOverlay.show();
-        }
-        else
-        {
-            // This request will result in empty first page, so not worth showing the loading
-            if (!(direction == TOP && mItems.isTodayShown()))
-            {
-                mItems.addSpecialItemPost(direction.loadingIndicatorItem(), direction);
-            }
+            mItems.addSpecialItemPost(direction.loadingIndicatorItem(), direction);
         }
     }
 
 
-    private void markLoadFinishedSuccess(boolean isEmptyBefore, boolean isEmptyAfter, ScrollDirection direction)
+    private void markLoadFinishedSuccess(ScrollDirection direction)
     {
         mIsLoading.put(direction, false);
 
-        // Hide loading:
-        if (isEmptyBefore)
-        {
-            mLoadingIndicatorOverlay.hide();
-            mBackgroundMessage.hide();
-        }
-        else
-        {
-            mItems.removeSpecialItem(direction.loadingIndicatorItem(), direction);
-        }
+        mItems.removeSpecialItem(direction.loadingIndicatorItem(), direction);
 
         // Resuming from error mode:
         if (mIsInErrorMode.get(direction))
         {
-            if (isEmptyBefore)
-            {
-                mBackgroundMessage.hide();
-            }
-            else
-            {
-                mItems.removeSpecialItem(direction.errorItem(), direction);
-            }
+            mItems.removeSpecialItem(direction.errorItem(), direction);
             mIsInErrorMode.put(direction, false);
         }
 
-        // No more events message:
-        if (isEmptyAfter)
-        {
-            mBackgroundMessage.showNoEventsFoundMsg();
-        }
-        else if (!direction.hasComingPageQuery(mLastResultPages)
+        if (!direction.hasComingPageQuery(mLastResultPages)
                 && (direction == BOTTOM || (direction == TOP && !mItems.isTodayShown())))
         {
             mItems.addSpecialItemNow(direction.noMoreEventsItem(), direction);
@@ -251,30 +177,15 @@ public final class EventListControllerImpl implements EventListController, Event
     }
 
 
-    private void markLoadFinishedError(boolean isEmpty, ScrollDirection direction)
+    private void markLoadFinishedError(ScrollDirection direction)
     {
         mIsLoading.put(direction, false);
 
-        // Hide loading indicator:
-        if (isEmpty)
-        {
-            mLoadingIndicatorOverlay.hide();
-        }
-        else
-        {
-            mItems.removeSpecialItem(direction.loadingIndicatorItem(), direction);
-        }
+        mItems.removeSpecialItem(direction.loadingIndicatorItem(), direction);
 
         if (!mIsInErrorMode.get(direction))
         {
-            if (isEmpty)
-            {
-                mBackgroundMessage.showErrorMsg();
-            }
-            else
-            {
-                mItems.addSpecialItemNow(direction.errorItem(), direction);
-            }
+            mItems.addSpecialItemNow(direction.errorItem(), direction);
             mIsInErrorMode.put(direction, true);
         }
     }
@@ -287,10 +198,8 @@ public final class EventListControllerImpl implements EventListController, Event
         @Override
         public boolean shouldDiscard(TaskParam taskParam)
         {
-            return !Objects.equals(taskParam.mRequestLocation, mLocation)
-                    ||
-                    (mIsInErrorMode.get(taskParam.mDirection)
-                            && !taskParam.equals(mErrorTaskParam.get(taskParam.mDirection)));
+            return mIsInErrorMode.get(taskParam.mDirection)
+                    && !taskParam.equals(mErrorTaskParam.get(taskParam.mDirection));
         }
 
 
@@ -312,10 +221,9 @@ public final class EventListControllerImpl implements EventListController, Event
         {
             mLastResultPages.put(taskParam.mDirection, result.mResultPage);
 
-            boolean isEmptyBefore = mItems.isEmpty();
             mItems.mergeNewItems(result.mListItems, taskParam.mDirection);
 
-            markLoadFinishedSuccess(isEmptyBefore, mItems.isEmpty(), taskParam.mDirection);
+            markLoadFinishedSuccess(taskParam.mDirection);
 
             if (taskParam.mQuery instanceof InitialEventsDiscovery)
             {
@@ -329,7 +237,38 @@ public final class EventListControllerImpl implements EventListController, Event
         {
             mErrorTaskParam.put(taskParam.mDirection, taskParam);
             Log.e(TAG, "Error during download task", e);
-            markLoadFinishedError(mItems.isEmpty(), taskParam.mDirection);
+            markLoadFinishedError(taskParam.mDirection);
+        }
+    }
+
+
+    private class ComposeListAndShowTask extends AsyncTask<Void, Void, List<IFlexible>>
+    {
+        private final ResultPage<Envelope<Event>> mResultPage;
+
+
+        private ComposeListAndShowTask(ResultPage<Envelope<Event>> resultPage)
+        {
+            mResultPage = resultPage;
+        }
+
+
+        @Override
+        protected List<IFlexible> doInBackground(Void... params)
+        {
+            return EventListItemsComposer.INSTANCE.compose(mResultPage);
+        }
+
+
+        @Override
+        protected void onPostExecute(List<IFlexible> listItems)
+        {
+            mLastResultPages.put(BOTTOM, mResultPage);
+            mItems.mergeNewItems(listItems, BOTTOM);
+            markLoadFinishedSuccess(BOTTOM);
+
+            mLastResultPages.put(TOP, mResultPage);
+            queueComingPage(TOP);
         }
     }
 }
