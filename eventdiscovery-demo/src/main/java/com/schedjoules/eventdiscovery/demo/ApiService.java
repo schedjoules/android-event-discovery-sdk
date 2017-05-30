@@ -8,7 +8,7 @@ import com.schedjoules.client.Api;
 import com.schedjoules.client.SchedJoulesApi;
 import com.schedjoules.client.SchedJoulesApiClient;
 import com.schedjoules.client.utils.StringAccessToken;
-import com.schedjoules.eventdiscovery.framework.http.RequestUriLogging;
+import com.schedjoules.eventdiscovery.framework.http.RequestUriAndTimeLogging;
 import com.schedjoules.eventdiscovery.framework.utils.SharedPrefsUserIdentifier;
 import com.schedjoules.eventdiscovery.service.AbstractApiService;
 
@@ -40,7 +40,7 @@ public final class ApiService extends AbstractApiService
                 SchedJoulesApiClient client = new SchedJoulesApiClient(new StringAccessToken("0443a55244bb2b6224fd48e0416f0d9c"));
 
                 HttpRequestExecutor executor =
-                        new RequestUriLogging(
+                        new RequestUriAndTimeLogging(
                                 new Branded(
                                         new Retrying(
                                                 new HttpUrlConnectionExecutor(

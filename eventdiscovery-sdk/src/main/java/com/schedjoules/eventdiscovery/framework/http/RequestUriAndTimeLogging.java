@@ -17,6 +17,7 @@
 
 package com.schedjoules.eventdiscovery.framework.http;
 
+import android.os.SystemClock;
 import android.util.Log;
 
 import org.dmfs.httpessentials.client.HttpRequest;
@@ -28,22 +29,24 @@ import org.dmfs.httpessentials.exceptions.UnexpectedStatusException;
 
 import java.io.IOException;
 import java.net.URI;
+import java.util.concurrent.atomic.AtomicInteger;
 
 
 /**
- * {@link HttpRequestExecutor} decorator that logs request uris to logcat.
+ * {@link HttpRequestExecutor} decorator that logs request uris and round trip times to logcat.
  *
  * @author Gabor Keszthelyi
  */
-public final class RequestUriLogging implements HttpRequestExecutor
+public final class RequestUriAndTimeLogging implements HttpRequestExecutor
 {
+    private static AtomicInteger sRequestCounter = new AtomicInteger(1000);
 
     private final HttpRequestExecutor mDelegate;
     private final boolean mEnableLog;
     private final String mTag;
 
 
-    public RequestUriLogging(HttpRequestExecutor delegate, boolean enableLog, String tag)
+    public RequestUriAndTimeLogging(HttpRequestExecutor delegate, boolean enableLog, String tag)
     {
         mDelegate = delegate;
         mEnableLog = enableLog;
@@ -54,10 +57,14 @@ public final class RequestUriLogging implements HttpRequestExecutor
     @Override
     public <T> T execute(URI uri, HttpRequest<T> request) throws IOException, ProtocolError, ProtocolException, RedirectionException, UnexpectedStatusException
     {
+        int requestId = sRequestCounter.getAndIncrement();
         if (mEnableLog)
         {
-            Log.d(mTag, String.format("%s %s", request.method().verb(), uri));
+            Log.d(mTag, String.format("(%s->) %s %s", requestId, request.method().verb(), uri));
         }
-        return mDelegate.execute(uri, request);
+        long start = SystemClock.uptimeMillis();
+        T result = mDelegate.execute(uri, request);
+        Log.d(mTag, String.format("(<-%s) Response time: %s ms", requestId, SystemClock.uptimeMillis() - start));
+        return result;
     }
 }
