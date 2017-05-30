@@ -73,7 +73,7 @@ public final class EventListListLoaderFragment extends BaseFragment
                 .with(Keys.EVENTS_LOAD_RESULT_CAGE, new ParcelableBox<>(resultCage));
         if (start.isPresent())
         {
-            bundleBuilder.with(Keys.DATE_TIME_START_AFTER, new DateTimeBox(start.value()));
+            bundleBuilder = bundleBuilder.with(Keys.DATE_TIME_START_AFTER, new DateTimeBox(start.value()));
         }
         EventListListLoaderFragment fragment = new EventListListLoaderFragment();
         fragment.setArguments(bundleBuilder.build());
