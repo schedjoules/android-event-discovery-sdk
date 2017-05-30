@@ -67,6 +67,8 @@ public final class BundleBuilder implements FluentBuilder<Bundle>
     {
         Bundle bundle = new Bundle(mBundle);
         bundle.putParcelable(key.name(), box);
+        // Use this to test parcelling during development:
+        // bundle.putParcelable(key.name(), ParcellingEnforcer.immediateDeepParcel(box));
         return new BundleBuilder(bundle, false);
     }
 
