@@ -39,7 +39,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public final class RequestUriAndTimeLogging implements HttpRequestExecutor
 {
-    private static AtomicInteger sRequestCounter = new AtomicInteger(1000);
+    private static AtomicInteger sRequestCounter = new AtomicInteger(1);
 
     private final HttpRequestExecutor mDelegate;
     private final boolean mEnableLog;
@@ -57,14 +57,18 @@ public final class RequestUriAndTimeLogging implements HttpRequestExecutor
     @Override
     public <T> T execute(URI uri, HttpRequest<T> request) throws IOException, ProtocolError, ProtocolException, RedirectionException, UnexpectedStatusException
     {
-        int requestId = sRequestCounter.getAndIncrement();
         if (mEnableLog)
         {
+            int requestId = sRequestCounter.getAndIncrement();
             Log.d(mTag, String.format("(%s->) %s %s", requestId, request.method().verb(), uri));
+            long start = SystemClock.uptimeMillis();
+            T result = mDelegate.execute(uri, request);
+            Log.d(mTag, String.format("(%s<-) Response time: %s ms", requestId, SystemClock.uptimeMillis() - start));
+            return result;
         }
-        long start = SystemClock.uptimeMillis();
-        T result = mDelegate.execute(uri, request);
-        Log.d(mTag, String.format("(<-%s) Response time: %s ms", requestId, SystemClock.uptimeMillis() - start));
-        return result;
+        else
+        {
+            return mDelegate.execute(uri, request);
+        }
     }
 }
