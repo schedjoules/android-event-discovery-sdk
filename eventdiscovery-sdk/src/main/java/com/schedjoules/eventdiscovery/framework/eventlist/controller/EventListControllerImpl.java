@@ -17,13 +17,13 @@
 
 package com.schedjoules.eventdiscovery.framework.eventlist.controller;
 
+import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
 import com.schedjoules.client.ApiQuery;
 import com.schedjoules.client.eventsdiscovery.Envelope;
 import com.schedjoules.client.eventsdiscovery.Event;
-import com.schedjoules.client.eventsdiscovery.GeoLocation;
 import com.schedjoules.client.eventsdiscovery.ResultPage;
 import com.schedjoules.eventdiscovery.framework.async.SafeAsyncTaskResult;
 import com.schedjoules.eventdiscovery.framework.eventlist.controller.EventListDownloadTask.TaskParam;
@@ -31,12 +31,10 @@ import com.schedjoules.eventdiscovery.framework.eventlist.controller.EventListDo
 import com.schedjoules.eventdiscovery.framework.eventlist.view.EventListBackgroundMessage;
 import com.schedjoules.eventdiscovery.framework.eventlist.view.EventListLoadingIndicatorOverlay;
 import com.schedjoules.eventdiscovery.framework.utils.FutureServiceConnection;
-import com.schedjoules.eventdiscovery.framework.utils.Objects;
 import com.schedjoules.eventdiscovery.service.ApiService;
 
-import org.dmfs.rfc5545.DateTime;
-
 import java.util.EnumMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -66,7 +64,6 @@ public final class EventListControllerImpl implements EventListController, Event
     private final EnumMap<ScrollDirection, ResultPage<Envelope<Event>>> mLastResultPages;
     private EventListBackgroundMessage mBackgroundMessage;
     private EventListLoadingIndicatorOverlay mLoadingIndicatorOverlay;
-    private GeoLocation mLocation;
     private Map<ScrollDirection, Boolean> mIsLoading;
 
     private DownloadTaskClient mDownloadTaskClient;
@@ -96,13 +93,16 @@ public final class EventListControllerImpl implements EventListController, Event
 
 
     @Override
-    public void loadEvents(GeoLocation geoLocation, DateTime dateTime)
+    public void loadEvents(ApiQuery<ResultPage<Envelope<Event>>> query)
     {
-        clearEverything();
+        queueDownloadTask(query, BOTTOM);
+    }
 
-        mLocation = geoLocation;
 
-        queueDownloadTask(new InitialEventsDiscovery(dateTime, mLocation), BOTTOM);
+    @Override
+    public void showEvents(ResultPage<Envelope<Event>> resultPage)
+    {
+        new ComposeListAndShowTask(resultPage).executeOnExecutor(mExecutorService);
     }
 
 
@@ -131,7 +131,7 @@ public final class EventListControllerImpl implements EventListController, Event
     private void queueDownloadTask(ApiQuery<ResultPage<Envelope<Event>>> query, ScrollDirection scrollDirection)
     {
         //noinspection unchecked
-        new EventListDownloadTask(new TaskParam(mLocation, query, scrollDirection), mDownloadTaskClient)
+        new EventListDownloadTask(new TaskParam(query, scrollDirection), mDownloadTaskClient)
                 .executeOnExecutor(mExecutorService, mApiService);
         markLoadStarted(mItems.isEmpty(), scrollDirection);
     }
@@ -175,19 +175,6 @@ public final class EventListControllerImpl implements EventListController, Event
                 queueComingPage(direction);
             }
         }
-    }
-
-
-    private void clearEverything()
-    {
-        mItems.clear();
-
-        mIsInErrorMode.put(TOP, false);
-        mIsInErrorMode.put(BOTTOM, false);
-        mIsLoading.put(TOP, false);
-        mIsLoading.put(BOTTOM, false);
-        mErrorTaskParam.clear();
-        mLastResultPages.clear();
     }
 
 
@@ -287,10 +274,8 @@ public final class EventListControllerImpl implements EventListController, Event
         @Override
         public boolean shouldDiscard(TaskParam taskParam)
         {
-            return !Objects.equals(taskParam.mRequestLocation, mLocation)
-                    ||
-                    (mIsInErrorMode.get(taskParam.mDirection)
-                            && !taskParam.equals(mErrorTaskParam.get(taskParam.mDirection)));
+            return mIsInErrorMode.get(taskParam.mDirection)
+                    && !taskParam.equals(mErrorTaskParam.get(taskParam.mDirection));
         }
 
 
@@ -330,6 +315,37 @@ public final class EventListControllerImpl implements EventListController, Event
             mErrorTaskParam.put(taskParam.mDirection, taskParam);
             Log.e(TAG, "Error during download task", e);
             markLoadFinishedError(mItems.isEmpty(), taskParam.mDirection);
+        }
+    }
+
+
+    private class ComposeListAndShowTask extends AsyncTask<Void, Void, List<IFlexible>>
+    {
+        private final ResultPage<Envelope<Event>> mResultPage;
+
+
+        private ComposeListAndShowTask(ResultPage<Envelope<Event>> resultPage)
+        {
+            mResultPage = resultPage;
+        }
+
+
+        @Override
+        protected List<IFlexible> doInBackground(Void... params)
+        {
+            return EventListItemsComposer.INSTANCE.compose(mResultPage);
+        }
+
+
+        @Override
+        protected void onPostExecute(List<IFlexible> listItems)
+        {
+            mLastResultPages.put(BOTTOM, mResultPage);
+            mItems.mergeNewItems(listItems, BOTTOM);
+            markLoadFinishedSuccess(true, mItems.isEmpty(), BOTTOM);
+
+            mLastResultPages.put(TOP, mResultPage);
+            queueComingPage(TOP);
         }
     }
 }
