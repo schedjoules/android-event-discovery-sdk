@@ -39,25 +39,39 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public final class RequestUriAndTimeLogging implements HttpRequestExecutor
 {
-    private static AtomicInteger sRequestCounter = new AtomicInteger(1);
-
     private final HttpRequestExecutor mDelegate;
-    private final boolean mEnableLog;
-    private final String mTag;
 
 
     public RequestUriAndTimeLogging(HttpRequestExecutor delegate, boolean enableLog, String tag)
     {
-        mDelegate = delegate;
-        mEnableLog = enableLog;
-        mTag = tag;
+        mDelegate = enableLog ? new LoggingExecutor(delegate, tag) : delegate;
     }
 
 
     @Override
     public <T> T execute(URI uri, HttpRequest<T> request) throws IOException, ProtocolError, ProtocolException, RedirectionException, UnexpectedStatusException
     {
-        if (mEnableLog)
+        return mDelegate.execute(uri, request);
+    }
+
+
+    private static final class LoggingExecutor implements HttpRequestExecutor
+    {
+        private static AtomicInteger sRequestCounter = new AtomicInteger(1);
+
+        private final HttpRequestExecutor mDelegate;
+        private final String mTag;
+
+
+        private LoggingExecutor(HttpRequestExecutor delegate, String tag)
+        {
+            mDelegate = delegate;
+            mTag = tag;
+        }
+
+
+        @Override
+        public <T> T execute(URI uri, HttpRequest<T> request) throws IOException, ProtocolError, ProtocolException, RedirectionException, UnexpectedStatusException
         {
             int requestId = sRequestCounter.getAndIncrement();
             Log.d(mTag, String.format("(%s->) %s %s", requestId, request.method().verb(), uri));
@@ -65,10 +79,6 @@ public final class RequestUriAndTimeLogging implements HttpRequestExecutor
             T result = mDelegate.execute(uri, request);
             Log.d(mTag, String.format("(%s<-) Response time: %s ms", requestId, SystemClock.uptimeMillis() - start));
             return result;
-        }
-        else
-        {
-            return mDelegate.execute(uri, request);
         }
     }
 }
