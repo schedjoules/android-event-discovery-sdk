@@ -26,13 +26,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.schedjoules.client.eventsdiscovery.Envelope;
+import com.schedjoules.client.eventsdiscovery.Event;
 import com.schedjoules.client.eventsdiscovery.GeoLocation;
+import com.schedjoules.client.eventsdiscovery.ResultPage;
 import com.schedjoules.eventdiscovery.R;
 import com.schedjoules.eventdiscovery.databinding.SchedjoulesEventListBinding;
 import com.schedjoules.eventdiscovery.framework.common.BaseFragment;
 import com.schedjoules.eventdiscovery.framework.eventlist.controller.EventListController;
 import com.schedjoules.eventdiscovery.framework.eventlist.controller.EventListControllerImpl;
 import com.schedjoules.eventdiscovery.framework.eventlist.controller.FlexibleAdapterEventListItems;
+import com.schedjoules.eventdiscovery.framework.eventlist.controller.InitialEventsDiscovery;
 import com.schedjoules.eventdiscovery.framework.eventlist.flexibleadapter.Copying;
 import com.schedjoules.eventdiscovery.framework.eventlist.flexibleadapter.FlexibleAdapterFactory;
 import com.schedjoules.eventdiscovery.framework.eventlist.view.EdgeReachScrollListener;
@@ -100,7 +104,15 @@ public final class EventListListFragment extends BaseFragment
         initAdapterAndRecyclerView(mIsInitializing);
         if (mIsInitializing)
         {
-            mListItemsController.loadEvents(location(), startAfter());
+            OptionalArgument<ResultPage<Envelope<Event>>> resultPage = new OptionalArgument<>(Keys.EVENTS_RESULT_PAGE, this);
+            if (resultPage.isPresent())
+            {
+                mListItemsController.showEvents(resultPage.value());
+            }
+            else
+            {
+                mListItemsController.loadEvents(new InitialEventsDiscovery(startAfter(), location()));
+            }
         }
 
         mIsInitializing = false;

@@ -17,7 +17,10 @@
 
 package com.schedjoules.eventdiscovery.framework.serialization;
 
+import com.schedjoules.client.eventsdiscovery.Envelope;
+import com.schedjoules.client.eventsdiscovery.Event;
 import com.schedjoules.client.eventsdiscovery.GeoLocation;
+import com.schedjoules.client.eventsdiscovery.ResultPage;
 import com.schedjoules.eventdiscovery.framework.serialization.core.Key;
 
 import org.dmfs.android.microfragments.MicroFragment;
@@ -43,6 +46,8 @@ public final class Keys
     public static final Key<MicroFragment> MICRO_FRAGMENT = new SchedJoulesKey<>("MICRO_FRAGMENT");
 
     public static final Key<MicroFragmentHost> MICRO_FRAGMENT_HOST = new SchedJoulesKey<>("MICRO_FRAGMENT_HOST");
+
+    public static final Key<ResultPage<Envelope<Event>>> EVENTS_RESULT_PAGE = new SchedJoulesKey<>("EVENTS_RESULT_PAGE");
 
 
     private Keys()

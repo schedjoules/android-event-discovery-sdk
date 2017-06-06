@@ -22,7 +22,6 @@ import android.os.AsyncTask;
 import com.schedjoules.client.ApiQuery;
 import com.schedjoules.client.eventsdiscovery.Envelope;
 import com.schedjoules.client.eventsdiscovery.Event;
-import com.schedjoules.client.eventsdiscovery.GeoLocation;
 import com.schedjoules.client.eventsdiscovery.ResultPage;
 import com.schedjoules.eventdiscovery.framework.async.DiscardCheck;
 import com.schedjoules.eventdiscovery.framework.async.DiscardingSafeAsyncTask;
@@ -80,14 +79,12 @@ public final class EventListDownloadTask extends
     {
 
         public final ApiQuery<ResultPage<Envelope<Event>>> mQuery;
-        public final GeoLocation mRequestLocation;
         public final ScrollDirection mDirection;
 
 
-        public TaskParam(GeoLocation requestLocation, ApiQuery<ResultPage<Envelope<Event>>> query, ScrollDirection direction)
+        public TaskParam(ApiQuery<ResultPage<Envelope<Event>>> query, ScrollDirection direction)
         {
             mQuery = query;
-            mRequestLocation = requestLocation;
             mDirection = direction;
         }
 
