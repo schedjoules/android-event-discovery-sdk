@@ -92,6 +92,7 @@ public final class EventResultPageBox implements Box<ResultPage<Envelope<Event>>
         @Override
         public EventResultPageBox createFromParcel(Parcel in)
         {
+            // TODO Use Mapped Iterable when available:
             List<Box<Envelope<Event>>> envelopeBoxes = new LinkedList<>();
             in.readTypedList(envelopeBoxes, EventEnvelopeBox.CREATOR);
             List<Envelope<Event>> envelopes = new ArrayList<>();
