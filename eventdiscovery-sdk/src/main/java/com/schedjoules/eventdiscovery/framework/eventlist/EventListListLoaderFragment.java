@@ -120,7 +120,7 @@ public final class EventListListLoaderFragment extends BaseFragment
                 }
                 catch (TimeoutException | InterruptedException | ProtocolError | IOException | ProtocolException | URISyntaxException e)
                 {
-                    loadResult = new ErrorResult<>();
+                    loadResult = new ErrorResult<>(e);
                 }
 
                 if (isResumed())
