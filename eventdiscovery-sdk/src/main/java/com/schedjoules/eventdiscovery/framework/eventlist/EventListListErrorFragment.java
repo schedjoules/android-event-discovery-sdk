@@ -44,10 +44,10 @@ import org.dmfs.pigeonpost.Cage;
 public final class EventListListErrorFragment extends BaseFragment
 {
 
-    public static Fragment newInstance(Cage<Boolean> retryCage)
+    public static Fragment newInstance(Cage<Boolean> reloadCage)
     {
         return new FragmentBuilder(new EventListListErrorFragment())
-                .with(Keys.RETRY_EVENT_LIST_LOAD_CAGE, new ParcelableBox<>(retryCage))
+                .with(Keys.RELOAD_EVENT_LIST_CAGE, new ParcelableBox<>(reloadCage))
                 .build();
     }
 
@@ -66,7 +66,7 @@ public final class EventListListErrorFragment extends BaseFragment
             @Override
             public void onClick(View v)
             {
-                new Argument<>(Keys.RETRY_EVENT_LIST_LOAD_CAGE, getArguments()).get().pigeon(true).send(getContext());
+                new Argument<>(Keys.RELOAD_EVENT_LIST_CAGE, getArguments()).get().pigeon(true).send(getContext());
             }
         });
 
