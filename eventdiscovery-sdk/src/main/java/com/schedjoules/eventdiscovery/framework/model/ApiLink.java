@@ -59,8 +59,8 @@ public final class ApiLink
     {
         private static final EntityConverter<String> STRING_CONVERTER = new PlainStringHeaderConverter();
 
-        public static final ParameterType<String> WIDTH = new BasicParameterType<>("http://schedjoules.com/prop/width", STRING_CONVERTER);
-        public static final ParameterType<String> HEIGHT = new BasicParameterType<>("http://schedjoules.com/prop/height", STRING_CONVERTER);
+        public static final ParameterType<String> WIDTH = new BasicParameterType<>("https://schedjoules.com/prop/width", STRING_CONVERTER);
+        public static final ParameterType<String> HEIGHT = new BasicParameterType<>("https://schedjoules.com/prop/height", STRING_CONVERTER);
 
 
         public static final class Booking
