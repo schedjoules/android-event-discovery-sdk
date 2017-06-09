@@ -27,17 +27,19 @@ import android.os.Parcel;
  */
 public final class ErrorResult<T> implements LoadResult<T>
 {
-    @Override
-    public boolean isSuccess()
+    private final Exception mCauseException;
+
+
+    public ErrorResult(Exception causeException)
     {
-        return false;
+        mCauseException = causeException;
     }
 
 
     @Override
-    public T result() throws IllegalStateException
+    public T result() throws Exception
     {
-        throw new IllegalStateException("Error result has no result");
+        throw new LoadResultException(mCauseException);
     }
 
 
@@ -51,7 +53,7 @@ public final class ErrorResult<T> implements LoadResult<T>
     @Override
     public void writeToParcel(Parcel dest, int flags)
     {
-
+        dest.writeSerializable(mCauseException);
     }
 
 
@@ -60,7 +62,7 @@ public final class ErrorResult<T> implements LoadResult<T>
         @Override
         public ErrorResult createFromParcel(Parcel in)
         {
-            return new ErrorResult();
+            return new ErrorResult((Exception) in.readSerializable());
         }
 
 

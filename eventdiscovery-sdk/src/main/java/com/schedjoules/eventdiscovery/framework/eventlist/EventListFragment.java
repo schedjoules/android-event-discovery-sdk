@@ -110,11 +110,11 @@ public final class EventListFragment extends BaseFragment implements EventListMe
                     @Override
                     public void onPigeonReturn(@NonNull LoadResult<ResultPage<Envelope<Event>>> loadResult)
                     {
-                        if (loadResult.isSuccess())
+                        try
                         {
                             showResultPage(loadResult.result());
                         }
-                        else
+                        catch (Exception e)
                         {
                             mListFragmentContainer.replace(EventListListErrorFragment.newInstance(mReloadDovecote.cage()));
                         }

@@ -17,21 +17,16 @@
 
 package com.schedjoules.eventdiscovery.framework.utils.loadresult;
 
-import android.os.Parcelable;
-
-
 /**
- * The result of a loading operation.
+ * A {@link Exception} signalling that a load failed, with the cause as the original exception throw at the point of failure.
+ * Used by {@link LoadResult}.
  *
  * @author Gabor Keszthelyi
  */
-public interface LoadResult<T> extends Parcelable
+public final class LoadResultException extends Exception
 {
-    /**
-     * Returns the load result.
-     *
-     * @throws Exception
-     *         if the load was not successful
-     */
-    T result() throws Exception;
+    public LoadResultException(Throwable cause)
+    {
+        super("Load failed", cause);
+    }
 }

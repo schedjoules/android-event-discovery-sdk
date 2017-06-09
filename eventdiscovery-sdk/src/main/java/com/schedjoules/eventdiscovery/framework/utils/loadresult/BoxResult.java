@@ -39,13 +39,6 @@ public final class BoxResult<T> implements LoadResult<T>
 
 
     @Override
-    public boolean isSuccess()
-    {
-        return true;
-    }
-
-
-    @Override
     public T result() throws IllegalStateException
     {
         return mBox.content();
