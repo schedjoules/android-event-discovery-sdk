@@ -47,6 +47,7 @@ import com.schedjoules.eventdiscovery.framework.utils.fragment.Add;
 import com.schedjoules.eventdiscovery.framework.utils.fragment.ChildFragmentContainer;
 import com.schedjoules.eventdiscovery.framework.utils.fragment.FragmentContainer;
 import com.schedjoules.eventdiscovery.framework.utils.loadresult.LoadResult;
+import com.schedjoules.eventdiscovery.framework.utils.loadresult.LoadResultException;
 
 import org.dmfs.android.microfragments.FragmentEnvironment;
 import org.dmfs.android.microfragments.utils.BooleanDovecote;
@@ -114,7 +115,7 @@ public final class EventListFragment extends BaseFragment implements EventListMe
                         {
                             showResultPage(loadResult.result());
                         }
-                        catch (Exception e)
+                        catch (LoadResultException e)
                         {
                             mListFragmentContainer.replace(EventListListErrorFragment.newInstance(mReloadDovecote.cage()));
                         }

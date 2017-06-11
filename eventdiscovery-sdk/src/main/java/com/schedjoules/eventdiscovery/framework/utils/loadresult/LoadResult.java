@@ -30,8 +30,8 @@ public interface LoadResult<T> extends Parcelable
     /**
      * Returns the load result.
      *
-     * @throws Exception
-     *         if the load was not successful
+     * @throws LoadResultException
+     *         if the load was not successful (with the cause as the original exception at the point of failure)
      */
-    T result() throws Exception;
+    T result() throws LoadResultException;
 }

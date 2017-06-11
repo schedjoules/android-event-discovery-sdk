@@ -37,7 +37,7 @@ public final class ErrorResult<T> implements LoadResult<T>
 
 
     @Override
-    public T result() throws Exception
+    public T result() throws LoadResultException
     {
         throw new LoadResultException(mCauseException);
     }
