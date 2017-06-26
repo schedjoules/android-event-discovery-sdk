@@ -16,24 +16,6 @@
                 app:layoutManager="LinearLayoutManager"
                 android:layout_marginBottom="24dp"/>
 
-        <com.schedjoules.eventdiscovery.framework.widgets.StateSavingTextView
-                android:id="@+id/schedjoules_event_list_background_message"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="@dimen/schedjoules_activity_horizontal_margin"
-                android:paddingBottom="30dp"
-                android:textSize="16sp"
-                android:visibility="gone"
-                android:gravity="center"
-                android:layout_gravity="center"/>
-
-        <com.schedjoules.eventdiscovery.framework.widgets.AccentColoredProgressBar
-                android:id="@+id/schedjoules_event_list_progress_bar"
-                android:layout_gravity="center"
-                android:visibility="gone"
-                android:layout_width="@dimen/schedjoules_event_list_progress_bar"
-                android:layout_height="@dimen/schedjoules_event_list_progress_bar"/>
-
         <com.schedjoules.eventdiscovery.framework.microfragments.eventdetails.fragments.views.SchedJoulesFooterView xmlns:app="http://schemas.android.com/apk/res-auto"
                 xmlns:android="http://schemas.android.com/apk/res/android"
                 android:id="@+id/schedjoules_footer"

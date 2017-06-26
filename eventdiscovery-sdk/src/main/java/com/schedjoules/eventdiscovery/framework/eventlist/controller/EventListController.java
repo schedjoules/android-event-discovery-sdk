@@ -19,36 +19,21 @@ package com.schedjoules.eventdiscovery.framework.eventlist.controller;
 
 import android.support.v7.widget.RecyclerView;
 
-import com.schedjoules.client.ApiQuery;
 import com.schedjoules.client.eventsdiscovery.Envelope;
 import com.schedjoules.client.eventsdiscovery.Event;
 import com.schedjoules.client.eventsdiscovery.ResultPage;
 import com.schedjoules.eventdiscovery.framework.eventlist.view.EdgeReachScrollListener;
-import com.schedjoules.eventdiscovery.framework.eventlist.view.EventListBackgroundMessage;
-import com.schedjoules.eventdiscovery.framework.eventlist.view.EventListLoadingIndicatorOverlay;
-import com.schedjoules.eventdiscovery.framework.list.ListItems;
 
 
 /**
- * Controller for the event list, it responsible to initiate API request, manage states and update the {@link ListItems} associated with the {@link
- * RecyclerView}
+ * Controller for the event list, loads further pages, manages states, updates the {@link RecyclerView}.
  *
  * @author Gabor Keszthelyi
  */
 public interface EventListController extends EdgeReachScrollListener.Listener
 {
-
-    /**
-     * Initiate loading events for the given location and start time.
-     */
-    void loadEvents(ApiQuery<ResultPage<Envelope<Event>>> query);
-
     void showEvents(ResultPage<Envelope<Event>> resultPage);
 
     void setAdapter(RecyclerView.Adapter adapter);
-
-    void setBackgroundMessageUI(EventListBackgroundMessage backgroundMessage);
-
-    void setLoadingIndicatorUI(EventListLoadingIndicatorOverlay loadingIndicatorOverlay);
 
 }
