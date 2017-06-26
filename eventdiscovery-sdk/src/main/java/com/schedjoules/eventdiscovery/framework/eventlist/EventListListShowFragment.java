@@ -28,28 +28,23 @@ import android.view.ViewGroup;
 
 import com.schedjoules.client.eventsdiscovery.Envelope;
 import com.schedjoules.client.eventsdiscovery.Event;
-import com.schedjoules.client.eventsdiscovery.GeoLocation;
 import com.schedjoules.client.eventsdiscovery.ResultPage;
 import com.schedjoules.eventdiscovery.R;
-import com.schedjoules.eventdiscovery.databinding.SchedjoulesEventListBinding;
+import com.schedjoules.eventdiscovery.databinding.SchedjoulesFragmentEventListListShowBinding;
 import com.schedjoules.eventdiscovery.framework.common.BaseFragment;
 import com.schedjoules.eventdiscovery.framework.eventlist.controller.EventListController;
 import com.schedjoules.eventdiscovery.framework.eventlist.controller.EventListControllerImpl;
 import com.schedjoules.eventdiscovery.framework.eventlist.controller.FlexibleAdapterEventListItems;
-import com.schedjoules.eventdiscovery.framework.eventlist.controller.InitialEventsDiscovery;
 import com.schedjoules.eventdiscovery.framework.eventlist.flexibleadapter.Copying;
 import com.schedjoules.eventdiscovery.framework.eventlist.flexibleadapter.FlexibleAdapterFactory;
 import com.schedjoules.eventdiscovery.framework.eventlist.view.EdgeReachScrollListener;
-import com.schedjoules.eventdiscovery.framework.eventlist.view.EventListBackgroundMessage;
-import com.schedjoules.eventdiscovery.framework.eventlist.view.EventListLoadingIndicatorOverlay;
-import com.schedjoules.eventdiscovery.framework.locationpicker.SharedPrefLastSelectedPlace;
 import com.schedjoules.eventdiscovery.framework.serialization.Keys;
-import com.schedjoules.eventdiscovery.framework.serialization.commons.OptionalArgument;
+import com.schedjoules.eventdiscovery.framework.serialization.boxes.EventResultPageBox;
+import com.schedjoules.eventdiscovery.framework.serialization.commons.Argument;
+import com.schedjoules.eventdiscovery.framework.serialization.commons.BundleBuilder;
 import com.schedjoules.eventdiscovery.framework.utils.FutureServiceConnection;
 import com.schedjoules.eventdiscovery.framework.utils.factory.Factory;
 import com.schedjoules.eventdiscovery.service.ApiService;
-
-import org.dmfs.rfc5545.DateTime;
 
 import eu.davidea.flexibleadapter.FlexibleAdapter;
 import eu.davidea.flexibleadapter.items.IFlexible;
@@ -60,20 +55,20 @@ import eu.davidea.flexibleadapter.items.IFlexible;
  *
  * @author Gabor Keszthelyi
  */
-public final class EventListListFragment extends BaseFragment
+public final class EventListListShowFragment extends BaseFragment
 {
     private FutureServiceConnection<ApiService> mApiService;
     private EventListController mListItemsController;
     private FlexibleAdapter<IFlexible> mAdapter;
-    private SchedjoulesEventListBinding mViews;
+    private SchedjoulesFragmentEventListListShowBinding mViews;
 
     private boolean mIsInitializing = true;
 
 
-    public static Fragment newInstance(Bundle args)
+    public static Fragment newInstance(ResultPage<Envelope<Event>> resultPageBox)
     {
-        EventListListFragment fragment = new EventListListFragment();
-        fragment.setArguments(args);
+        EventListListShowFragment fragment = new EventListListShowFragment();
+        fragment.setArguments(new BundleBuilder().with(Keys.EVENTS_RESULT_PAGE, new EventResultPageBox(resultPageBox)).build());
         return fragment;
     }
 
@@ -94,25 +89,12 @@ public final class EventListListFragment extends BaseFragment
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
     {
-        mViews = DataBindingUtil.inflate(inflater, R.layout.schedjoules_event_list, container, false);
-
-        mListItemsController.setBackgroundMessageUI(
-                new EventListBackgroundMessage(mViews.schedjoulesEventListBackgroundMessage));
-        mListItemsController.setLoadingIndicatorUI(
-                new EventListLoadingIndicatorOverlay(mViews.schedjoulesEventListProgressBar));
+        mViews = DataBindingUtil.inflate(inflater, R.layout.schedjoules_fragment_event_list_list_show, container, false);
 
         initAdapterAndRecyclerView(mIsInitializing);
         if (mIsInitializing)
         {
-            OptionalArgument<ResultPage<Envelope<Event>>> resultPage = new OptionalArgument<>(Keys.EVENTS_RESULT_PAGE, this);
-            if (resultPage.isPresent())
-            {
-                mListItemsController.showEvents(resultPage.value());
-            }
-            else
-            {
-                mListItemsController.loadEvents(new InitialEventsDiscovery(startAfter(), location()));
-            }
+            mListItemsController.showEvents(new Argument<>(Keys.EVENTS_RESULT_PAGE, this).get());
         }
 
         mIsInitializing = false;
@@ -146,23 +128,6 @@ public final class EventListListFragment extends BaseFragment
     {
         super.onDestroy();
         mApiService.disconnect();
-    }
-
-
-    private GeoLocation location()
-    {
-        if (new OptionalArgument<>(Keys.GEO_LOCATION, getArguments()).isPresent())
-        {
-            // TODO Save location and update Toolbar title with name when Event Discovery for input geo-location is actually supported
-            throw new UnsupportedOperationException("Discovery for a geo location not supported yet.");
-        }
-        return new SharedPrefLastSelectedPlace(getContext()).get().geoLocation();
-    }
-
-
-    private DateTime startAfter()
-    {
-        return new OptionalArgument<>(Keys.DATE_TIME_START_AFTER, this).value(DateTime.nowAndHere());
     }
 
 }
