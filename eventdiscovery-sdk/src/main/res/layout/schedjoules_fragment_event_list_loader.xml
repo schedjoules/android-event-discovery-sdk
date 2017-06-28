@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+<layout>
 
-    <com.schedjoules.eventdiscovery.framework.widgets.AccentColoredProgressBar
-            android:id="@+id/schedjoules_event_list_progress_bar"
-            android:layout_gravity="center"
-            android:layout_width="@dimen/schedjoules_event_list_progress_bar"
-            android:layout_height="@dimen/schedjoules_event_list_progress_bar"/>
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-</FrameLayout>
+        <com.schedjoules.eventdiscovery.framework.widgets.AccentColoredProgressBar
+                android:id="@+id/schedjoules_event_list_progress_bar"
+                android:layout_gravity="center"
+                android:layout_width="@dimen/schedjoules_event_list_progress_bar"
+                android:layout_height="@dimen/schedjoules_event_list_progress_bar"/>
+
+    </FrameLayout>
+</layout>

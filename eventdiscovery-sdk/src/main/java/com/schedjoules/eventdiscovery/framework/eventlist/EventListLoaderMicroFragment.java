@@ -18,21 +18,26 @@
 package com.schedjoules.eventdiscovery.framework.eventlist;
 
 import android.content.Context;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.widget.ProgressBar;
 
 import com.schedjoules.client.eventsdiscovery.Envelope;
 import com.schedjoules.client.eventsdiscovery.Event;
 import com.schedjoules.client.eventsdiscovery.GeoLocation;
 import com.schedjoules.client.eventsdiscovery.ResultPage;
 import com.schedjoules.eventdiscovery.R;
+import com.schedjoules.eventdiscovery.databinding.SchedjoulesFragmentEventListLoaderBinding;
 import com.schedjoules.eventdiscovery.framework.common.BaseFragment;
 import com.schedjoules.eventdiscovery.framework.eventlist.controller.InitialEventsDiscovery;
 import com.schedjoules.eventdiscovery.framework.locationpicker.SharedPrefLastSelectedPlace;
@@ -143,6 +148,7 @@ public final class EventListLoaderMicroFragment implements MicroFragment<Bundle>
         private final Timestamp mTimestamp = new UiTimestamp();
 
         private SimpleServiceJobQueue<ApiService> mApiServiceJobQueue;
+        private ProgressBar mProgressBar;
 
 
         @Override
@@ -157,7 +163,17 @@ public final class EventListLoaderMicroFragment implements MicroFragment<Bundle>
         @Override
         public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
         {
-            return inflater.inflate(R.layout.schedjoules_fragment_event_list_loader, container, false);
+            SchedjoulesFragmentEventListLoaderBinding views = DataBindingUtil.inflate(inflater,
+                    R.layout.schedjoules_fragment_event_list_loader, container, false);
+            mProgressBar = views.schedjoulesEventListProgressBar;
+
+            // Showing the ProgressBar with a little delay and fade-in to avoid abrupt and momentarily frozen appearing
+            AlphaAnimation anim = new AlphaAnimation(0, 1);
+            anim.setDuration(400);
+            anim.setStartOffset(200);
+            mProgressBar.startAnimation(anim);
+
+            return views.getRoot();
         }
 
 
@@ -183,6 +199,7 @@ public final class EventListLoaderMicroFragment implements MicroFragment<Bundle>
                     }
                     catch (ProtocolError | IOException | ProtocolException | URISyntaxException | RuntimeException e)
                     {
+                        Log.e("EventListLoaderMF", "Failed to load first page", e);
                         onError();
                     }
                 }
@@ -215,6 +232,16 @@ public final class EventListLoaderMicroFragment implements MicroFragment<Bundle>
         {
             if (isResumed())
             {
+                // Hiding ProgressBar at this point because it strangely 'show up on next screen' at a slightly different position otherwise
+                mProgressBar.post(new Runnable()
+                {
+                    @Override
+                    public void run()
+                    {
+                        mProgressBar.setVisibility(View.GONE);
+                    }
+                });
+
                 new FragmentEnvironment<>(this).host().execute(getActivity(), fragmentTransition);
             }
         }
