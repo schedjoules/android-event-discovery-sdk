@@ -29,6 +29,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.schedjoules.eventdiscovery.R;
+import com.schedjoules.eventdiscovery.framework.common.BaseFragment;
 
 import net.opacapp.multilinecollapsingtoolbar.CollapsingToolbarLayout;
 
@@ -150,12 +151,13 @@ public final class ErrorMicroFragment implements MicroFragment<ErrorMicroFragmen
     }
 
 
-    public final static class ErrorFragment extends Fragment
+    public final static class ErrorFragment extends BaseFragment
     {
         @Nullable
         @Override
         public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
         {
+            setStatusBarCoverEnabled(true);
             View view = inflater.inflate(R.layout.schedjoules_fragment_event_details_error, container, false);
             Error error = new FragmentEnvironment<Error>(this).microFragment().parameter();
             String title = error.title();
@@ -175,5 +177,6 @@ public final class ErrorMicroFragment implements MicroFragment<ErrorMicroFragmen
             }
             return view;
         }
+
     }
 }

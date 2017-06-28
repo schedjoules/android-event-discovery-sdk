@@ -90,6 +90,7 @@ public final class EventListListShowFragment extends BaseFragment
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
     {
         mViews = DataBindingUtil.inflate(inflater, R.layout.schedjoules_fragment_event_list_list_show, container, false);
+        setStatusBarCoverEnabled(false);
 
         initAdapterAndRecyclerView(mIsInitializing);
         if (mIsInitializing)

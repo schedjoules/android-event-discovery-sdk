@@ -39,6 +39,7 @@ import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 
 import com.schedjoules.eventdiscovery.R;
+import com.schedjoules.eventdiscovery.framework.common.BaseFragment;
 
 import org.dmfs.android.microfragments.FragmentEnvironment;
 import org.dmfs.android.microfragments.MicroFragment;
@@ -131,7 +132,7 @@ public final class WebviewMicroFragment implements MicroFragment<URI>
     /**
      * A fragment that presents a website.
      */
-    public static final class WebviewFragment extends Fragment implements View.OnKeyListener
+    public static final class WebviewFragment extends BaseFragment implements View.OnKeyListener
     {
         private WebView mWebView;
         private ProgressBar mProgress;
@@ -152,6 +153,8 @@ public final class WebviewMicroFragment implements MicroFragment<URI>
         @Override
         public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
         {
+            setStatusBarCoverEnabled(false);
+
             View root = inflater.inflate(R.layout.schedjoules_fragment_webview, container, false);
             mEnvironment = new FragmentEnvironment<>(this);
             // create and configure the WebView
@@ -256,5 +259,6 @@ public final class WebviewMicroFragment implements MicroFragment<URI>
             }
             return false;
         }
+
     }
 }

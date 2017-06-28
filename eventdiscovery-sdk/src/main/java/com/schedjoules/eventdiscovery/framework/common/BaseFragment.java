@@ -19,6 +19,10 @@ package com.schedjoules.eventdiscovery.framework.common;
 
 import android.support.v4.app.Fragment;
 
+import com.schedjoules.eventdiscovery.R;
+import com.schedjoules.eventdiscovery.framework.utils.colors.AttributeColor;
+import com.schedjoules.eventdiscovery.framework.utils.colors.Transparent;
+
 
 /**
  * Base class for all Fragments in the app.
@@ -28,4 +32,12 @@ import android.support.v4.app.Fragment;
 public abstract class BaseFragment extends Fragment
 {
 
+    /**
+     * Sets whether the the View of this Fragment can cover the status bar.
+     */
+    protected void setStatusBarCoverEnabled(boolean enabled)
+    {
+        new StatusBar(getActivity()).update(enabled ?
+                Transparent.INSTANCE : new AttributeColor(getContext(), R.attr.colorPrimaryDark));
+    }
 }

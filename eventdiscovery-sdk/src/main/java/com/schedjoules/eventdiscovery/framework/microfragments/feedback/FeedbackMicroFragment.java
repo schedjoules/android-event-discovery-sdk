@@ -30,6 +30,7 @@ import android.view.ViewGroup;
 
 import com.schedjoules.client.queries.FeedbackUrl;
 import com.schedjoules.eventdiscovery.R;
+import com.schedjoules.eventdiscovery.framework.common.BaseFragment;
 import com.schedjoules.eventdiscovery.framework.microfragments.eventdetails.ErrorMicroFragment;
 import com.schedjoules.eventdiscovery.framework.microfragments.webview.WebviewMicroFragment;
 import com.schedjoules.eventdiscovery.framework.utils.ServiceJob;
@@ -127,7 +128,7 @@ public final class FeedbackMicroFragment implements MicroFragment<Void>
     }
 
 
-    public final static class LoaderFragment extends Fragment
+    public final static class LoaderFragment extends BaseFragment
     {
         private final Timestamp mTimestamp = new UiTimestamp();
         private ServiceJobQueue<ApiService> mApiServiceJobQueue;
@@ -147,6 +148,8 @@ public final class FeedbackMicroFragment implements MicroFragment<Void>
         @Override
         public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
         {
+            setStatusBarCoverEnabled(false);
+
             mEnvironment = new FragmentEnvironment<>(this);
 
             View root = inflater.inflate(R.layout.schedjoules_fragment_loading_feedback, container, false);
@@ -231,5 +234,6 @@ public final class FeedbackMicroFragment implements MicroFragment<Void>
                 new FragmentEnvironment<>(this).host().execute(getActivity(), fragmentTransition);
             }
         }
+
     }
 }
