@@ -138,7 +138,8 @@ public final class EventListFragment extends BaseFragment implements EventListMe
             }
         });
 
-        if (mIsInitializing)
+        // savedInstanceState can be null when popping an existing instance from backstack
+        if (savedInstanceState == null && mIsInitializing)
         {
             new Add(R.id.schedjoules_event_list_header_container, EventListHeaderFragment.newInstance(mReloadDovecote.cage())).commit(this);
 
