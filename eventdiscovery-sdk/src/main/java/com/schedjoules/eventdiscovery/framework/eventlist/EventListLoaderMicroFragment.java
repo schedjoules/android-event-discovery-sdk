@@ -45,6 +45,7 @@ import com.schedjoules.eventdiscovery.framework.serialization.Keys;
 import com.schedjoules.eventdiscovery.framework.serialization.boxes.EventResultPageBox;
 import com.schedjoules.eventdiscovery.framework.serialization.commons.BundleBuilder;
 import com.schedjoules.eventdiscovery.framework.serialization.commons.OptionalArgument;
+import com.schedjoules.eventdiscovery.framework.splash.SplashErrorMicroFragment;
 import com.schedjoules.eventdiscovery.framework.utils.ServiceJob;
 import com.schedjoules.eventdiscovery.framework.utils.SimpleServiceJobQueue;
 import com.schedjoules.eventdiscovery.service.ApiService;
@@ -214,7 +215,9 @@ public final class EventListLoaderMicroFragment implements MicroFragment<Bundle>
 
                 private void onError()
                 {
-                    // TODO Show error msg on white background with '..tap to try again' and then start this splash again?
+                    startTransition(new Faded(new ForwardTransition<>(
+                            new SplashErrorMicroFragment(new FragmentEnvironment<Bundle>(LoaderFragment.this).microFragment().parameter()),
+                            mTimestamp)));
                 }
             }, 5000);
         }
