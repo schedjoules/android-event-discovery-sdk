@@ -26,12 +26,12 @@ import com.schedjoules.eventdiscovery.framework.microfragments.eventdetails.Acti
 import com.schedjoules.eventdiscovery.framework.microfragments.eventdetails.ShowEventMicroFragment;
 import com.schedjoules.eventdiscovery.framework.services.ActionService;
 import com.schedjoules.eventdiscovery.framework.utils.FutureServiceConnection;
+import com.schedjoules.eventdiscovery.framework.utils.anims.BottomUp;
 
 import org.dmfs.android.microfragments.MicroFragment;
 import org.dmfs.android.microfragments.Timestamp;
 import org.dmfs.android.microfragments.timestamps.UiTimestamp;
 import org.dmfs.android.microfragments.transitions.ForwardTransition;
-import org.dmfs.android.microfragments.transitions.Swiped;
 import org.dmfs.httpessentials.types.Link;
 import org.dmfs.optional.Absent;
 import org.dmfs.optional.Optional;
@@ -73,7 +73,7 @@ public final class BasicEventDetails implements EventDetails
                         new ShowEventMicroFragment(mEvent, actions.value()) : new ActionLoaderMicroFragment(mEvent);
 
                 new ActivityMicroFragmentHost(activity).get()
-                        .execute(activity, new Swiped(new ForwardTransition<>(microFragment, timestamp)));
+                        .execute(activity, new BottomUp(new ForwardTransition<>(microFragment, timestamp)));
             }
 
 

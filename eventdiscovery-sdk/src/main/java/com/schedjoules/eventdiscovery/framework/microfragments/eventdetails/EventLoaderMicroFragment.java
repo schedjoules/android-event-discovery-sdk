@@ -35,6 +35,7 @@ import com.schedjoules.eventdiscovery.framework.services.ActionService;
 import com.schedjoules.eventdiscovery.framework.utils.ServiceJob;
 import com.schedjoules.eventdiscovery.framework.utils.ServiceJobQueue;
 import com.schedjoules.eventdiscovery.framework.utils.SimpleServiceJobQueue;
+import com.schedjoules.eventdiscovery.framework.utils.anims.Revealed;
 import com.schedjoules.eventdiscovery.service.ApiService;
 
 import net.opacapp.multilinecollapsingtoolbar.CollapsingToolbarLayout;
@@ -44,7 +45,6 @@ import org.dmfs.android.microfragments.MicroFragment;
 import org.dmfs.android.microfragments.MicroFragmentHost;
 import org.dmfs.android.microfragments.Timestamp;
 import org.dmfs.android.microfragments.timestamps.UiTimestamp;
-import org.dmfs.android.microfragments.transitions.Faded;
 import org.dmfs.android.microfragments.transitions.ForwardTransition;
 import org.dmfs.android.microfragments.transitions.FragmentTransition;
 import org.dmfs.httpessentials.exceptions.ProtocolError;
@@ -183,7 +183,7 @@ public final class EventLoaderMicroFragment implements MicroFragment<String>
                             }
                             catch (URISyntaxException | ProtocolError | ProtocolException | IOException | RuntimeException e)
                             {
-                                startTransition(new Faded(new ForwardTransition(new ErrorMicroFragment(), mTimestamp)));
+                                startTransition(new Revealed(new ForwardTransition(new ErrorMicroFragment(), mTimestamp)));
                             }
                         }
 
@@ -191,7 +191,7 @@ public final class EventLoaderMicroFragment implements MicroFragment<String>
                         @Override
                         public void onTimeOut()
                         {
-                            startTransition(new Faded(new ForwardTransition(new ErrorMicroFragment(), mTimestamp)));
+                            startTransition(new Revealed(new ForwardTransition(new ErrorMicroFragment(), mTimestamp)));
                         }
                     }, 5000);
             mActionServiceJobQueue.post(
@@ -217,7 +217,7 @@ public final class EventLoaderMicroFragment implements MicroFragment<String>
                         @Override
                         public void onTimeOut()
                         {
-                            startTransition(new Faded(new ForwardTransition(new ErrorMicroFragment(), mTimestamp)));
+                            startTransition(new Revealed(new ForwardTransition(new ErrorMicroFragment(), mTimestamp)));
                         }
                     }, 5000
             );
@@ -237,7 +237,7 @@ public final class EventLoaderMicroFragment implements MicroFragment<String>
         {
             if (mEvent != null && mActions != null)
             {
-                startTransition(new Faded(new ForwardTransition(new ShowEventMicroFragment(mEvent, mActions), mTimestamp)));
+                startTransition(new Revealed(new ForwardTransition(new ShowEventMicroFragment(mEvent, mActions), mTimestamp)));
             }
         }
 
