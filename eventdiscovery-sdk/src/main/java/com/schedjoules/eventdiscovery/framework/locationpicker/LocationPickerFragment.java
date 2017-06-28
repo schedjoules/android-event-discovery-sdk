@@ -119,6 +119,8 @@ public final class LocationPickerFragment extends BaseFragment
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
     {
+        setStatusBarCoverEnabled(false);
+
         SchedjoulesFragmentLocationPickerBinding views = DataBindingUtil.inflate(inflater,
                 R.layout.schedjoules_fragment_location_picker, container, false);
 

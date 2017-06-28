@@ -58,6 +58,8 @@ public final class EventDetailFragment extends BaseFragment implements EventDeta
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
+        setStatusBarCoverEnabled(true);
+
         final MicroFragmentEnvironment<ShowEventMicroFragment.EventParams> environment = new FragmentEnvironment<>(this);
         ShowEventMicroFragment.EventParams parameters = environment.microFragment().parameter();
 
@@ -126,4 +128,5 @@ public final class EventDetailFragment extends BaseFragment implements EventDeta
             }
         });
     }
+
 }
