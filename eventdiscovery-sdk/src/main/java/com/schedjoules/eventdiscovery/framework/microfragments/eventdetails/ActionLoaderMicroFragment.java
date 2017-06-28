@@ -39,13 +39,13 @@ import com.schedjoules.eventdiscovery.framework.services.ActionService;
 import com.schedjoules.eventdiscovery.framework.utils.ServiceJob;
 import com.schedjoules.eventdiscovery.framework.utils.ServiceJobQueue;
 import com.schedjoules.eventdiscovery.framework.utils.SimpleServiceJobQueue;
+import com.schedjoules.eventdiscovery.framework.utils.anims.Revealed;
 
 import org.dmfs.android.microfragments.FragmentEnvironment;
 import org.dmfs.android.microfragments.MicroFragment;
 import org.dmfs.android.microfragments.MicroFragmentHost;
 import org.dmfs.android.microfragments.Timestamp;
 import org.dmfs.android.microfragments.timestamps.UiTimestamp;
-import org.dmfs.android.microfragments.transitions.Faded;
 import org.dmfs.android.microfragments.transitions.ForwardTransition;
 import org.dmfs.android.microfragments.transitions.FragmentTransition;
 import org.dmfs.httpessentials.exceptions.ProtocolError;
@@ -177,12 +177,12 @@ public final class ActionLoaderMicroFragment implements MicroFragment<Event>
                     try
                     {
                         List<Link> links = service.actions(mEvent.uid());
-                        startTransition(new Faded(new ForwardTransition(new ShowEventMicroFragment(mEvent, links), mTimestamp)));
+                        startTransition(new Revealed(new ForwardTransition(new ShowEventMicroFragment(mEvent, links), mTimestamp)));
                     }
                     catch (TimeoutException | InterruptedException | ProtocolError | IOException | ProtocolException | URISyntaxException | RuntimeException e)
                     {
                         // for some reason we were unable to load the actions, move on without actions.
-                        startTransition(new Faded(new ForwardTransition(new ShowEventMicroFragment(mEvent, Collections.<Link>emptyList()), mTimestamp)));
+                        startTransition(new Revealed(new ForwardTransition(new ShowEventMicroFragment(mEvent, Collections.<Link>emptyList()), mTimestamp)));
                     }
                 }
 
@@ -190,7 +190,7 @@ public final class ActionLoaderMicroFragment implements MicroFragment<Event>
                 @Override
                 public void onTimeOut()
                 {
-                    startTransition(new Faded(new ForwardTransition(new ErrorMicroFragment(), mTimestamp)));
+                    startTransition(new Revealed(new ForwardTransition(new ErrorMicroFragment(), mTimestamp)));
                 }
             }, 5000);
         }
