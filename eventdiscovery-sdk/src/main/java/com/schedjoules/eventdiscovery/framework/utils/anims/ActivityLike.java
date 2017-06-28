@@ -26,42 +26,41 @@ import org.dmfs.android.microfragments.transitions.FragmentTransition;
 
 
 /**
- * {@link FragmentTransition} decorator to add animation:
- * Activity-like opening animations, and fade-out for closing.
+ * {@link FragmentTransition} decorator to add animation using the standard Activity transition animations.
  *
  * @author Gabor Keszthelyi
  */
-public final class BottomUp extends AbstractAnimated
+public final class ActivityLike extends AbstractAnimated
 {
-    public BottomUp(@NonNull FragmentTransition delegate)
+    public ActivityLike(@NonNull FragmentTransition delegate)
     {
         super(delegate,
                 R.anim.schedjoules_activity_open_enter,
                 R.anim.schedjoules_activity_open_exit,
-                R.anim.microfragments_fade_enter,
-                R.anim.microfragments_fade_exit);
+                R.anim.schedjoules_activity_close_enter,
+                R.anim.schedjoules_activity_close_exit);
     }
 
 
-    private BottomUp(Parcel in)
+    private ActivityLike(Parcel in)
     {
         super(in);
     }
 
 
-    public final static Creator<BottomUp> CREATOR = new Creator<BottomUp>()
+    public final static Creator<ActivityLike> CREATOR = new Creator<ActivityLike>()
     {
         @Override
-        public BottomUp createFromParcel(Parcel in)
+        public ActivityLike createFromParcel(Parcel in)
         {
-            return new BottomUp(in);
+            return new ActivityLike(in);
         }
 
 
         @Override
-        public BottomUp[] newArray(int size)
+        public ActivityLike[] newArray(int size)
         {
-            return new BottomUp[size];
+            return new ActivityLike[size];
         }
     };
 }
