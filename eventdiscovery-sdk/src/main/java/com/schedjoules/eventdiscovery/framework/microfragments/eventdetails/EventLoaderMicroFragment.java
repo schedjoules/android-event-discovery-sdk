@@ -30,6 +30,7 @@ import android.view.ViewGroup;
 import com.schedjoules.client.eventsdiscovery.Event;
 import com.schedjoules.client.eventsdiscovery.queries.EventByUid;
 import com.schedjoules.eventdiscovery.R;
+import com.schedjoules.eventdiscovery.framework.common.BaseFragment;
 import com.schedjoules.eventdiscovery.framework.services.ActionService;
 import com.schedjoules.eventdiscovery.framework.utils.ServiceJob;
 import com.schedjoules.eventdiscovery.framework.utils.ServiceJobQueue;
@@ -132,7 +133,7 @@ public final class EventLoaderMicroFragment implements MicroFragment<String>
     }
 
 
-    public final static class LoaderFragment extends Fragment
+    public final static class LoaderFragment extends BaseFragment
     {
         private final Timestamp mTimestamp = new UiTimestamp();
         private ServiceJobQueue<ActionService> mActionServiceJobQueue;
@@ -156,6 +157,7 @@ public final class EventLoaderMicroFragment implements MicroFragment<String>
         @Override
         public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
         {
+            setStatusBarCoverEnabled(true);
             View view = inflater.inflate(R.layout.schedjoules_fragment_event_details_loader, container, false);
             view.findViewById(android.R.id.message).animate().setStartDelay(1500).alpha(1).start();
             ((CollapsingToolbarLayout) view.findViewById(R.id.schedjoules_event_detail_toolbar_layout)).setTitle("Loading event …");
@@ -247,5 +249,6 @@ public final class EventLoaderMicroFragment implements MicroFragment<String>
                 new FragmentEnvironment<>(this).host().execute(getActivity(), fragmentTransition);
             }
         }
+
     }
 }
