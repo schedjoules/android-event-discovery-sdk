@@ -17,7 +17,7 @@
 
 package com.schedjoules.eventdiscovery.framework.utils.iterators;
 
-import org.dmfs.iterators.FilteredIterator;
+import org.dmfs.iterators.decorators.Filtered;
 import org.dmfs.iterators.filters.Skip;
 
 import java.util.Iterator;
@@ -44,7 +44,7 @@ public final class Skipping<E> implements Iterable<E>
     @Override
     public Iterator<E> iterator()
     {
-        return new FilteredIterator<>(mDelegate.iterator(), new Skip<E>(mSkipResults));
+        return new Filtered<>(mDelegate.iterator(), new Skip<E>(mSkipResults));
     }
 
 }

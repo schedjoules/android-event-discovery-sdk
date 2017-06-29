@@ -20,16 +20,14 @@ package com.schedjoules.eventdiscovery.framework.serialization.boxes;
 import android.os.Parcel;
 
 import com.schedjoules.client.ApiQuery;
-import com.schedjoules.client.State;
 import com.schedjoules.client.eventsdiscovery.Envelope;
 import com.schedjoules.client.eventsdiscovery.Event;
 import com.schedjoules.client.eventsdiscovery.ResultPage;
 import com.schedjoules.eventdiscovery.framework.model.StructuredResultPage;
+import com.schedjoules.eventdiscovery.framework.serialization.commons.BoxFactory;
 import com.schedjoules.eventdiscovery.framework.serialization.core.Box;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
+import org.dmfs.optional.Optional;
 
 
 /**
@@ -65,25 +63,11 @@ public final class EventResultPageBox implements Box<ResultPage<Envelope<Event>>
     @Override
     public void writeToParcel(Parcel dest, int flags)
     {
-        Iterable<Envelope<Event>> envelopes = mResultPage.items();
-        List<Box<Envelope<Event>>> envelopeBoxes = new LinkedList<>();
-        for (Envelope<Event> envelope : envelopes)
-        {
-            envelopeBoxes.add(new EventEnvelopeBox(envelope));
-        }
-        dest.writeTypedList(envelopeBoxes);
+        dest.writeParcelable(new IterableBox<>(mResultPage, EventEnvelopeBox.FACTORY), flags);
 
-        dest.writeInt(mResultPage.isFirstPage() ? 1 : 0);
-        dest.writeInt(mResultPage.isLastPage() ? 1 : 0);
-
-        if (!mResultPage.isFirstPage())
-        {
-            dest.writeSerializable(mResultPage.previousPageQuery().serializable());
-        }
-        if (!mResultPage.isLastPage())
-        {
-            dest.writeSerializable(mResultPage.nextPageQuery().serializable());
-        }
+        BoxFactory<ApiQuery<ResultPage<Envelope<Event>>>> queryBoxFactory = ApiQueryBox.factory();
+        dest.writeParcelable(new OptionalBox<>(mResultPage.previousPageQuery(), queryBoxFactory), flags);
+        dest.writeParcelable(new OptionalBox<>(mResultPage.nextPageQuery(), queryBoxFactory), flags);
     }
 
 
@@ -92,30 +76,12 @@ public final class EventResultPageBox implements Box<ResultPage<Envelope<Event>>
         @Override
         public EventResultPageBox createFromParcel(Parcel in)
         {
-            // TODO Use Mapped Iterable when available:
-            List<Box<Envelope<Event>>> envelopeBoxes = new LinkedList<>();
-            in.readTypedList(envelopeBoxes, EventEnvelopeBox.CREATOR);
-            List<Envelope<Event>> envelopes = new ArrayList<>();
-            for (Box<Envelope<Event>> envelopeBox : envelopeBoxes)
-            {
-                envelopes.add(envelopeBox.content());
-            }
+            Box<Iterable> iterableBox = in.readParcelable(getClass().getClassLoader());
 
-            boolean isFirstPage = in.readInt() == 1;
-            boolean isLastPage = in.readInt() == 1;
+            Box<Optional<ApiQuery<ResultPage>>> prevQueryBox = in.readParcelable(getClass().getClassLoader());
+            Box<Optional<ApiQuery<ResultPage>>> nextQueryBox = in.readParcelable(getClass().getClassLoader());
 
-            ApiQuery<ResultPage<Envelope<Event>>> prevQuery = null;
-            if (!isFirstPage)
-            {
-                prevQuery = ((State<ApiQuery<ResultPage<Envelope<Event>>>>) in.readSerializable()).restored();
-            }
-            ApiQuery<ResultPage<Envelope<Event>>> nextQuery = null;
-            if (!isLastPage)
-            {
-                nextQuery = ((State<ApiQuery<ResultPage<Envelope<Event>>>>) in.readSerializable()).restored();
-            }
-
-            return new EventResultPageBox(new StructuredResultPage(envelopes, isFirstPage, isLastPage, prevQuery, nextQuery));
+            return new EventResultPageBox(new StructuredResultPage(iterableBox.content(), prevQueryBox.content(), nextQueryBox.content()));
         }
 
 

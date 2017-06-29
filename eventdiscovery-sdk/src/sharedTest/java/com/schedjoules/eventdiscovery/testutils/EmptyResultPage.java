@@ -22,7 +22,10 @@ import com.schedjoules.client.eventsdiscovery.Envelope;
 import com.schedjoules.client.eventsdiscovery.Event;
 import com.schedjoules.client.eventsdiscovery.ResultPage;
 
-import java.util.Collections;
+import org.dmfs.iterators.EmptyIterator;
+import org.dmfs.optional.Optional;
+
+import java.util.Iterator;
 
 
 /**
@@ -30,37 +33,24 @@ import java.util.Collections;
  */
 public final class EmptyResultPage implements ResultPage<Envelope<Event>>
 {
-    @Override
-    public Iterable<Envelope<Event>> items()
-    {
-        return Collections.emptyList();
-    }
-
 
     @Override
-    public boolean isFirstPage()
-    {
-        return true;
-    }
-
-
-    @Override
-    public boolean isLastPage()
-    {
-        return true;
-    }
-
-
-    @Override
-    public ApiQuery<ResultPage<Envelope<Event>>> previousPageQuery() throws IllegalStateException
+    public Optional<ApiQuery<ResultPage<Envelope<Event>>>> previousPageQuery() throws IllegalStateException
     {
         throw new IllegalStateException("No previous query");
     }
 
 
     @Override
-    public ApiQuery<ResultPage<Envelope<Event>>> nextPageQuery() throws IllegalStateException
+    public Optional<ApiQuery<ResultPage<Envelope<Event>>>> nextPageQuery() throws IllegalStateException
     {
         throw new IllegalStateException("No next query");
+    }
+
+
+    @Override
+    public Iterator<Envelope<Event>> iterator()
+    {
+        return new EmptyIterator<>();
     }
 }

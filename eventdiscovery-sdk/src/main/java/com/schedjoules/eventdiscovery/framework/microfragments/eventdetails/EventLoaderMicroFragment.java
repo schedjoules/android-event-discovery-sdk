@@ -51,6 +51,7 @@ import org.dmfs.httpessentials.exceptions.ProtocolError;
 import org.dmfs.httpessentials.exceptions.ProtocolException;
 import org.dmfs.httpessentials.types.Link;
 import org.dmfs.httpessentials.types.StringToken;
+import org.dmfs.optional.Optional;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -178,7 +179,12 @@ public final class EventLoaderMicroFragment implements MicroFragment<String>
                         {
                             try
                             {
-                                mEvent = service.apiResponse(new EventByUid(new StringToken(mEventUid))).payload();
+                                Optional<Event> optEvent = service.apiResponse(new EventByUid(new StringToken(mEventUid))).payload();
+                                if (!optEvent.isPresent())
+                                {
+                                    throw new RuntimeException("Response doesn't have Event payload.");
+                                }
+                                mEvent = optEvent.value();
                                 loaderReady();
                             }
                             catch (URISyntaxException | ProtocolError | ProtocolException | IOException | RuntimeException e)

@@ -17,10 +17,12 @@
 
 package com.schedjoules.eventdiscovery.framework.model;
 
-import android.support.annotation.Nullable;
-
 import com.schedjoules.client.ApiQuery;
 import com.schedjoules.client.eventsdiscovery.ResultPage;
+
+import org.dmfs.optional.Optional;
+
+import java.util.Iterator;
 
 
 /**
@@ -31,63 +33,37 @@ import com.schedjoules.client.eventsdiscovery.ResultPage;
 public final class StructuredResultPage<T> implements ResultPage<T>
 {
     private final Iterable<T> mItems;
-    private final boolean mIsFirstPage;
-    private final boolean mIsLastPage;
-    private final ApiQuery<ResultPage<T>> mPrevPageQuery;
-    private final ApiQuery<ResultPage<T>> mNextPageQuery;
+    private final Optional<ApiQuery<ResultPage<T>>> mPrevPageQuery;
+    private final Optional<ApiQuery<ResultPage<T>>> mNextPageQuery;
 
 
-    public StructuredResultPage(Iterable<T> items, boolean isFirstPage, boolean isLastPage,
-                                @Nullable ApiQuery<ResultPage<T>> prevPageQuery,
-                                @Nullable ApiQuery<ResultPage<T>> nextPageQuery)
+    public StructuredResultPage(Iterable<T> items,
+                                Optional<ApiQuery<ResultPage<T>>> prevPageQuery,
+                                Optional<ApiQuery<ResultPage<T>>> nextPageQuery)
     {
         mItems = items;
-        mIsFirstPage = isFirstPage;
-        mIsLastPage = isLastPage;
         mPrevPageQuery = prevPageQuery;
         mNextPageQuery = nextPageQuery;
     }
 
 
     @Override
-    public Iterable<T> items()
+    public Iterator<T> iterator()
     {
-        return mItems;
+        return mItems.iterator();
     }
 
 
     @Override
-    public boolean isFirstPage()
+    public Optional<ApiQuery<ResultPage<T>>> previousPageQuery()
     {
-        return mIsFirstPage;
-    }
-
-
-    @Override
-    public boolean isLastPage()
-    {
-        return mIsLastPage;
-    }
-
-
-    @Override
-    public ApiQuery<ResultPage<T>> previousPageQuery() throws IllegalStateException
-    {
-        if (mIsFirstPage)
-        {
-            throw new IllegalStateException("No previous page query");
-        }
         return mPrevPageQuery;
     }
 
 
     @Override
-    public ApiQuery<ResultPage<T>> nextPageQuery() throws IllegalStateException
+    public Optional<ApiQuery<ResultPage<T>>> nextPageQuery()
     {
-        if (mIsLastPage)
-        {
-            throw new IllegalStateException("No next page query");
-        }
         return mNextPageQuery;
     }
 }

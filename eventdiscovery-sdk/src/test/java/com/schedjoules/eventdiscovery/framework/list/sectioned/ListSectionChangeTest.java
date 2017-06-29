@@ -23,6 +23,9 @@ import com.schedjoules.eventdiscovery.framework.list.ListItem;
 import com.schedjoules.eventdiscovery.framework.list.changes.nonnotifying.ClearAll;
 import com.schedjoules.eventdiscovery.framework.list.changes.nonnotifying.ReplaceAll;
 
+import org.hamcrest.Description;
+import org.hamcrest.Matcher;
+import org.hamcrest.TypeSafeMatcher;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -31,12 +34,12 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import static com.schedjoules.eventdiscovery.framework.list.sectioned.TestListItem.testItem;
 import static java.util.Arrays.asList;
-import static org.junit.Assert.assertEquals;
+import static org.hamcrest.Matchers.contains;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 
@@ -60,6 +63,7 @@ public final class ListSectionChangeTest
     }
 
 
+    @SuppressWarnings("unchecked")
     @Test
     public void testMultipleChanges()
     {
@@ -70,10 +74,10 @@ public final class ListSectionChangeTest
                 testItem(101),
                 testItem(102));
         new ListSectionChange(100, new ReplaceAll<>(newItems)).apply(currentItems, mAdapter);
-        assertEquals(
-                asList(sectionedItem(100, 101),
-                        sectionedItem(100, 102)),
-                currentItems);
+        assertThat(currentItems, contains(
+                m(sectionedItem(100, 101)),
+                m(sectionedItem(100, 102))
+        ));
 
         // Clearing the items
         new ListSectionChange(100, new ClearAll<ListItem>()).apply(currentItems, mAdapter);
@@ -83,9 +87,9 @@ public final class ListSectionChangeTest
         newItems = asList(
                 testItem(201));
         new ListSectionChange(200, new ReplaceAll<>(newItems)).apply(currentItems, mAdapter);
-        assertEquals(
-                asList(sectionedItem(200, 201)),
-                currentItems);
+        assertThat(currentItems, contains(
+                m(sectionedItem(200, 201))
+        ));
 
         // Adding 3 items to new top section
         newItems = asList(
@@ -93,40 +97,40 @@ public final class ListSectionChangeTest
                 testItem(1520),
                 testItem(1530));
         new ListSectionChange(150, new ReplaceAll<>(newItems)).apply(currentItems, mAdapter);
-        assertEquals(
-                asList(sectionedItem(150, 1510),
-                        sectionedItem(150, 1520),
-                        sectionedItem(150, 1530),
-                        sectionedItem(200, 201)),
-                currentItems);
+        assertThat(currentItems, contains(
+                m(sectionedItem(150, 1510)),
+                m(sectionedItem(150, 1520)),
+                m(sectionedItem(150, 1530)),
+                m(sectionedItem(200, 201))
+        ));
 
         // Adding 2 items in the middle
         newItems = asList(
                 testItem(171),
                 testItem(172));
         new ListSectionChange(170, new ReplaceAll<>(newItems)).apply(currentItems, mAdapter);
-        assertEquals(
-                asList(sectionedItem(150, 1510),
-                        sectionedItem(150, 1520),
-                        sectionedItem(150, 1530),
-                        sectionedItem(170, 171),
-                        sectionedItem(170, 172),
-                        sectionedItem(200, 201)),
-                currentItems);
+        assertThat(currentItems, contains(
+                m(sectionedItem(150, 1510)),
+                m(sectionedItem(150, 1520)),
+                m(sectionedItem(150, 1530)),
+                m(sectionedItem(170, 171)),
+                m(sectionedItem(170, 172)),
+                m(sectionedItem(200, 201))
+        ));
 
         // Adding 1 item at the bottom
         newItems = asList(
                 testItem(301));
         new ListSectionChange(300, new ReplaceAll<>(newItems)).apply(currentItems, mAdapter);
-        assertEquals(
-                asList(sectionedItem(150, 1510),
-                        sectionedItem(150, 1520),
-                        sectionedItem(150, 1530),
-                        sectionedItem(170, 171),
-                        sectionedItem(170, 172),
-                        sectionedItem(200, 201),
-                        sectionedItem(300, 301)),
-                currentItems);
+        assertThat(currentItems, contains(
+                m(sectionedItem(150, 1510)),
+                m(sectionedItem(150, 1520)),
+                m(sectionedItem(150, 1530)),
+                m(sectionedItem(170, 171)),
+                m(sectionedItem(170, 172)),
+                m(sectionedItem(200, 201)),
+                m(sectionedItem(300, 301))
+        ));
 
         // Replacing top section with 1 common element
         newItems = asList(
@@ -134,15 +138,15 @@ public final class ListSectionChangeTest
                 testItem(1510),
                 testItem(1540));
         new ListSectionChange(150, new ReplaceAll<>(newItems)).apply(currentItems, mAdapter);
-        assertEquals(
-                asList(sectionedItem(150, 1515),
-                        sectionedItem(150, 1510),
-                        sectionedItem(150, 1540),
-                        sectionedItem(170, 171),
-                        sectionedItem(170, 172),
-                        sectionedItem(200, 201),
-                        sectionedItem(300, 301)),
-                currentItems);
+        assertThat(currentItems, contains(
+                m(sectionedItem(150, 1515)),
+                m(sectionedItem(150, 1510)),
+                m(sectionedItem(150, 1540)),
+                m(sectionedItem(170, 171)),
+                m(sectionedItem(170, 172)),
+                m(sectionedItem(200, 201)),
+                m(sectionedItem(300, 301))
+        ));
 
         // Replacing middle section with no common elements
         newItems = asList(
@@ -150,76 +154,89 @@ public final class ListSectionChangeTest
                 testItem(174),
                 testItem(175));
         new ListSectionChange(170, new ReplaceAll<>(newItems)).apply(currentItems, mAdapter);
-        assertEquals(
-                asList(sectionedItem(150, 1515),
-                        sectionedItem(150, 1510),
-                        sectionedItem(150, 1540),
-                        sectionedItem(170, 173),
-                        sectionedItem(170, 174),
-                        sectionedItem(170, 175),
-                        sectionedItem(200, 201),
-                        sectionedItem(300, 301)),
-                currentItems);
+        assertThat(currentItems, contains(
+                m(sectionedItem(150, 1515)),
+                m(sectionedItem(150, 1510)),
+                m(sectionedItem(150, 1540)),
+                m(sectionedItem(170, 173)),
+                m(sectionedItem(170, 174)),
+                m(sectionedItem(170, 175)),
+                m(sectionedItem(200, 201)),
+                m(sectionedItem(300, 301))
+        ));
 
         // Replacing bottom section with one extra element
         newItems = asList(
                 testItem(302),
                 testItem(301));
         new ListSectionChange(300, new ReplaceAll<>(newItems)).apply(currentItems, mAdapter);
-        assertEquals(
-                asList(sectionedItem(150, 1515),
-                        sectionedItem(150, 1510),
-                        sectionedItem(150, 1540),
-                        sectionedItem(170, 173),
-                        sectionedItem(170, 174),
-                        sectionedItem(170, 175),
-                        sectionedItem(200, 201),
-                        sectionedItem(300, 302),
-                        sectionedItem(300, 301)
-                ),
-                currentItems);
+        assertThat(currentItems, contains(
+                m(sectionedItem(150, 1515)),
+                m(sectionedItem(150, 1510)),
+                m(sectionedItem(150, 1540)),
+                m(sectionedItem(170, 173)),
+                m(sectionedItem(170, 174)),
+                m(sectionedItem(170, 175)),
+                m(sectionedItem(200, 201)),
+                m(sectionedItem(300, 302)),
+                m(sectionedItem(300, 301))
+        ));
 
         // Clearing sections:
         new ListSectionChange(200, new ClearAll<ListItem>()).apply(currentItems, mAdapter);
-        assertEquals(
-                asList(sectionedItem(150, 1515),
-                        sectionedItem(150, 1510),
-                        sectionedItem(150, 1540),
-                        sectionedItem(170, 173),
-                        sectionedItem(170, 174),
-                        sectionedItem(170, 175),
-                        sectionedItem(300, 302),
-                        sectionedItem(300, 301)
-                ),
-                currentItems);
+        assertThat(currentItems, contains(
+                m(sectionedItem(150, 1515)),
+                m(sectionedItem(150, 1510)),
+                m(sectionedItem(150, 1540)),
+                m(sectionedItem(170, 173)),
+                m(sectionedItem(170, 174)),
+                m(sectionedItem(170, 175)),
+                m(sectionedItem(300, 302)),
+                m(sectionedItem(300, 301))
+        ));
         new ListSectionChange(150, new ClearAll<ListItem>()).apply(currentItems, mAdapter);
-        assertEquals(
-                asList(
-                        sectionedItem(170, 173),
-                        sectionedItem(170, 174),
-                        sectionedItem(170, 175),
-                        sectionedItem(300, 302),
-                        sectionedItem(300, 301)
-                ),
-                currentItems);
+        assertThat(currentItems, contains(
+                m(sectionedItem(170, 173)),
+                m(sectionedItem(170, 174)),
+                m(sectionedItem(170, 175)),
+                m(sectionedItem(300, 302)),
+                m(sectionedItem(300, 301))
+        ));
         new ListSectionChange(300, new ClearAll<ListItem>()).apply(currentItems, mAdapter);
-        assertEquals(
-                asList(
-                        sectionedItem(170, 173),
-                        sectionedItem(170, 174),
-                        sectionedItem(170, 175)
-                ),
-                currentItems);
+        assertThat(currentItems, contains(
+                m(sectionedItem(170, 173)),
+                m(sectionedItem(170, 174)),
+                m(sectionedItem(170, 175))
+        ));
         new ListSectionChange(170, new ClearAll<ListItem>()).apply(currentItems, mAdapter);
-        assertEquals(
-                Collections.emptyList(),
-                currentItems);
+        assertTrue(currentItems.isEmpty());
     }
 
 
     private SectionableListItem sectionedItem(int sectionNumber, int id)
     {
         return new BasicSectionableListItem(new TestListItem(id), sectionNumber);
+    }
+
+
+    private Matcher<SectionableListItem> m(final SectionableListItem expected)
+    {
+
+        return new TypeSafeMatcher<SectionableListItem>()
+        {
+            @Override
+            protected boolean matchesSafely(SectionableListItem actual)
+            {
+                return actual.id().equals(expected.id());
+            }
+
+
+            @Override
+            public void describeTo(Description description)
+            {
+
+            }
+        };
     }
 
 }

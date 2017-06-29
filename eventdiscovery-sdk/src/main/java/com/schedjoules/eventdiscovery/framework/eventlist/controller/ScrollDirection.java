@@ -35,6 +35,7 @@ import eu.davidea.flexibleadapter.items.IFlexible;
  *
  * @author Gabor Keszthelyi
  */
+// TODO Review if this can be simplified now that ResultPage uses Optional
 public enum ScrollDirection
 {
     TOP(
@@ -46,14 +47,14 @@ public enum ScrollDirection
                 @Override
                 public <T> boolean hasComingPageQuery(EnumMap<ScrollDirection, ResultPage<T>> lastResultPages)
                 {
-                    return lastResultPages.get(this) != null && !lastResultPages.get(this).isFirstPage();
+                    return lastResultPages.get(this) != null && lastResultPages.get(this).previousPageQuery().isPresent();
                 }
 
 
                 @Override
                 public <T> ApiQuery<ResultPage<T>> comingPageQuery(EnumMap<ScrollDirection, ResultPage<T>> lastResultPages) throws IllegalStateException
                 {
-                    return lastResultPages.get(this).previousPageQuery();
+                    return lastResultPages.get(this).previousPageQuery().value();
                 }
             },
 
@@ -66,14 +67,14 @@ public enum ScrollDirection
                 @Override
                 public <T> boolean hasComingPageQuery(EnumMap<ScrollDirection, ResultPage<T>> lastResultPages)
                 {
-                    return !lastResultPages.get(this).isLastPage();
+                    return lastResultPages.get(this).nextPageQuery().isPresent();
                 }
 
 
                 @Override
                 public <T> ApiQuery<ResultPage<T>> comingPageQuery(EnumMap<ScrollDirection, ResultPage<T>> lastResultPages) throws IllegalStateException
                 {
-                    return lastResultPages.get(this).nextPageQuery();
+                    return lastResultPages.get(this).nextPageQuery().value();
                 }
             };
 
