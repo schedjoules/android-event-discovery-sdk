@@ -32,15 +32,19 @@ import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.widget.ProgressBar;
 
+import com.schedjoules.client.eventsdiscovery.Category;
 import com.schedjoules.client.eventsdiscovery.Envelope;
 import com.schedjoules.client.eventsdiscovery.Event;
 import com.schedjoules.client.eventsdiscovery.GeoLocation;
 import com.schedjoules.client.eventsdiscovery.ResultPage;
+import com.schedjoules.client.eventsdiscovery.queries.CategoriesQuery;
 import com.schedjoules.eventdiscovery.R;
 import com.schedjoules.eventdiscovery.databinding.SchedjoulesFragmentEventListLoaderBinding;
 import com.schedjoules.eventdiscovery.framework.common.BaseFragment;
+import com.schedjoules.eventdiscovery.framework.common.CategoriesCache;
 import com.schedjoules.eventdiscovery.framework.eventlist.controller.InitialEventsDiscovery;
 import com.schedjoules.eventdiscovery.framework.locationpicker.SharedPrefLastSelectedPlace;
+import com.schedjoules.eventdiscovery.framework.model.category.BasicCategories;
 import com.schedjoules.eventdiscovery.framework.serialization.Keys;
 import com.schedjoules.eventdiscovery.framework.serialization.boxes.EventResultPageBox;
 import com.schedjoules.eventdiscovery.framework.serialization.commons.BundleBuilder;
@@ -64,6 +68,8 @@ import org.dmfs.rfc5545.DateTime;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 
 
 /**
@@ -151,6 +157,10 @@ public final class EventListLoaderMicroFragment implements MicroFragment<Bundle>
         private SimpleServiceJobQueue<ApiService> mApiServiceJobQueue;
         private ProgressBar mProgressBar;
 
+        private AtomicReference<ResultPage<Envelope<Event>>> mResultPage = new AtomicReference<>();
+        private AtomicBoolean mCategoriesLoaded = new AtomicBoolean();
+        private Bundle mIncomingArgs;
+
 
         @Override
         public void onCreate(@Nullable Bundle savedInstanceState)
@@ -168,6 +178,8 @@ public final class EventListLoaderMicroFragment implements MicroFragment<Bundle>
                     R.layout.schedjoules_fragment_event_list_loader, container, false);
             mProgressBar = views.schedjoulesEventListProgressBar;
 
+            mIncomingArgs = new FragmentEnvironment<Bundle>(this).microFragment().parameter();
+
             // Showing the ProgressBar with a little delay and fade-in to avoid abrupt and momentarily frozen appearing
             AlphaAnimation anim = new AlphaAnimation(0, 1);
             anim.setDuration(400);
@@ -182,8 +194,7 @@ public final class EventListLoaderMicroFragment implements MicroFragment<Bundle>
         public void onResume()
         {
             super.onResume();
-            final Bundle incomingArgs = new FragmentEnvironment<Bundle>(this).microFragment().parameter();
-            DateTime startAfter = new OptionalArgument<>(Keys.DATE_TIME_START_AFTER, incomingArgs).value(DateTime.nowAndHere());
+            DateTime startAfter = new OptionalArgument<>(Keys.DATE_TIME_START_AFTER, mIncomingArgs).value(DateTime.nowAndHere());
             GeoLocation location = new SharedPrefLastSelectedPlace(getContext()).get().geoLocation();
             final InitialEventsDiscovery query = new InitialEventsDiscovery(startAfter, location);
 
@@ -194,9 +205,8 @@ public final class EventListLoaderMicroFragment implements MicroFragment<Bundle>
                 {
                     try
                     {
-                        ResultPage<Envelope<Event>> resultPage = service.apiResponse(query);
-                        Bundle args = new BundleBuilder(incomingArgs).with(Keys.EVENTS_RESULT_PAGE, new EventResultPageBox(resultPage)).build();
-                        startTransition(new Faded(new ForwardTransition(new EventListMicroFragment(args), mTimestamp)));
+                        mResultPage.set(service.apiResponse(query));
+                        loadReady();
                     }
                     catch (ProtocolError | IOException | ProtocolException | URISyntaxException | RuntimeException e)
                     {
@@ -212,14 +222,44 @@ public final class EventListLoaderMicroFragment implements MicroFragment<Bundle>
                     onError();
                 }
 
+            }, 5000);
 
-                private void onError()
+            mApiServiceJobQueue.post(new ServiceJob<ApiService>()
+            {
+                @Override
+                public void execute(ApiService service)
                 {
-                    startTransition(new Faded(new ForwardTransition<>(
-                            new SplashErrorMicroFragment(new FragmentEnvironment<Bundle>(LoaderFragment.this).microFragment().parameter()),
-                            mTimestamp)));
+                    try
+                    {
+                        Iterable<Category> categories = service.apiResponse(new CategoriesQuery());
+
+                        new CategoriesCache(new BasicCategories(categories)).cache(getActivity());
+
+                        mCategoriesLoaded.set(true);
+                        loadReady();
+                    }
+                    catch (ProtocolError | IOException | ProtocolException | URISyntaxException | RuntimeException e)
+                    {
+                        Log.e("EventListLoaderMF", "Failed to load category labels", e);
+                        onError();
+                    }
+                }
+
+
+                @Override
+                public void onTimeOut()
+                {
+
                 }
             }, 5000);
+        }
+
+
+        private void onError()
+        {
+            startTransition(new Faded(new ForwardTransition<>(
+                    new SplashErrorMicroFragment(new FragmentEnvironment<Bundle>(LoaderFragment.this).microFragment().parameter()),
+                    mTimestamp)));
         }
 
 
@@ -228,6 +268,16 @@ public final class EventListLoaderMicroFragment implements MicroFragment<Bundle>
         {
             mApiServiceJobQueue.disconnect();
             super.onDestroy();
+        }
+
+
+        private void loadReady()
+        {
+            if (mResultPage.get() != null && mCategoriesLoaded.get())
+            {
+                Bundle args = new BundleBuilder(mIncomingArgs).with(Keys.EVENTS_RESULT_PAGE, new EventResultPageBox(mResultPage.get())).build();
+                startTransition(new Faded(new ForwardTransition(new EventListMicroFragment(args), mTimestamp)));
+            }
         }
 
 
