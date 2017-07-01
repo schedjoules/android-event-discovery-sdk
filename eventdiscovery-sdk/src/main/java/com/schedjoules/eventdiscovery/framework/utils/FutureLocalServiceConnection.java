@@ -50,7 +50,7 @@ public final class FutureLocalServiceConnection<T> implements FutureServiceConne
             {
                 mIsConnected = true;
                 mService = (T) service;
-                notify();
+                notifyAll();
             }
         }
 
@@ -62,7 +62,7 @@ public final class FutureLocalServiceConnection<T> implements FutureServiceConne
             {
                 mIsConnected = false;
                 mService = null;
-                notify();
+                notifyAll();
             }
         }
     };
