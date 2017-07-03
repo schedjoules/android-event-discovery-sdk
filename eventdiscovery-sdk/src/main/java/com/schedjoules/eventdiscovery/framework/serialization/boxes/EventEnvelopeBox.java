@@ -22,7 +22,10 @@ import android.os.Parcel;
 import com.schedjoules.client.eventsdiscovery.Envelope;
 import com.schedjoules.client.eventsdiscovery.Event;
 import com.schedjoules.eventdiscovery.framework.model.StructuredEnvelope;
+import com.schedjoules.eventdiscovery.framework.serialization.commons.BoxFactory;
 import com.schedjoules.eventdiscovery.framework.serialization.core.Box;
+
+import org.dmfs.optional.Optional;
 
 
 /**
@@ -60,11 +63,7 @@ public final class EventEnvelopeBox implements Box<Envelope<Event>>
     {
         dest.writeString(mEnvelope.etag());
         dest.writeString(mEnvelope.uid());
-        dest.writeInt(mEnvelope.hasPayload() ? 1 : 0);
-        if (mEnvelope.hasPayload())
-        {
-            dest.writeParcelable(new EventBox(mEnvelope.payload()), flags);
-        }
+        dest.writeParcelable(new OptionalBox<>(mEnvelope.payload(), EventBox.FACTORY), flags);
     }
 
 
@@ -75,9 +74,8 @@ public final class EventEnvelopeBox implements Box<Envelope<Event>>
         {
             String etag = in.readString();
             String uid = in.readString();
-            boolean hasPayload = in.readInt() == 1;
-            Event event = hasPayload ? ((Box<Event>) in.readParcelable(getClass().getClassLoader())).content() : null;
-            return new EventEnvelopeBox(new StructuredEnvelope<>(etag, uid, hasPayload, event));
+            Box<Optional<Event>> optEventBox = in.readParcelable(getClass().getClassLoader());
+            return new EventEnvelopeBox(new StructuredEnvelope<>(etag, uid, optEventBox.content()));
         }
 
 
@@ -85,6 +83,15 @@ public final class EventEnvelopeBox implements Box<Envelope<Event>>
         public EventEnvelopeBox[] newArray(int size)
         {
             return new EventEnvelopeBox[size];
+        }
+    };
+
+    public static final BoxFactory<Envelope<Event>> FACTORY = new BoxFactory<Envelope<Event>>()
+    {
+        @Override
+        public Box<Envelope<Event>> create(Envelope<Event> value)
+        {
+            return new EventEnvelopeBox(value);
         }
     };
 

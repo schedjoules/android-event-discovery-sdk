@@ -18,34 +18,33 @@
 package com.schedjoules.eventdiscovery.framework.serialization.boxes;
 
 import android.os.Parcel;
-import android.os.Parcelable;
 
-import com.schedjoules.client.eventsdiscovery.Event;
-import com.schedjoules.eventdiscovery.framework.model.ParcelableEvent;
+import com.schedjoules.client.ApiQuery;
+import com.schedjoules.client.State;
 import com.schedjoules.eventdiscovery.framework.serialization.commons.BoxFactory;
 import com.schedjoules.eventdiscovery.framework.serialization.core.Box;
 
 
 /**
- * {@link Box} for {@link Event}.
+ * {@link Box} for {@link ApiQuery}.
  *
  * @author Gabor Keszthelyi
  */
-public final class EventBox implements Box<Event>
+public final class ApiQueryBox<T> implements Box<ApiQuery<T>>
 {
-    private final Event mEvent;
+    private final ApiQuery<T> mApiQuery;
 
 
-    public EventBox(Event event)
+    public ApiQueryBox(ApiQuery<T> apiQuery)
     {
-        mEvent = event;
+        mApiQuery = apiQuery;
     }
 
 
     @Override
-    public Event content()
+    public ApiQuery content()
     {
-        return mEvent;
+        return mApiQuery;
     }
 
 
@@ -59,34 +58,35 @@ public final class EventBox implements Box<Event>
     @Override
     public void writeToParcel(Parcel dest, int flags)
     {
-        dest.writeParcelable(mEvent instanceof Parcelable ? (Parcelable) mEvent : new ParcelableEvent(mEvent), flags);
+        dest.writeSerializable(mApiQuery.serializable());
     }
 
 
-    public final static Creator<EventBox> CREATOR = new Creator<EventBox>()
+    public static final Creator<ApiQueryBox> CREATOR = new Creator<ApiQueryBox>()
     {
         @Override
-        public EventBox createFromParcel(Parcel source)
+        public ApiQueryBox createFromParcel(Parcel in)
         {
-            Event event = source.readParcelable(getClass().getClassLoader());
-            return new EventBox(event);
+            return new ApiQueryBox<>(((State<ApiQuery>) in.readSerializable()).restored());
         }
 
 
         @Override
-        public EventBox[] newArray(int size)
+        public ApiQueryBox[] newArray(int size)
         {
-            return new EventBox[size];
+            return new ApiQueryBox[size];
         }
     };
 
-    public final static BoxFactory<Event> FACTORY = new BoxFactory<Event>()
+
+    public static final class Factory<T> implements BoxFactory<ApiQuery<T>>
     {
+
         @Override
-        public Box<Event> create(Event value)
+        public Box<ApiQuery<T>> create(ApiQuery<T> apiQuery)
         {
-            return new EventBox(value);
+            return new ApiQueryBox<T>(apiQuery);
         }
-    };
+    }
 
 }

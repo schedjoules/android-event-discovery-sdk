@@ -25,7 +25,7 @@ import android.support.v4.content.ContextCompat;
 
 import com.schedjoules.eventdiscovery.framework.permissions.utils.ManifestPermissionStrings;
 
-import org.dmfs.iterators.FilteredIterator;
+import org.dmfs.iterators.decorators.Filtered;
 import org.dmfs.iterators.filters.AnyOf;
 
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
@@ -103,7 +103,7 @@ final class MarshmallowPermissions implements AppPermissions
         @Override
         public boolean isGrantable()
         {
-            return new FilteredIterator<>(new ManifestPermissionStrings(mContext).iterator(), new AnyOf<>(mName)).hasNext();
+            return new Filtered<>(new ManifestPermissionStrings(mContext).iterator(), new AnyOf<>(mName)).hasNext();
         }
 
 

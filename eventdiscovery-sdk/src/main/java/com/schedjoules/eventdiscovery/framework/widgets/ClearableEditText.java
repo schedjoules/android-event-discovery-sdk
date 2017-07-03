@@ -20,6 +20,7 @@ package com.schedjoules.eventdiscovery.framework.widgets;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.support.v4.view.GestureDetectorCompat;
+import android.support.v7.widget.AppCompatEditText;
 import android.text.Editable;
 import android.util.AttributeSet;
 import android.view.GestureDetector;
@@ -36,7 +37,7 @@ import com.schedjoules.eventdiscovery.framework.utils.colors.AttributeColor;
  *
  * @author Gabor Keszthelyi
  */
-public final class ClearableEditText extends EditText
+public final class ClearableEditText extends AppCompatEditText
 {
 
     private GestureDetectorCompat mGestureDetector;

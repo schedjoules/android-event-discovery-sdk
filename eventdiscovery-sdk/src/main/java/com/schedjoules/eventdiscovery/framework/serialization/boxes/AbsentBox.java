@@ -15,43 +15,58 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery.testutils;
+package com.schedjoules.eventdiscovery.framework.serialization.boxes;
 
-import com.schedjoules.client.ApiQuery;
-import com.schedjoules.client.eventsdiscovery.Envelope;
-import com.schedjoules.client.eventsdiscovery.Event;
-import com.schedjoules.client.eventsdiscovery.ResultPage;
+import android.os.Parcel;
 
-import org.dmfs.iterators.EmptyIterator;
+import com.schedjoules.eventdiscovery.framework.serialization.core.Box;
+
 import org.dmfs.optional.Absent;
 import org.dmfs.optional.Optional;
 
-import java.util.Iterator;
-
 
 /**
+ * {@link Box} for an absent {@link Optional}.
+ *
  * @author Gabor Keszthelyi
  */
-public final class EmptyResultPage implements ResultPage<Envelope<Event>>
+public final class AbsentBox<T> implements Box<Optional<T>>
 {
 
     @Override
-    public Optional<ApiQuery<ResultPage<Envelope<Event>>>> previousPageQuery() throws IllegalStateException
+    public Optional<T> content()
     {
         return Absent.absent();
     }
 
 
     @Override
-    public Optional<ApiQuery<ResultPage<Envelope<Event>>>> nextPageQuery() throws IllegalStateException
+    public int describeContents()
     {
-        return Absent.absent();
+        return 0;
     }
 
 
     @Override
-    public Iterator<Envelope<Event>> iterator()
+    public void writeToParcel(Parcel dest, int flags)
     {
-        return new EmptyIterator<>();
+
     }
+
+
+    public static final Creator<AbsentBox> CREATOR = new Creator<AbsentBox>()
+    {
+        @Override
+        public AbsentBox createFromParcel(Parcel in)
+        {
+            return new AbsentBox();
+        }
+
+
+        @Override
+        public AbsentBox[] newArray(int size)
+        {
+            return new AbsentBox[size];
+        }
+    };
 }

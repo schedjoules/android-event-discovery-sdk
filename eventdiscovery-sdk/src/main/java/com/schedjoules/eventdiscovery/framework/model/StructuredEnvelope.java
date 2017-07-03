@@ -19,6 +19,8 @@ package com.schedjoules.eventdiscovery.framework.model;
 
 import com.schedjoules.client.eventsdiscovery.Envelope;
 
+import org.dmfs.optional.Optional;
+
 
 /**
  * {@link Envelope} which takes the ready properties as constructor parameters.
@@ -29,16 +31,14 @@ public final class StructuredEnvelope<T> implements Envelope<T>
 {
     private final String mEtag;
     private final String mUid;
-    private final boolean mHasPayload;
-    private final T mPayload;
+    private final Optional<T> mOptPayload;
 
 
-    public StructuredEnvelope(String etag, String uid, boolean hasPayload, T payload)
+    public StructuredEnvelope(String etag, String uid, Optional<T> optPayload)
     {
         mEtag = etag;
         mUid = uid;
-        mHasPayload = hasPayload;
-        mPayload = payload;
+        mOptPayload = optPayload;
     }
 
 
@@ -57,15 +57,8 @@ public final class StructuredEnvelope<T> implements Envelope<T>
 
 
     @Override
-    public boolean hasPayload()
+    public Optional<T> payload()
     {
-        return mHasPayload;
-    }
-
-
-    @Override
-    public T payload()
-    {
-        return mPayload;
+        return mOptPayload;
     }
 }

@@ -24,7 +24,7 @@ import com.schedjoules.client.eventsdiscovery.Location;
 
 import org.dmfs.iterables.Repeatable;
 import org.dmfs.iterators.ArrayIterator;
-import org.dmfs.iterators.FilteredIterator;
+import org.dmfs.iterators.decorators.Filtered;
 import org.dmfs.iterators.filters.NonNull;
 
 
@@ -41,7 +41,7 @@ public final class LocationFormatter
         Location location = locations.iterator().next();
         Address address = location.address();
         return TextUtils.join(", ", new Repeatable<>(
-                new FilteredIterator<>(
+                new Filtered<>(
                         new ArrayIterator<>(location.name(), address.street(), address.locality(), address.country()),
                         NonNull.<String>instance())));
     }
