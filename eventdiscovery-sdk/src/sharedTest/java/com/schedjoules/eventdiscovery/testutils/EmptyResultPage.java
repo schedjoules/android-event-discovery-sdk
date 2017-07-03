@@ -23,6 +23,7 @@ import com.schedjoules.client.eventsdiscovery.Event;
 import com.schedjoules.client.eventsdiscovery.ResultPage;
 
 import org.dmfs.iterators.EmptyIterator;
+import org.dmfs.optional.Absent;
 import org.dmfs.optional.Optional;
 
 import java.util.Iterator;
@@ -37,14 +38,14 @@ public final class EmptyResultPage implements ResultPage<Envelope<Event>>
     @Override
     public Optional<ApiQuery<ResultPage<Envelope<Event>>>> previousPageQuery() throws IllegalStateException
     {
-        throw new IllegalStateException("No previous query");
+        return Absent.absent();
     }
 
 
     @Override
     public Optional<ApiQuery<ResultPage<Envelope<Event>>>> nextPageQuery() throws IllegalStateException
     {
-        throw new IllegalStateException("No next query");
+        return Absent.absent();
     }
 
 

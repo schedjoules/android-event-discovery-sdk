@@ -65,7 +65,7 @@ public final class EventResultPageBox implements Box<ResultPage<Envelope<Event>>
     {
         dest.writeParcelable(new IterableBox<>(mResultPage, EventEnvelopeBox.FACTORY), flags);
 
-        BoxFactory<ApiQuery<ResultPage<Envelope<Event>>>> queryBoxFactory = ApiQueryBox.factory();
+        BoxFactory<ApiQuery<ResultPage<Envelope<Event>>>> queryBoxFactory = new ApiQueryBox.Factory<>();
         dest.writeParcelable(new OptionalBox<>(mResultPage.previousPageQuery(), queryBoxFactory), flags);
         dest.writeParcelable(new OptionalBox<>(mResultPage.nextPageQuery(), queryBoxFactory), flags);
     }

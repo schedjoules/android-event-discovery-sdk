@@ -79,17 +79,14 @@ public final class ApiQueryBox<T> implements Box<ApiQuery<T>>
     };
 
 
-    // Note: method is needed instead of constant because of the generic parameter
-    public static <T> BoxFactory<ApiQuery<T>> factory()
+    public static final class Factory<T> implements BoxFactory<ApiQuery<T>>
     {
-        return new BoxFactory<ApiQuery<T>>()
+
+        @Override
+        public Box<ApiQuery<T>> create(ApiQuery<T> apiQuery)
         {
-            @Override
-            public Box<ApiQuery<T>> create(ApiQuery<T> value)
-            {
-                return new ApiQueryBox<T>(value);
-            }
-        };
+            return new ApiQueryBox<T>(apiQuery);
+        }
     }
 
 }
