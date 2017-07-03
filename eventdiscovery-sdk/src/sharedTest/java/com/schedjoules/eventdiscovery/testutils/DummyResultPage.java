@@ -26,10 +26,13 @@ import com.schedjoules.client.eventsdiscovery.ResultPage;
 
 import org.dmfs.httpessentials.exceptions.ProtocolError;
 import org.dmfs.httpessentials.exceptions.ProtocolException;
+import org.dmfs.optional.Optional;
+import org.dmfs.optional.Present;
 
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Iterator;
 
 
 /**
@@ -60,34 +63,13 @@ public final class DummyResultPage implements ResultPage<Envelope<Event>>
 
 
     @Override
-    public Iterable<Envelope<Event>> items()
+    public Optional<ApiQuery<ResultPage<Envelope<Event>>>> previousPageQuery() throws IllegalStateException
     {
-        return mItems;
-    }
-
-
-    @Override
-    public boolean isFirstPage()
-    {
-        return mIsFirst;
-    }
-
-
-    @Override
-    public boolean isLastPage()
-    {
-        return mIsLast;
-    }
-
-
-    @Override
-    public ApiQuery<ResultPage<Envelope<Event>>> previousPageQuery() throws IllegalStateException
-    {
-        if (isFirstPage())
+        if (mIsFirst)
         {
             throw new IllegalStateException("No previous query");
         }
-        return new ApiQuery<ResultPage<Envelope<Event>>>()
+        return new Present<ApiQuery<ResultPage<Envelope<Event>>>>(new ApiQuery<ResultPage<Envelope<Event>>>()
         {
             @Override
             public ResultPage<Envelope<Event>> queryResult(Api api) throws IOException, URISyntaxException, ProtocolError, ProtocolException
@@ -101,18 +83,18 @@ public final class DummyResultPage implements ResultPage<Envelope<Event>>
             {
                 throw new UnsupportedOperationException();
             }
-        };
+        });
     }
 
 
     @Override
-    public ApiQuery<ResultPage<Envelope<Event>>> nextPageQuery() throws IllegalStateException
+    public Optional<ApiQuery<ResultPage<Envelope<Event>>>> nextPageQuery() throws IllegalStateException
     {
-        if (isLastPage())
+        if (mIsLast)
         {
             throw new IllegalStateException("No next query");
         }
-        return new ApiQuery<ResultPage<Envelope<Event>>>()
+        return new Present<ApiQuery<ResultPage<Envelope<Event>>>>(new ApiQuery<ResultPage<Envelope<Event>>>()
         {
             @Override
             public ResultPage<Envelope<Event>> queryResult(Api api) throws IOException, URISyntaxException, ProtocolError, ProtocolException
@@ -126,6 +108,13 @@ public final class DummyResultPage implements ResultPage<Envelope<Event>>
             {
                 throw new UnsupportedOperationException();
             }
-        };
+        });
+    }
+
+
+    @Override
+    public Iterator<Envelope<Event>> iterator()
+    {
+        return mItems.iterator();
     }
 }

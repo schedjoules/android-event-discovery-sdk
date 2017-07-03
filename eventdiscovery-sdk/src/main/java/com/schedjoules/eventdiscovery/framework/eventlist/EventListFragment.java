@@ -154,7 +154,7 @@ public final class EventListFragment extends BaseFragment implements EventListMe
 
     private void showResultPage(ResultPage<Envelope<Event>> resultPage)
     {
-        mListFragmentContainer.replace(resultPage.items().iterator().hasNext() ?
+        mListFragmentContainer.replace(resultPage.iterator().hasNext() ?
                 EventListListShowFragment.newInstance(resultPage) : EventListListNoEventsFragment.newInstance());
     }
 

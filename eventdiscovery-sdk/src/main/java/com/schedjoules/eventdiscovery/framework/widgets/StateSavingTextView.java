@@ -17,11 +17,10 @@
 
 package com.schedjoules.eventdiscovery.framework.widgets;
 
-import android.annotation.TargetApi;
 import android.content.Context;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.v7.widget.AppCompatTextView;
 import android.util.AttributeSet;
 import android.widget.TextView;
 
@@ -33,45 +32,16 @@ import android.widget.TextView;
  *
  * @author Gabor Keszthelyi
  */
-public final class StateSavingTextView extends TextView
+public final class StateSavingTextView extends AppCompatTextView
 {
     private static final String SUPER_STATE = "super_state";
     private static final String ALPHA = "alpha";
     private static final String VISIBILITY = "visibility";
 
 
-    public StateSavingTextView(Context context)
-    {
-        super(context);
-        init();
-    }
-
-
     public StateSavingTextView(Context context, AttributeSet attrs)
     {
         super(context, attrs);
-        init();
-    }
-
-
-    public StateSavingTextView(Context context, AttributeSet attrs, int defStyleAttr)
-    {
-        super(context, attrs, defStyleAttr);
-        init();
-
-    }
-
-
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public StateSavingTextView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes)
-    {
-        super(context, attrs, defStyleAttr, defStyleRes);
-        init();
-    }
-
-
-    private void init()
-    {
         setFreezesText(true);
     }
 

@@ -20,6 +20,9 @@ package com.schedjoules.eventdiscovery.testutils;
 import com.schedjoules.client.eventsdiscovery.Envelope;
 import com.schedjoules.client.eventsdiscovery.Event;
 
+import org.dmfs.optional.Optional;
+import org.dmfs.optional.Present;
+
 
 /**
  * @author Gabor Keszthelyi
@@ -50,15 +53,8 @@ public final class DummyEnvelope implements Envelope<Event>
 
 
     @Override
-    public boolean hasPayload()
+    public Optional<Event> payload()
     {
-        return true;
-    }
-
-
-    @Override
-    public Event payload()
-    {
-        return mEvent;
+        return new Present<>(mEvent);
     }
 }

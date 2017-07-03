@@ -18,34 +18,39 @@
 package com.schedjoules.eventdiscovery.framework.serialization.boxes;
 
 import android.os.Parcel;
-import android.os.Parcelable;
 
-import com.schedjoules.client.eventsdiscovery.Event;
-import com.schedjoules.eventdiscovery.framework.model.ParcelableEvent;
 import com.schedjoules.eventdiscovery.framework.serialization.commons.BoxFactory;
 import com.schedjoules.eventdiscovery.framework.serialization.core.Box;
 
+import org.dmfs.optional.Optional;
+
 
 /**
- * {@link Box} for {@link Event}.
+ * {@link Box} for an {@link Optional}.
  *
  * @author Gabor Keszthelyi
  */
-public final class EventBox implements Box<Event>
+public final class OptionalBox<T> implements Box<Optional<T>>
 {
-    private final Event mEvent;
+    private final Box<Optional<T>> mDelegate;
 
 
-    public EventBox(Event event)
+    public OptionalBox(Optional<T> optValue, BoxFactory<T> boxFactory)
     {
-        mEvent = event;
+        this(optValue.isPresent() ? new PresentBox<>(boxFactory.create(optValue.value())) : new AbsentBox<T>());
+    }
+
+
+    private OptionalBox(Box<Optional<T>> delegate)
+    {
+        mDelegate = delegate;
     }
 
 
     @Override
-    public Event content()
+    public Optional<T> content()
     {
-        return mEvent;
+        return mDelegate.content();
     }
 
 
@@ -59,34 +64,23 @@ public final class EventBox implements Box<Event>
     @Override
     public void writeToParcel(Parcel dest, int flags)
     {
-        dest.writeParcelable(mEvent instanceof Parcelable ? (Parcelable) mEvent : new ParcelableEvent(mEvent), flags);
+        dest.writeParcelable(mDelegate, flags);
     }
 
 
-    public final static Creator<EventBox> CREATOR = new Creator<EventBox>()
+    public static final Creator<Box<Optional>> CREATOR = new Creator<Box<Optional>>()
     {
         @Override
-        public EventBox createFromParcel(Parcel source)
+        public Box<Optional> createFromParcel(Parcel in)
         {
-            Event event = source.readParcelable(getClass().getClassLoader());
-            return new EventBox(event);
+            return new OptionalBox((Box<Optional>) in.readParcelable(getClass().getClassLoader()));
         }
 
 
         @Override
-        public EventBox[] newArray(int size)
+        public Box<Optional>[] newArray(int size)
         {
-            return new EventBox[size];
+            return new OptionalBox[size];
         }
     };
-
-    public final static BoxFactory<Event> FACTORY = new BoxFactory<Event>()
-    {
-        @Override
-        public Box<Event> create(Event value)
-        {
-            return new EventBox(value);
-        }
-    };
-
 }

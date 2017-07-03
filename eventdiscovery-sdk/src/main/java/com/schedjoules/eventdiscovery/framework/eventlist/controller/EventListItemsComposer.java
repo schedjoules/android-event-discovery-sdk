@@ -75,11 +75,11 @@ public final class EventListItemsComposer
         // but we need the reference to the actual object as well, so the need for the Map instead of a Set.
         Map<IHeader<HeaderFlexibleViewHolder>, IHeader<HeaderFlexibleViewHolder>> headers = new HashMap<>();
 
-        for (Envelope<Event> envelope : resultPage.items())
+        for (Envelope<Event> envelope : resultPage)
         {
-            if (envelope.hasPayload())
+            if (envelope.payload().isPresent())
             {
-                Event event = envelope.payload();
+                Event event = envelope.payload().value();
 //                Log.d("network", String.format("event | %s | %s",
 //                        new SimpleDateFormat("M dd HH:mm").format(event.start().getTimestamp()), event.title()));
 
