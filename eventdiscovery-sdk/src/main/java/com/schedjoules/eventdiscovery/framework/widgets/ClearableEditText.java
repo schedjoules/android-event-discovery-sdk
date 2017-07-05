@@ -61,8 +61,8 @@ public final class ClearableEditText extends AppCompatEditText
     {
         super.onFinishInflate();
 
-        mClearIcon = TintedDrawable.create(getContext(), R.drawable.schedjoules_ic_clear_black_24dp,
-                new AttributeColor(getContext(), R.attr.schedjoules_appBarIconColor));
+        mClearIcon = new TintedDrawable(getContext(), R.drawable.schedjoules_ic_clear_black_24dp,
+                new AttributeColor(getContext(), R.attr.schedjoules_appBarIconColor)).get();
 
         addTextChangedListener(new AbstractTextWatcher()
         {

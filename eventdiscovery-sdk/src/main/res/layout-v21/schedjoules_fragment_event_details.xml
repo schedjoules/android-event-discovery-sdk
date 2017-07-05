@@ -28,6 +28,10 @@
                     android:orientation="vertical">
 
                 <include
+                        layout="@layout/schedjoules_view_event_details_categories"
+                        android:id="@+id/schedjoules_event_details_categories"/>
+
+                <include
                         layout="@layout/schedjoules_view_event_details_venue"
                         android:id="@+id/schedjoules_event_details_venue_name"/>
 

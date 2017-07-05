@@ -19,6 +19,7 @@ package com.schedjoules.eventdiscovery.framework.common;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
@@ -42,6 +43,8 @@ import org.dmfs.optional.Optional;
 public abstract class BaseActivity extends AppCompatActivity
 {
 
+    public static final String SERVICE_ACTIVITY = "schedjoules.activity";
+
     static
     {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
@@ -59,6 +62,17 @@ public abstract class BaseActivity extends AppCompatActivity
         // Start the insight service if not started yet. No need to stop it manually, it will stop automatically.
         BasicInsightsService.start(this);
         BasicActionsService.start(this);
+    }
+
+
+    @Override
+    public Object getSystemService(@NonNull String name)
+    {
+        if (name.equals(SERVICE_ACTIVITY))
+        {
+            return this;
+        }
+        return super.getSystemService(name);
     }
 
 
