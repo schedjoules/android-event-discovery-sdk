@@ -175,23 +175,10 @@ public final class FlexibleAdapterEventListItems implements EventListItems<IFlex
         IHeader firstDayInCurrent = getFirstHeaderCurrent();
         IHeader lastDayInNew = getLastHeader(newItems);
 
-        /**
-         * Important notes for the code below:
-         *
-         * The way this top merging is implemented is a result of a lot of trial and error and struggle,
-         * to make it work correctly, meaning: only one header added when merging and top header remains in place and not flashes.
-         * It is not clear why this particular way of doing it works, all is probably related to FlexibleAdapter internals.
-         *
-         * Some discussion about it here:
-         * https://github.com/davideas/FlexibleAdapter/issues/277
-         *
-         * Also note that the flashing while merging on top happens with the manual UI test {@link EventListManualAndroidTest},
-         * but not with the demo app. Don't know why because they supposed to work the same in this respect.
-         *
-         * If any of the below is changed, double-check on UI that everything still works with both cases:
-         * "merging" (if branch), "non-merging" (else branch)
+        /*
+         * TODO Workaround logic below, could potentially be removed
+         * See more: https://github.com/schedjoules/android-event-discovery-sdk/issues/335
          */
-
         if (Objects.equals(lastDayInNew, firstDayInCurrent))
         {
             mFlexibleAdapter.removeItem(mFlexibleAdapter.getGlobalPositionOf(firstDayInCurrent));
