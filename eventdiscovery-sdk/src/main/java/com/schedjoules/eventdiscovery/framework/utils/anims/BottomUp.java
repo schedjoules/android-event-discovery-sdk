@@ -37,7 +37,7 @@ public final class BottomUp extends AbstractAnimated
     {
         super(delegate,
                 R.anim.schedjoules_activity_open_enter,
-                R.anim.schedjoules_activity_open_exit,
+                R.anim.microfragments_fade_exit,
                 R.anim.microfragments_fade_enter,
                 R.anim.microfragments_fade_exit);
     }
