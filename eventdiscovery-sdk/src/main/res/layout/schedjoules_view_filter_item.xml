@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginLeft="@dimen/schedjoules_activity_horizontal_margin"
+            android:layout_marginRight="@dimen/schedjoules_activity_horizontal_margin"
+            android:background="?attr/selectableItemBackground">
+
+        <TextView
+                android:id="@+id/schedjoules_filter_item_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"
+                android:paddingRight="8dp"
+                android:paddingLeft="8dp"
+                android:layout_gravity="center_vertical"
+                android:textSize="16dp"
+                android:background="@drawable/schedjoules_filled_bg_w_rounded_corner"
+                android:textColor="?android:textColorPrimary"/>
+
+    </FrameLayout>
+</layout>

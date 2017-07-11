@@ -40,6 +40,7 @@ import com.schedjoules.eventdiscovery.framework.common.BaseFragment;
 import com.schedjoules.eventdiscovery.framework.common.ExternalUrlFeedbackForm;
 import com.schedjoules.eventdiscovery.framework.common.FirstResultPageHolder;
 import com.schedjoules.eventdiscovery.framework.eventlist.view.EventListMenu;
+import com.schedjoules.eventdiscovery.framework.filter.FilterFragment;
 import com.schedjoules.eventdiscovery.framework.serialization.Keys;
 import com.schedjoules.eventdiscovery.framework.serialization.commons.OptionalArgument;
 import com.schedjoules.eventdiscovery.framework.utils.InsightsTask;
@@ -139,6 +140,7 @@ public final class EventListFragment extends BaseFragment implements EventListMe
         if (savedInstanceState == null && mIsInitializing)
         {
             new Add(R.id.schedjoules_event_list_header_container, EventListHeaderFragment.newInstance(mReloadDovecote.cage())).commit(this);
+            new Add(R.id.schedjoules_event_list_filter_container, FilterFragment.newInstance()).commit(this);
 
             Optional<ResultPage<Envelope<Event>>> firstPage = FirstResultPageHolder.get(getActivity());
             if (firstPage.isPresent())

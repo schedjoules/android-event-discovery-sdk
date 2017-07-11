@@ -11,6 +11,11 @@
     <string name="schedjoules_location_search_hint">Location…</string>
     <string name="schedjoules_default_location_placeholder_name">All locations</string>
 
+    <!-- The label for category filter on the list screen -->
+    <string name="schedjoules_category_filter_title">Category</string>
+    <!-- Event filter clear selection 'button' in the drop-down -->
+    <string name="schedjoules_filter_clear">Clear</string>
+
     <!-- Action labels -->
     <string name="schedjoules_action_book">Book</string>
     <string name="schedjoules_action_info">Info</string>
