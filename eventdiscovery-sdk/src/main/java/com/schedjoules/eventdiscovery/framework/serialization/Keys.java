@@ -21,6 +21,7 @@ import com.schedjoules.client.eventsdiscovery.Envelope;
 import com.schedjoules.client.eventsdiscovery.Event;
 import com.schedjoules.client.eventsdiscovery.GeoLocation;
 import com.schedjoules.client.eventsdiscovery.ResultPage;
+import com.schedjoules.eventdiscovery.framework.model.category.Categories;
 import com.schedjoules.eventdiscovery.framework.serialization.core.Key;
 import com.schedjoules.eventdiscovery.framework.utils.loadresult.LoadResult;
 
@@ -54,6 +55,8 @@ public final class Keys
     public static final Key<Cage<LoadResult<ResultPage<Envelope<Event>>>>> EVENTS_LOAD_RESULT_CAGE = new SchedJoulesKey<>("EVENTS_LOAD_RESULT_CAGE");
 
     public static final Key<Cage<Boolean>> RELOAD_EVENT_LIST_CAGE = new SchedJoulesKey<>("RELOAD_EVENT_LIST_CAGE");
+
+    public static final Key<Categories> CATEGORIES = new SchedJoulesKey<>("CATEGORIES");
 
 
     private Keys()
