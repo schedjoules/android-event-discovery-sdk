@@ -74,10 +74,10 @@ public final class RequestUriAndTimeLogging implements HttpRequestExecutor
         public <T> T execute(URI uri, HttpRequest<T> request) throws IOException, ProtocolError, ProtocolException, RedirectionException, UnexpectedStatusException
         {
             int requestId = sRequestCounter.getAndIncrement();
-            Log.d(mTag, String.format("(%s->) %s %s", requestId, request.method().verb(), uri));
+            Log.d(mTag, String.format("(%s) %s %s", requestId, request.method().verb(), uri));
             long start = SystemClock.uptimeMillis();
             T result = mDelegate.execute(uri, request);
-            Log.d(mTag, String.format("(%s<-) Response time: %s ms", requestId, SystemClock.uptimeMillis() - start));
+            Log.d(mTag, String.format("(%s) Response time: %s ms", requestId, SystemClock.uptimeMillis() - start));
             return result;
         }
     }

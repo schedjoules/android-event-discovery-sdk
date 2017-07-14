@@ -1,17 +1,18 @@
 <component name="ProjectDictionaryState">
-  <dictionary name="shared_for_this_project">
-    <words>
-      <w>boxable</w>
-      <w>clearable</w>
-      <w>eventdiscovery</w>
-      <w>geocoder</w>
-      <w>linkified</w>
-      <w>linkifies</w>
-      <w>linkifying</w>
-      <w>sched</w>
-      <w>schedjoules</w>
-      <w>sectionable</w>
-      <w>unparcelled</w>
-    </words>
-  </dictionary>
+    <dictionary name="shared_for_this_project">
+        <words>
+            <w>boxable</w>
+            <w>cacheable</w>
+            <w>clearable</w>
+            <w>eventdiscovery</w>
+            <w>geocoder</w>
+            <w>linkified</w>
+            <w>linkifies</w>
+            <w>linkifying</w>
+            <w>sched</w>
+            <w>schedjoules</w>
+            <w>sectionable</w>
+            <w>unparcelled</w>
+        </words>
+    </dictionary>
 </component>
