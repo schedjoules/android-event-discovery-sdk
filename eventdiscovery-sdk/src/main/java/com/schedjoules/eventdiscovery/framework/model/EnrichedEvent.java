@@ -15,32 +15,23 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery.framework.actions;
+package com.schedjoules.eventdiscovery.framework.model;
 
-import android.view.View;
+import com.schedjoules.client.eventsdiscovery.Event;
 
-import com.schedjoules.eventdiscovery.framework.utils.ContextActivity;
+import org.dmfs.httpessentials.types.Link;
+
+import java.util.List;
 
 
 /**
- * A {@link View.OnClickListener} that executes the given {@link ActionExecutable} on onClick().
+ * Event enriched with extra information fetched, namely the action links.
  *
  * @author Gabor Keszthelyi
  */
-public final class ActionClickListener implements View.OnClickListener
+public interface EnrichedEvent
 {
-    private final ActionExecutable mActionExecutable;
+    Event event();
 
-
-    public ActionClickListener(ActionExecutable actionExecutable)
-    {
-        mActionExecutable = actionExecutable;
-    }
-
-
-    @Override
-    public void onClick(View v)
-    {
-        mActionExecutable.execute(new ContextActivity(v).get());
-    }
+    Iterable<Link> actions();
 }

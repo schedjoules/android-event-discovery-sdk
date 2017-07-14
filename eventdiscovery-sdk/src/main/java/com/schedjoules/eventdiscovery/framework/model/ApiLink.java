@@ -37,6 +37,7 @@ public final class ApiLink
     {
         public static final String THUMBNAIL = "http://schedjoules.com/rel/thumbnail";
         public static final String BANNER = "http://schedjoules.com/rel/banner";
+        public static final String CATEGORY = "http://schedjoules.com/rel/category";
 
 
         public static final class Action

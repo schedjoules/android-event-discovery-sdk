@@ -33,8 +33,8 @@ import com.schedjoules.eventdiscovery.framework.actions.BaseActionFactory;
 import com.schedjoules.eventdiscovery.framework.actions.OptionalAction;
 import com.schedjoules.eventdiscovery.framework.actions.TicketButtonAction;
 import com.schedjoules.eventdiscovery.framework.common.BaseFragment;
-import com.schedjoules.eventdiscovery.framework.microfragments.eventdetails.ShowEventMicroFragment;
 import com.schedjoules.eventdiscovery.framework.model.ApiLink;
+import com.schedjoules.eventdiscovery.framework.model.EnrichedEvent;
 import com.schedjoules.eventdiscovery.framework.utils.VenueName;
 import com.schedjoules.eventdiscovery.framework.utils.smartview.SmartView;
 import com.schedjoules.eventdiscovery.framework.widgets.NoOpOnClickListener;
@@ -51,7 +51,7 @@ import java.util.List;
  *
  * @author Gabor Keszthelyi
  */
-public final class EventDetailsView implements SmartView<ShowEventMicroFragment.EventParams>
+public final class EventDetailsView implements SmartView<EnrichedEvent>
 {
     private final SchedjoulesFragmentEventDetailsBinding mViews;
     private final BaseFragment mFragment;
@@ -65,10 +65,12 @@ public final class EventDetailsView implements SmartView<ShowEventMicroFragment.
 
 
     @Override
-    public void update(ShowEventMicroFragment.EventParams eventParams)
+    public void update(EnrichedEvent enrichedEvent)
     {
-        List<Link> actionLinks = eventParams.actions();
-        final Event event = eventParams.event();
+        Iterable<Link> actionLinks = enrichedEvent.actions();
+        final Event event = enrichedEvent.event();
+
+        new EventDetailsCategoriesView(mViews.schedjoulesEventDetailsCategories).update(event);
 
         new VenueNameView(mViews.schedjoulesEventDetailsVenueName).update(new VenueName(event.locations()));
 

@@ -51,7 +51,7 @@ public final class AccentColoredProgressBar extends ProgressBar
         Drawable indeterminateDrawable = getIndeterminateDrawable();
         if (indeterminateDrawable != null)
         {
-            setIndeterminateDrawable(TintedDrawable.tinted(indeterminateDrawable, new AttributeColor(getContext(), R.attr.colorAccent)));
+            setIndeterminateDrawable(new TintedDrawable(indeterminateDrawable, new AttributeColor(getContext(), R.attr.colorAccent)).get());
         }
     }
 }

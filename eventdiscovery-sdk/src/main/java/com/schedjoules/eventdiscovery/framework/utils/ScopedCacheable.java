@@ -15,32 +15,24 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery.framework.actions;
+package com.schedjoules.eventdiscovery.framework.utils;
 
-import android.view.View;
-
-import com.schedjoules.eventdiscovery.framework.utils.ContextActivity;
+import android.arch.lifecycle.ViewModel;
 
 
 /**
- * A {@link View.OnClickListener} that executes the given {@link ActionExecutable} on onClick().
+ * Interface for objects that can be cached with a given scope.
+ * <p>
+ * (Practically in a {@link ViewModel} with Activity, Fragment, or Application scopes.)
  *
  * @author Gabor Keszthelyi
  */
-public final class ActionClickListener implements View.OnClickListener
+public interface ScopedCacheable<S>
 {
-    private final ActionExecutable mActionExecutable;
 
+    /**
+     * Caches this object bound for the given scope.
+     */
+    void cache(S scope);
 
-    public ActionClickListener(ActionExecutable actionExecutable)
-    {
-        mActionExecutable = actionExecutable;
-    }
-
-
-    @Override
-    public void onClick(View v)
-    {
-        mActionExecutable.execute(new ContextActivity(v).get());
-    }
 }
