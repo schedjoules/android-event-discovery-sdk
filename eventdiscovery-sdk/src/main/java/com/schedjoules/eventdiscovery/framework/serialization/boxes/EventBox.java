@@ -21,7 +21,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.schedjoules.client.eventsdiscovery.Event;
-import com.schedjoules.eventdiscovery.framework.model.ParcelableEvent;
+import com.schedjoules.eventdiscovery.framework.model.event.ParcelableEvent;
 import com.schedjoules.eventdiscovery.framework.serialization.commons.BoxFactory;
 import com.schedjoules.eventdiscovery.framework.serialization.core.Box;
 

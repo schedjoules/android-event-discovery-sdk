@@ -40,10 +40,10 @@ import com.schedjoules.eventdiscovery.framework.serialization.commons.Argument;
 import com.schedjoules.eventdiscovery.framework.serialization.commons.BundleBuilder;
 import com.schedjoules.eventdiscovery.framework.serialization.commons.OptionalArgument;
 import com.schedjoules.eventdiscovery.framework.serialization.core.FluentBuilder;
+import com.schedjoules.eventdiscovery.framework.services.EventService;
 import com.schedjoules.eventdiscovery.framework.utils.loadresult.BoxResult;
 import com.schedjoules.eventdiscovery.framework.utils.loadresult.ErrorResult;
 import com.schedjoules.eventdiscovery.framework.utils.loadresult.LoadResult;
-import com.schedjoules.eventdiscovery.service.ApiService;
 
 import org.dmfs.httpessentials.exceptions.ProtocolError;
 import org.dmfs.httpessentials.exceptions.ProtocolException;
@@ -64,7 +64,7 @@ import java.util.concurrent.TimeoutException;
 public final class EventListListLoaderFragment extends BaseFragment
 {
 
-    private ApiService.FutureConnection mApiConnection;
+    private EventService.FutureConnection mEventService;
 
 
     public static Fragment newInstance(Optional<DateTime> start, Cage<LoadResult<ResultPage<Envelope<Event>>>> resultCage)
@@ -85,7 +85,7 @@ public final class EventListListLoaderFragment extends BaseFragment
     public void onCreate(@Nullable Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        mApiConnection = new ApiService.FutureConnection(getActivity());
+        mEventService = new EventService.FutureConnection(getActivity());
     }
 
 
@@ -115,7 +115,7 @@ public final class EventListListLoaderFragment extends BaseFragment
                 LoadResult<ResultPage<Envelope<Event>>> loadResult;
                 try
                 {
-                    ResultPage<Envelope<Event>> resultPage = mApiConnection.service(5000).apiResponse(query);
+                    ResultPage<Envelope<Event>> resultPage = mEventService.service(5000).events(query);
                     loadResult = new BoxResult<>(new EventResultPageBox(resultPage));
                 }
                 catch (TimeoutException | InterruptedException | ProtocolError | IOException | ProtocolException | URISyntaxException e)
@@ -135,7 +135,7 @@ public final class EventListListLoaderFragment extends BaseFragment
     @Override
     public void onDestroy()
     {
-        mApiConnection.disconnect();
+        mEventService.disconnect();
         super.onDestroy();
     }
 }

@@ -194,6 +194,7 @@ public final class EventListLoaderMicroFragment implements MicroFragment<Bundle>
                 {
                     try
                     {
+                        // TODO If this MF is put back to use again, remove this load, just load the Categories
                         ResultPage<Envelope<Event>> resultPage = service.apiResponse(query);
                         Bundle args = new BundleBuilder(incomingArgs).with(Keys.EVENTS_RESULT_PAGE, new EventResultPageBox(resultPage)).build();
                         startTransition(new Faded(new ForwardTransition(new EventListMicroFragment(args), mTimestamp)));

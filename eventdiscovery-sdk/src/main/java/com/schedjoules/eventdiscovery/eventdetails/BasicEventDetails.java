@@ -22,10 +22,10 @@ import android.support.annotation.NonNull;
 
 import com.schedjoules.client.eventsdiscovery.Event;
 import com.schedjoules.eventdiscovery.framework.activities.ActivityMicroFragmentHost;
-import com.schedjoules.eventdiscovery.framework.microfragments.eventdetails.ActionLoaderMicroFragment;
+import com.schedjoules.eventdiscovery.framework.microfragments.eventdetails.EventDetailLoaderMicroFragment;
 import com.schedjoules.eventdiscovery.framework.microfragments.eventdetails.ShowEventMicroFragment;
 import com.schedjoules.eventdiscovery.framework.services.ActionService;
-import com.schedjoules.eventdiscovery.framework.utils.FutureServiceConnection;
+import com.schedjoules.eventdiscovery.framework.services.EventService;
 import com.schedjoules.eventdiscovery.framework.utils.anims.BottomUp;
 
 import org.dmfs.android.microfragments.MicroFragment;
@@ -67,35 +67,61 @@ public final class BasicEventDetails implements EventDetails
             @Override
             public void run()
             {
-                Optional<List<Link>> actions = loadActionsFromCache(new ActionService.FutureConnection(activity));
+                Optional<List<Link>> cachedActions = loadActionsFromCache(activity);
+                Optional<Event> cachedEvent = loadEventFromCache(activity);
 
-                MicroFragment microFragment = actions.isPresent() ?
-                        new ShowEventMicroFragment(mEvent, actions.value()) : new ActionLoaderMicroFragment(mEvent);
+                MicroFragment microFragment = cachedActions.isPresent() && cachedEvent.isPresent() ?
+                        new ShowEventMicroFragment(mEvent, cachedActions.value())
+                        :
+                        new EventDetailLoaderMicroFragment(mEvent);
 
                 new ActivityMicroFragmentHost(activity).get()
                         .execute(activity, new BottomUp(new ForwardTransition<>(microFragment, timestamp)));
             }
 
-
-            private Optional<List<Link>> loadActionsFromCache(FutureServiceConnection<ActionService> actionService)
-            {
-                try
-                {
-                    return new Present<>(actionService.service(40).cachedActions(mEvent.uid()));
-                }
-                catch (InterruptedException | TimeoutException | NoSuchElementException e)
-                {
-                    return Absent.absent();
-                }
-                finally
-                {
-                    if (actionService.isConnected())
-                    {
-                        actionService.disconnect();
-                    }
-                }
-            }
         }).start();
+    }
+
+
+    private Optional<List<Link>> loadActionsFromCache(Activity activity)
+    {
+        ActionService.FutureConnection actionService = new ActionService.FutureConnection(activity);
+        try
+        {
+            return new Present<>(actionService.service(40).cachedActions(mEvent.uid()));
+        }
+        catch (InterruptedException | TimeoutException | NoSuchElementException e)
+        {
+            return Absent.absent();
+        }
+        finally
+        {
+            if (actionService.isConnected())
+            {
+                actionService.disconnect();
+            }
+        }
+    }
+
+
+    private Optional<Event> loadEventFromCache(Activity activity)
+    {
+        EventService.FutureConnection eventService = new EventService.FutureConnection(activity);
+        try
+        {
+            return eventService.service(40).cachedEvent(mEvent.uid());
+        }
+        catch (InterruptedException | TimeoutException e)
+        {
+            return Absent.absent();
+        }
+        finally
+        {
+            if (eventService.isConnected())
+            {
+                eventService.disconnect();
+            }
+        }
     }
 
 }

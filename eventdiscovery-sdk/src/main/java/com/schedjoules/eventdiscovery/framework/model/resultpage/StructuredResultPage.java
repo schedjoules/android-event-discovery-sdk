@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery.framework.model;
+package com.schedjoules.eventdiscovery.framework.model.resultpage;
 
 import com.schedjoules.client.ApiQuery;
 import com.schedjoules.client.eventsdiscovery.ResultPage;

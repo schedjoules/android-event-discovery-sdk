@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery.framework.model;
+package com.schedjoules.eventdiscovery.framework.model.envelope;
 
 import com.schedjoules.client.eventsdiscovery.Envelope;
 

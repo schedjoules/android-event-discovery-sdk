@@ -21,7 +21,7 @@ import android.os.Parcel;
 
 import com.schedjoules.client.eventsdiscovery.Envelope;
 import com.schedjoules.client.eventsdiscovery.Event;
-import com.schedjoules.eventdiscovery.framework.model.StructuredEnvelope;
+import com.schedjoules.eventdiscovery.framework.model.envelope.StructuredEnvelope;
 import com.schedjoules.eventdiscovery.framework.serialization.commons.BoxFactory;
 import com.schedjoules.eventdiscovery.framework.serialization.core.Box;
 

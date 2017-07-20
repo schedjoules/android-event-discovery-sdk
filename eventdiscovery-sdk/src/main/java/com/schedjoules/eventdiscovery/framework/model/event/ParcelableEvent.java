@@ -15,13 +15,14 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery.framework.model;
+package com.schedjoules.eventdiscovery.framework.model.event;
 
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.schedjoules.client.eventsdiscovery.Event;
 import com.schedjoules.client.eventsdiscovery.Location;
+import com.schedjoules.eventdiscovery.framework.model.ParcelableLink;
 import com.schedjoules.eventdiscovery.framework.model.location.ParcelableLocation;
 
 import org.dmfs.httpessentials.types.Link;

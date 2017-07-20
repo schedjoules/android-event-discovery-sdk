@@ -25,8 +25,8 @@ import android.support.v4.app.Fragment;
 
 import com.schedjoules.client.eventsdiscovery.Event;
 import com.schedjoules.eventdiscovery.framework.microfragments.eventdetails.fragments.EventDetailFragment;
-import com.schedjoules.eventdiscovery.framework.model.ParcelableEvent;
 import com.schedjoules.eventdiscovery.framework.model.ParcelableLink;
+import com.schedjoules.eventdiscovery.framework.model.event.ParcelableEvent;
 
 import org.dmfs.android.microfragments.MicroFragment;
 import org.dmfs.android.microfragments.MicroFragmentHost;
