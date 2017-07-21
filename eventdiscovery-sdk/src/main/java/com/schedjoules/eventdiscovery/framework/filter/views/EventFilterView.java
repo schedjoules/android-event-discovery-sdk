@@ -33,9 +33,9 @@ import android.widget.TextView;
 
 import com.schedjoules.eventdiscovery.R;
 import com.schedjoules.eventdiscovery.databinding.SchedjoulesViewFilterItemBinding;
+import com.schedjoules.eventdiscovery.framework.common.CategoriesCache;
 import com.schedjoules.eventdiscovery.framework.filter.categoryoption.CategoryOption;
 import com.schedjoules.eventdiscovery.framework.filter.categoryoption.ClearedSelection;
-import com.schedjoules.eventdiscovery.framework.filter.categoryoption.DummyCategories;
 import com.schedjoules.eventdiscovery.framework.filter.categoryoption.UnselectedCategories;
 import com.schedjoules.eventdiscovery.framework.filter.categoryoption.Updated;
 import com.schedjoules.eventdiscovery.framework.filter.filterstate.CategoryOptionsFilterState;
@@ -47,6 +47,7 @@ import com.schedjoules.eventdiscovery.framework.serialization.boxes.IterableBox;
 import com.schedjoules.eventdiscovery.framework.serialization.boxes.ParcelableBox;
 import com.schedjoules.eventdiscovery.framework.serialization.commons.Argument;
 import com.schedjoules.eventdiscovery.framework.serialization.commons.BundleBuilder;
+import com.schedjoules.eventdiscovery.framework.utils.ContextActivity;
 import com.schedjoules.eventdiscovery.framework.utils.colors.AttributeColor;
 import com.schedjoules.eventdiscovery.framework.utils.smartview.SmartView;
 import com.schedjoules.eventdiscovery.framework.widgets.Highlightable;
@@ -82,8 +83,8 @@ public final class EventFilterView extends LinearLayout
         mCategoryTitle = (TextView) findViewById(R.id.schedjoules_event_list_filter_category_title);
         mCategorySelectListener = new CategorySelectListener();
 
-        // TODO Use real data
-        update(new UnselectedCategories(DummyCategories.CATS));
+        update(new UnselectedCategories(
+                new CategoriesCache(new ContextActivity(this).get()).filterCategories()));
     }
 
 
