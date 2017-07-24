@@ -34,8 +34,10 @@ import android.widget.TextView;
 import com.schedjoules.eventdiscovery.R;
 import com.schedjoules.eventdiscovery.databinding.SchedjoulesViewFilterItemBinding;
 import com.schedjoules.eventdiscovery.framework.common.CategoriesCache;
+import com.schedjoules.eventdiscovery.framework.filter.CategorySelectionChangeListener;
 import com.schedjoules.eventdiscovery.framework.filter.categoryoption.CategoryOption;
 import com.schedjoules.eventdiscovery.framework.filter.categoryoption.ClearedSelection;
+import com.schedjoules.eventdiscovery.framework.filter.categoryoption.SelectedCategories;
 import com.schedjoules.eventdiscovery.framework.filter.categoryoption.UnselectedCategories;
 import com.schedjoules.eventdiscovery.framework.filter.categoryoption.Updated;
 import com.schedjoules.eventdiscovery.framework.filter.filterstate.CategoryOptionsFilterState;
@@ -48,6 +50,7 @@ import com.schedjoules.eventdiscovery.framework.serialization.boxes.ParcelableBo
 import com.schedjoules.eventdiscovery.framework.serialization.commons.Argument;
 import com.schedjoules.eventdiscovery.framework.serialization.commons.BundleBuilder;
 import com.schedjoules.eventdiscovery.framework.utils.ContextActivity;
+import com.schedjoules.eventdiscovery.framework.utils.Listenable;
 import com.schedjoules.eventdiscovery.framework.utils.colors.AttributeColor;
 import com.schedjoules.eventdiscovery.framework.utils.smartview.SmartView;
 import com.schedjoules.eventdiscovery.framework.widgets.Highlightable;
@@ -58,7 +61,7 @@ import com.schedjoules.eventdiscovery.framework.widgets.Highlightable;
  *
  * @author Gabor Keszthelyi
  */
-public final class EventFilterView extends LinearLayout
+public final class EventFilterView extends LinearLayout implements Listenable<CategorySelectionChangeListener>
 {
     private CategoryClickListener mCategorySelectListener;
 
@@ -68,6 +71,9 @@ public final class EventFilterView extends LinearLayout
 
     private Iterable<CategoryOption> mCategoryOptions;
     private FilterState mFilterState;
+
+    private CategorySelectionChangeListener mCategorySelectionChangeListener;
+    private LinearLayout mDropDown;
 
 
     public EventFilterView(Context context, @Nullable AttributeSet attrs)
@@ -83,6 +89,16 @@ public final class EventFilterView extends LinearLayout
         mCategoryTitle = (TextView) findViewById(R.id.schedjoules_event_list_filter_category_title);
         mCategorySelectListener = new CategorySelectListener();
 
+        mDropDown = new LinearLayout(getContext());
+        mDropDown.setOrientation(LinearLayout.VERTICAL);
+        mPopup = new PopupWindow(mDropDown, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        mPopup.setBackgroundDrawable(new ColorDrawable(new AttributeColor(getContext(), android.R.attr.windowBackground).argb()));
+        mPopup.setOutsideTouchable(true);
+
+        mCategoryTitle.setOnClickListener(new TitleClickListener());
+
+        mTitleView = new FilterTitleView(mCategoryTitle, R.string.schedjoules_category_filter_title);
+
         update(new UnselectedCategories(
                 new CategoriesCache(new ContextActivity(this).get()).filterCategories()));
     }
@@ -95,29 +111,23 @@ public final class EventFilterView extends LinearLayout
         mFilterState = new CategoryOptionsFilterState(mCategoryOptions, false);
 
         // Setup the title
-        mCategoryTitle.setOnClickListener(new TitleClickListener());
-        mTitleView = new FilterTitleView(mCategoryTitle, R.string.schedjoules_category_filter_title);
         mTitleView.update(mFilterState);
 
         // Create the drop-down popup
-        LinearLayout dropDown = new LinearLayout(getContext());
-        dropDown.setOrientation(LinearLayout.VERTICAL);
-        mPopup = new PopupWindow(dropDown, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        mPopup.setBackgroundDrawable(new ColorDrawable(new AttributeColor(getContext(), android.R.attr.windowBackground).argb()));
-        mPopup.setOutsideTouchable(true);
 
         // Populate the drop-down
+        mDropDown.removeAllViews();
         LayoutInflater inflater = LayoutInflater.from(getContext());
         for (CategoryOption categoryOption : categoryOptions)
         {
-            inflater.inflate(R.layout.schedjoules_view_divider, dropDown, true);
-            SchedjoulesViewFilterItemBinding itemBinding = DataBindingUtil.inflate(inflater, R.layout.schedjoules_view_filter_item, dropDown, true);
+            inflater.inflate(R.layout.schedjoules_view_divider, mDropDown, true);
+            SchedjoulesViewFilterItemBinding itemBinding = DataBindingUtil.inflate(inflater, R.layout.schedjoules_view_filter_item, mDropDown, true);
             new FilterItemView(itemBinding, mCategorySelectListener).update(categoryOption);
         }
-        inflater.inflate(R.layout.schedjoules_view_divider, dropDown, true);
+        inflater.inflate(R.layout.schedjoules_view_divider, mDropDown, true);
 
         // Add Clear item
-        SchedjoulesViewFilterItemBinding clearItem = DataBindingUtil.inflate(inflater, R.layout.schedjoules_view_filter_item, dropDown, true);
+        SchedjoulesViewFilterItemBinding clearItem = DataBindingUtil.inflate(inflater, R.layout.schedjoules_view_filter_item, mDropDown, true);
         clearItem.schedjoulesFilterItemLabel.setText(R.string.schedjoules_filter_clear);
         clearItem.schedjoulesFilterItemLabel.setOnClickListener(new View.OnClickListener()
         {
@@ -129,7 +139,7 @@ public final class EventFilterView extends LinearLayout
             }
         });
         new Highlightable(clearItem.schedjoulesFilterItemLabel).update(false); // To remove background
-        inflater.inflate(R.layout.schedjoules_view_divider, dropDown, true);
+        inflater.inflate(R.layout.schedjoules_view_divider, mDropDown, true);
     }
 
 
@@ -152,6 +162,21 @@ public final class EventFilterView extends LinearLayout
     }
 
 
+    @Override
+    protected void onDetachedFromWindow()
+    {
+        super.onDetachedFromWindow();
+        mPopup.dismiss(); // PopUpWindow may get attached to Activity, so we need to dismiss to prevent leak
+    }
+
+
+    @Override
+    public void listen(CategorySelectionChangeListener listener)
+    {
+        mCategorySelectionChangeListener = listener;
+    }
+
+
     private class CategorySelectListener implements CategoryClickListener
     {
         @Override
@@ -160,6 +185,11 @@ public final class EventFilterView extends LinearLayout
             mCategoryOptions = new Updated(mCategoryOptions, categoryOption);
             mFilterState = new CategoryOptionsFilterState(mCategoryOptions, mFilterState);
             mTitleView.update(mFilterState);
+
+            if (mCategorySelectionChangeListener != null)
+            {
+                mCategorySelectionChangeListener.onCategorySelectionChanged(new SelectedCategories(mCategoryOptions));
+            }
         }
     }
 

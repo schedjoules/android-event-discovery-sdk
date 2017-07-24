@@ -19,17 +19,21 @@ package com.schedjoules.eventdiscovery.framework.serialization;
 
 import android.os.Parcelable;
 
+import com.schedjoules.client.ApiQuery;
+import com.schedjoules.client.eventsdiscovery.Category;
 import com.schedjoules.client.eventsdiscovery.Envelope;
 import com.schedjoules.client.eventsdiscovery.Event;
 import com.schedjoules.client.eventsdiscovery.GeoLocation;
 import com.schedjoules.client.eventsdiscovery.ResultPage;
 import com.schedjoules.eventdiscovery.framework.filter.categoryoption.CategoryOption;
 import com.schedjoules.eventdiscovery.framework.model.category.Categories;
+import com.schedjoules.eventdiscovery.framework.serialization.core.Box;
 import com.schedjoules.eventdiscovery.framework.serialization.core.Key;
 import com.schedjoules.eventdiscovery.framework.utils.loadresult.LoadResult;
 
 import org.dmfs.android.microfragments.MicroFragment;
 import org.dmfs.android.microfragments.MicroFragmentHost;
+import org.dmfs.optional.Optional;
 import org.dmfs.pigeonpost.Cage;
 import org.dmfs.rfc5545.DateTime;
 
@@ -64,6 +68,15 @@ public final class Keys
     public static final Key<Iterable<CategoryOption>> CATEGORY_OPTIONS = new SchedJoulesKey<>("CATEGORY_OPTIONS");
 
     public static final Key<Parcelable> SUPER_STATE = new SchedJoulesKey<>("SUPER_STATE");
+
+    public static final Key<ApiQuery<ResultPage<Envelope<Event>>>> DISCOVERY_QUERY = new SchedJoulesKey<>("DISCOVERY_QUERY");
+
+    public static final Key<Iterable<Category>> FILTER_CATEGORIES = new SchedJoulesKey<>("FILTER_CATEGORIES");
+
+    public static final Key<Optional<Iterable<Category>>> OPT_FILTER_CATEGORIES = new SchedJoulesKey<>("FILTER_CATEGORIES");
+
+    public static final Key<Cage<Box<Iterable<Category>>>> CATEGORIES_CAGE = new SchedJoulesKey<>("CATEGORIES_CAGE");
+
 
     private Keys()
     {
