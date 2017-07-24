@@ -80,7 +80,7 @@ public interface EventService
 
         public FutureConnection(Context context)
         {
-            mDelegate = new FutureLocalServiceConnection<>(context, new Intent("com.schedjoules.EVENT").setPackage(context.getPackageName()));
+            mDelegate = new FutureLocalServiceConnection<>(context, new Intent(context, BasicEventService.class));
         }
 
 
