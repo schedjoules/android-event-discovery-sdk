@@ -29,6 +29,7 @@ import com.schedjoules.eventdiscovery.framework.serialization.commons.IntentBuil
 import com.schedjoules.eventdiscovery.framework.serialization.commons.OptionalArgument;
 import com.schedjoules.eventdiscovery.framework.serialization.commons.OptionalBoxArgument;
 import com.schedjoules.eventdiscovery.framework.services.BasicActionsService;
+import com.schedjoules.eventdiscovery.framework.services.BasicEventService;
 import com.schedjoules.eventdiscovery.framework.services.BasicInsightsService;
 
 import org.dmfs.optional.Optional;
@@ -56,9 +57,10 @@ public abstract class BaseActivity extends AppCompatActivity
         {
             setTheme(themeExtra.value());
         }
-        // Start the insight service if not started yet. No need to stop it manually, it will stop automatically.
+        // Start the services if not started yet. No need to stop them manually, they will stop automatically.
         BasicInsightsService.start(this);
         BasicActionsService.start(this);
+        BasicEventService.start(this);
     }
 
 

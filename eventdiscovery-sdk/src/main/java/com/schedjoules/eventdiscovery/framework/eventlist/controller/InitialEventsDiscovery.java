@@ -69,6 +69,8 @@ public final class InitialEventsDiscovery implements ApiQuery<ResultPage<Envelop
             query = query.withGeoLocation(mLocation, 10000 /*meters*/);
         }
 
+        query = query.withResultsLimit(50);
+
         return query.queryResult(api);
     }
 

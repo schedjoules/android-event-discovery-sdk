@@ -40,7 +40,6 @@ import com.schedjoules.eventdiscovery.framework.common.BaseFragment;
 import com.schedjoules.eventdiscovery.framework.common.ExternalUrlFeedbackForm;
 import com.schedjoules.eventdiscovery.framework.eventlist.view.EventListMenu;
 import com.schedjoules.eventdiscovery.framework.serialization.Keys;
-import com.schedjoules.eventdiscovery.framework.serialization.commons.Argument;
 import com.schedjoules.eventdiscovery.framework.serialization.commons.OptionalArgument;
 import com.schedjoules.eventdiscovery.framework.utils.InsightsTask;
 import com.schedjoules.eventdiscovery.framework.utils.fragment.Add;
@@ -130,11 +129,7 @@ public final class EventListFragment extends BaseFragment implements EventListMe
             @Override
             public void onPigeonReturn(@NonNull Boolean notUsed)
             {
-                mListFragmentContainer.replace(
-                        EventListListLoaderFragment.newInstance(
-                                new OptionalArgument<>(Keys.DATE_TIME_START_AFTER,
-                                        new FragmentEnvironment<Bundle>(EventListFragment.this).microFragment().parameter()),
-                                mEventsLoadDoveCote.cage()));
+                load();
             }
         });
 
@@ -142,13 +137,21 @@ public final class EventListFragment extends BaseFragment implements EventListMe
         if (savedInstanceState == null && mIsInitializing)
         {
             new Add(R.id.schedjoules_event_list_header_container, EventListHeaderFragment.newInstance(mReloadDovecote.cage())).commit(this);
-
-            showResultPage(new Argument<>(Keys.EVENTS_RESULT_PAGE,
-                    new FragmentEnvironment<Bundle>(this).microFragment().parameter()).get());
+            load();
         }
 
         mIsInitializing = false;
         return mViews.getRoot();
+    }
+
+
+    private void load()
+    {
+        mListFragmentContainer.replace(
+                EventListListLoaderFragment.newInstance(
+                        new OptionalArgument<>(Keys.DATE_TIME_START_AFTER,
+                                new FragmentEnvironment<Bundle>(EventListFragment.this).microFragment().parameter()),
+                        mEventsLoadDoveCote.cage()));
     }
 
 

@@ -23,7 +23,7 @@ import com.schedjoules.client.ApiQuery;
 import com.schedjoules.client.eventsdiscovery.Envelope;
 import com.schedjoules.client.eventsdiscovery.Event;
 import com.schedjoules.client.eventsdiscovery.ResultPage;
-import com.schedjoules.eventdiscovery.framework.model.StructuredResultPage;
+import com.schedjoules.eventdiscovery.framework.model.resultpage.StructuredResultPage;
 import com.schedjoules.eventdiscovery.framework.serialization.commons.BoxFactory;
 import com.schedjoules.eventdiscovery.framework.serialization.core.Box;
 

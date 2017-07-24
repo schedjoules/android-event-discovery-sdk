@@ -42,9 +42,9 @@ import com.schedjoules.eventdiscovery.framework.serialization.Keys;
 import com.schedjoules.eventdiscovery.framework.serialization.boxes.EventResultPageBox;
 import com.schedjoules.eventdiscovery.framework.serialization.commons.Argument;
 import com.schedjoules.eventdiscovery.framework.serialization.commons.BundleBuilder;
+import com.schedjoules.eventdiscovery.framework.services.EventService;
 import com.schedjoules.eventdiscovery.framework.utils.FutureServiceConnection;
 import com.schedjoules.eventdiscovery.framework.utils.factory.Factory;
-import com.schedjoules.eventdiscovery.service.ApiService;
 
 import eu.davidea.flexibleadapter.FlexibleAdapter;
 import eu.davidea.flexibleadapter.items.IFlexible;
@@ -57,7 +57,7 @@ import eu.davidea.flexibleadapter.items.IFlexible;
  */
 public final class EventListListShowFragment extends BaseFragment
 {
-    private FutureServiceConnection<ApiService> mApiService;
+    private FutureServiceConnection<EventService> mEventService;
     private EventListController mListItemsController;
     private FlexibleAdapter<IFlexible> mAdapter;
     private SchedjoulesFragmentEventListListShowBinding mViews;
@@ -79,9 +79,9 @@ public final class EventListListShowFragment extends BaseFragment
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
 
-        mApiService = new ApiService.FutureConnection(getActivity());
+        mEventService = new EventService.FutureConnection(getActivity());
 
-        mListItemsController = new EventListControllerImpl(mApiService, new FlexibleAdapterEventListItems());
+        mListItemsController = new EventListControllerImpl(mEventService, new FlexibleAdapterEventListItems());
     }
 
 
@@ -128,7 +128,7 @@ public final class EventListListShowFragment extends BaseFragment
     public void onDestroy()
     {
         super.onDestroy();
-        mApiService.disconnect();
+        mEventService.disconnect();
     }
 
 }

@@ -26,8 +26,8 @@ import com.schedjoules.client.eventsdiscovery.ResultPage;
 import com.schedjoules.eventdiscovery.framework.async.DiscardCheck;
 import com.schedjoules.eventdiscovery.framework.async.DiscardingSafeAsyncTask;
 import com.schedjoules.eventdiscovery.framework.async.SafeAsyncTaskCallback;
+import com.schedjoules.eventdiscovery.framework.services.EventService;
 import com.schedjoules.eventdiscovery.framework.utils.FutureServiceConnection;
-import com.schedjoules.eventdiscovery.service.ApiService;
 
 import java.util.List;
 
@@ -40,7 +40,7 @@ import eu.davidea.flexibleadapter.items.IFlexible;
  * @author Gabor Keszthelyi
  */
 public final class EventListDownloadTask extends
-        DiscardingSafeAsyncTask<EventListDownloadTask.TaskParam, FutureServiceConnection<ApiService>, Void, EventListDownloadTask.TaskResult>
+        DiscardingSafeAsyncTask<EventListDownloadTask.TaskParam, FutureServiceConnection<EventService>, Void, EventListDownloadTask.TaskResult>
 {
 
     private EventListDownloadTask(TaskParam taskParam,
@@ -58,11 +58,11 @@ public final class EventListDownloadTask extends
 
 
     @Override
-    protected TaskResult doInBackgroundWithException(TaskParam taskParam, FutureServiceConnection<ApiService>... futureServiceConnection) throws Exception
+    protected TaskResult doInBackgroundWithException(TaskParam taskParam, FutureServiceConnection<EventService>... futureServiceConnection) throws Exception
     {
         //noinspection unchecked
-        FutureServiceConnection<ApiService> apiService = futureServiceConnection[0];
-        ResultPage<Envelope<Event>> resultPage = apiService.service(5000).apiResponse(taskParam.mQuery);
+        FutureServiceConnection<EventService> eventService = futureServiceConnection[0];
+        ResultPage<Envelope<Event>> resultPage = eventService.service(5000).events(taskParam.mQuery);
 
         List<IFlexible> listItems = EventListItemsComposer.INSTANCE.compose(resultPage);
 

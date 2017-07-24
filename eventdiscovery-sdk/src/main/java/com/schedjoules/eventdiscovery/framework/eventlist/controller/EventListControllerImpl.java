@@ -28,8 +28,8 @@ import com.schedjoules.client.eventsdiscovery.ResultPage;
 import com.schedjoules.eventdiscovery.framework.async.SafeAsyncTaskResult;
 import com.schedjoules.eventdiscovery.framework.eventlist.controller.EventListDownloadTask.TaskParam;
 import com.schedjoules.eventdiscovery.framework.eventlist.controller.EventListDownloadTask.TaskResult;
+import com.schedjoules.eventdiscovery.framework.services.EventService;
 import com.schedjoules.eventdiscovery.framework.utils.FutureServiceConnection;
-import com.schedjoules.eventdiscovery.service.ApiService;
 
 import java.util.EnumMap;
 import java.util.List;
@@ -55,7 +55,7 @@ public final class EventListControllerImpl implements EventListController
 
     private static final String TAG = EventListControllerImpl.class.getSimpleName();
 
-    private final FutureServiceConnection<ApiService> mApiService;
+    private final FutureServiceConnection<EventService> mEventService;
 
     private final ExecutorService mExecutorService;
     private final EventListItems<IFlexible, FlexibleAdapter<IFlexible>> mItems;
@@ -68,9 +68,9 @@ public final class EventListControllerImpl implements EventListController
     private Map<ScrollDirection, TaskParam> mErrorTaskParam;
 
 
-    public EventListControllerImpl(FutureServiceConnection<ApiService> apiService, EventListItems<IFlexible, FlexibleAdapter<IFlexible>> items)
+    public EventListControllerImpl(FutureServiceConnection<EventService> eventService, EventListItems<IFlexible, FlexibleAdapter<IFlexible>> items)
     {
-        mApiService = apiService;
+        mEventService = eventService;
         mItems = items;
         mExecutorService = Executors.newSingleThreadExecutor();
         mDownloadTaskClient = new DownloadTaskClient();
@@ -106,7 +106,7 @@ public final class EventListControllerImpl implements EventListController
     {
         //noinspection unchecked
         new EventListDownloadTask(new TaskParam(query, scrollDirection), mDownloadTaskClient)
-                .executeOnExecutor(mExecutorService, mApiService);
+                .executeOnExecutor(mExecutorService, mEventService);
         markLoadStarted(scrollDirection);
     }
 
@@ -114,7 +114,7 @@ public final class EventListControllerImpl implements EventListController
     private void queueDownloadTask(TaskParam taskParam)
     {
         //noinspection unchecked
-        new EventListDownloadTask(taskParam, mDownloadTaskClient).executeOnExecutor(mExecutorService, mApiService);
+        new EventListDownloadTask(taskParam, mDownloadTaskClient).executeOnExecutor(mExecutorService, mEventService);
         markLoadStarted(taskParam.mDirection);
     }
 

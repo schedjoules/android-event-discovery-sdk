@@ -74,6 +74,12 @@
         </service>
 
         <service
+                android:name=".framework.services.BasicEventService"
+                android:exported="false"
+                android:stopWithTask="true"
+                android:enabled="true"/>
+
+        <service
                 android:name=".framework.services.CoverageService"
                 android:exported="false"
                 android:enabled="true"
