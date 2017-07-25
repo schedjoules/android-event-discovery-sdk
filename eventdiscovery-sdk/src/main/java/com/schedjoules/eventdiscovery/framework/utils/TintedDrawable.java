@@ -24,40 +24,44 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
 
 import com.schedjoules.eventdiscovery.framework.utils.colors.Color;
+import com.schedjoules.eventdiscovery.framework.utils.factory.AbstractLazy;
+import com.schedjoules.eventdiscovery.framework.utils.factory.Factory;
 
 
 /**
- * Util method for creating tinted drawable.
+ * Lazily created/decorated tinted Drawable.
  * <p>
  * Note: subclassing Drawable to create a Tinted decorator didn't work because of not being able to
  * delegate protected methods, like onBoundsChange(). It caused the drawn icon to be misplaced.
  *
  * @author Gabor Keszthelyi
  */
-public final class TintedDrawable
+public final class TintedDrawable extends AbstractLazy<Drawable>
 {
     /**
-     * Creates a tinted Drawable.
+     * Decorated object is going to be a tinted version of the given drawable.
      */
-    public static Drawable create(Context context, @DrawableRes int drawableResId, Color color)
+    public TintedDrawable(final Drawable drawable, final Color color)
     {
-        return tinted(ContextCompat.getDrawable(context, drawableResId), color);
+        super(new Factory<Drawable>()
+        {
+            @Override
+            public Drawable create()
+            {
+                Drawable mutated = DrawableCompat.wrap(drawable).mutate();
+                DrawableCompat.setTint(mutated, color.argb());
+                return mutated;
+            }
+        });
     }
 
 
     /**
-     * Returns a tinted version of the given drawable.
+     * Creates and tints the Drawable for the given resource..
      */
-    public static Drawable tinted(Drawable drawable, Color color)
+    public TintedDrawable(Context context, @DrawableRes int drawableResId, Color color)
     {
-        Drawable mutated = DrawableCompat.wrap(drawable).mutate();
-        DrawableCompat.setTint(mutated, color.argb());
-        return mutated;
+        this(ContextCompat.getDrawable(context, drawableResId), color);
     }
 
-
-    private TintedDrawable()
-    {
-
-    }
 }

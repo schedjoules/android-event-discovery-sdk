@@ -25,6 +25,8 @@ import android.support.v4.app.Fragment;
 
 import com.schedjoules.client.eventsdiscovery.Event;
 import com.schedjoules.eventdiscovery.framework.microfragments.eventdetails.fragments.EventDetailFragment;
+import com.schedjoules.eventdiscovery.framework.model.BasicEnrichedEvent;
+import com.schedjoules.eventdiscovery.framework.model.EnrichedEvent;
 import com.schedjoules.eventdiscovery.framework.model.ParcelableLink;
 import com.schedjoules.eventdiscovery.framework.model.event.ParcelableEvent;
 
@@ -41,7 +43,7 @@ import java.util.List;
  *
  * @author Marten Gajda
  */
-public final class ShowEventMicroFragment implements MicroFragment<ShowEventMicroFragment.EventParams>
+public final class ShowEventMicroFragment implements MicroFragment<EnrichedEvent>
 {
     public final static Creator<ShowEventMicroFragment> CREATOR = new Creator<ShowEventMicroFragment>()
     {
@@ -97,23 +99,9 @@ public final class ShowEventMicroFragment implements MicroFragment<ShowEventMicr
 
     @NonNull
     @Override
-    public EventParams parameter()
+    public EnrichedEvent parameter()
     {
-        return new EventParams()
-        {
-            @Override
-            public Event event()
-            {
-                return mEvent;
-            }
-
-
-            @Override
-            public List<Link> actions()
-            {
-                return mActionLinks;
-            }
-        };
+        return new BasicEnrichedEvent(mEvent, mActionLinks);
     }
 
 
@@ -142,11 +130,4 @@ public final class ShowEventMicroFragment implements MicroFragment<ShowEventMicr
         }
     }
 
-
-    public interface EventParams
-    {
-        Event event();
-
-        List<Link> actions();
-    }
 }

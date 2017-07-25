@@ -62,14 +62,14 @@ public final class VenueNameView implements SmartView<Optional<CharSequence>>
         {
             Context context = mTextView.getContext();
 
-            Drawable transparentIcon = TintedDrawable.create(context,
+            Drawable transparentIcon = new TintedDrawable(context,
                     R.drawable.schedjoules_ic_location_on_black_24dp,
-                    Transparent.INSTANCE);
+                    Transparent.INSTANCE).get();
             mTextView.setCompoundDrawablesWithIntrinsicBounds(transparentIcon, null, null, null);
 
-            Drawable icon = TintedDrawable.create(context,
+            Drawable icon = new TintedDrawable(context,
                     R.drawable.schedjoules_ic_location_on_black_24dp,
-                    new AttributeColor(context, R.attr.colorAccent));
+                    new AttributeColor(context, R.attr.colorAccent)).get();
             mIconAnchorTextView.setCompoundDrawablesWithIntrinsicBounds(icon, null, null, null);
         }
     }

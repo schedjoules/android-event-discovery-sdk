@@ -33,10 +33,10 @@ import com.schedjoules.eventdiscovery.databinding.SchedjoulesFragmentEventDetail
 import com.schedjoules.eventdiscovery.framework.common.BaseActivity;
 import com.schedjoules.eventdiscovery.framework.common.BaseFragment;
 import com.schedjoules.eventdiscovery.framework.common.ExternalUrlFeedbackForm;
-import com.schedjoules.eventdiscovery.framework.microfragments.eventdetails.ShowEventMicroFragment;
 import com.schedjoules.eventdiscovery.framework.microfragments.eventdetails.fragments.menu.EventDetailsMenu;
 import com.schedjoules.eventdiscovery.framework.microfragments.eventdetails.fragments.views.EventDetailsView;
 import com.schedjoules.eventdiscovery.framework.microfragments.eventdetails.fragments.views.EventHeaderView;
+import com.schedjoules.eventdiscovery.framework.model.EnrichedEvent;
 import com.schedjoules.eventdiscovery.framework.utils.InsightsTask;
 
 import org.dmfs.android.microfragments.FragmentEnvironment;
@@ -60,12 +60,12 @@ public final class EventDetailFragment extends BaseFragment implements EventDeta
     {
         setStatusBarCoverEnabled(true);
 
-        final MicroFragmentEnvironment<ShowEventMicroFragment.EventParams> environment = new FragmentEnvironment<>(this);
-        ShowEventMicroFragment.EventParams parameters = environment.microFragment().parameter();
+        final MicroFragmentEnvironment<EnrichedEvent> environment = new FragmentEnvironment<>(this);
+        EnrichedEvent enrichedEvent = environment.microFragment().parameter();
 
         if (savedInstanceState == null)
         {
-            new InsightsTask(getActivity()).execute(new Screen(new StringToken("details"), parameters.event()));
+            new InsightsTask(getActivity()).execute(new Screen(new StringToken("details"), enrichedEvent.event()));
         }
 
         SchedjoulesFragmentEventDetailsBinding views = DataBindingUtil.inflate(inflater, R.layout.schedjoules_fragment_event_details, container, false);
@@ -93,8 +93,8 @@ public final class EventDetailFragment extends BaseFragment implements EventDeta
             }
         });
 
-        new EventHeaderView(getActivity(), views.schedjoulesDetailsHeader).update(parameters.event());
-        new EventDetailsView(this, views).update(parameters);
+        new EventHeaderView(getActivity(), views.schedjoulesDetailsHeader).update(enrichedEvent.event());
+        new EventDetailsView(this, views).update(enrichedEvent);
 
         ((BaseActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         return views.getRoot();

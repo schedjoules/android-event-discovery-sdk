@@ -15,32 +15,23 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery.framework.actions;
+package com.schedjoules.eventdiscovery.framework.model.category;
 
-import android.view.View;
+import com.schedjoules.client.eventsdiscovery.Category;
 
-import com.schedjoules.eventdiscovery.framework.utils.ContextActivity;
+import org.dmfs.optional.Optional;
+import org.dmfs.rfc3986.Uri;
 
 
 /**
- * A {@link View.OnClickListener} that executes the given {@link ActionExecutable} on onClick().
+ * {@link Category}s with support for quick lookup by category name.
  *
  * @author Gabor Keszthelyi
  */
-public final class ActionClickListener implements View.OnClickListener
+public interface Categories extends Iterable<Category>
 {
-    private final ActionExecutable mActionExecutable;
-
-
-    public ActionClickListener(ActionExecutable actionExecutable)
-    {
-        mActionExecutable = actionExecutable;
-    }
-
-
-    @Override
-    public void onClick(View v)
-    {
-        mActionExecutable.execute(new ContextActivity(v).get());
-    }
+    /**
+     * Looks up the {@link Category} for the given name.
+     */
+    Optional<Category> category(Uri categoryName);
 }

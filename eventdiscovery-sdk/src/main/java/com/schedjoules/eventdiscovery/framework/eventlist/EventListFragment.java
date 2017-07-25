@@ -38,6 +38,7 @@ import com.schedjoules.eventdiscovery.databinding.SchedjoulesFragmentEventListBi
 import com.schedjoules.eventdiscovery.discovery.SimpleCoverageTest;
 import com.schedjoules.eventdiscovery.framework.common.BaseFragment;
 import com.schedjoules.eventdiscovery.framework.common.ExternalUrlFeedbackForm;
+import com.schedjoules.eventdiscovery.framework.common.FirstResultPageHolder;
 import com.schedjoules.eventdiscovery.framework.eventlist.view.EventListMenu;
 import com.schedjoules.eventdiscovery.framework.serialization.Keys;
 import com.schedjoules.eventdiscovery.framework.serialization.commons.OptionalArgument;
@@ -51,6 +52,7 @@ import com.schedjoules.eventdiscovery.framework.utils.loadresult.LoadResultExcep
 import org.dmfs.android.microfragments.FragmentEnvironment;
 import org.dmfs.android.microfragments.utils.BooleanDovecote;
 import org.dmfs.httpessentials.types.StringToken;
+import org.dmfs.optional.Optional;
 import org.dmfs.pigeonpost.Dovecote;
 import org.dmfs.pigeonpost.localbroadcast.ParcelableDovecote;
 import org.dmfs.pigeonpost.localbroadcast.SerializableDovecote;
@@ -137,7 +139,18 @@ public final class EventListFragment extends BaseFragment implements EventListMe
         if (savedInstanceState == null && mIsInitializing)
         {
             new Add(R.id.schedjoules_event_list_header_container, EventListHeaderFragment.newInstance(mReloadDovecote.cage())).commit(this);
-            load();
+
+            Optional<ResultPage<Envelope<Event>>> firstPage = FirstResultPageHolder.get(getActivity());
+            if (firstPage.isPresent())
+            {
+                showResultPage(firstPage.value());
+                FirstResultPageHolder.clear(getActivity());
+            }
+            else
+            {
+                load();
+            }
+
         }
 
         mIsInitializing = false;

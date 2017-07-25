@@ -25,7 +25,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,6 +40,7 @@ import com.schedjoules.eventdiscovery.framework.serialization.Keys;
 import com.schedjoules.eventdiscovery.framework.serialization.boxes.ParcelableBox;
 import com.schedjoules.eventdiscovery.framework.serialization.commons.Argument;
 import com.schedjoules.eventdiscovery.framework.serialization.commons.FragmentBuilder;
+import com.schedjoules.eventdiscovery.framework.utils.ThemeDrawableResource;
 import com.schedjoules.eventdiscovery.framework.widgets.TextWithIcon;
 
 import org.dmfs.pigeonpost.Cage;
@@ -108,9 +108,11 @@ public final class EventListHeaderFragment extends BaseFragment
 
     private void updateToolbarTitle()
     {
-        TypedValue typedValue = new TypedValue();
-        getActivity().getTheme().resolveAttribute(R.attr.schedjoules_dropdownArrow, typedValue, true);
-        mToolbarTitle.setText(new TextWithIcon(getContext(), new SharedPrefLastSelectedPlace(getContext()).get().namedPlace().name(), typedValue.resourceId));
+        mToolbarTitle.setText(
+                new TextWithIcon(
+                        getContext(),
+                        new SharedPrefLastSelectedPlace(getContext()).get().namedPlace().name(),
+                        new ThemeDrawableResource(getActivity(), R.attr.schedjoules_dropdownArrow).get()));
     }
 
 
