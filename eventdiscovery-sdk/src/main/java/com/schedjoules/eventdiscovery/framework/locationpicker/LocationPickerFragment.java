@@ -24,6 +24,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -52,6 +53,7 @@ import com.schedjoules.eventdiscovery.framework.searchlist.CompositeSearchModule
 import com.schedjoules.eventdiscovery.framework.searchlist.SearchListItems;
 import com.schedjoules.eventdiscovery.framework.searchlist.SearchModule;
 import com.schedjoules.eventdiscovery.framework.searchlist.SearchModulesFactory;
+import com.schedjoules.eventdiscovery.framework.searchlist.SearchQueryInputListener;
 import com.schedjoules.eventdiscovery.framework.searchlist.delaying.UpdateDelaying;
 import com.schedjoules.eventdiscovery.framework.widgets.AbstractTextWatcher;
 import com.schedjoules.eventdiscovery.framework.widgets.HideKeyboardActionListener;
@@ -71,6 +73,7 @@ public final class LocationPickerFragment extends BaseFragment
     private SearchModule mCompositeModule;
     private GeneralMultiTypeAdapter mAdapter;
     private SearchListItems mSearchListItems;
+    private TextWatcher mSearchTextWatcher;
 
 
     public static Fragment newInstance()
@@ -112,6 +115,9 @@ public final class LocationPickerFragment extends BaseFragment
         ).create();
 
         mCompositeModule = new CompositeSearchModule(modules);
+
+        // Order is relevant here, SearchListItems has to come first:
+        mSearchTextWatcher = new SearchTextWatcher(mSearchListItems, mCompositeModule);
     }
 
 
@@ -129,17 +135,7 @@ public final class LocationPickerFragment extends BaseFragment
         views.schedjoulesLocationSelectionList.setAdapter(mAdapter);
 
         mSearchEditText = views.schedjoulesLocationSelectionInput;
-        mSearchEditText.addTextChangedListener(new AbstractTextWatcher()
-        {
-            @Override
-            public void afterTextChanged(Editable editable)
-            {
-                String newQuery = editable.toString();
-                // Order is relevant here, SearchListItems has to come first:
-                mSearchListItems.onSearchQueryChange(newQuery);
-                mCompositeModule.onSearchQueryChange(newQuery);
-            }
-        });
+        mSearchEditText.addTextChangedListener(mSearchTextWatcher);
         mSearchEditText.setOnEditorActionListener(new HideKeyboardActionListener());
 
         return views.getRoot();
@@ -179,10 +175,44 @@ public final class LocationPickerFragment extends BaseFragment
 
 
     @Override
+    public void onDestroyView()
+    {
+        // remove the TextWatcher to avoid a crash on Android 5.1 which still delivers events after a configuration change under certain conditions.
+        mSearchEditText.removeTextChangedListener(mSearchTextWatcher);
+        super.onDestroyView();
+    }
+
+
+    @Override
     public void onDestroy()
     {
         super.onDestroy();
         mCompositeModule.shutDown();
     }
 
+
+    /**
+     * A {@link TextWatcher} which notifies a number of {@link SearchQueryInputListener}s about text changes.
+     */
+    private final static class SearchTextWatcher extends AbstractTextWatcher
+    {
+        private final SearchQueryInputListener[] mSearchInputListeners;
+
+
+        private SearchTextWatcher(SearchQueryInputListener... searchInputListeners)
+        {
+            mSearchInputListeners = searchInputListeners;
+        }
+
+
+        @Override
+        public void afterTextChanged(Editable editable)
+        {
+            String newQuery = editable.toString();
+            for (SearchQueryInputListener listener : mSearchInputListeners)
+            {
+                listener.onSearchQueryChange(newQuery);
+            }
+        }
+    }
 }
