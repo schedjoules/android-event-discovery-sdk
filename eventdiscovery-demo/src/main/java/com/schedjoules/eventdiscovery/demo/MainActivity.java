@@ -76,6 +76,6 @@ public final class MainActivity extends AppCompatActivity
 
     public void onEventDetailsByUid(View view)
     {
-        new UidEventDetails("9a5813529e9b055f").show(this);
+        new UidEventDetails("091e93592f7571c0").show(this);
     }
 }
