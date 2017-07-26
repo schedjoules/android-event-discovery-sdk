@@ -23,14 +23,19 @@ import android.os.Parcel;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.schedjoules.client.eventsdiscovery.Category;
 import com.schedjoules.client.eventsdiscovery.Event;
+import com.schedjoules.client.eventsdiscovery.queries.CategoriesQuery;
 import com.schedjoules.client.eventsdiscovery.queries.EventByUid;
 import com.schedjoules.eventdiscovery.R;
 import com.schedjoules.eventdiscovery.framework.common.BaseFragment;
+import com.schedjoules.eventdiscovery.framework.common.CategoriesCache;
+import com.schedjoules.eventdiscovery.framework.model.category.BasicCategories;
 import com.schedjoules.eventdiscovery.framework.services.ActionService;
 import com.schedjoules.eventdiscovery.framework.utils.ServiceJob;
 import com.schedjoules.eventdiscovery.framework.utils.ServiceJobQueue;
@@ -58,6 +63,8 @@ import java.net.URISyntaxException;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeoutException;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 
 
 /**
@@ -65,6 +72,8 @@ import java.util.concurrent.TimeoutException;
  */
 public final class EventLoaderMicroFragment implements MicroFragment<String>
 {
+    private static final String TAG = "EventLoaderMF";
+
     public final static Creator<EventLoaderMicroFragment> CREATOR = new Creator<EventLoaderMicroFragment>()
     {
         @Override
@@ -140,8 +149,10 @@ public final class EventLoaderMicroFragment implements MicroFragment<String>
         private ServiceJobQueue<ActionService> mActionServiceJobQueue;
         private ServiceJobQueue<ApiService> mApiServiceJobQueue;
         private String mEventUid;
-        private Event mEvent;
-        private List<Link> mActions;
+
+        private AtomicReference<Event> mEvent = new AtomicReference<>();
+        private AtomicReference<List<Link>> mActions = new AtomicReference<>();
+        private AtomicBoolean mCategoriesLoaded = new AtomicBoolean();
 
 
         @Override
@@ -184,12 +195,13 @@ public final class EventLoaderMicroFragment implements MicroFragment<String>
                                 {
                                     throw new RuntimeException("Response doesn't have Event payload.");
                                 }
-                                mEvent = optEvent.value();
+                                mEvent.set(optEvent.value());
                                 loaderReady();
                             }
                             catch (URISyntaxException | ProtocolError | ProtocolException | IOException | RuntimeException e)
                             {
-                                startTransition(new Revealed(new ForwardTransition(new ErrorMicroFragment(), mTimestamp)));
+                                Log.e(TAG, "Failed to load event", e);
+                                onError();
                             }
                         }
 
@@ -197,9 +209,10 @@ public final class EventLoaderMicroFragment implements MicroFragment<String>
                         @Override
                         public void onTimeOut()
                         {
-                            startTransition(new Revealed(new ForwardTransition(new ErrorMicroFragment(), mTimestamp)));
+                            onError();
                         }
                     }, 5000);
+
             mActionServiceJobQueue.post(
                     new ServiceJob<ActionService>()
                     {
@@ -208,13 +221,14 @@ public final class EventLoaderMicroFragment implements MicroFragment<String>
                         {
                             try
                             {
-                                mActions = service.actions(mEventUid);
+                                mActions.set(service.actions(mEventUid));
                             }
                             catch (TimeoutException | InterruptedException | ProtocolError | IOException | ProtocolException | URISyntaxException | RuntimeException e)
                             {
                                 // TODO: remove RuntimeException when https://github.com/dmfs/http-client-essentials-suite/issues/36 is fixed
                                 // actions could not be loaded - fall back to an empty list
-                                mActions = Collections.emptyList();
+                                Log.e(TAG, "Failed to load actions", e);
+                                mActions.set(Collections.<Link>emptyList());
                             }
                             loaderReady();
                         }
@@ -223,10 +237,45 @@ public final class EventLoaderMicroFragment implements MicroFragment<String>
                         @Override
                         public void onTimeOut()
                         {
-                            startTransition(new Revealed(new ForwardTransition(new ErrorMicroFragment(), mTimestamp)));
+                            onError();
                         }
                     }, 5000
             );
+
+            mApiServiceJobQueue.post(new ServiceJob<ApiService>()
+            {
+                @Override
+                public void execute(ApiService service)
+                {
+                    try
+                    {
+                        Iterable<Category> categories = service.apiResponse(new CategoriesQuery());
+
+                        new CategoriesCache(new BasicCategories(categories)).cache(getActivity());
+
+                        mCategoriesLoaded.set(true);
+                        loaderReady();
+                    }
+                    catch (ProtocolError | IOException | ProtocolException | URISyntaxException | RuntimeException e)
+                    {
+                        Log.e(TAG, "Failed to load category labels", e);
+                        onError();
+                    }
+                }
+
+
+                @Override
+                public void onTimeOut()
+                {
+                    onError();
+                }
+            }, 5000);
+        }
+
+
+        private void onError()
+        {
+            startTransition(new Revealed(new ForwardTransition(new ErrorMicroFragment(), mTimestamp)));
         }
 
 
@@ -241,9 +290,9 @@ public final class EventLoaderMicroFragment implements MicroFragment<String>
 
         private void loaderReady()
         {
-            if (mEvent != null && mActions != null)
+            if (mEvent.get() != null && mActions.get() != null && mCategoriesLoaded.get())
             {
-                startTransition(new Revealed(new ForwardTransition(new ShowEventMicroFragment(mEvent, mActions), mTimestamp)));
+                startTransition(new Revealed(new ForwardTransition(new ShowEventMicroFragment(mEvent.get(), mActions.get()), mTimestamp)));
             }
         }
 
