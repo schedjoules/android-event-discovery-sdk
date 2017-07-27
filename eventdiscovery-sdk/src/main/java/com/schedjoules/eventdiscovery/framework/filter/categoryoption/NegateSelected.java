@@ -27,25 +27,25 @@ import com.schedjoules.client.eventsdiscovery.Category;
  */
 public final class NegateSelected implements CategoryOption
 {
-    private final CategoryOption mOriginal;
+    private final CategoryOption mDelegate;
 
 
     public NegateSelected(CategoryOption original)
     {
-        mOriginal = original;
+        mDelegate = new StructuredCategoryOption(original.category(), !original.isSelected());
     }
 
 
     @Override
     public Category category()
     {
-        return mOriginal.category();
+        return mDelegate.category();
     }
 
 
     @Override
     public boolean isSelected()
     {
-        return !mOriginal.isSelected();
+        return mDelegate.isSelected();
     }
 }
