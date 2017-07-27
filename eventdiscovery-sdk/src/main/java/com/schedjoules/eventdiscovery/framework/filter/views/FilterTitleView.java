@@ -56,9 +56,9 @@ public final class FilterTitleView implements SmartView<FilterState>
         Context context = mTitleView.getContext();
 
         Integer iconId = filterState.hasSelection() ?
-                R.drawable.schedjoules_ic_arrow_drop_down_white
+                R.drawable.schedjoules_ic_arrow_drop_down_white_16sp
                 :
-                new ThemeDrawableResource(new ContextActivity(context).get(), R.attr.schedjoules_dropdownArrow).get();
+                new ThemeDrawableResource(new ContextActivity(context).get(), R.attr.schedjoules_dropdownArrow_16sp).get();
         mTitleView.setText(new TextWithIcon(context, context.getString(mTitleText), iconId));
     }
 

@@ -25,5 +25,5 @@
     <dimen name="schedjoules_location_list_item_height">72dp</dimen>
     <dimen name="schedjoules_location_list_item_horizontal_margin">16dp</dimen>
 
-    <dimen name="schedjoules_toolbar_title_font_size">20dp</dimen>
+    <dimen name="schedjoules_toolbar_title_font_size">20sp</dimen>
 </resources>
