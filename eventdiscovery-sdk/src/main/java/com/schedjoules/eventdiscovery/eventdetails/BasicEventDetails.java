@@ -71,7 +71,7 @@ public final class BasicEventDetails implements EventDetails
                 Optional<Event> cachedEvent = loadEventFromCache(activity);
 
                 MicroFragment microFragment = cachedActions.isPresent() && cachedEvent.isPresent() ?
-                        new ShowEventMicroFragment(mEvent, cachedActions.value())
+                        new ShowEventMicroFragment(cachedEvent.value(), cachedActions.value())
                         :
                         new EventDetailLoaderMicroFragment(mEvent);
 
