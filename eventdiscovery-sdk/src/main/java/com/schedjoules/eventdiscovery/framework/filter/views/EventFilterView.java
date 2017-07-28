@@ -33,6 +33,7 @@ import android.widget.TextView;
 
 import com.schedjoules.eventdiscovery.R;
 import com.schedjoules.eventdiscovery.databinding.SchedjoulesViewFilterItemBinding;
+import com.schedjoules.eventdiscovery.databinding.SchedjoulesViewFilterItemClearBinding;
 import com.schedjoules.eventdiscovery.framework.common.CategoriesCache;
 import com.schedjoules.eventdiscovery.framework.filter.CategorySelectionChangeListener;
 import com.schedjoules.eventdiscovery.framework.filter.categoryoption.CategoryOption;
@@ -53,7 +54,6 @@ import com.schedjoules.eventdiscovery.framework.utils.ContextActivity;
 import com.schedjoules.eventdiscovery.framework.utils.Listenable;
 import com.schedjoules.eventdiscovery.framework.utils.colors.AttributeColor;
 import com.schedjoules.eventdiscovery.framework.utils.smartview.SmartView;
-import com.schedjoules.eventdiscovery.framework.widgets.Highlightable;
 
 
 /**
@@ -122,10 +122,9 @@ public final class EventFilterView extends LinearLayout implements Listenable<Ca
         inflater.inflate(R.layout.schedjoules_view_divider, mDropDown, true);
 
         // Add Clear item
-        SchedjoulesViewFilterItemBinding clearItem = DataBindingUtil.inflate(inflater, R.layout.schedjoules_view_filter_item, mDropDown, true);
+        SchedjoulesViewFilterItemClearBinding clearItem = DataBindingUtil.inflate(inflater, R.layout.schedjoules_view_filter_item_clear, mDropDown, true);
         clearItem.schedjoulesFilterItemLabel.setText(R.string.schedjoules_filter_clear);
         clearItem.getRoot().setOnClickListener(new ClearSelectListener());
-        new Highlightable(clearItem.schedjoulesFilterItemLabel).update(false); // To remove background
         inflater.inflate(R.layout.schedjoules_view_divider, mDropDown, true);
     }
 

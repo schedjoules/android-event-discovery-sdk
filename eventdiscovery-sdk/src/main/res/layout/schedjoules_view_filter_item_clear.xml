@@ -17,8 +17,9 @@
                 android:paddingRight="8dp"
                 android:paddingLeft="8dp"
                 android:layout_gravity="center_vertical"
-                android:textSize="16sp"
-                android:background="@drawable/schedjoules_filled_bg_w_rounded_corner"
+                android:textSize="14sp"
+                android:textAllCaps="true"
+                android:textStyle="bold"
                 android:textColor="?android:textColorPrimary"/>
 
     </FrameLayout>
