@@ -203,6 +203,7 @@ public final class EventFilterView extends LinearLayout implements Listenable<Ca
         public void onClick(View v)
         {
             mFilterState = new ExpandNegated(mFilterState);
+            mTitleView.update(mFilterState);
             if (mFilterState.isExpanded())
             {
                 mPopup.showAsDropDown(EventFilterView.this);
