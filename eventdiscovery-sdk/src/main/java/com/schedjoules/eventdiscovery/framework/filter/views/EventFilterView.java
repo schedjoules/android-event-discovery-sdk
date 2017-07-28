@@ -122,8 +122,8 @@ public final class EventFilterView extends LinearLayout implements Listenable<Ca
 
         // Add Clear item
         SchedjoulesViewFilterItemClearBinding clearItem = DataBindingUtil.inflate(inflater, R.layout.schedjoules_view_filter_item_clear, mDropDown, true);
-        clearItem.schedjoulesFilterItemLabel.setText(R.string.schedjoules_filter_clear);
-        clearItem.getRoot().setOnClickListener(new ClearSelectListener());
+        clearItem.schedjoulesFilterClearButton.setText(R.string.schedjoules_filter_clear);
+        clearItem.schedjoulesFilterClearButton.setOnClickListener(new ClearSelectListener());
         inflater.inflate(R.layout.schedjoules_view_divider, mDropDown, true);
     }
 
