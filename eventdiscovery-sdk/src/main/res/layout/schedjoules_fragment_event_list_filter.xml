@@ -2,15 +2,17 @@
 <com.schedjoules.eventdiscovery.framework.filter.views.EventFilterView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/filter_root"
+        android:id="@+id/schedjoules_event_list_filter_root"
         android:orientation="horizontal">
 
     <FrameLayout
+            android:id="@+id/schedjoules_event_list_filter_category_title_bar"
             android:layout_width="match_parent"
             android:paddingTop="8dp"
             android:layout_height="48dp"
             android:layout_marginLeft="@dimen/schedjoules_activity_horizontal_margin"
-            android:layout_marginRight="@dimen/schedjoules_activity_horizontal_margin">
+            android:layout_marginRight="@dimen/schedjoules_activity_horizontal_margin"
+            android:background="?attr/selectableItemBackground">
 
         <com.schedjoules.eventdiscovery.framework.widgets.StateSavingTextView
                 android:id="@+id/schedjoules_event_list_filter_category_title"

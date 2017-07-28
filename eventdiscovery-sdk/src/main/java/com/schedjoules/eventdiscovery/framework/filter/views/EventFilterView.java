@@ -66,7 +66,6 @@ public final class EventFilterView extends LinearLayout implements Listenable<Ca
     private CategoryClickListener mCategorySelectListener;
 
     private SmartView<FilterState> mTitleView;
-    private TextView mCategoryTitle;
     private PopupWindow mPopup;
 
     private Iterable<CategoryOption> mCategoryOptions;
@@ -86,18 +85,18 @@ public final class EventFilterView extends LinearLayout implements Listenable<Ca
     protected void onFinishInflate()
     {
         super.onFinishInflate();
-        mCategoryTitle = (TextView) findViewById(R.id.schedjoules_event_list_filter_category_title);
-        mCategorySelectListener = new CategorySelectListener();
 
         mDropDown = new LinearLayout(getContext());
         mDropDown.setOrientation(LinearLayout.VERTICAL);
         mPopup = new PopupWindow(mDropDown, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         mPopup.setBackgroundDrawable(new ColorDrawable(new AttributeColor(getContext(), android.R.attr.windowBackground).argb()));
-        mPopup.setOutsideTouchable(true);
 
-        mCategoryTitle.setOnClickListener(new TitleClickListener());
+        mTitleView = new FilterTitleView((TextView) findViewById(R.id.schedjoules_event_list_filter_category_title),
+                R.string.schedjoules_category_filter_title);
 
-        mTitleView = new FilterTitleView(mCategoryTitle, R.string.schedjoules_category_filter_title);
+        findViewById(R.id.schedjoules_event_list_filter_category_title_bar).setOnClickListener(new TitleClickListener());
+
+        mCategorySelectListener = new CategorySelectListener();
 
         update(new UnselectedCategories(
                 new CategoriesCache(new ContextActivity(this).get()).filterCategories()));
@@ -204,13 +203,13 @@ public final class EventFilterView extends LinearLayout implements Listenable<Ca
         public void onClick(View v)
         {
             mFilterState = new ExpandNegated(mFilterState);
-            if (!mFilterState.isExpanded())
+            if (mFilterState.isExpanded())
             {
-                mPopup.dismiss();
+                mPopup.showAsDropDown(EventFilterView.this);
             }
             else
             {
-                mPopup.showAsDropDown(EventFilterView.this);
+                mPopup.dismiss();
             }
         }
     }
