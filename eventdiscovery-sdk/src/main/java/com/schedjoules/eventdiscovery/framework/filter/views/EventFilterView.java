@@ -107,13 +107,8 @@ public final class EventFilterView extends LinearLayout implements Listenable<Ca
     private void update(Iterable<CategoryOption> categoryOptions)
     {
         mCategoryOptions = categoryOptions;
-
         mFilterState = new CategoryOptionsFilterState(mCategoryOptions, false);
-
-        // Setup the title
         mTitleView.update(mFilterState);
-
-        // Create the drop-down popup
 
         // Populate the drop-down
         mDropDown.removeAllViews();
@@ -129,15 +124,7 @@ public final class EventFilterView extends LinearLayout implements Listenable<Ca
         // Add Clear item
         SchedjoulesViewFilterItemBinding clearItem = DataBindingUtil.inflate(inflater, R.layout.schedjoules_view_filter_item, mDropDown, true);
         clearItem.schedjoulesFilterItemLabel.setText(R.string.schedjoules_filter_clear);
-        clearItem.schedjoulesFilterItemLabel.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                mPopup.dismiss();
-                update(new ClearedSelection(mCategoryOptions));
-            }
-        });
+        clearItem.getRoot().setOnClickListener(new ClearSelectListener());
         new Highlightable(clearItem.schedjoulesFilterItemLabel).update(false); // To remove background
         inflater.inflate(R.layout.schedjoules_view_divider, mDropDown, true);
     }
@@ -185,6 +172,23 @@ public final class EventFilterView extends LinearLayout implements Listenable<Ca
             mCategoryOptions = new Updated(mCategoryOptions, categoryOption);
             mFilterState = new CategoryOptionsFilterState(mCategoryOptions, mFilterState);
             mTitleView.update(mFilterState);
+
+            if (mCategorySelectionChangeListener != null)
+            {
+                mCategorySelectionChangeListener.onCategorySelectionChanged(new SelectedCategories(mCategoryOptions));
+            }
+        }
+    }
+
+
+    private class ClearSelectListener implements View.OnClickListener
+    {
+
+        @Override
+        public void onClick(View v)
+        {
+            mPopup.dismiss();
+            update(new ClearedSelection(mCategoryOptions));
 
             if (mCategorySelectionChangeListener != null)
             {
