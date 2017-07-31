@@ -33,6 +33,7 @@ import android.widget.TextView;
 
 import com.schedjoules.eventdiscovery.R;
 import com.schedjoules.eventdiscovery.databinding.SchedjoulesViewFilterItemBinding;
+import com.schedjoules.eventdiscovery.databinding.SchedjoulesViewFilterItemClearBinding;
 import com.schedjoules.eventdiscovery.framework.common.CategoriesCache;
 import com.schedjoules.eventdiscovery.framework.filter.CategorySelectionChangeListener;
 import com.schedjoules.eventdiscovery.framework.filter.categoryoption.CategoryOption;
@@ -43,6 +44,7 @@ import com.schedjoules.eventdiscovery.framework.filter.categoryoption.Updated;
 import com.schedjoules.eventdiscovery.framework.filter.filterstate.CategoryOptionsFilterState;
 import com.schedjoules.eventdiscovery.framework.filter.filterstate.ExpandNegated;
 import com.schedjoules.eventdiscovery.framework.filter.filterstate.FilterState;
+import com.schedjoules.eventdiscovery.framework.filter.filterstate.StructuredFilterState;
 import com.schedjoules.eventdiscovery.framework.serialization.Keys;
 import com.schedjoules.eventdiscovery.framework.serialization.boxes.CategoryOptionBox;
 import com.schedjoules.eventdiscovery.framework.serialization.boxes.IterableBox;
@@ -53,7 +55,9 @@ import com.schedjoules.eventdiscovery.framework.utils.ContextActivity;
 import com.schedjoules.eventdiscovery.framework.utils.Listenable;
 import com.schedjoules.eventdiscovery.framework.utils.colors.AttributeColor;
 import com.schedjoules.eventdiscovery.framework.utils.smartview.SmartView;
-import com.schedjoules.eventdiscovery.framework.widgets.Highlightable;
+
+import java.util.LinkedList;
+import java.util.List;
 
 
 /**
@@ -66,7 +70,6 @@ public final class EventFilterView extends LinearLayout implements Listenable<Ca
     private CategoryClickListener mCategorySelectListener;
 
     private SmartView<FilterState> mTitleView;
-    private TextView mCategoryTitle;
     private PopupWindow mPopup;
 
     private Iterable<CategoryOption> mCategoryOptions;
@@ -74,6 +77,7 @@ public final class EventFilterView extends LinearLayout implements Listenable<Ca
 
     private CategorySelectionChangeListener mCategorySelectionChangeListener;
     private LinearLayout mDropDown;
+    private List<FilterItemView> mItemViews;
 
 
     public EventFilterView(Context context, @Nullable AttributeSet attrs)
@@ -86,47 +90,66 @@ public final class EventFilterView extends LinearLayout implements Listenable<Ca
     protected void onFinishInflate()
     {
         super.onFinishInflate();
-        mCategoryTitle = (TextView) findViewById(R.id.schedjoules_event_list_filter_category_title);
-        mCategorySelectListener = new CategorySelectListener();
 
         mDropDown = new LinearLayout(getContext());
         mDropDown.setOrientation(LinearLayout.VERTICAL);
         mPopup = new PopupWindow(mDropDown, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         mPopup.setBackgroundDrawable(new ColorDrawable(new AttributeColor(getContext(), android.R.attr.windowBackground).argb()));
-        mPopup.setOutsideTouchable(true);
 
-        mCategoryTitle.setOnClickListener(new TitleClickListener());
+        mTitleView = new FilterTitleView((TextView) findViewById(R.id.schedjoules_event_list_filter_category_title),
+                R.string.schedjoules_category_filter_title);
 
-        mTitleView = new FilterTitleView(mCategoryTitle, R.string.schedjoules_category_filter_title);
+        findViewById(R.id.schedjoules_event_list_filter_category_title_bar).setOnClickListener(new TitleClickListener());
 
-        update(new UnselectedCategories(
+        mCategorySelectListener = new CategorySelectListener();
+
+        init(new UnselectedCategories(
                 new CategoriesCache(new ContextActivity(this).get()).filterCategories()));
     }
 
 
-    private void update(Iterable<CategoryOption> categoryOptions)
+    private void init(Iterable<CategoryOption> categoryOptions)
     {
-        mCategoryOptions = categoryOptions;
-        mFilterState = new CategoryOptionsFilterState(mCategoryOptions, false);
-        mTitleView.update(mFilterState);
-
         // Populate the drop-down
         mDropDown.removeAllViews();
         LayoutInflater inflater = LayoutInflater.from(getContext());
+        mItemViews = new LinkedList<>();
         for (CategoryOption categoryOption : categoryOptions)
         {
             inflater.inflate(R.layout.schedjoules_view_divider, mDropDown, true);
             SchedjoulesViewFilterItemBinding itemBinding = DataBindingUtil.inflate(inflater, R.layout.schedjoules_view_filter_item, mDropDown, true);
-            new FilterItemView(itemBinding, mCategorySelectListener).update(categoryOption);
+            mItemViews.add(new FilterItemView(itemBinding, mCategorySelectListener));
         }
+
         inflater.inflate(R.layout.schedjoules_view_divider, mDropDown, true);
 
         // Add Clear item
-        SchedjoulesViewFilterItemBinding clearItem = DataBindingUtil.inflate(inflater, R.layout.schedjoules_view_filter_item, mDropDown, true);
-        clearItem.schedjoulesFilterItemLabel.setText(R.string.schedjoules_filter_clear);
-        clearItem.getRoot().setOnClickListener(new ClearSelectListener());
-        new Highlightable(clearItem.schedjoulesFilterItemLabel).update(false); // To remove background
+        SchedjoulesViewFilterItemClearBinding clearItem = DataBindingUtil.inflate(inflater, R.layout.schedjoules_view_filter_item_clear, mDropDown, true);
+        clearItem.schedjoulesFilterClearButton.setText(R.string.schedjoules_filter_clear);
+        clearItem.schedjoulesFilterClearButton.setOnClickListener(new ClearSelectListener());
         inflater.inflate(R.layout.schedjoules_view_divider, mDropDown, true);
+
+        mCategoryOptions = categoryOptions;
+        mFilterState = new CategoryOptionsFilterState(mCategoryOptions, false);
+
+        updateItems();
+    }
+
+
+    private void updateItems()
+    {
+        int i = 0;
+        boolean hasSelection = false;
+        for (CategoryOption categoryOption : mCategoryOptions)
+        {
+            mItemViews.get(i++).update(categoryOption);
+            if (!hasSelection)
+            {
+                hasSelection = categoryOption.isSelected();
+            }
+        }
+        mFilterState = new StructuredFilterState(hasSelection, mFilterState.isExpanded());
+        mTitleView.update(mFilterState);
     }
 
 
@@ -145,7 +168,7 @@ public final class EventFilterView extends LinearLayout implements Listenable<Ca
     protected void onRestoreInstanceState(Parcelable state)
     {
         super.onRestoreInstanceState(new Argument<>(Keys.SUPER_STATE, (Bundle) state).get());
-        update(new Argument<>(Keys.CATEGORY_OPTIONS, (Bundle) state).get());
+        init(new Argument<>(Keys.CATEGORY_OPTIONS, (Bundle) state).get());
     }
 
 
@@ -187,8 +210,8 @@ public final class EventFilterView extends LinearLayout implements Listenable<Ca
         @Override
         public void onClick(View v)
         {
-            mPopup.dismiss();
-            update(new ClearedSelection(mCategoryOptions));
+            mCategoryOptions = new ClearedSelection(mCategoryOptions);
+            updateItems();
 
             if (mCategorySelectionChangeListener != null)
             {
@@ -205,13 +228,14 @@ public final class EventFilterView extends LinearLayout implements Listenable<Ca
         public void onClick(View v)
         {
             mFilterState = new ExpandNegated(mFilterState);
-            if (!mFilterState.isExpanded())
+            mTitleView.update(mFilterState);
+            if (mFilterState.isExpanded())
             {
-                mPopup.dismiss();
+                mPopup.showAsDropDown(EventFilterView.this);
             }
             else
             {
-                mPopup.showAsDropDown(EventFilterView.this);
+                mPopup.dismiss();
             }
         }
     }
