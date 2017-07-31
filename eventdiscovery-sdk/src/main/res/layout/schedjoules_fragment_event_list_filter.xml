@@ -10,8 +10,8 @@
             android:layout_width="match_parent"
             android:paddingTop="8dp"
             android:layout_height="48dp"
-            android:layout_marginLeft="@dimen/schedjoules_activity_horizontal_margin"
-            android:layout_marginRight="@dimen/schedjoules_activity_horizontal_margin"
+            android:paddingLeft="@dimen/schedjoules_activity_horizontal_margin"
+            android:paddingRight="@dimen/schedjoules_activity_horizontal_margin"
             android:background="?attr/selectableItemBackground">
 
         <TextView

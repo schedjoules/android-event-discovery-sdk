@@ -4,8 +4,8 @@
     <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:layout_marginLeft="@dimen/schedjoules_activity_horizontal_margin"
-            android:layout_marginRight="@dimen/schedjoules_activity_horizontal_margin"
+            android:paddingLeft="@dimen/schedjoules_activity_horizontal_margin"
+            android:paddingRight="@dimen/schedjoules_activity_horizontal_margin"
             android:background="?attr/selectableItemBackground">
 
         <TextView
