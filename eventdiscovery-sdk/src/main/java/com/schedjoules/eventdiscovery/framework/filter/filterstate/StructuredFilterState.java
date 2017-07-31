@@ -15,37 +15,36 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery.framework.filter.categoryoption;
-
-import com.schedjoules.client.eventsdiscovery.Category;
-
+package com.schedjoules.eventdiscovery.framework.filter.filterstate;
 
 /**
- * {@link CategoryOption} decorator negating {@link CategoryOption#isSelected()}.
+ * {@link FilterState} that takes the ready properties as constructor parameters.
  *
  * @author Gabor Keszthelyi
  */
-public final class NegateSelected implements CategoryOption
+public final class StructuredFilterState implements FilterState
 {
-    private final CategoryOption mDelegate;
+    private final boolean mHasSelection;
+    private final boolean mIsExpanded;
 
 
-    public NegateSelected(CategoryOption original)
+    public StructuredFilterState(boolean hasSelection, boolean isExpanded)
     {
-        mDelegate = new StructuredCategoryOption(original.category(), !original.isSelected());
+        mHasSelection = hasSelection;
+        mIsExpanded = isExpanded;
     }
 
 
     @Override
-    public Category category()
+    public boolean hasSelection()
     {
-        return mDelegate.category();
+        return mHasSelection;
     }
 
 
     @Override
-    public boolean isSelected()
+    public boolean isExpanded()
     {
-        return mDelegate.isSelected();
+        return mIsExpanded;
     }
 }

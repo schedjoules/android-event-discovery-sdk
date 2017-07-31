@@ -112,7 +112,7 @@ public final class EventListHeaderFragment extends BaseFragment
                 new TextWithIcon(
                         getContext(),
                         new SharedPrefLastSelectedPlace(getContext()).get().namedPlace().name(),
-                        new ThemeDrawableResource(getActivity(), R.attr.schedjoules_dropdownArrow).get()));
+                        new ThemeDrawableResource(getActivity(), R.attr.schedjoules_dropdownArrow_20sp).get()));
     }
 
 
