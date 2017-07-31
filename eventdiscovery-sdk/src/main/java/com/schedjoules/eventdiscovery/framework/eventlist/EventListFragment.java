@@ -47,8 +47,7 @@ import com.schedjoules.eventdiscovery.framework.filter.FilterFragment;
 import com.schedjoules.eventdiscovery.framework.locationpicker.SharedPrefLastSelectedPlace;
 import com.schedjoules.eventdiscovery.framework.serialization.Keys;
 import com.schedjoules.eventdiscovery.framework.serialization.boxes.CategoryBox;
-import com.schedjoules.eventdiscovery.framework.serialization.boxes.OptionalIterableBox;
-import com.schedjoules.eventdiscovery.framework.serialization.commons.Argument;
+import com.schedjoules.eventdiscovery.framework.serialization.boxes.IterableBox;
 import com.schedjoules.eventdiscovery.framework.serialization.commons.FluentBundle;
 import com.schedjoules.eventdiscovery.framework.serialization.commons.OptionalArgument;
 import com.schedjoules.eventdiscovery.framework.serialization.core.Box;
@@ -57,15 +56,15 @@ import com.schedjoules.eventdiscovery.framework.utils.dovecote.BoxDovecote;
 import com.schedjoules.eventdiscovery.framework.utils.fragment.Add;
 import com.schedjoules.eventdiscovery.framework.utils.fragment.ChildFragmentContainer;
 import com.schedjoules.eventdiscovery.framework.utils.fragment.FragmentContainer;
+import com.schedjoules.eventdiscovery.framework.utils.iterables.EmptyIterable;
 import com.schedjoules.eventdiscovery.framework.utils.loadresult.LoadResult;
 import com.schedjoules.eventdiscovery.framework.utils.loadresult.LoadResultException;
 
 import org.dmfs.android.microfragments.FragmentEnvironment;
 import org.dmfs.android.microfragments.utils.BooleanDovecote;
 import org.dmfs.httpessentials.types.StringToken;
-import org.dmfs.optional.Absent;
+import org.dmfs.optional.NullSafe;
 import org.dmfs.optional.Optional;
-import org.dmfs.optional.Present;
 import org.dmfs.pigeonpost.Dovecote;
 import org.dmfs.pigeonpost.localbroadcast.ParcelableDovecote;
 import org.dmfs.pigeonpost.localbroadcast.SerializableDovecote;
@@ -88,7 +87,7 @@ public final class EventListFragment extends BaseFragment implements EventListMe
     private FragmentContainer mListFragmentContainer;
     private boolean mIsInitializing = true;
 
-    private Optional<Iterable<Category>> mSelectedCategories = Absent.absent();
+    private Iterable<Category> mSelectedCategories;
 
 
     @Override
@@ -110,10 +109,8 @@ public final class EventListFragment extends BaseFragment implements EventListMe
         mMenu = new EventListMenu(this);
         setHasOptionsMenu(true);
 
-        if (savedInstanceState != null)
-        {
-            mSelectedCategories = new Argument<>(Keys.OPT_FILTER_CATEGORIES, savedInstanceState).get();
-        }
+        mSelectedCategories = new OptionalArgument<>(Keys.FILTER_CATEGORIES, new NullSafe<>(savedInstanceState))
+                .value(EmptyIterable.<Category>instance());
 
         mListFragmentContainer = new ChildFragmentContainer(this, R.id.schedjoules_event_list_list_container);
 
@@ -162,7 +159,7 @@ public final class EventListFragment extends BaseFragment implements EventListMe
             @Override
             public void onPigeonReturn(@NonNull Iterable<Category> categories)
             {
-                mSelectedCategories = new Present<>(categories);
+                mSelectedCategories = categories;
                 load();
             }
         });
@@ -252,7 +249,7 @@ public final class EventListFragment extends BaseFragment implements EventListMe
     @Override
     public void onSaveInstanceState(Bundle outState)
     {
-        new FluentBundle(outState).put(Keys.OPT_FILTER_CATEGORIES, new OptionalIterableBox<>(mSelectedCategories, CategoryBox.FACTORY));
+        new FluentBundle(outState).put(Keys.FILTER_CATEGORIES, new IterableBox<>(mSelectedCategories, CategoryBox.FACTORY));
         super.onSaveInstanceState(outState);
     }
 

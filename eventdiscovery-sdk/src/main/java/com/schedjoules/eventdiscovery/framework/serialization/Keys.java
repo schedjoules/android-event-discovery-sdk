@@ -33,7 +33,6 @@ import com.schedjoules.eventdiscovery.framework.utils.loadresult.LoadResult;
 
 import org.dmfs.android.microfragments.MicroFragment;
 import org.dmfs.android.microfragments.MicroFragmentHost;
-import org.dmfs.optional.Optional;
 import org.dmfs.pigeonpost.Cage;
 import org.dmfs.rfc5545.DateTime;
 
@@ -72,8 +71,6 @@ public final class Keys
     public static final Key<ApiQuery<ResultPage<Envelope<Event>>>> DISCOVERY_QUERY = new SchedJoulesKey<>("DISCOVERY_QUERY");
 
     public static final Key<Iterable<Category>> FILTER_CATEGORIES = new SchedJoulesKey<>("FILTER_CATEGORIES");
-
-    public static final Key<Optional<Iterable<Category>>> OPT_FILTER_CATEGORIES = new SchedJoulesKey<>("FILTER_CATEGORIES");
 
     public static final Key<Cage<Box<Iterable<Category>>>> CATEGORIES_CAGE = new SchedJoulesKey<>("CATEGORIES_CAGE");
 

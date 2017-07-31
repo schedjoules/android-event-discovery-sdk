@@ -24,8 +24,8 @@ import com.schedjoules.client.eventsdiscovery.GeoLocation;
 import com.schedjoules.client.eventsdiscovery.queries.SimpleEventsDiscovery;
 import com.schedjoules.eventdiscovery.framework.model.category.CategoryUris;
 import com.schedjoules.eventdiscovery.framework.model.location.geolocation.UndefinedGeoLocation;
-import com.schedjoules.eventdiscovery.framework.utils.Converter;
 import com.schedjoules.eventdiscovery.framework.utils.factory.Factory;
+import com.schedjoules.eventdiscovery.framework.utils.iterables.EmptyIterable;
 
 import org.dmfs.optional.Absent;
 import org.dmfs.optional.Optional;
@@ -48,10 +48,10 @@ public final class EventsDiscoveryFactory implements Factory<EventsDiscovery>
 
     private final Optional<DateTime> mStartAfter;
     private final Optional<GeoLocation> mLocation;
-    private final Optional<Iterable<Uri>> mCategoryUris;
+    private final Iterable<Uri> mCategoryUris;
 
 
-    private EventsDiscoveryFactory(Optional<DateTime> startAfter, Optional<GeoLocation> location, Optional<Iterable<Uri>> categoryUris)
+    private EventsDiscoveryFactory(Optional<DateTime> startAfter, Optional<GeoLocation> location, Iterable<Uri> categoryUris)
     {
         mStartAfter = startAfter;
         mLocation = location;
@@ -63,30 +63,19 @@ public final class EventsDiscoveryFactory implements Factory<EventsDiscovery>
     {
         this(
                 startAfter,
-
                 // TODO Get rid of instanceof and possibly UndefinedGeoLocation
                 location instanceof UndefinedGeoLocation ? Absent.<GeoLocation>absent() : new Present<>(location),
-
-                Absent.<Iterable<Uri>>absent());
+                EmptyIterable.<Uri>instance());
     }
 
 
-    public EventsDiscoveryFactory(Optional<DateTime> startAfter, GeoLocation location, Optional<Iterable<Category>> categories)
+    public EventsDiscoveryFactory(Optional<DateTime> startAfter, GeoLocation location, Iterable<Category> categories)
     {
         this(
                 startAfter,
-
                 // TODO Get rid of instanceof and possibly UndefinedGeoLocation
                 location instanceof UndefinedGeoLocation ? Absent.<GeoLocation>absent() : new Present<>(location),
-
-                new com.schedjoules.eventdiscovery.framework.utils.optionals.Mapped<>(categories, new Converter<Iterable<Category>, Iterable<Uri>>()
-                {
-                    @Override
-                    public Iterable<Uri> convert(Iterable<Category> input)
-                    {
-                        return new CategoryUris(input);
-                    }
-                }));
+                new CategoryUris(categories));
     }
 
 
@@ -100,9 +89,9 @@ public final class EventsDiscoveryFactory implements Factory<EventsDiscovery>
         EventsDiscovery query = new SimpleEventsDiscovery()
                 .withStartAtOrAfter(startAfter);
 
-        if (mCategoryUris.isPresent())
+        if (mCategoryUris.iterator().hasNext())
         {
-            query = query.withCategories(mCategoryUris.value());
+            query = query.withCategories(mCategoryUris);
         }
 
         if (mLocation.isPresent())
