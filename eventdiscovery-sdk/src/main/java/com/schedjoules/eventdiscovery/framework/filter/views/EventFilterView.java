@@ -143,10 +143,7 @@ public final class EventFilterView extends LinearLayout implements Listenable<Ca
         for (CategoryOption categoryOption : mCategoryOptions)
         {
             mItemViews.get(i++).update(categoryOption);
-            if (!hasSelection)
-            {
-                hasSelection = categoryOption.isSelected();
-            }
+            hasSelection = hasSelection | categoryOption.isSelected();
         }
         mFilterState = new StructuredFilterState(hasSelection, mFilterState.isExpanded());
         mTitleView.update(mFilterState);

@@ -27,6 +27,7 @@ import java.util.Iterator;
  *
  * @author Gabor Keszthelyi
  */
+// TODO use it from newer iterators library
 public final class EmptyIterable<E> implements Iterable<E>
 {
     private final static EmptyIterable<?> INSTANCE = new EmptyIterable<>();
