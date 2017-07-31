@@ -23,6 +23,7 @@
         <item name="schedjoules_cardListBackground">@color/schedjoules_background_cards_light</item>
         <item name="schedjoules_dropdownArrow_20sp">@drawable/schedjoules_ic_arrow_drop_down_dark_20sp</item>
         <item name="schedjoules_dropdownArrow_16sp">@drawable/schedjoules_ic_arrow_drop_down_dark_16sp</item>
+        <item name="schedjoules_dropUpArrow_16sp">@drawable/schedjoules_ic_arrow_drop_up_dark_16sp</item>
         <item name="schedjoules_cardBackgroundColor">@color/schedjoules_white</item>
         <item name="schedjoules_googleAttribution">@drawable/powered_by_google_light</item>
         <item name="schedjoules_schedJoulesAttribution">@drawable/schedjoules_footer_powered_by_light</item>
