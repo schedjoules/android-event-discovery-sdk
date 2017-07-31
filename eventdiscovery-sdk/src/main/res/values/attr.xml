@@ -14,6 +14,9 @@
             format="reference"/>
     <attr name="schedjoules_dropdownArrow_16sp"
             format="reference"/>
+    <!-- "Drop-up" arrow -->
+    <attr name="schedjoules_dropUpArrow_16sp"
+            format="reference"/>
 
     <!-- The Google attribution in the location picker -->
     <attr name="schedjoules_googleAttribution" format="reference"/>
