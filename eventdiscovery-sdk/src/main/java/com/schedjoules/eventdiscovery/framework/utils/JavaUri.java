@@ -35,6 +35,7 @@ import java.net.URI;
  *
  * @author Gabor Keszthelyi
  */
+// TODO Use it from uri-toolkit
 public final class JavaUri implements Uri
 {
     private final Uri mDelegate;

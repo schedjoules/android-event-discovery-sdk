@@ -55,11 +55,26 @@ public final class FilterTitleView implements SmartView<FilterState>
 
         Context context = mTitleView.getContext();
 
-        Integer iconId = filterState.hasSelection() ?
-                R.drawable.schedjoules_ic_arrow_drop_down_white
-                :
-                new ThemeDrawableResource(new ContextActivity(context).get(), R.attr.schedjoules_dropdownArrow).get();
-        mTitleView.setText(new TextWithIcon(context, context.getString(mTitleText), iconId));
+        mTitleView.setText(new TextWithIcon(context, context.getString(mTitleText), arrowId(filterState, context)));
+    }
+
+
+    private int arrowId(FilterState filterState, Context context)
+    {
+        if (filterState.isExpanded())
+        {
+            return filterState.hasSelection() ?
+                    R.drawable.schedjoules_ic_arrow_drop_up_white_16sp
+                    :
+                    new ThemeDrawableResource(new ContextActivity(context).get(), R.attr.schedjoules_dropUpArrow_16sp).get();
+        }
+        else
+        {
+            return filterState.hasSelection() ?
+                    R.drawable.schedjoules_ic_arrow_drop_down_white_16sp
+                    :
+                    new ThemeDrawableResource(new ContextActivity(context).get(), R.attr.schedjoules_dropdownArrow_16sp).get();
+        }
     }
 
 }

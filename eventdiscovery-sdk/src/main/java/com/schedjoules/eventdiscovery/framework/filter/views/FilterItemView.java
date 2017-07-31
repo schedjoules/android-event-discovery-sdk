@@ -19,10 +19,9 @@ package com.schedjoules.eventdiscovery.framework.filter.views;
 
 import android.view.View;
 
-import com.schedjoules.client.eventsdiscovery.Category;
 import com.schedjoules.eventdiscovery.databinding.SchedjoulesViewFilterItemBinding;
 import com.schedjoules.eventdiscovery.framework.filter.categoryoption.CategoryOption;
-import com.schedjoules.eventdiscovery.framework.filter.categoryoption.StructuredCategoryOption;
+import com.schedjoules.eventdiscovery.framework.filter.categoryoption.NegateSelected;
 import com.schedjoules.eventdiscovery.framework.utils.smartview.SmartView;
 import com.schedjoules.eventdiscovery.framework.widgets.Highlightable;
 
@@ -32,50 +31,38 @@ import com.schedjoules.eventdiscovery.framework.widgets.Highlightable;
  *
  * @author Gabor Keszthelyi
  */
-public final class FilterItemView implements SmartView<CategoryOption>
+public final class FilterItemView implements SmartView<CategoryOption>, View.OnClickListener
 {
     private final SchedjoulesViewFilterItemBinding mBinding;
     private final CategoryClickListener mCategoryClickListener;
-    private final SmartView<Boolean> mHighightableLabel;
+    private final SmartView<Boolean> mHighlightableLabel;
+
+    private CategoryOption mCategoryOption;
 
 
     public FilterItemView(SchedjoulesViewFilterItemBinding binding, CategoryClickListener categoryClickListener)
     {
         mBinding = binding;
         mCategoryClickListener = categoryClickListener;
-        mHighightableLabel = new Highlightable(mBinding.schedjoulesFilterItemLabel);
+        mHighlightableLabel = new Highlightable(mBinding.schedjoulesFilterItemLabel);
+        binding.getRoot().setOnClickListener(this);
     }
 
 
     @Override
     public void update(CategoryOption categoryOption)
     {
-        mHighightableLabel.update(categoryOption.isSelected());
-
+        mCategoryOption = categoryOption;
+        mHighlightableLabel.update(categoryOption.isSelected());
         mBinding.schedjoulesFilterItemLabel.setText(categoryOption.category().label());
-        mBinding.getRoot().setOnClickListener(new ClickListener(categoryOption.category()));
     }
 
 
-    private class ClickListener implements View.OnClickListener
+    @Override
+    public void onClick(View v)
     {
-        private final Category mCategory;
-
-        private boolean mIsSelected;
-
-
-        public ClickListener(Category category)
-        {
-            mCategory = category;
-        }
-
-
-        @Override
-        public void onClick(View v)
-        {
-            mIsSelected = !mIsSelected;
-            mHighightableLabel.update(mIsSelected);
-            mCategoryClickListener.onClick(new StructuredCategoryOption(mCategory, mIsSelected));
-        }
+        update(new NegateSelected(mCategoryOption));
+        mCategoryClickListener.onClick(mCategoryOption);
     }
+
 }
