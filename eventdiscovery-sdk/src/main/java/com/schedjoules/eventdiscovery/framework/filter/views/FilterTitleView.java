@@ -25,8 +25,14 @@ import com.schedjoules.eventdiscovery.R;
 import com.schedjoules.eventdiscovery.framework.filter.filterstate.FilterState;
 import com.schedjoules.eventdiscovery.framework.utils.ContextActivity;
 import com.schedjoules.eventdiscovery.framework.utils.ThemeDrawableResource;
+import com.schedjoules.eventdiscovery.framework.utils.colors.AccentColor;
+import com.schedjoules.eventdiscovery.framework.utils.colors.AttributeColor;
+import com.schedjoules.eventdiscovery.framework.utils.colors.Color;
+import com.schedjoules.eventdiscovery.framework.utils.colors.ResourceColor;
+import com.schedjoules.eventdiscovery.framework.utils.colors.Transparent;
+import com.schedjoules.eventdiscovery.framework.utils.colors.White;
 import com.schedjoules.eventdiscovery.framework.utils.smartview.SmartView;
-import com.schedjoules.eventdiscovery.framework.widgets.Highlightable;
+import com.schedjoules.eventdiscovery.framework.widgets.BackgroundTintable;
 import com.schedjoules.eventdiscovery.framework.widgets.TextWithIcon;
 
 
@@ -51,11 +57,36 @@ public final class FilterTitleView implements SmartView<FilterState>
     @Override
     public void update(FilterState filterState)
     {
-        new Highlightable(mTitleView).update(filterState.hasSelection());
-
         Context context = mTitleView.getContext();
 
+        mTitleView.setTextColor(textColor(filterState, context).argb());
+
+        new BackgroundTintable(mTitleView).update(backgroundColor(filterState, context));
+
         mTitleView.setText(new TextWithIcon(context, context.getString(mTitleText), arrowId(filterState, context)));
+    }
+
+
+    private Color textColor(FilterState filterState, Context context)
+    {
+        return filterState.hasSelection() ? White.INSTANCE : new AttributeColor(context, android.R.attr.textColorPrimary);
+    }
+
+
+    private Color backgroundColor(FilterState filterState, Context context)
+    {
+        if (filterState.hasSelection())
+        {
+            return new AccentColor(context);
+        }
+        else if (filterState.isExpanded())
+        {
+            return new ResourceColor(context, R.color.schedjoules_filter_bg_expanded);
+        }
+        else
+        {
+            return Transparent.INSTANCE;
+        }
     }
 
 
