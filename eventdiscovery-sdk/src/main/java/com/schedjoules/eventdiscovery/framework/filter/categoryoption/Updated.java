@@ -19,6 +19,7 @@ package com.schedjoules.eventdiscovery.framework.filter.categoryoption;
 
 import com.schedjoules.eventdiscovery.framework.utils.equalator.UriEqualator;
 
+import org.dmfs.iterables.Repeatable;
 import org.dmfs.iterables.decorators.Mapped;
 import org.dmfs.iterators.Function;
 
@@ -38,7 +39,7 @@ public final class Updated implements Iterable<CategoryOption>
 
     public Updated(Iterable<CategoryOption> original, final CategoryOption update)
     {
-        mDelegate = new Mapped<>(original, new Function<CategoryOption, CategoryOption>()
+        mDelegate = new Repeatable<>(new Mapped<>(original, new Function<CategoryOption, CategoryOption>()
         {
             @Override
             public CategoryOption apply(CategoryOption catOption)
@@ -49,7 +50,7 @@ public final class Updated implements Iterable<CategoryOption>
                 }
                 return catOption;
             }
-        });
+        }).iterator());
     }
 
 

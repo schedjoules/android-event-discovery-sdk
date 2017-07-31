@@ -15,53 +15,43 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery.framework.filter.categoryoption;
+package com.schedjoules.eventdiscovery.framework.model.category;
 
 import com.schedjoules.client.eventsdiscovery.Category;
 
+import org.dmfs.iterables.decorators.Mapped;
+import org.dmfs.iterators.Function;
 import org.dmfs.rfc3986.Uri;
-import org.dmfs.rfc3986.encoding.Precoded;
-import org.dmfs.rfc3986.uris.LazyUri;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.Iterator;
 
 
 /**
- * Temporary.
+ * {@link Iterable} of {@link Uri}s of {@link Category#name()} from an input {@link Iterable} of {@link Category}s.
  *
  * @author Gabor Keszthelyi
  */
-public final class DummyCategories
+public final class CategoryUris implements Iterable<Uri>
 {
-
-    public static final List<Category> CATS = Arrays.asList(
-            c("Music"),
-            c("Sports"),
-            c("Movies"),
-            c("Theatre"),
-            c("Business"),
-            c("Attractions")
-    );
+    private final Iterable<Uri> mDelegate;
 
 
-    private static final Category c(final String label)
+    public CategoryUris(Iterable<Category> categories)
     {
-        return new Category()
+        mDelegate = new Mapped<>(categories, new Function<Category, Uri>()
         {
             @Override
-            public Uri name()
+            public Uri apply(Category category)
             {
-                return new LazyUri(new Precoded("http://" + label));
+                return category.name();
             }
-
-
-            @Override
-            public CharSequence label()
-            {
-                return label;
-            }
-        };
+        });
     }
 
+
+    @Override
+    public Iterator<Uri> iterator()
+    {
+        return mDelegate.iterator();
+    }
 }

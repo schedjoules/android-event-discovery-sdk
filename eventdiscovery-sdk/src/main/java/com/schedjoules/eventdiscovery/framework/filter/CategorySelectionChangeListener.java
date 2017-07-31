@@ -15,28 +15,24 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery.framework.model.category;
+package com.schedjoules.eventdiscovery.framework.filter;
 
 import com.schedjoules.client.eventsdiscovery.Category;
 
-import org.dmfs.optional.Optional;
-import org.dmfs.rfc3986.Uri;
-
 
 /**
- * {@link Category}s with support for quick lookup by category name.
+ * Listener interface to get notified about category selection changes.
  *
  * @author Gabor Keszthelyi
  */
-public interface Categories extends Iterable<Category>
+public interface CategorySelectionChangeListener
 {
-    /**
-     * Looks up the {@link Category} for the given name.
-     */
-    Optional<Category> category(Uri categoryName);
 
     /**
-     * Returns the categories that can be used for filtering on the UI.
+     * Called when the overall category selection changes.
+     *
+     * @param selectedCategories
+     *         the new set of selected categories
      */
-    Iterable<Category> filterCategories();
+    void onCategorySelectionChanged(Iterable<Category> selectedCategories);
 }

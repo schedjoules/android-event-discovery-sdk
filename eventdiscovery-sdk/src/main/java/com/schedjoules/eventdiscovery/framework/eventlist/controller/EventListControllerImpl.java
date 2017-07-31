@@ -224,12 +224,6 @@ public final class EventListControllerImpl implements EventListController
             mItems.mergeNewItems(result.mListItems, taskParam.mDirection);
 
             markLoadFinishedSuccess(taskParam.mDirection);
-
-            if (taskParam.mQuery instanceof InitialEventsDiscovery)
-            {
-                mLastResultPages.put(TOP, result.mResultPage);
-                queueComingPage(TOP);
-            }
         }
 
 

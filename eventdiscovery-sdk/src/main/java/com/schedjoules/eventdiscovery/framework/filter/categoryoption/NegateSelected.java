@@ -15,28 +15,37 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery.framework.model.category;
+package com.schedjoules.eventdiscovery.framework.filter.categoryoption;
 
 import com.schedjoules.client.eventsdiscovery.Category;
 
-import org.dmfs.optional.Optional;
-import org.dmfs.rfc3986.Uri;
-
 
 /**
- * {@link Category}s with support for quick lookup by category name.
+ * {@link CategoryOption} decorator negating {@link CategoryOption#isSelected()}.
  *
  * @author Gabor Keszthelyi
  */
-public interface Categories extends Iterable<Category>
+public final class NegateSelected implements CategoryOption
 {
-    /**
-     * Looks up the {@link Category} for the given name.
-     */
-    Optional<Category> category(Uri categoryName);
+    private final CategoryOption mDelegate;
 
-    /**
-     * Returns the categories that can be used for filtering on the UI.
-     */
-    Iterable<Category> filterCategories();
+
+    public NegateSelected(CategoryOption original)
+    {
+        mDelegate = new StructuredCategoryOption(original.category(), !original.isSelected());
+    }
+
+
+    @Override
+    public Category category()
+    {
+        return mDelegate.category();
+    }
+
+
+    @Override
+    public boolean isSelected()
+    {
+        return mDelegate.isSelected();
+    }
 }

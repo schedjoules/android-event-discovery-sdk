@@ -15,28 +15,36 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery.framework.model.category;
-
-import com.schedjoules.client.eventsdiscovery.Category;
-
-import org.dmfs.optional.Optional;
-import org.dmfs.rfc3986.Uri;
-
+package com.schedjoules.eventdiscovery.framework.filter.filterstate;
 
 /**
- * {@link Category}s with support for quick lookup by category name.
+ * {@link FilterState} that takes the ready properties as constructor parameters.
  *
  * @author Gabor Keszthelyi
  */
-public interface Categories extends Iterable<Category>
+public final class StructuredFilterState implements FilterState
 {
-    /**
-     * Looks up the {@link Category} for the given name.
-     */
-    Optional<Category> category(Uri categoryName);
+    private final boolean mHasSelection;
+    private final boolean mIsExpanded;
 
-    /**
-     * Returns the categories that can be used for filtering on the UI.
-     */
-    Iterable<Category> filterCategories();
+
+    public StructuredFilterState(boolean hasSelection, boolean isExpanded)
+    {
+        mHasSelection = hasSelection;
+        mIsExpanded = isExpanded;
+    }
+
+
+    @Override
+    public boolean hasSelection()
+    {
+        return mHasSelection;
+    }
+
+
+    @Override
+    public boolean isExpanded()
+    {
+        return mIsExpanded;
+    }
 }

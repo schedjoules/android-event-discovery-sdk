@@ -15,28 +15,34 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery.framework.model.category;
+package com.schedjoules.eventdiscovery.framework.utils.iterables;
 
-import com.schedjoules.client.eventsdiscovery.Category;
+import org.dmfs.iterators.EmptyIterator;
 
-import org.dmfs.optional.Optional;
-import org.dmfs.rfc3986.Uri;
+import java.util.Iterator;
 
 
 /**
- * {@link Category}s with support for quick lookup by category name.
+ * Empty {@link Iterable}.
  *
  * @author Gabor Keszthelyi
  */
-public interface Categories extends Iterable<Category>
+// TODO use it from newer iterators library
+public final class EmptyIterable<E> implements Iterable<E>
 {
-    /**
-     * Looks up the {@link Category} for the given name.
-     */
-    Optional<Category> category(Uri categoryName);
+    private final static EmptyIterable<?> INSTANCE = new EmptyIterable<>();
 
-    /**
-     * Returns the categories that can be used for filtering on the UI.
-     */
-    Iterable<Category> filterCategories();
+
+    public static <T> EmptyIterable<T> instance()
+    {
+        //noinspection unchecked
+        return (EmptyIterable<T>) INSTANCE;
+    }
+
+
+    @Override
+    public Iterator<E> iterator()
+    {
+        return EmptyIterator.instance();
+    }
 }

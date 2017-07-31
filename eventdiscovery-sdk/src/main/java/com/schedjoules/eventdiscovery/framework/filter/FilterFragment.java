@@ -24,8 +24,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.schedjoules.client.eventsdiscovery.Category;
 import com.schedjoules.eventdiscovery.R;
 import com.schedjoules.eventdiscovery.framework.common.BaseFragment;
+import com.schedjoules.eventdiscovery.framework.filter.views.EventFilterView;
+import com.schedjoules.eventdiscovery.framework.serialization.Keys;
+import com.schedjoules.eventdiscovery.framework.serialization.boxes.CategoryBox;
+import com.schedjoules.eventdiscovery.framework.serialization.boxes.IterableBox;
+import com.schedjoules.eventdiscovery.framework.serialization.boxes.ParcelableBox;
+import com.schedjoules.eventdiscovery.framework.serialization.commons.Argument;
+import com.schedjoules.eventdiscovery.framework.serialization.commons.FragmentBuilder;
+import com.schedjoules.eventdiscovery.framework.serialization.core.Box;
+
+import org.dmfs.pigeonpost.Cage;
 
 
 /**
@@ -33,21 +44,17 @@ import com.schedjoules.eventdiscovery.framework.common.BaseFragment;
  *
  * @author Gabor Keszthelyi
  */
-// TODO Bug: KitKat dark theme item highlighting doesn't work (works for the title and works for the items on light theme)
-// TODO Align Category down arrow to center
-// TODO Create up arrow and use it for Category when extended and for CLEAR
-// TODO Highlight Category with grey when expanded but not selected (tip: update with Color, not boolean)
-// TODO Ripple to change to full item flash as on KitKat?
-// TODO Bug: double tap needed to deselect after rotation (1. open, select, keep open 2. rotate 3. open deselect)
-// TODO Landscape mode not all items are visible
-
-// TODO Check rotation after real data is wired in
-public final class FilterFragment extends BaseFragment
+public final class FilterFragment extends BaseFragment implements CategorySelectionChangeListener
 {
 
-    public static Fragment newInstance()
+    private Cage<Box<Iterable<Category>>> mCategoriesCage;
+
+
+    public static Fragment newInstance(Cage<Box<Iterable<Category>>> categoriesCage)
     {
-        return new FilterFragment();
+        return new FragmentBuilder(new FilterFragment())
+                .with(Keys.CATEGORIES_CAGE, new ParcelableBox<>(categoriesCage))
+                .build();
     }
 
 
@@ -55,7 +62,16 @@ public final class FilterFragment extends BaseFragment
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
     {
-        return inflater.inflate(R.layout.schedjoules_fragment_event_list_filter, container, false);
+        EventFilterView filterView = (EventFilterView) inflater.inflate(R.layout.schedjoules_fragment_event_list_filter, container, false);
+        filterView.listen(this);
+        mCategoriesCage = new Argument<>(Keys.CATEGORIES_CAGE, this).get();
+        return filterView;
     }
 
+
+    @Override
+    public void onCategorySelectionChanged(Iterable<Category> selectedCategories)
+    {
+        mCategoriesCage.pigeon(new IterableBox<>(selectedCategories, CategoryBox.FACTORY)).send(getContext());
+    }
 }

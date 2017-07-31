@@ -62,6 +62,13 @@ public final class CategoriesCache extends ViewModel implements Categories, Scop
 
 
     @Override
+    public Iterable<Category> filterCategories()
+    {
+        return mCache.filterCategories();
+    }
+
+
+    @Override
     public Iterator<Category> iterator()
     {
         return mCache.iterator();
