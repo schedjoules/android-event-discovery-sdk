@@ -1,2 +1,2 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout style="@style/SchedJoules_Divider"/>
+<View style="@style/SchedJoules_Divider"/>
