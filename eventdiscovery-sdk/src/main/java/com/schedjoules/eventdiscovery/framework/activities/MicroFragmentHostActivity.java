@@ -21,9 +21,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 
 import com.schedjoules.eventdiscovery.framework.common.BaseActivity;
-import com.schedjoules.eventdiscovery.framework.common.CategoriesCache;
 import com.schedjoules.eventdiscovery.framework.serialization.Keys;
-import com.schedjoules.eventdiscovery.framework.serialization.boxes.CategoriesBox;
 import com.schedjoules.eventdiscovery.framework.serialization.boxes.ParcelableBox;
 import com.schedjoules.eventdiscovery.framework.serialization.commons.Argument;
 import com.schedjoules.eventdiscovery.framework.serialization.commons.FluentBundle;
@@ -52,13 +50,6 @@ public final class MicroFragmentHostActivity extends BaseActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-
-        if (savedInstanceState != null)
-        {
-            // Categories cache restoration is needed for the case when Activity is restored after being killed
-            // (It wouldn't be needed for config change - that's handled by ViewModel)
-            new CategoriesCache(new Argument<>(Keys.CATEGORIES, savedInstanceState).get()).cache(this);
-        }
 
         // the BackDovecote receives Pigeons with the result of the BackTransition.
         mBackDovecote = new BooleanDovecote(this, "backresult", new Dovecote.OnPigeonReturnCallback<Boolean>()
@@ -98,8 +89,7 @@ public final class MicroFragmentHostActivity extends BaseActivity
         super.onSaveInstanceState(outState);
 
         new FluentBundle(outState)
-                .put(Keys.MICRO_FRAGMENT_HOST, new ParcelableBox<>(mMicroFragmentHost))
-                .put(Keys.CATEGORIES, new CategoriesBox(new CategoriesCache(this)));
+                .put(Keys.MICRO_FRAGMENT_HOST, new ParcelableBox<>(mMicroFragmentHost));
     }
 
 

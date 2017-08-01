@@ -67,6 +67,12 @@ public final class OptionalArgument<T> implements Optional<T>
     }
 
 
+    public OptionalArgument(Key<T> key, Optional<Bundle> optBundle)
+    {
+        this(key, optBundle.value(Bundle.EMPTY));
+    }
+
+
     @Override
     public boolean isPresent()
     {

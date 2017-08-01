@@ -34,8 +34,10 @@ import com.schedjoules.client.eventsdiscovery.queries.CategoriesQuery;
 import com.schedjoules.client.eventsdiscovery.queries.EventByUid;
 import com.schedjoules.eventdiscovery.R;
 import com.schedjoules.eventdiscovery.framework.common.BaseFragment;
-import com.schedjoules.eventdiscovery.framework.common.CategoriesCache;
+import com.schedjoules.eventdiscovery.framework.common.FluentContextState;
 import com.schedjoules.eventdiscovery.framework.model.category.BasicCategories;
+import com.schedjoules.eventdiscovery.framework.serialization.Keys;
+import com.schedjoules.eventdiscovery.framework.serialization.boxes.CategoriesBox;
 import com.schedjoules.eventdiscovery.framework.services.ActionService;
 import com.schedjoules.eventdiscovery.framework.utils.ServiceJob;
 import com.schedjoules.eventdiscovery.framework.utils.ServiceJobQueue;
@@ -251,7 +253,7 @@ public final class EventLoaderMicroFragment implements MicroFragment<String>
                     {
                         Iterable<Category> categories = service.apiResponse(new CategoriesQuery());
 
-                        new CategoriesCache(new BasicCategories(categories)).cache(getActivity());
+                        new FluentContextState(getActivity()).put(Keys.CATEGORIES, new CategoriesBox(new BasicCategories(categories)));
 
                         mCategoriesLoaded.set(true);
                         loaderReady();
