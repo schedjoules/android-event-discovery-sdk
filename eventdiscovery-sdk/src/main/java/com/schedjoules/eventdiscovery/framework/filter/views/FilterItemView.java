@@ -21,7 +21,7 @@ import android.view.View;
 
 import com.schedjoules.eventdiscovery.databinding.SchedjoulesViewFilterItemBinding;
 import com.schedjoules.eventdiscovery.framework.filter.categoryoption.CategoryOption;
-import com.schedjoules.eventdiscovery.framework.filter.categoryoption.NegateSelected;
+import com.schedjoules.eventdiscovery.framework.filter.categoryoption.SelectionToggled;
 import com.schedjoules.eventdiscovery.framework.utils.smartview.SmartView;
 import com.schedjoules.eventdiscovery.framework.widgets.Highlightable;
 
@@ -61,7 +61,7 @@ public final class FilterItemView implements SmartView<CategoryOption>, View.OnC
     @Override
     public void onClick(View v)
     {
-        update(new NegateSelected(mCategoryOption));
+        update(new SelectionToggled(mCategoryOption));
         mCategoryClickListener.onClick(mCategoryOption);
     }
 
