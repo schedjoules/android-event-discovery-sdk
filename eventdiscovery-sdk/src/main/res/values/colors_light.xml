@@ -12,9 +12,6 @@
 
     <color name="schedjoules_background_cards_light">#f3f3f3</color>
 
-    <color name="schedjoules_empty_thumbnail_background">#dbdbdb</color>
-    <color name="schedjoules_empty_thumbnail_draw">#bababa</color>
-
     <!-- Color of the divider -->
 
     <color name="schedjoules_divider">#20000000</color>
