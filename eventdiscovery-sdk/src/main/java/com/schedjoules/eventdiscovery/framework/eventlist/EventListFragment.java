@@ -29,8 +29,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.schedjoules.client.ApiQuery;
+import com.schedjoules.client.eventsdiscovery.Category;
 import com.schedjoules.client.eventsdiscovery.Envelope;
 import com.schedjoules.client.eventsdiscovery.Event;
+import com.schedjoules.client.eventsdiscovery.GeoLocation;
 import com.schedjoules.client.eventsdiscovery.ResultPage;
 import com.schedjoules.client.insights.steps.Screen;
 import com.schedjoules.eventdiscovery.R;
@@ -40,22 +43,32 @@ import com.schedjoules.eventdiscovery.framework.common.BaseFragment;
 import com.schedjoules.eventdiscovery.framework.common.ExternalUrlFeedbackForm;
 import com.schedjoules.eventdiscovery.framework.common.FirstResultPageHolder;
 import com.schedjoules.eventdiscovery.framework.eventlist.view.EventListMenu;
+import com.schedjoules.eventdiscovery.framework.filter.FilterFragment;
+import com.schedjoules.eventdiscovery.framework.locationpicker.SharedPrefLastSelectedPlace;
 import com.schedjoules.eventdiscovery.framework.serialization.Keys;
+import com.schedjoules.eventdiscovery.framework.serialization.boxes.CategoryBox;
+import com.schedjoules.eventdiscovery.framework.serialization.boxes.IterableBox;
+import com.schedjoules.eventdiscovery.framework.serialization.commons.FluentBundle;
 import com.schedjoules.eventdiscovery.framework.serialization.commons.OptionalArgument;
+import com.schedjoules.eventdiscovery.framework.serialization.core.Box;
 import com.schedjoules.eventdiscovery.framework.utils.InsightsTask;
+import com.schedjoules.eventdiscovery.framework.utils.dovecote.BoxDovecote;
 import com.schedjoules.eventdiscovery.framework.utils.fragment.Add;
 import com.schedjoules.eventdiscovery.framework.utils.fragment.ChildFragmentContainer;
 import com.schedjoules.eventdiscovery.framework.utils.fragment.FragmentContainer;
+import com.schedjoules.eventdiscovery.framework.utils.iterables.EmptyIterable;
 import com.schedjoules.eventdiscovery.framework.utils.loadresult.LoadResult;
 import com.schedjoules.eventdiscovery.framework.utils.loadresult.LoadResultException;
 
 import org.dmfs.android.microfragments.FragmentEnvironment;
 import org.dmfs.android.microfragments.utils.BooleanDovecote;
 import org.dmfs.httpessentials.types.StringToken;
+import org.dmfs.optional.NullSafe;
 import org.dmfs.optional.Optional;
 import org.dmfs.pigeonpost.Dovecote;
 import org.dmfs.pigeonpost.localbroadcast.ParcelableDovecote;
 import org.dmfs.pigeonpost.localbroadcast.SerializableDovecote;
+import org.dmfs.rfc5545.DateTime;
 
 
 /**
@@ -70,8 +83,11 @@ public final class EventListFragment extends BaseFragment implements EventListMe
     private Dovecote<Boolean> mCoverageDoveCote;
     private Dovecote<LoadResult<ResultPage<Envelope<Event>>>> mEventsLoadDoveCote;
     private Dovecote<Boolean> mReloadDovecote;
+    private Dovecote<Box<Iterable<Category>>> mCategoryDovecote;
     private FragmentContainer mListFragmentContainer;
     private boolean mIsInitializing = true;
+
+    private Iterable<Category> mSelectedCategories;
 
 
     @Override
@@ -92,6 +108,9 @@ public final class EventListFragment extends BaseFragment implements EventListMe
 
         mMenu = new EventListMenu(this);
         setHasOptionsMenu(true);
+
+        mSelectedCategories = new OptionalArgument<>(Keys.FILTER_CATEGORIES, new NullSafe<>(savedInstanceState))
+                .value(EmptyIterable.<Category>instance());
 
         mListFragmentContainer = new ChildFragmentContainer(this, R.id.schedjoules_event_list_list_container);
 
@@ -135,10 +154,21 @@ public final class EventListFragment extends BaseFragment implements EventListMe
             }
         });
 
+        mCategoryDovecote = new BoxDovecote<>(getContext(), Keys.FILTER_CATEGORIES, new Dovecote.OnPigeonReturnCallback<Iterable<Category>>()
+        {
+            @Override
+            public void onPigeonReturn(@NonNull Iterable<Category> categories)
+            {
+                mSelectedCategories = categories;
+                load();
+            }
+        });
+
         // savedInstanceState can be null when popping an existing instance from backstack
         if (savedInstanceState == null && mIsInitializing)
         {
             new Add(R.id.schedjoules_event_list_header_container, EventListHeaderFragment.newInstance(mReloadDovecote.cage())).commit(this);
+            new Add(R.id.schedjoules_event_list_filter_container, FilterFragment.newInstance(mCategoryDovecote.cage())).commit(this);
 
             Optional<ResultPage<Envelope<Event>>> firstPage = FirstResultPageHolder.get(getActivity());
             if (firstPage.isPresent())
@@ -160,11 +190,12 @@ public final class EventListFragment extends BaseFragment implements EventListMe
 
     private void load()
     {
-        mListFragmentContainer.replace(
-                EventListListLoaderFragment.newInstance(
-                        new OptionalArgument<>(Keys.DATE_TIME_START_AFTER,
-                                new FragmentEnvironment<Bundle>(EventListFragment.this).microFragment().parameter()),
-                        mEventsLoadDoveCote.cage()));
+        GeoLocation location = new SharedPrefLastSelectedPlace(getContext()).get().geoLocation();
+        Optional<DateTime> startAfter = new OptionalArgument<>(Keys.DATE_TIME_START_AFTER,
+                new FragmentEnvironment<Bundle>(EventListFragment.this).microFragment().parameter());
+        ApiQuery<ResultPage<Envelope<Event>>> query = new EventsDiscoveryFactory(startAfter, location, mSelectedCategories).create();
+
+        mListFragmentContainer.replace(EventListListLoaderFragment.newInstance(query, mEventsLoadDoveCote.cage()));
     }
 
 
@@ -216,11 +247,20 @@ public final class EventListFragment extends BaseFragment implements EventListMe
 
 
     @Override
+    public void onSaveInstanceState(Bundle outState)
+    {
+        new FluentBundle(outState).put(Keys.FILTER_CATEGORIES, new IterableBox<>(mSelectedCategories, CategoryBox.FACTORY));
+        super.onSaveInstanceState(outState);
+    }
+
+
+    @Override
     public void onDestroyView()
     {
         mCoverageDoveCote.dispose();
         mEventsLoadDoveCote.dispose();
         mReloadDovecote.dispose();
+        mCategoryDovecote.dispose();
         super.onDestroyView();
     }
 

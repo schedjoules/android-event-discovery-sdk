@@ -21,7 +21,6 @@ import android.app.Activity;
 import android.support.annotation.AttrRes;
 import android.util.TypedValue;
 
-import com.schedjoules.eventdiscovery.R;
 import com.schedjoules.eventdiscovery.framework.utils.factory.AbstractLazy;
 import com.schedjoules.eventdiscovery.framework.utils.factory.Factory;
 
@@ -33,7 +32,7 @@ import com.schedjoules.eventdiscovery.framework.utils.factory.Factory;
  */
 public final class ThemeDrawableResource extends AbstractLazy<Integer>
 {
-    public ThemeDrawableResource(final Activity activity, @AttrRes int attrResId)
+    public ThemeDrawableResource(final Activity activity, @AttrRes final int attrResId)
     {
         super(new Factory<Integer>()
         {
@@ -41,7 +40,7 @@ public final class ThemeDrawableResource extends AbstractLazy<Integer>
             public Integer create()
             {
                 TypedValue typedValue = new TypedValue();
-                activity.getTheme().resolveAttribute(R.attr.schedjoules_dropdownArrow, typedValue, true);
+                activity.getTheme().resolveAttribute(attrResId, typedValue, true);
                 return typedValue.resourceId;
             }
         });

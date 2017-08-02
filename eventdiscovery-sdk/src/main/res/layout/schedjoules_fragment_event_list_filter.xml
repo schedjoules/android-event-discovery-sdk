@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.schedjoules.eventdiscovery.framework.filter.views.EventFilterView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/schedjoules_event_list_filter_root"
+        android:orientation="horizontal">
+
+    <FrameLayout
+            android:id="@+id/schedjoules_event_list_filter_category_title_bar"
+            android:layout_width="match_parent"
+            android:paddingTop="8dp"
+            android:layout_height="48dp"
+            android:paddingLeft="@dimen/schedjoules_activity_horizontal_margin"
+            android:paddingRight="@dimen/schedjoules_activity_horizontal_margin"
+            android:background="?attr/selectableItemBackground">
+
+        <TextView
+                android:id="@+id/schedjoules_event_list_filter_category_title"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:paddingRight="8dp"
+                android:paddingLeft="8dp"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"
+                android:gravity="center"
+                android:textColor="?android:textColorPrimary"
+                android:textSize="16sp"
+                android:layout_gravity="top"
+                android:background="@drawable/schedjoules_filled_bg_w_rounded_corner"/>
+
+    </FrameLayout>
+
+</com.schedjoules.eventdiscovery.framework.filter.views.EventFilterView>

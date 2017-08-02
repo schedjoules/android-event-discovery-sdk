@@ -20,8 +20,8 @@ package com.schedjoules.eventdiscovery.framework.serialization.boxes;
 import android.os.Parcel;
 
 import com.schedjoules.client.eventsdiscovery.Category;
-import com.schedjoules.eventdiscovery.framework.model.category.BasicCategories;
 import com.schedjoules.eventdiscovery.framework.model.category.Categories;
+import com.schedjoules.eventdiscovery.framework.model.category.LazyCategories;
 import com.schedjoules.eventdiscovery.framework.serialization.core.Box;
 
 
@@ -68,7 +68,7 @@ public final class CategoriesBox implements Box<Categories>
         public CategoriesBox createFromParcel(Parcel in)
         {
             IterableBox<Category> categoryIterableBox = in.readParcelable(getClass().getClassLoader());
-            return new CategoriesBox(new BasicCategories(categoryIterableBox.content()));
+            return new CategoriesBox(new LazyCategories(categoryIterableBox.content()));
         }
 
 

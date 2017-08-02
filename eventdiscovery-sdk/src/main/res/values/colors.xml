@@ -4,4 +4,9 @@
 
     <color name="schedjoules_green_haze">#0CAF60</color>
     <color name="schedjoules_white">#ffffff</color>
+
+    <color name="schedjoules_empty_thumbnail_background">#dbdbdb</color>
+    <color name="schedjoules_empty_thumbnail_draw">#bababa</color>
+
+    <color name="schedjoules_filter_bg_expanded">#498c8c8c</color>
 </resources>

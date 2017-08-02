@@ -37,6 +37,10 @@
     <string name="schedjoules_event_list_no_events_found">Keine Ergebnisse</string>
     <string name="schedjoules_event_list_no_future_events">Derzeit keine weiteren Ereignisse verfügbar</string>
     <string name="schedjoules_event_list_no_past_events">Keine älteren Ereignisse gefunden.</string>
+
+    <string name="schedjoules_category_filter_title">Kategorie</string>
+    <string name="schedjoules_filter_clear">Filter löschen</string>
+
     <string name="schedjoules_title_event_detail">Ereignisdetails</string>
     <string name="schedjoules_title_event_list">Ereignisse</string>
     <string name="schedjoules_action_book">Karten</string>
