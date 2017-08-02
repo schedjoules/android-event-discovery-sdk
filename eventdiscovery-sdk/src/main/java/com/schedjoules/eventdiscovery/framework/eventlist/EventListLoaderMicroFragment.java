@@ -41,12 +41,13 @@ import com.schedjoules.client.eventsdiscovery.queries.CategoriesQuery;
 import com.schedjoules.eventdiscovery.R;
 import com.schedjoules.eventdiscovery.databinding.SchedjoulesFragmentEventListLoaderBinding;
 import com.schedjoules.eventdiscovery.framework.common.BaseFragment;
-import com.schedjoules.eventdiscovery.framework.common.CategoriesCache;
 import com.schedjoules.eventdiscovery.framework.common.FirstResultPageHolder;
+import com.schedjoules.eventdiscovery.framework.common.FluentContextState;
 import com.schedjoules.eventdiscovery.framework.eventlist.controller.InitialEventsDiscovery;
 import com.schedjoules.eventdiscovery.framework.locationpicker.SharedPrefLastSelectedPlace;
 import com.schedjoules.eventdiscovery.framework.model.category.BasicCategories;
 import com.schedjoules.eventdiscovery.framework.serialization.Keys;
+import com.schedjoules.eventdiscovery.framework.serialization.boxes.CategoriesBox;
 import com.schedjoules.eventdiscovery.framework.serialization.commons.OptionalArgument;
 import com.schedjoules.eventdiscovery.framework.splash.SplashErrorMicroFragment;
 import com.schedjoules.eventdiscovery.framework.utils.ServiceJob;
@@ -233,7 +234,7 @@ public final class EventListLoaderMicroFragment implements MicroFragment<Bundle>
                     {
                         Iterable<Category> categories = service.apiResponse(new CategoriesQuery());
 
-                        new CategoriesCache(new BasicCategories(categories)).cache(getActivity());
+                        new FluentContextState(getActivity()).put(Keys.CATEGORIES, new CategoriesBox(new BasicCategories(categories)));
 
                         mCategoriesLoaded.set(true);
                         loadReady();

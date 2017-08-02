@@ -26,13 +26,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
 
 import com.schedjoules.eventdiscovery.framework.serialization.Keys;
+import com.schedjoules.eventdiscovery.framework.serialization.SchedJoulesKey;
+import com.schedjoules.eventdiscovery.framework.serialization.boxes.ParcelableBox;
+import com.schedjoules.eventdiscovery.framework.serialization.commons.FluentBundle;
 import com.schedjoules.eventdiscovery.framework.serialization.commons.IntentBuilder;
 import com.schedjoules.eventdiscovery.framework.serialization.commons.OptionalArgument;
 import com.schedjoules.eventdiscovery.framework.serialization.commons.OptionalBoxArgument;
+import com.schedjoules.eventdiscovery.framework.serialization.core.Key;
 import com.schedjoules.eventdiscovery.framework.services.BasicActionsService;
 import com.schedjoules.eventdiscovery.framework.services.BasicEventService;
 import com.schedjoules.eventdiscovery.framework.services.BasicInsightsService;
 
+import org.dmfs.optional.NullSafe;
 import org.dmfs.optional.Optional;
 
 
@@ -51,10 +56,17 @@ public abstract class BaseActivity extends AppCompatActivity
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
     }
 
+    private final static Key<Bundle> KEY_CONTEXT_STATE = new SchedJoulesKey<>("CONTEXT_STATE");
+    private Bundle mContextState;
+
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+        mContextState = new OptionalArgument<>(KEY_CONTEXT_STATE, new NullSafe<>(savedInstanceState)).value(new Bundle());
+        mContextState.setClassLoader(getClassLoader());
+
         Optional<Integer> themeExtra = new OptionalArgument<>(Keys.THEME, getIntent());
         if (themeExtra.isPresent())
         {
@@ -68,11 +80,23 @@ public abstract class BaseActivity extends AppCompatActivity
 
 
     @Override
+    protected void onSaveInstanceState(Bundle outState)
+    {
+        new FluentBundle(outState).put(KEY_CONTEXT_STATE, new ParcelableBox<>(mContextState));
+        super.onSaveInstanceState(outState);
+    }
+
+
+    @Override
     public Object getSystemService(@NonNull String name)
     {
         if (name.equals(SERVICE_ACTIVITY))
         {
             return this;
+        }
+        else if (name.equals(ContextState.SERVICE_CONTEXT_STATE))
+        {
+            return mContextState;
         }
         return super.getSystemService(name);
     }

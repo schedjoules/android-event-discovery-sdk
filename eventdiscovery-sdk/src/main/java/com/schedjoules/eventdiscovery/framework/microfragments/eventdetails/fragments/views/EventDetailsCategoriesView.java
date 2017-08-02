@@ -29,9 +29,9 @@ import com.schedjoules.client.eventsdiscovery.Category;
 import com.schedjoules.client.eventsdiscovery.Event;
 import com.schedjoules.eventdiscovery.R;
 import com.schedjoules.eventdiscovery.databinding.SchedjoulesViewEventDetailsCategoriesBinding;
-import com.schedjoules.eventdiscovery.framework.common.CategoriesCache;
+import com.schedjoules.eventdiscovery.framework.common.ContextArgument;
 import com.schedjoules.eventdiscovery.framework.model.category.EventCategories;
-import com.schedjoules.eventdiscovery.framework.utils.ContextActivity;
+import com.schedjoules.eventdiscovery.framework.serialization.Keys;
 import com.schedjoules.eventdiscovery.framework.utils.TintedDrawable;
 import com.schedjoules.eventdiscovery.framework.utils.colors.AttributeColor;
 import com.schedjoules.eventdiscovery.framework.utils.smartview.SmartView;
@@ -58,8 +58,9 @@ public final class EventDetailsCategoriesView implements SmartView<Event>
     @Override
     public void update(Event event)
     {
-        Iterator<Category> categories = new EventCategories(event, new CategoriesCache(new ContextActivity(mHolderGroup).get()));
         Context context = mHolderGroup.getContext();
+        Iterator<Category> categories = new EventCategories(event, new ContextArgument<>(Keys.CATEGORIES, context).get());
+
         LayoutInflater inflater = LayoutInflater.from(context);
         // hide the group if no categories are available
         mHolderGroup.setVisibility(categories.hasNext() ? View.VISIBLE : View.GONE);
