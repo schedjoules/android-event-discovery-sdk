@@ -249,7 +249,7 @@ public final class EventListLoaderMicroFragment implements MicroFragment<Bundle>
                 @Override
                 public void onTimeOut()
                 {
-
+                    onError();
                 }
             }, 5000);
         }
