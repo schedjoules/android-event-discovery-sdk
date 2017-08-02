@@ -25,13 +25,21 @@ import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.schedjoules.client.AccessToken;
 import com.schedjoules.client.Api;
 import com.schedjoules.client.ApiQuery;
+import com.schedjoules.client.SchedJoulesApi;
+import com.schedjoules.client.SchedJoulesApiClient;
+import com.schedjoules.eventdiscovery.framework.http.DefaultExecutor;
+import com.schedjoules.eventdiscovery.framework.utils.SharedPrefsUserIdentifier;
 
+import org.dmfs.httpessentials.client.HttpRequest;
+import org.dmfs.httpessentials.client.HttpRequestExecutor;
 import org.dmfs.httpessentials.exceptions.ProtocolError;
 import org.dmfs.httpessentials.exceptions.ProtocolException;
 
 import java.io.IOException;
+import java.net.URI;
 import java.net.URISyntaxException;
 
 
@@ -95,6 +103,39 @@ public abstract class AbstractApiService extends Service
         public <T> T apiResponse(@NonNull ApiQuery<T> query) throws URISyntaxException, ProtocolError, ProtocolException, IOException
         {
             return query.queryResult(mApi);
+        }
+    }
+
+
+    /**
+     * The default SchedJoules {@link Api} to be used by most partners.
+     *
+     * @author Marten Gajda
+     */
+    public static final class DefaultApi implements Api
+    {
+        private final Api mDelegate;
+
+
+        public DefaultApi(Context context, AccessToken accessToken)
+        {
+            this(context, accessToken, new DefaultExecutor(context));
+        }
+
+
+        public DefaultApi(Context context, AccessToken accessToken, HttpRequestExecutor executor)
+        {
+            mDelegate = new SchedJoulesApi(
+                    new SchedJoulesApiClient(accessToken),
+                    executor,
+                    new SharedPrefsUserIdentifier(context));
+        }
+
+
+        @Override
+        public <T> T queryResult(URI uri, HttpRequest<T> httpRequest) throws ProtocolException, ProtocolError, IOException
+        {
+            return mDelegate.queryResult(uri, httpRequest);
         }
     }
 }
