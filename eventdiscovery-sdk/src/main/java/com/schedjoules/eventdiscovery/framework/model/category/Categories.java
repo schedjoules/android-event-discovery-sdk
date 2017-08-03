@@ -34,4 +34,9 @@ public interface Categories extends Iterable<Category>
      * Looks up the {@link Category} for the given name.
      */
     Optional<Category> category(Uri categoryName);
+
+    /**
+     * Returns the categories that can be used for filtering on the UI.
+     */
+    Iterable<Category> filterCategories();
 }

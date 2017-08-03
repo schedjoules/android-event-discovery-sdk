@@ -19,6 +19,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"/>
 
+            <FrameLayout
+                    android:id="@+id/schedjoules_event_list_filter_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
         </android.support.design.widget.AppBarLayout>
 
         <FrameLayout

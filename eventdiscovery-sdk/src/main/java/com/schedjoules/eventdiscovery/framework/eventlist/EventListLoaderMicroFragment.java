@@ -35,6 +35,7 @@ import android.widget.ProgressBar;
 import com.schedjoules.client.eventsdiscovery.Category;
 import com.schedjoules.client.eventsdiscovery.Envelope;
 import com.schedjoules.client.eventsdiscovery.Event;
+import com.schedjoules.client.eventsdiscovery.EventsDiscovery;
 import com.schedjoules.client.eventsdiscovery.GeoLocation;
 import com.schedjoules.client.eventsdiscovery.ResultPage;
 import com.schedjoules.client.eventsdiscovery.queries.CategoriesQuery;
@@ -43,9 +44,8 @@ import com.schedjoules.eventdiscovery.databinding.SchedjoulesFragmentEventListLo
 import com.schedjoules.eventdiscovery.framework.common.BaseFragment;
 import com.schedjoules.eventdiscovery.framework.common.FirstResultPageHolder;
 import com.schedjoules.eventdiscovery.framework.common.FluentContextState;
-import com.schedjoules.eventdiscovery.framework.eventlist.controller.InitialEventsDiscovery;
 import com.schedjoules.eventdiscovery.framework.locationpicker.SharedPrefLastSelectedPlace;
-import com.schedjoules.eventdiscovery.framework.model.category.BasicCategories;
+import com.schedjoules.eventdiscovery.framework.model.category.EagerCategories;
 import com.schedjoules.eventdiscovery.framework.serialization.Keys;
 import com.schedjoules.eventdiscovery.framework.serialization.boxes.CategoriesBox;
 import com.schedjoules.eventdiscovery.framework.serialization.commons.OptionalArgument;
@@ -64,6 +64,7 @@ import org.dmfs.android.microfragments.transitions.ForwardTransition;
 import org.dmfs.android.microfragments.transitions.FragmentTransition;
 import org.dmfs.httpessentials.exceptions.ProtocolError;
 import org.dmfs.httpessentials.exceptions.ProtocolException;
+import org.dmfs.optional.Optional;
 import org.dmfs.rfc5545.DateTime;
 
 import java.io.IOException;
@@ -193,9 +194,9 @@ public final class EventListLoaderMicroFragment implements MicroFragment<Bundle>
         public void onResume()
         {
             super.onResume();
-            DateTime startAfter = new OptionalArgument<>(Keys.DATE_TIME_START_AFTER, mIncomingArgs).value(DateTime.nowAndHere());
+            Optional<DateTime> startAfter = new OptionalArgument<>(Keys.DATE_TIME_START_AFTER, mIncomingArgs);
             GeoLocation location = new SharedPrefLastSelectedPlace(getContext()).get().geoLocation();
-            final InitialEventsDiscovery query = new InitialEventsDiscovery(startAfter, location);
+            final EventsDiscovery query = new EventsDiscoveryFactory(startAfter, location).create();
 
             mApiServiceJobQueue.post(new ServiceJob<ApiService>()
             {
@@ -234,7 +235,7 @@ public final class EventListLoaderMicroFragment implements MicroFragment<Bundle>
                     {
                         Iterable<Category> categories = service.apiResponse(new CategoriesQuery());
 
-                        new FluentContextState(getActivity()).put(Keys.CATEGORIES, new CategoriesBox(new BasicCategories(categories)));
+                        new FluentContextState(getActivity()).put(Keys.CATEGORIES, new CategoriesBox(new EagerCategories(categories)));
 
                         mCategoriesLoaded.set(true);
                         loadReady();

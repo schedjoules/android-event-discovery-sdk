@@ -33,17 +33,17 @@ import java.util.Map;
 
 
 /**
- * Basic implementation of {@link Categories}.
+ * Basic implementation of {@link Categories} using lazy evaluations.
  *
  * @author Gabor Keszthelyi
  */
-public final class BasicCategories implements Categories
+public final class LazyCategories implements Categories
 {
     private final Iterable<Category> mCategories;
     private final Lazy<Map<String, Category>> mCategoryLabelsMap;
 
 
-    public BasicCategories(Iterable<Category> categories)
+    public LazyCategories(Iterable<Category> categories)
     {
         mCategories = categories;
         mCategoryLabelsMap = new SimpleLazy<>(new Factory<Map<String, Category>>()
@@ -66,6 +66,13 @@ public final class BasicCategories implements Categories
     public Optional<Category> category(Uri categoryName)
     {
         return new NullSafe<>(mCategoryLabelsMap.get().get(new Text(categoryName).toString()));
+    }
+
+
+    @Override
+    public Iterable<Category> filterCategories()
+    {
+        return new FilterCategories(this);
     }
 
 
