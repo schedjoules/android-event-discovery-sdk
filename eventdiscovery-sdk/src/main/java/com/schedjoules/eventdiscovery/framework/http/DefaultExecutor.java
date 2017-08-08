@@ -19,6 +19,7 @@ package com.schedjoules.eventdiscovery.framework.http;
 
 import android.content.Context;
 
+import com.schedjoules.eventdiscovery.BuildConfig;
 import com.schedjoules.eventdiscovery.framework.utils.AppProduct;
 
 import org.dmfs.httpessentials.client.HttpRequest;
@@ -33,6 +34,7 @@ import org.dmfs.httpessentials.executors.useragent.Branded;
 import org.dmfs.httpessentials.httpurlconnection.HttpUrlConnectionExecutor;
 import org.dmfs.httpessentials.httpurlconnection.factories.DefaultHttpUrlConnectionFactory;
 import org.dmfs.httpessentials.httpurlconnection.factories.decorators.Finite;
+import org.dmfs.httpessentials.types.VersionedProduct;
 
 import java.io.IOException;
 import java.net.URI;
@@ -51,12 +53,14 @@ public final class DefaultExecutor implements HttpRequestExecutor
     public DefaultExecutor(Context context)
     {
         mDelegate = new Branded(
-                new Retrying(
-                        new HttpUrlConnectionExecutor(
-                                new Finite(
-                                        new DefaultHttpUrlConnectionFactory(),
-                                        5000, 5000)),
-                        new DefaultRetryPolicy(3)),
+                new Branded(
+                        new Retrying(
+                                new HttpUrlConnectionExecutor(
+                                        new Finite(
+                                                new DefaultHttpUrlConnectionFactory(),
+                                                5000, 5000)),
+                                new DefaultRetryPolicy(3)),
+                        new VersionedProduct(BuildConfig.APPLICATION_ID, BuildConfig.VERSION_NAME)),
                 new AppProduct(context));
     }
 
