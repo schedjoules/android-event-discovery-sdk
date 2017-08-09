@@ -24,13 +24,13 @@ import android.support.annotation.NonNull;
 import com.schedjoules.client.eventsdiscovery.Event;
 import com.schedjoules.eventdiscovery.R;
 import com.schedjoules.eventdiscovery.framework.utils.BookTicketLink;
-import com.schedjoules.eventdiscovery.framework.utils.Converter;
 import com.schedjoules.eventdiscovery.framework.utils.factory.Factory;
 import com.schedjoules.eventdiscovery.framework.utils.optionals.AbstractCachingOptional;
-import com.schedjoules.eventdiscovery.framework.utils.optionals.Mapped;
 
 import org.dmfs.httpessentials.types.Link;
+import org.dmfs.iterators.Function;
 import org.dmfs.optional.Optional;
+import org.dmfs.optional.decorators.Mapped;
 
 
 /**
@@ -48,14 +48,14 @@ public final class TicketButtonAction extends AbstractCachingOptional<Action>
             @Override
             public Optional<Action> create()
             {
-                return new Mapped<>(new BookTicketLink(actionLinks), new Converter<Link, Action>()
+                return new Mapped<>(new Function<Link, Action>()
                 {
                     @Override
-                    public Action convert(Link ticketLink)
+                    public Action apply(Link ticketLink)
                     {
                         return new InternalTicketAction(ticketLink, event);
                     }
-                });
+                }, new BookTicketLink(actionLinks));
             }
         });
     }

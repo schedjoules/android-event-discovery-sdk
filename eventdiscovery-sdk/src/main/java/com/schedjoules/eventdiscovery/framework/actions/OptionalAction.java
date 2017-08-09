@@ -20,13 +20,13 @@ package com.schedjoules.eventdiscovery.framework.actions;
 import com.schedjoules.client.eventsdiscovery.Event;
 import com.schedjoules.eventdiscovery.framework.utils.factory.Factory;
 import com.schedjoules.eventdiscovery.framework.utils.optionals.AbstractCachingOptional;
-import com.schedjoules.eventdiscovery.framework.utils.optionals.First;
 
 import org.dmfs.httpessentials.types.Link;
-import org.dmfs.iterators.AbstractConvertedIterator;
-import org.dmfs.iterators.AbstractFilteredIterator;
-import org.dmfs.iterators.ConvertedIterator;
-import org.dmfs.iterators.FilteredIterator;
+import org.dmfs.iterators.Filter;
+import org.dmfs.iterators.Function;
+import org.dmfs.iterators.decorators.Filtered;
+import org.dmfs.iterators.decorators.Mapped;
+import org.dmfs.optional.Next;
 import org.dmfs.optional.Optional;
 
 
@@ -45,24 +45,26 @@ public final class OptionalAction extends AbstractCachingOptional<Action>
             @Override
             public Optional<Action> create()
             {
-                return new First<>(
-                        new ConvertedIterator<Action, Link>(
-                                new FilteredIterator<>(actionLinks.iterator(),
-                                        new AbstractFilteredIterator.IteratorFilter<Link>()
+                return new Next<>(
+                        new Mapped<>(
+                                new Filtered<>(
+                                        actionLinks.iterator(),
+                                        new Filter<Link>()
                                         {
                                             @Override
                                             public boolean iterate(Link link)
                                             {
                                                 return link.relationTypes().contains(actionLinkRelType);
                                             }
-                                        }), new AbstractConvertedIterator.Converter<Action, Link>()
-                        {
-                            @Override
-                            public Action convert(Link element)
-                            {
-                                return actionFactory.action(element, event);
-                            }
-                        }));
+                                        }),
+                                new Function<Link, Action>()
+                                {
+                                    @Override
+                                    public Action apply(Link element)
+                                    {
+                                        return actionFactory.action(element, event);
+                                    }
+                                }));
 
             }
         });
