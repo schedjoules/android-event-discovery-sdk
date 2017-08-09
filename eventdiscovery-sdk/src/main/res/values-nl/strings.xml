@@ -12,8 +12,8 @@
     <string name="schedjoules_default_location_placeholder_name">Alle lokaties</string>
 
     <string name="schedjoules_category_filter_title">Categorie</string>
-    <string name="schedjoules_filter_clear">Herstel</string>
     <string name="schedjoules_filter_close">Filter sluiten</string>
+    <string name="schedjoules_filter_show_all">Alle</string>
 
     <!-- Action labels -->
     <string name="schedjoules_action_book">Tickets</string>

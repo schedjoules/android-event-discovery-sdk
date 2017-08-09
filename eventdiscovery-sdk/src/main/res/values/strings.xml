@@ -13,10 +13,10 @@
 
     <!-- The label for category filter on the list screen -->
     <string name="schedjoules_category_filter_title">Category</string>
-    <!-- Event filter clear selection 'button' in the drop-down -->
-    <string name="schedjoules_filter_clear">Clear</string>
     <!-- Event filter close button in the drop-down -->
     <string name="schedjoules_filter_close">Close Filter</string>
+    <!-- Event filter "show all" selection 'button' in the drop-down -->
+    <string name="schedjoules_filter_show_all">All</string>
 
     <!-- Action labels -->
     <string name="schedjoules_action_book">Book</string>
