@@ -31,6 +31,7 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
+import com.schedjoules.client.eventsdiscovery.Category;
 import com.schedjoules.eventdiscovery.R;
 import com.schedjoules.eventdiscovery.databinding.SchedjoulesViewFilterItemBinding;
 import com.schedjoules.eventdiscovery.databinding.SchedjoulesViewFilterItemClearBinding;
@@ -53,9 +54,11 @@ import com.schedjoules.eventdiscovery.framework.serialization.boxes.ParcelableBo
 import com.schedjoules.eventdiscovery.framework.serialization.commons.Argument;
 import com.schedjoules.eventdiscovery.framework.serialization.commons.BundleBuilder;
 import com.schedjoules.eventdiscovery.framework.utils.Listenable;
+import com.schedjoules.eventdiscovery.framework.utils.Sorted;
 import com.schedjoules.eventdiscovery.framework.utils.colors.AttributeColor;
 import com.schedjoules.eventdiscovery.framework.utils.smartview.SmartView;
 
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -104,8 +107,15 @@ public final class EventFilterView extends LinearLayout implements Listenable<Ca
 
         mCategorySelectListener = new CategorySelectListener();
 
-        init(new UnselectedCategories(
-                new ContextArgument<>(Keys.CATEGORIES, getContext()).get().filterCategories()));
+        init(new UnselectedCategories(new Sorted<>(
+                new ContextArgument<>(Keys.CATEGORIES, getContext()).get().filterCategories(), new Comparator<Category>()
+        {
+            @Override
+            public int compare(Category o1, Category o2)
+            {
+                return o1.label().toString().compareTo(o2.label().toString());
+            }
+        })));
     }
 
 
