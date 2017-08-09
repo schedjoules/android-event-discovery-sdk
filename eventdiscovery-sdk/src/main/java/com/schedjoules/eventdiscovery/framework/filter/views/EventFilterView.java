@@ -243,8 +243,6 @@ public final class EventFilterView extends LinearLayout implements Listenable<Ca
         public void onClick(View v)
         {
             mPopup.dismiss();
-            mFilterState = new Collapsed(mFilterState);
-            mTitleView.update(mFilterState);
         }
     }
 
