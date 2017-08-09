@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <Button xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/schedjoules_filter_close_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right|end"
+            style="@style/Widget.AppCompat.Button.Borderless.Colored"/>
+</layout>

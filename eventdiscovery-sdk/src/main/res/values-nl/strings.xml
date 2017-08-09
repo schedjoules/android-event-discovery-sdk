@@ -13,6 +13,7 @@
 
     <string name="schedjoules_category_filter_title">Categorie</string>
     <string name="schedjoules_filter_clear">Herstel</string>
+    <string name="schedjoules_filter_close">Filter sluiten</string>
 
     <!-- Action labels -->
     <string name="schedjoules_action_book">Tickets</string>
