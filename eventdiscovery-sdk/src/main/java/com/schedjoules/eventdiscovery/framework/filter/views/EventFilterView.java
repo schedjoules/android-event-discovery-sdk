@@ -42,6 +42,7 @@ import com.schedjoules.eventdiscovery.framework.filter.categoryoption.SelectedCa
 import com.schedjoules.eventdiscovery.framework.filter.categoryoption.UnselectedCategories;
 import com.schedjoules.eventdiscovery.framework.filter.categoryoption.Updated;
 import com.schedjoules.eventdiscovery.framework.filter.filterstate.CategoryOptionsFilterState;
+import com.schedjoules.eventdiscovery.framework.filter.filterstate.Collapsed;
 import com.schedjoules.eventdiscovery.framework.filter.filterstate.ExpandNegated;
 import com.schedjoules.eventdiscovery.framework.filter.filterstate.FilterState;
 import com.schedjoules.eventdiscovery.framework.filter.filterstate.StructuredFilterState;
@@ -94,7 +95,8 @@ public final class EventFilterView extends LinearLayout implements Listenable<Ca
         mDropDown.setOrientation(LinearLayout.VERTICAL);
         mPopup = new PopupWindow(mDropDown, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         mPopup.setBackgroundDrawable(new ColorDrawable(new AttributeColor(getContext(), android.R.attr.windowBackground).argb()));
-
+        mPopup.setFocusable(true);
+        mPopup.setOnDismissListener(new DismissListener());
         mTitleView = new FilterTitleView((TextView) findViewById(R.id.schedjoules_event_list_filter_category_title),
                 R.string.schedjoules_category_filter_title);
 
@@ -180,6 +182,19 @@ public final class EventFilterView extends LinearLayout implements Listenable<Ca
     public void listen(CategorySelectionChangeListener listener)
     {
         mCategorySelectionChangeListener = listener;
+    }
+
+
+    private class DismissListener implements PopupWindow.OnDismissListener
+    {
+
+        @Override
+        public void onDismiss()
+        {
+            mFilterState = new Collapsed(mFilterState);
+            mTitleView.update(mFilterState);
+
+        }
     }
 
 

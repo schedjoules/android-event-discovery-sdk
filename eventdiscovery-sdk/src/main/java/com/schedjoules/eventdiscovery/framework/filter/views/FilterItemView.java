@@ -46,6 +46,7 @@ public final class FilterItemView implements SmartView<CategoryOption>, View.OnC
         mCategoryClickListener = categoryClickListener;
         mHighlightableLabel = new Highlightable(mBinding.schedjoulesFilterItemLabel);
         binding.getRoot().setOnClickListener(this);
+        binding.getRoot().setFocusable(true);
     }
 
 
