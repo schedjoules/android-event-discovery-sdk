@@ -96,7 +96,7 @@ public final class EventFilterView extends LinearLayout implements Listenable<Ca
         mPopup = new PopupWindow(mDropDown, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         mPopup.setBackgroundDrawable(new ColorDrawable(new AttributeColor(getContext(), android.R.attr.windowBackground).argb()));
         mPopup.setFocusable(true);
-        mPopup.setOnDismissListener(new DismissListner());
+        mPopup.setOnDismissListener(new DismissListener());
         mTitleView = new FilterTitleView((TextView) findViewById(R.id.schedjoules_event_list_filter_category_title),
                 R.string.schedjoules_category_filter_title);
 
@@ -185,7 +185,7 @@ public final class EventFilterView extends LinearLayout implements Listenable<Ca
     }
 
 
-    private class DismissListner implements PopupWindow.OnDismissListener
+    private class DismissListener implements PopupWindow.OnDismissListener
     {
 
         @Override

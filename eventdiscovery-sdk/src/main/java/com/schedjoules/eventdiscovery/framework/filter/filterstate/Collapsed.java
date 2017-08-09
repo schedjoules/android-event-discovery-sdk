@@ -20,7 +20,7 @@ package com.schedjoules.eventdiscovery.framework.filter.filterstate;
 /**
  * {@link FilterState} decorator which collapses the filter.
  *
- * @author Gabor Keszthelyi
+ * @author Marten Gajda
  */
 public final class Collapsed implements FilterState
 {
