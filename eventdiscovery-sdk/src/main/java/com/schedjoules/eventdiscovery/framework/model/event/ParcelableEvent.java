@@ -26,9 +26,9 @@ import com.schedjoules.eventdiscovery.framework.model.ParcelableLink;
 import com.schedjoules.eventdiscovery.framework.model.location.ParcelableLocation;
 
 import org.dmfs.httpessentials.types.Link;
-import org.dmfs.iterators.AbstractConvertedIterator;
 import org.dmfs.iterators.ArrayIterator;
-import org.dmfs.iterators.ConvertedIterator;
+import org.dmfs.iterators.Function;
+import org.dmfs.iterators.decorators.Mapped;
 import org.dmfs.optional.Absent;
 import org.dmfs.optional.Optional;
 import org.dmfs.optional.Present;
@@ -234,10 +234,10 @@ public final class ParcelableEvent implements Event, Parcelable
                 @Override
                 public Iterator<Location> iterator()
                 {
-                    return new ConvertedIterator<>(new ArrayIterator<>(mLocations), new AbstractConvertedIterator.Converter<Location, Parcelable>()
+                    return new Mapped<>(new ArrayIterator<>(mLocations), new Function<Parcelable, Location>()
                     {
                         @Override
-                        public Location convert(Parcelable element)
+                        public Location apply(Parcelable element)
                         {
                             return (Location) element;
                         }
@@ -255,10 +255,10 @@ public final class ParcelableEvent implements Event, Parcelable
                 @Override
                 public Iterator<Link> iterator()
                 {
-                    return new ConvertedIterator<>(new ArrayIterator<>(mLinks), new AbstractConvertedIterator.Converter<Link, Parcelable>()
+                    return new Mapped<>(new ArrayIterator<>(mLinks), new Function<Parcelable, Link>()
                     {
                         @Override
-                        public Link convert(Parcelable element)
+                        public Link apply(Parcelable element)
                         {
                             return (Link) element;
                         }

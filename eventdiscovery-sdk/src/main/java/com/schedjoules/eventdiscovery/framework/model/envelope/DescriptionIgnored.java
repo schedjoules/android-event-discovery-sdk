@@ -19,10 +19,10 @@ package com.schedjoules.eventdiscovery.framework.model.envelope;
 
 import com.schedjoules.client.eventsdiscovery.Envelope;
 import com.schedjoules.client.eventsdiscovery.Event;
-import com.schedjoules.eventdiscovery.framework.utils.Converter;
-import com.schedjoules.eventdiscovery.framework.utils.optionals.Mapped;
 
+import org.dmfs.iterators.Function;
 import org.dmfs.optional.Optional;
+import org.dmfs.optional.decorators.Mapped;
 
 
 /**
@@ -58,13 +58,13 @@ public final class DescriptionIgnored implements Envelope<Event>
     @Override
     public Optional<Event> payload()
     {
-        return new Mapped<>(mOriginal.payload(), new Converter<Event, Event>()
+        return new Mapped<>(new Function<Event, Event>()
         {
             @Override
-            public Event convert(Event input)
+            public Event apply(Event input)
             {
                 return new com.schedjoules.eventdiscovery.framework.model.event.DescriptionIgnored(input);
             }
-        });
+        }, mOriginal.payload());
     }
 }

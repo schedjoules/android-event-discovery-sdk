@@ -19,14 +19,13 @@ package com.schedjoules.eventdiscovery.framework.model.recent.places;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.util.Log;
 
 import com.schedjoules.eventdiscovery.framework.model.recent.CharSequenceConverter;
 import com.schedjoules.eventdiscovery.framework.model.recent.Recent;
 import com.schedjoules.eventdiscovery.framework.model.recent.Recents;
 
-import org.dmfs.iterators.AbstractConvertedIterator;
-import org.dmfs.iterators.ConvertedIterator;
+import org.dmfs.iterators.Function;
+import org.dmfs.iterators.decorators.Mapped;
 import org.dmfs.rfc3986.encoding.Encoded;
 
 import java.util.Iterator;
@@ -62,10 +61,10 @@ public final class SharedPreferencesRecents<T> implements Recents<T>
     public Iterator<Recent<T>> iterator()
     {
         final Map<String, ?> all = mSharedPreferences.getAll();
-        return new ConvertedIterator<>(all.keySet().iterator(), new AbstractConvertedIterator.Converter<Recent<T>, String>()
+        return new Mapped<>(all.keySet().iterator(), new Function<String, Recent<T>>()
         {
             @Override
-            public Recent<T> convert(String element)
+            public Recent<T> apply(String element)
             {
                 return new SharedPreferencesRecent<>(mSharedPreferences, mFactory, element);
             }
