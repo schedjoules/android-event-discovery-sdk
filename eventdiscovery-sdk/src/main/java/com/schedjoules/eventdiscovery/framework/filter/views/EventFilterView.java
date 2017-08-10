@@ -32,6 +32,7 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.schedjoules.eventdiscovery.R;
+import com.schedjoules.eventdiscovery.databinding.SchedjoulesViewFilterButtonCloseBinding;
 import com.schedjoules.eventdiscovery.databinding.SchedjoulesViewFilterItemBinding;
 import com.schedjoules.eventdiscovery.databinding.SchedjoulesViewFilterItemClearBinding;
 import com.schedjoules.eventdiscovery.framework.common.ContextArgument;
@@ -128,6 +129,9 @@ public final class EventFilterView extends LinearLayout implements Listenable<Ca
         SchedjoulesViewFilterItemClearBinding clearItem = DataBindingUtil.inflate(inflater, R.layout.schedjoules_view_filter_item_clear, mDropDown, true);
         clearItem.schedjoulesFilterClearButton.setText(R.string.schedjoules_filter_clear);
         clearItem.schedjoulesFilterClearButton.setOnClickListener(new ClearSelectListener());
+        SchedjoulesViewFilterButtonCloseBinding closeButton = DataBindingUtil.inflate(inflater, R.layout.schedjoules_view_filter_button_close, mDropDown, true);
+        closeButton.schedjoulesFilterCloseButton.setText(R.string.schedjoules_filter_close);
+        closeButton.schedjoulesFilterCloseButton.setOnClickListener(new CloseSelectListener());
         inflater.inflate(R.layout.schedjoules_view_divider, mDropDown, true);
 
         mCategoryOptions = categoryOptions;
@@ -228,6 +232,17 @@ public final class EventFilterView extends LinearLayout implements Listenable<Ca
             {
                 mCategorySelectionChangeListener.onCategorySelectionChanged(new SelectedCategories(mCategoryOptions));
             }
+        }
+    }
+
+
+    private class CloseSelectListener implements View.OnClickListener
+    {
+
+        @Override
+        public void onClick(View v)
+        {
+            mPopup.dismiss();
         }
     }
 

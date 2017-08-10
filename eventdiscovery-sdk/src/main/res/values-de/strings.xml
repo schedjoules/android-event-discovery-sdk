@@ -40,6 +40,7 @@
 
     <string name="schedjoules_category_filter_title">Kategorie</string>
     <string name="schedjoules_filter_clear">Filter löschen</string>
+    <string name="schedjoules_filter_close">Filter schließen</string>
 
     <string name="schedjoules_title_event_detail">Ereignisdetails</string>
     <string name="schedjoules_title_event_list">Ereignisse</string>
