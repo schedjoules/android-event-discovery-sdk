@@ -35,7 +35,6 @@ import com.schedjoules.client.eventsdiscovery.Category;
 import com.schedjoules.eventdiscovery.R;
 import com.schedjoules.eventdiscovery.databinding.SchedjoulesViewFilterButtonCloseBinding;
 import com.schedjoules.eventdiscovery.databinding.SchedjoulesViewFilterItemBinding;
-import com.schedjoules.eventdiscovery.databinding.SchedjoulesViewFilterItemClearBinding;
 import com.schedjoules.eventdiscovery.framework.common.ContextArgument;
 import com.schedjoules.eventdiscovery.framework.filter.CategorySelectionChangeListener;
 import com.schedjoules.eventdiscovery.framework.filter.categoryoption.CategoryOption;
@@ -74,6 +73,7 @@ public final class EventFilterView extends LinearLayout implements Listenable<Ca
     private CategoryClickListener mCategorySelectListener;
 
     private SmartView<FilterState> mTitleView;
+    private SmartView<FilterState> mShowAllItemView;
     private PopupWindow mPopup;
 
     private Iterable<CategoryOption> mCategoryOptions;
@@ -125,6 +125,16 @@ public final class EventFilterView extends LinearLayout implements Listenable<Ca
         // Populate the drop-down
         mDropDown.removeAllViews();
         LayoutInflater inflater = LayoutInflater.from(getContext());
+
+        inflater.inflate(R.layout.schedjoules_view_divider, mDropDown, true);
+
+        // Add show all item
+        SchedjoulesViewFilterItemBinding showAllItem = DataBindingUtil.inflate(inflater, R.layout.schedjoules_view_filter_item, mDropDown, true);
+        showAllItem.schedjoulesFilterItemLabel.setText(R.string.schedjoules_filter_show_all);
+        showAllItem.getRoot().setOnClickListener(new ShowAllSelectListener());
+        showAllItem.getRoot().setFocusable(true);
+        mShowAllItemView = new AllSelectionItemView(showAllItem);
+
         mItemViews = new LinkedList<>();
         for (CategoryOption categoryOption : categoryOptions)
         {
@@ -135,10 +145,6 @@ public final class EventFilterView extends LinearLayout implements Listenable<Ca
 
         inflater.inflate(R.layout.schedjoules_view_divider, mDropDown, true);
 
-        // Add Clear item
-        SchedjoulesViewFilterItemClearBinding clearItem = DataBindingUtil.inflate(inflater, R.layout.schedjoules_view_filter_item_clear, mDropDown, true);
-        clearItem.schedjoulesFilterClearButton.setText(R.string.schedjoules_filter_clear);
-        clearItem.schedjoulesFilterClearButton.setOnClickListener(new ClearSelectListener());
         SchedjoulesViewFilterButtonCloseBinding closeButton = DataBindingUtil.inflate(inflater, R.layout.schedjoules_view_filter_button_close, mDropDown, true);
         closeButton.schedjoulesFilterCloseButton.setText(R.string.schedjoules_filter_close);
         closeButton.schedjoulesFilterCloseButton.setOnClickListener(new CloseSelectListener());
@@ -162,6 +168,7 @@ public final class EventFilterView extends LinearLayout implements Listenable<Ca
         }
         mFilterState = new StructuredFilterState(hasSelection, mFilterState.isExpanded());
         mTitleView.update(mFilterState);
+        mShowAllItemView.update(mFilterState);
     }
 
 
@@ -220,6 +227,7 @@ public final class EventFilterView extends LinearLayout implements Listenable<Ca
             mCategoryOptions = new Updated(mCategoryOptions, categoryOption);
             mFilterState = new CategoryOptionsFilterState(mCategoryOptions, mFilterState);
             mTitleView.update(mFilterState);
+            mShowAllItemView.update(mFilterState);
 
             if (mCategorySelectionChangeListener != null)
             {
@@ -229,7 +237,7 @@ public final class EventFilterView extends LinearLayout implements Listenable<Ca
     }
 
 
-    private class ClearSelectListener implements View.OnClickListener
+    private class ShowAllSelectListener implements View.OnClickListener
     {
 
         @Override
