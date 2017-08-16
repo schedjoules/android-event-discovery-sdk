@@ -33,11 +33,11 @@ import android.view.animation.AlphaAnimation;
 import com.schedjoules.client.eventsdiscovery.Event;
 import com.schedjoules.eventdiscovery.R;
 import com.schedjoules.eventdiscovery.databinding.SchedjoulesFragmentEventDetailsContentLoadingActionsBinding;
+import com.schedjoules.eventdiscovery.framework.async.rx.RxEventActions;
 import com.schedjoules.eventdiscovery.framework.common.BaseFragment;
 import com.schedjoules.eventdiscovery.framework.microfragments.eventdetails.fragments.views.EventHeaderView;
 import com.schedjoules.eventdiscovery.framework.serialization.boxes.EventBox;
 import com.schedjoules.eventdiscovery.framework.serialization.core.Box;
-import com.schedjoules.eventdiscovery.framework.services.ActionService;
 import com.schedjoules.eventdiscovery.framework.services.EventService;
 import com.schedjoules.eventdiscovery.framework.utils.ServiceJob;
 import com.schedjoules.eventdiscovery.framework.utils.ServiceJobQueue;
@@ -58,11 +58,16 @@ import org.dmfs.httpessentials.types.Link;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
+
+import gk.android.investigator.Investigator;
+import io.reactivex.Single;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.observers.DisposableSingleObserver;
+import io.reactivex.schedulers.Schedulers;
 
 
 /**
@@ -147,7 +152,6 @@ public final class EventDetailLoaderMicroFragment implements MicroFragment<Event
     public final static class LoaderFragment extends BaseFragment
     {
         private final Timestamp mTimestamp = new UiTimestamp();
-        private ServiceJobQueue<ActionService> mActionServiceJobQueue;
         private ServiceJobQueue<EventService> mEventServiceJobQueue;
 
         private Event mEvent;
@@ -156,13 +160,13 @@ public final class EventDetailLoaderMicroFragment implements MicroFragment<Event
         private AtomicReference<List<Link>> mActions = new AtomicReference<>();
         private AtomicBoolean mSleepIsOver = new AtomicBoolean();
         private AccentColoredProgressBar mProgressBar;
+        private Disposable mDisposable;
 
 
         @Override
         public void onCreate(@Nullable Bundle savedInstanceState)
         {
             super.onCreate(savedInstanceState);
-            mActionServiceJobQueue = new SimpleServiceJobQueue<>(new ActionService.FutureConnection(getActivity()));
             mEventServiceJobQueue = new SimpleServiceJobQueue<>(new EventService.FutureConnection(getActivity()));
             mEvent = new FragmentEnvironment<Event>(this).microFragment().parameter();
         }
@@ -193,6 +197,7 @@ public final class EventDetailLoaderMicroFragment implements MicroFragment<Event
         public void onResume()
         {
             super.onResume();
+            Investigator.log(this);
 
             new Thread(new Runnable()
             {
@@ -228,7 +233,7 @@ public final class EventDetailLoaderMicroFragment implements MicroFragment<Event
                             catch (TimeoutException | InterruptedException | URISyntaxException | ProtocolError | ProtocolException | IOException | RuntimeException e)
                             {
                                 Log.e("EventLoaderMF", "Failed to load event: " + mEvent.uid(), e);
-                                startTransition(new Revealed(new ForwardTransition(new ErrorMicroFragment(), mTimestamp)));
+                                onLoadingError();
                             }
                         }
 
@@ -236,46 +241,46 @@ public final class EventDetailLoaderMicroFragment implements MicroFragment<Event
                         @Override
                         public void onTimeOut()
                         {
-                            startTransition(new Revealed(new ForwardTransition(new ErrorMicroFragment(), mTimestamp)));
+                            onLoadingError();
                         }
                     }, 5000);
 
-            mActionServiceJobQueue.post(
-                    new ServiceJob<ActionService>()
+            mDisposable = Single.wrap(new RxEventActions(getContext(), mEvent.uid()))
+                    .subscribeOn(Schedulers.io())
+                    .subscribeWith(new DisposableSingleObserver<List<Link>>()
                     {
+
                         @Override
-                        public void execute(ActionService service)
+                        public void onSuccess(@io.reactivex.annotations.NonNull List<Link> links)
                         {
-                            try
-                            {
-                                mActions.set(service.actions(mEvent.uid()));
-                            }
-                            catch (TimeoutException | InterruptedException | ProtocolError | IOException | ProtocolException | URISyntaxException | RuntimeException e)
-                            {
-                                Log.e("EventLoaderMF", "Failed to load actions for event: " + mEvent.uid(), e);
-                                // TODO: remove RuntimeException when https://github.com/dmfs/http-client-essentials-suite/issues/36 is fixed
-                                // actions could not be loaded - fall back to an empty list
-                                mActions.set(Collections.<Link>emptyList());
-                            }
+                            Investigator.log(this, "links", links);
+                            mActions.set(links);
                             loaderReady();
                         }
 
 
                         @Override
-                        public void onTimeOut()
+                        public void onError(@io.reactivex.annotations.NonNull Throwable e)
                         {
-                            startTransition(new Revealed(new ForwardTransition(new ErrorMicroFragment(), mTimestamp)));
+                            Investigator.log(this, "error", e);
+                            onLoadingError();
                         }
-                    }, 5000
-            );
+                    });
+        }
+
+
+        private void onLoadingError()
+        {
+            startTransition(new Revealed(new ForwardTransition(new ErrorMicroFragment(), mTimestamp)));
         }
 
 
         @Override
         public void onDestroy()
         {
+            Investigator.log(this);
+            mDisposable.dispose();
             mEventServiceJobQueue.disconnect();
-            mActionServiceJobQueue.disconnect();
             super.onDestroy();
         }
 
