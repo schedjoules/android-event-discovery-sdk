@@ -33,6 +33,12 @@ public final class Closed extends AbstractStep
     private final FilterStep mDelegate;
 
 
+    public Closed()
+    {
+        this(new FilterStep());
+    }
+
+
     public Closed(FilterStep delegate)
     {
         mDelegate = delegate;

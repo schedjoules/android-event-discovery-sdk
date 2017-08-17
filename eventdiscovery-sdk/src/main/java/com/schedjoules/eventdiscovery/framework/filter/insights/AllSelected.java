@@ -20,34 +20,28 @@ package com.schedjoules.eventdiscovery.framework.filter.insights;
 import com.schedjoules.client.eventsdiscovery.Event;
 import com.schedjoules.client.insights.steps.AbstractStep;
 
-import org.dmfs.rfc3986.Uri;
-import org.dmfs.rfc3986.encoding.Encoded;
-import org.dmfs.rfc3986.uris.Text;
-
 import java.net.URI;
 
 
 /**
- * Category unselected step.
+ * "all" categories selected step.
  *
  * @author Marten Gajda
  */
-public final class Unselected extends AbstractStep
+public final class AllSelected extends AbstractStep
 {
     private final FilterStep mDelegate;
-    private final Uri mCategory;
 
 
-    public Unselected(Uri category)
+    public AllSelected()
     {
-        this(new FilterStep(), category);
+        this(new FilterStep());
     }
 
 
-    public Unselected(FilterStep delegate, Uri category)
+    public AllSelected(FilterStep delegate)
     {
         mDelegate = delegate;
-        mCategory = category;
     }
 
 
@@ -61,7 +55,7 @@ public final class Unselected extends AbstractStep
     @Override
     public URI data()
     {
-        return mDelegate.data().resolve("unselected/").resolve(new Encoded(new Text(mCategory)).toString());
+        return mDelegate.data().resolve("selected-all");
     }
 
 

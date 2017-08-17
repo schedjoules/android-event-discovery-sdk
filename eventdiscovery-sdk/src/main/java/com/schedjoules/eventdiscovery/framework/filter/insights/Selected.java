@@ -38,6 +38,12 @@ public final class Selected extends AbstractStep
     private final Uri mCategory;
 
 
+    public Selected(Uri category)
+    {
+        this(new FilterStep(), category);
+    }
+
+
     public Selected(FilterStep delegate, Uri category)
     {
         mDelegate = delegate;

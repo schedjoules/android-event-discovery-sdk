@@ -27,6 +27,7 @@ import org.dmfs.httpessentials.exceptions.ProtocolException;
 import org.dmfs.httpessentials.exceptions.RedirectionException;
 import org.dmfs.httpessentials.exceptions.UnexpectedStatusException;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.URI;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -78,6 +79,11 @@ public final class RequestUriAndTimeLogging implements HttpRequestExecutor
             long start = SystemClock.uptimeMillis();
             T result = mDelegate.execute(uri, request);
             Log.d(mTag, String.format("(%s) Response time: %s ms", requestId, SystemClock.uptimeMillis() - start));
+
+            ByteArrayOutputStream out = new ByteArrayOutputStream(10000);
+            request.requestEntity().writeContent(out);
+            System.out.println(new String(out.toByteArray()));
+
             return result;
         }
     }
