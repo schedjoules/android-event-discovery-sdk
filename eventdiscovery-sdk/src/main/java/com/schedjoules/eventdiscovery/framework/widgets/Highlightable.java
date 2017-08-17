@@ -56,5 +56,8 @@ public final class Highlightable implements SmartView<Boolean>
 
         Color textColor = selected ? White.INSTANCE : new AttributeColor(context, android.R.attr.textColorPrimary);
         mTextView.setTextColor(textColor.argb());
+        // for some reason (maybe an Android bug?) the "all" view didn't update in the dark theme.
+        // calling invalidate explicitly seems to fix it.
+        mTextView.invalidate();
     }
 }
