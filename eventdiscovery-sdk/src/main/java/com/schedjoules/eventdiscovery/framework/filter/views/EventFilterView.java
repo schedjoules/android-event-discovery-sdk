@@ -47,12 +47,17 @@ import com.schedjoules.eventdiscovery.framework.filter.filterstate.Collapsed;
 import com.schedjoules.eventdiscovery.framework.filter.filterstate.ExpandNegated;
 import com.schedjoules.eventdiscovery.framework.filter.filterstate.FilterState;
 import com.schedjoules.eventdiscovery.framework.filter.filterstate.StructuredFilterState;
+import com.schedjoules.eventdiscovery.framework.filter.insights.AllSelected;
+import com.schedjoules.eventdiscovery.framework.filter.insights.Toggled;
+import com.schedjoules.eventdiscovery.framework.filter.insights.Closed;
+import com.schedjoules.eventdiscovery.framework.filter.insights.Opened;
 import com.schedjoules.eventdiscovery.framework.serialization.Keys;
 import com.schedjoules.eventdiscovery.framework.serialization.boxes.CategoryOptionBox;
 import com.schedjoules.eventdiscovery.framework.serialization.boxes.IterableBox;
 import com.schedjoules.eventdiscovery.framework.serialization.boxes.ParcelableBox;
 import com.schedjoules.eventdiscovery.framework.serialization.commons.Argument;
 import com.schedjoules.eventdiscovery.framework.serialization.commons.BundleBuilder;
+import com.schedjoules.eventdiscovery.framework.utils.InsightsTask;
 import com.schedjoules.eventdiscovery.framework.utils.Listenable;
 import com.schedjoules.eventdiscovery.framework.utils.Sorted;
 import com.schedjoules.eventdiscovery.framework.utils.colors.AttributeColor;
@@ -214,7 +219,7 @@ public final class EventFilterView extends LinearLayout implements Listenable<Ca
         {
             mFilterState = new Collapsed(mFilterState);
             mTitleView.update(mFilterState);
-
+            new InsightsTask(getContext()).execute(new Closed());
         }
     }
 
@@ -228,6 +233,8 @@ public final class EventFilterView extends LinearLayout implements Listenable<Ca
             mFilterState = new CategoryOptionsFilterState(mCategoryOptions, mFilterState);
             mTitleView.update(mFilterState);
             mShowAllItemView.update(mFilterState);
+
+            new InsightsTask(getContext()).execute(new Toggled(categoryOption));
 
             if (mCategorySelectionChangeListener != null)
             {
@@ -245,6 +252,7 @@ public final class EventFilterView extends LinearLayout implements Listenable<Ca
         {
             mCategoryOptions = new ClearedSelection(mCategoryOptions);
             updateItems();
+            new InsightsTask(getContext()).execute(new AllSelected());
 
             if (mCategorySelectionChangeListener != null)
             {
@@ -275,6 +283,7 @@ public final class EventFilterView extends LinearLayout implements Listenable<Ca
             mTitleView.update(mFilterState);
             if (mFilterState.isExpanded())
             {
+                new InsightsTask(getContext()).execute(new Opened());
                 mPopup.showAsDropDown(EventFilterView.this);
             }
             else
