@@ -18,11 +18,9 @@
 package com.schedjoules.eventdiscovery.framework.filter.insights;
 
 import com.schedjoules.client.eventsdiscovery.Event;
+import com.schedjoules.client.insights.Step;
 import com.schedjoules.client.insights.steps.AbstractStep;
 import com.schedjoules.eventdiscovery.framework.filter.categoryoption.CategoryOption;
-
-import org.dmfs.rfc3986.encoding.Encoded;
-import org.dmfs.rfc3986.uris.Text;
 
 import java.net.URI;
 
@@ -34,8 +32,7 @@ import java.net.URI;
  */
 public final class Toggled extends AbstractStep
 {
-    private final FilterStep mDelegate;
-    private final CategoryOption mCategoryOption;
+    private final Step mDelegate;
 
 
     public Toggled(CategoryOption categoryOption)
@@ -46,8 +43,9 @@ public final class Toggled extends AbstractStep
 
     public Toggled(FilterStep delegate, CategoryOption categoryOption)
     {
-        mDelegate = delegate;
-        mCategoryOption = categoryOption;
+        mDelegate = categoryOption.isSelected() ?
+                new Selected(delegate, categoryOption.category().name()) :
+                new Unselected(delegate, categoryOption.category().name());
     }
 
 
@@ -61,8 +59,7 @@ public final class Toggled extends AbstractStep
     @Override
     public URI data()
     {
-        URI dataUri = mDelegate.data().resolve(mCategoryOption.isSelected() ? "selected/" : "unselected/");
-        return dataUri.resolve(new Encoded(new Text(mCategoryOption.category().name())).toString());
+        return mDelegate.data();
     }
 
 
