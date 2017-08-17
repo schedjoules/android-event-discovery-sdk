@@ -76,13 +76,15 @@ public final class RequestUriAndTimeLogging implements HttpRequestExecutor
         {
             int requestId = sRequestCounter.getAndIncrement();
             Log.d(mTag, String.format("(%s) %s %s", requestId, request.method().verb(), uri));
+            ByteArrayOutputStream out = new ByteArrayOutputStream(10000);
+            request.requestEntity().writeContent(out);
+            if (out.size() > 0)
+            {
+                Log.d(mTag, String.format("(%s) > %s ", requestId, new String(out.toByteArray())));
+            }
             long start = SystemClock.uptimeMillis();
             T result = mDelegate.execute(uri, request);
             Log.d(mTag, String.format("(%s) Response time: %s ms", requestId, SystemClock.uptimeMillis() - start));
-
-            ByteArrayOutputStream out = new ByteArrayOutputStream(10000);
-            request.requestEntity().writeContent(out);
-            System.out.println(new String(out.toByteArray()));
 
             return result;
         }
