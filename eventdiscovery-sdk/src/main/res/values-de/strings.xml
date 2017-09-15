@@ -72,5 +72,6 @@
     <string name="schedjoules_location_picker_suggestion_placelookup_error">Konnte Daten für \'%s\' nicht laden</string>
     <string name="schedjoules_retry">Wiederholen</string>
     <string name="schedjoules_button_grant_permission">Berechtigung erteilen</string>
+    <string name="schedjoules_action_browse">Bei %s anzeigen</string>
 
 </resources>

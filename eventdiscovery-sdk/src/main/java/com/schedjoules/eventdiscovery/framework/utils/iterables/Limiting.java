@@ -15,7 +15,9 @@
  * limitations under the License.
  */
 
-package com.schedjoules.eventdiscovery.framework.utils.iterators;
+package com.schedjoules.eventdiscovery.framework.utils.iterables;
+
+import com.schedjoules.eventdiscovery.framework.utils.iterators.LimitingIterator;
 
 import java.util.Iterator;
 

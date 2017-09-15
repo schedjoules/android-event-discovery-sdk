@@ -56,13 +56,13 @@ import com.schedjoules.eventdiscovery.framework.utils.dovecote.BoxDovecote;
 import com.schedjoules.eventdiscovery.framework.utils.fragment.Add;
 import com.schedjoules.eventdiscovery.framework.utils.fragment.ChildFragmentContainer;
 import com.schedjoules.eventdiscovery.framework.utils.fragment.FragmentContainer;
-import com.schedjoules.eventdiscovery.framework.utils.iterables.EmptyIterable;
 import com.schedjoules.eventdiscovery.framework.utils.loadresult.LoadResult;
 import com.schedjoules.eventdiscovery.framework.utils.loadresult.LoadResultException;
 
 import org.dmfs.android.microfragments.FragmentEnvironment;
 import org.dmfs.android.microfragments.utils.BooleanDovecote;
 import org.dmfs.httpessentials.types.StringToken;
+import org.dmfs.iterables.EmptyIterable;
 import org.dmfs.optional.NullSafe;
 import org.dmfs.optional.Optional;
 import org.dmfs.pigeonpost.Dovecote;

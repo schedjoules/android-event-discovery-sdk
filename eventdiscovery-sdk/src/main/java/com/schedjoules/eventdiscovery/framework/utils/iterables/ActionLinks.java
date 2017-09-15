@@ -17,32 +17,28 @@
 
 package com.schedjoules.eventdiscovery.framework.utils.iterables;
 
-import org.dmfs.iterators.EmptyIterator;
-
-import java.util.Iterator;
+import org.dmfs.httpessentials.types.Link;
+import org.dmfs.iterables.decorators.DelegatingIterable;
+import org.dmfs.iterables.decorators.Filtered;
+import org.dmfs.iterators.Filter;
 
 
 /**
- * Empty {@link Iterable}.
+ * An Iterable which filters the given {@link Link} {@link Iterable} by a specific rel-type.
  *
- * @author Gabor Keszthelyi
+ * @author Marten Gajda
  */
-// TODO use it from newer iterators library
-public final class EmptyIterable<E> implements Iterable<E>
+public final class ActionLinks extends DelegatingIterable<Link>
 {
-    private final static EmptyIterable<?> INSTANCE = new EmptyIterable<>();
-
-
-    public static <T> EmptyIterable<T> instance()
+    public ActionLinks(Iterable<Link> links, final String relType)
     {
-        //noinspection unchecked
-        return (EmptyIterable<T>) INSTANCE;
-    }
-
-
-    @Override
-    public Iterator<E> iterator()
-    {
-        return EmptyIterator.instance();
+        super(new Filtered<Link>(links, new Filter<Link>()
+        {
+            @Override
+            public boolean iterate(Link argument)
+            {
+                return argument.relationTypes().contains(relType);
+            }
+        }));
     }
 }

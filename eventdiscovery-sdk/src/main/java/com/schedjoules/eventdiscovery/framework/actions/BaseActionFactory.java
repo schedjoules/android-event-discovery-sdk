@@ -17,12 +17,14 @@
 
 package com.schedjoules.eventdiscovery.framework.actions;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.schedjoules.client.eventsdiscovery.Event;
 import com.schedjoules.eventdiscovery.R;
 import com.schedjoules.eventdiscovery.framework.model.ApiLink;
+import com.schedjoules.eventdiscovery.framework.utils.charsequence.CharSequenceFactory;
 
 import org.dmfs.httpessentials.types.Link;
 
@@ -37,7 +39,7 @@ public final class BaseActionFactory implements ActionFactory
 
     @Nullable
     @Override
-    public Action action(@NonNull Link actionLink, @NonNull Event event)
+    public Action action(@NonNull final Link actionLink, @NonNull Event event)
     {
         String relType = actionLink.relationTypes().iterator().next();
         switch (relType)
@@ -49,6 +51,32 @@ public final class BaseActionFactory implements ActionFactory
             case ApiLink.Rel.Action.SHARE:
                 return new SimpleAction(R.string.schedjoules_action_share, R.drawable.schedjoules_ic_share_black_24dp,
                         new ShareActionExecutable(actionLink, event));
+
+            case ApiLink.Rel.Action.BROWSE:
+                int icon;
+
+                switch (actionLink.title())
+                {
+                    case "Facebook":
+                        icon = R.drawable.schedjoules_ic_facebook_box_24dp;
+                        break;
+                    case "Meetup":
+                        icon = R.drawable.ic_meetup_black_24dp;
+                        break;
+                    default:
+                        icon = R.drawable.schedjoules_ic_open_in_new_24dp;
+                }
+                return new SimpleAction(
+                        new CharSequenceFactory()
+                        {
+                            @Override
+                            public CharSequence create(Context context)
+                            {
+                                return context.getString(R.string.schedjoules_action_browse, actionLink.title());
+                            }
+                        },
+                        icon,
+                        new ViewIntentActionExecutable(actionLink, event));
 
             case ApiLink.Rel.Action.DIRECTIONS:
                 return new SimpleAction(new DirectionsLabelFactory(event.locations()), R.drawable.schedjoules_ic_directions_black_24dp,

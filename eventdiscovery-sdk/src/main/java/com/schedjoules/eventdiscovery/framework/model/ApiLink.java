@@ -43,6 +43,7 @@ public final class ApiLink
         public static final class Action
         {
             public static final String BOOK = "http://schedjoules.com/rel/action/book";
+            public static final String BROWSE = "http://schedjoules.com/rel/action/browse";
             public static final String ADD_TO_CALENDAR = "http://schedjoules.com/rel/action/add-to-calendar";
             public static final String SHARE = "http://schedjoules.com/rel/action/share";
             public static final String DIRECTIONS = "http://schedjoules.com/rel/action/directions";

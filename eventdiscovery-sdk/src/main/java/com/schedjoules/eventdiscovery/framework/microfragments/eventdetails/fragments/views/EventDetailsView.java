@@ -17,6 +17,10 @@
 
 package com.schedjoules.eventdiscovery.framework.microfragments.eventdetails.fragments.views;
 
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.TextView;
+
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -29,6 +33,7 @@ import com.schedjoules.eventdiscovery.R;
 import com.schedjoules.eventdiscovery.databinding.SchedjoulesFragmentEventDetailsBinding;
 import com.schedjoules.eventdiscovery.framework.actions.Action;
 import com.schedjoules.eventdiscovery.framework.actions.ActionClickListener;
+import com.schedjoules.eventdiscovery.framework.actions.ActionFunction;
 import com.schedjoules.eventdiscovery.framework.actions.BaseActionFactory;
 import com.schedjoules.eventdiscovery.framework.actions.OptionalAction;
 import com.schedjoules.eventdiscovery.framework.actions.TicketButtonAction;
@@ -36,14 +41,17 @@ import com.schedjoules.eventdiscovery.framework.common.BaseFragment;
 import com.schedjoules.eventdiscovery.framework.model.ApiLink;
 import com.schedjoules.eventdiscovery.framework.model.EnrichedEvent;
 import com.schedjoules.eventdiscovery.framework.utils.VenueName;
+import com.schedjoules.eventdiscovery.framework.utils.iterables.ActionLinks;
 import com.schedjoules.eventdiscovery.framework.utils.smartview.SmartView;
 import com.schedjoules.eventdiscovery.framework.widgets.NoOpOnClickListener;
 
 import org.dmfs.httpessentials.types.Link;
+import org.dmfs.iterables.ArrayIterable;
+import org.dmfs.iterables.decorators.Flattened;
+import org.dmfs.iterables.decorators.Mapped;
 import org.dmfs.optional.NullSafe;
 import org.dmfs.optional.Optional;
-
-import java.util.List;
+import org.dmfs.optional.iterable.PresentValues;
 
 
 /**
@@ -76,16 +84,26 @@ public final class EventDetailsView implements SmartView<EnrichedEvent>
 
         new EventDescriptionView(mViews.schedjoulesEventDetailsDescription).update(new NullSafe<>(event.description()));
 
-        BaseActionFactory actionFactory = new BaseActionFactory();
+        final BaseActionFactory actionFactory = new BaseActionFactory();
 
-        new ActionView(mViews.schedjoulesEventDetailsActionShare)
-                .update(new OptionalAction(ApiLink.Rel.Action.SHARE, actionLinks, actionFactory, event));
-
-        new ActionView(mViews.schedjoulesEventDetailsActionAddToCalendar)
-                .update(new OptionalAction(ApiLink.Rel.Action.ADD_TO_CALENDAR, actionLinks, actionFactory, event));
-
+        LayoutInflater layoutInflater = LayoutInflater.from(mFragment.getContext());
+        for (Action action : new Flattened<>(
+                new Mapped<>(
+                        new ActionLinks(actionLinks, ApiLink.Rel.Action.BROWSE),
+                        new ActionFunction(actionFactory, event)),
+                new PresentValues<>(new ArrayIterable<Optional<Action>>(
+                        new OptionalAction(ApiLink.Rel.Action.SHARE, actionLinks, actionFactory, event),
+                        new OptionalAction(ApiLink.Rel.Action.ADD_TO_CALENDAR, actionLinks, actionFactory, event)))))
+        {
+            View actionView = layoutInflater.inflate(R.layout.schedjoules_view_event_details_action, mViews.schedjoulesEventDetailsActionContainer, false);
+            new ActionView(actionView, (TextView) actionView.findViewById(R.id.schedjoules_event_details_action_label)).update(action);
+            mViews.schedjoulesEventDetailsActionContainer.addView(actionView);
+        }
         Optional<Action> directionsAction = new OptionalAction(ApiLink.Rel.Action.DIRECTIONS, actionLinks, actionFactory, event);
-        new ActionView(mViews.schedjoulesEventDetailsActionDirections).update(directionsAction);
+        if (directionsAction.isPresent())
+        {
+            new ActionView(mViews.schedjoulesEventDetailsActionDirections).update(directionsAction.value());
+        }
 
         new TicketButtonView(mViews).update(new TicketButtonAction(actionLinks, event));
 
