@@ -206,7 +206,7 @@ public final class EventListLoaderMicroFragment implements MicroFragment<Bundle>
                     try
                     {
                         ResultPage<Envelope<Event>> resultPage = service.apiResponse(query);
-                        FirstResultPageHolder.set(resultPage, getActivity());
+                        FirstResultPageHolder.set(resultPage);
                         mResultPageLoaded.set(true);
                         loadReady();
                     }
