@@ -87,8 +87,7 @@ dependencies {
     compile 'com.google.android.gms:play-services-places:' + PLAY_SERVICES_VERSION
     compile 'com.google.android.gms:play-services-location:' + PLAY_SERVICES_VERSION
     compile 'com.ms-square:expandableTextView:0.1.4'
-    compile 'org.dmfs:iterators:1.5'
-    compile 'org.dmfs:optional:0.5'
+    compile 'org.dmfs:jems:1.8'
     compile('com.google.android:flexbox:0.3.0') {
         exclude group: 'com.android.support'
     }

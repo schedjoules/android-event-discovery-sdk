@@ -20,13 +20,13 @@ package com.schedjoules.eventdiscovery.framework.model.category;
 import com.schedjoules.client.eventsdiscovery.Category;
 import com.schedjoules.client.eventsdiscovery.Event;
 import com.schedjoules.eventdiscovery.framework.utils.JavaUri;
-import com.schedjoules.eventdiscovery.framework.utils.iterators.Present;
 
 import org.dmfs.httpessentials.types.Link;
-import org.dmfs.iterators.AbstractBaseIterator;
 import org.dmfs.iterators.Function;
+import org.dmfs.iterators.decorators.DelegatingIterator;
 import org.dmfs.iterators.decorators.Mapped;
 import org.dmfs.optional.Optional;
+import org.dmfs.optional.iterator.PresentValues;
 
 import java.util.Iterator;
 
@@ -36,14 +36,11 @@ import java.util.Iterator;
  *
  * @author Gabor Keszthelyi
  */
-public final class EventCategories extends AbstractBaseIterator<Category>
+public final class EventCategories extends DelegatingIterator<Category>
 {
-    private final Iterator<Category> mDelegate;
-
-
     public EventCategories(Iterator<Link> categoryLinks, final Categories categories)
     {
-        mDelegate = new Present<>(
+        super(new PresentValues<>(
                 new Mapped<>(categoryLinks, new Function<Link, Optional<Category>>()
                 {
                     @Override
@@ -51,27 +48,12 @@ public final class EventCategories extends AbstractBaseIterator<Category>
                     {
                         return categories.category(new JavaUri(categoryLink.target()));
                     }
-
-                }));
+                })));
     }
 
 
     public EventCategories(Event event, Categories categories)
     {
         this(new EventCategoryLinks(event), categories);
-    }
-
-
-    @Override
-    public boolean hasNext()
-    {
-        return mDelegate.hasNext();
-    }
-
-
-    @Override
-    public Category next()
-    {
-        return mDelegate.next();
     }
 }

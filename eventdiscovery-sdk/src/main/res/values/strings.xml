@@ -34,6 +34,8 @@
     <string name="schedjoules_action_book_hotel">Hotel</string>
     <string name="schedjoules_action_book_parking">Parking</string>
     <string name="schedjoules_action_add_to_calendar">Add to calendar</string>
+    <!-- Label for "browse" actions which open the external event page in a browser %s is replaced with the name of the source, e.g. Facebook, Meetup, etc. -->
+    <string name="schedjoules_action_browse">Visit on %s</string>
 
     <!-- Label for the tickets button on the Event Details screen. -->
     <string name="schedjoules_event_details_ticket_button_title">Get Tickets</string>

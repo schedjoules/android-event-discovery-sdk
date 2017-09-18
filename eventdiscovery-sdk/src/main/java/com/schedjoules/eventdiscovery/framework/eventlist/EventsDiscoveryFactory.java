@@ -25,8 +25,8 @@ import com.schedjoules.client.eventsdiscovery.queries.SimpleEventsDiscovery;
 import com.schedjoules.eventdiscovery.framework.model.category.CategoryUris;
 import com.schedjoules.eventdiscovery.framework.model.location.geolocation.UndefinedGeoLocation;
 import com.schedjoules.eventdiscovery.framework.utils.factory.Factory;
-import com.schedjoules.eventdiscovery.framework.utils.iterables.EmptyIterable;
 
+import org.dmfs.iterables.EmptyIterable;
 import org.dmfs.optional.Absent;
 import org.dmfs.optional.Optional;
 import org.dmfs.optional.Present;

@@ -31,21 +31,19 @@ import com.schedjoules.eventdiscovery.framework.utils.TintedDrawable;
 import com.schedjoules.eventdiscovery.framework.utils.colors.AttributeColor;
 import com.schedjoules.eventdiscovery.framework.utils.smartview.SmartView;
 
-import org.dmfs.optional.Optional;
-
 
 /**
  * Represents the View for an Event Action on the details screen.
  *
  * @author Gabor Keszthelyi
  */
-public final class ActionView implements SmartView<Optional<Action>>
+public final class ActionView implements SmartView<Action>
 {
     private final View mRoot;
     private final TextView mTextView;
 
 
-    private ActionView(View root, TextView textView)
+    public ActionView(View root, TextView textView)
     {
         mRoot = root;
         mTextView = textView;
@@ -65,25 +63,16 @@ public final class ActionView implements SmartView<Optional<Action>>
 
 
     @Override
-    public void update(Optional<Action> optAction)
+    public void update(Action action)
     {
-        if (optAction.isPresent())
-        {
-            final Action action = optAction.value();
+        Context context = mTextView.getContext();
 
-            Context context = mTextView.getContext();
+        mTextView.setText(action.label(context));
 
-            mTextView.setText(action.label(context));
+        Drawable icon = new TintedDrawable(action.icon(context), new AttributeColor(context, R.attr.colorAccent)).get();
+        mTextView.setCompoundDrawablesWithIntrinsicBounds(icon, null, null, null);
 
-            Drawable icon = new TintedDrawable(action.icon(context), new AttributeColor(context, R.attr.colorAccent)).get();
-            mTextView.setCompoundDrawablesWithIntrinsicBounds(icon, null, null, null);
-
-            mRoot.setOnClickListener(new ActionClickListener(action.actionExecutable()));
-            mRoot.setVisibility(View.VISIBLE);
-        }
-        else
-        {
-            mRoot.setVisibility(View.GONE);
-        }
+        mRoot.setOnClickListener(new ActionClickListener(action.actionExecutable()));
+        mRoot.setVisibility(View.VISIBLE);
     }
 }
