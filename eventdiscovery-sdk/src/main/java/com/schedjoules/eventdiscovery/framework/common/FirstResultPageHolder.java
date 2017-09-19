@@ -36,7 +36,7 @@ import org.dmfs.optional.Present;
 public final class FirstResultPageHolder
 {
 
-    private static Optional<ResultPage<Envelope<Event>>> sFirstResultPage = new Absent<>();
+    private static volatile Optional<ResultPage<Envelope<Event>>> sFirstResultPage = new Absent<>();
 
 
     public static void set(ResultPage<Envelope<Event>> firstResultPage)
@@ -47,7 +47,7 @@ public final class FirstResultPageHolder
 
     public static Optional<ResultPage<Envelope<Event>>> getAndClear()
     {
-        Optional<ResultPage<Envelope<Event>>> result = FirstResultPageHolder.sFirstResultPage;
+        Optional<ResultPage<Envelope<Event>>> result = sFirstResultPage;
         if (result.isPresent())
         {
             sFirstResultPage = new Absent<>();
