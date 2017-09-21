@@ -61,7 +61,7 @@ public final class BaseActionFactory implements ActionFactory
                         icon = R.drawable.schedjoules_ic_facebook_box_24dp;
                         break;
                     case "Meetup":
-                        icon = R.drawable.ic_meetup_black_24dp;
+                        icon = R.drawable.schedjoules_ic_meetup_black_24dp;
                         break;
                     default:
                         icon = R.drawable.schedjoules_ic_open_in_new_24dp;
