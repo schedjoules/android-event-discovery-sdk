@@ -59,16 +59,6 @@ dependencies {
     compile 'com.android.support:cardview-v7:' + SUPPORT_LIBRARY_VERSION
     compile 'com.android.support:recyclerview-v7:' + SUPPORT_LIBRARY_VERSION
 
-    compile('android.arch.lifecycle:runtime:' + ARCH_COMPONENTS_VERSION) {
-        exclude group: 'com.android.support'
-    }
-    compile('android.arch.lifecycle:extensions:' + ARCH_COMPONENTS_VERSION) {
-        exclude group: 'com.android.support'
-    }
-    annotationProcessor('android.arch.lifecycle:compiler:' + ARCH_COMPONENTS_VERSION) {
-        exclude group: 'com.android.support'
-    }
-
     compile('eu.davidea:flexible-adapter:5.0.0-rc1') {
         exclude group: 'com.android.support'
     }

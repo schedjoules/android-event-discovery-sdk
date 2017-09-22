@@ -17,10 +17,6 @@
 
 package com.schedjoules.eventdiscovery.framework.common;
 
-import android.arch.lifecycle.ViewModel;
-import android.arch.lifecycle.ViewModelProviders;
-import android.support.v4.app.FragmentActivity;
-
 import com.schedjoules.client.eventsdiscovery.Envelope;
 import com.schedjoules.client.eventsdiscovery.Event;
 import com.schedjoules.client.eventsdiscovery.ResultPage;
@@ -37,30 +33,25 @@ import org.dmfs.optional.Present;
  *
  * @author Gabor Keszthelyi
  */
-public final class FirstResultPageHolder extends ViewModel
+public final class FirstResultPageHolder
 {
 
-    /*
-    TODO Improve the design of this class if needed.
-    Note: The same immutable design as `CategoriesCache` doesn't work here if we want to clear the value.
-     */
+    private static volatile Optional<ResultPage<Envelope<Event>>> sFirstResultPage = new Absent<>();
 
-    private Optional<ResultPage<Envelope<Event>>> mFirstResultPage = new Absent<>();
 
-    public static void set(ResultPage<Envelope<Event>> firstResultPage, FragmentActivity activity)
+    public static void set(ResultPage<Envelope<Event>> firstResultPage)
     {
-        ViewModelProviders.of(activity).get(FirstResultPageHolder.class).mFirstResultPage = new Present<>(firstResultPage);
+        sFirstResultPage = new Present<>(firstResultPage);
     }
 
 
-    public static Optional<ResultPage<Envelope<Event>>> get(FragmentActivity activity)
+    public static Optional<ResultPage<Envelope<Event>>> getAndClear()
     {
-        return ViewModelProviders.of(activity).get(FirstResultPageHolder.class).mFirstResultPage;
-    }
-
-
-    public static void clear(FragmentActivity activity)
-    {
-        ViewModelProviders.of(activity).get(FirstResultPageHolder.class).mFirstResultPage = new Absent<>();
+        Optional<ResultPage<Envelope<Event>>> result = sFirstResultPage;
+        if (result.isPresent())
+        {
+            sFirstResultPage = new Absent<>();
+        }
+        return result;
     }
 }

@@ -170,11 +170,10 @@ public final class EventListFragment extends BaseFragment implements EventListMe
             new Add(R.id.schedjoules_event_list_header_container, EventListHeaderFragment.newInstance(mReloadDovecote.cage())).commit(this);
             new Add(R.id.schedjoules_event_list_filter_container, FilterFragment.newInstance(mCategoryDovecote.cage())).commit(this);
 
-            Optional<ResultPage<Envelope<Event>>> firstPage = FirstResultPageHolder.get(getActivity());
+            Optional<ResultPage<Envelope<Event>>> firstPage = FirstResultPageHolder.getAndClear();
             if (firstPage.isPresent())
             {
                 showResultPage(firstPage.value());
-                FirstResultPageHolder.clear(getActivity());
             }
             else
             {
