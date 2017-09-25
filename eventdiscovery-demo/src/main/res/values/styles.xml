@@ -1,15 +1,19 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
+    <!-- This is how you customize the default theme -->
+    <style name="SchedJoules_Theme.Default"
+            tools:override="true"
+            parent="SchedJoules_Theme.Light"/>
+    <!-- A good example is to change the accent color, which is used extensively in the SDK, to match your theme: -->
+    <!--<item name="colorAccent">#f57f17</item>-->
+    <!--</style>-->
+
+
     <!-- This is merely the theme of the main demo activity. It's not used by the SDK -->
     <style name="DemoTheme" parent="SchedJoules_BaseTheme.Light">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-    </style>
-
-    <!-- this is how you customize the default theme -->
-    <style name="SchedJoules_Theme.Default" tools:override="true" parent="SchedJoules_Theme.Light">
-        <item name="colorAccent">#f57f17</item>
     </style>
 
 </resources>
